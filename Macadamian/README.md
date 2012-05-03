@@ -1,4 +1,4 @@
-= Examples from Macadamian
+## Examples from Macadamian
 
 The samples in this subdirectory were originally authored by [Macadamian](http://www.macadamian.com/).
 
