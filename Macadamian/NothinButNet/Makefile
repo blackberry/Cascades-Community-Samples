@@ -1,4 +1,4 @@
-QMAKE_TARGET  = Net
+QMAKE_TARGET  = NothinButNet
 QMAKE         = $(QNX_HOST)/usr/bin/qmake
 TARGET        = $(QMAKE_TARGET)
 

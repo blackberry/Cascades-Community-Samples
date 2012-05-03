@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = Net
+TARGET = NothinButNet
 
 CONFIG += qt warn_on debug_and_release cascades
 LIBS += -lpps -lscreen -lEGL -lGLESv1_CM -lfreetype -lpng -lcamapi
