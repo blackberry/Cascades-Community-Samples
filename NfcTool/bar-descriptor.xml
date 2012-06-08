@@ -52,7 +52,8 @@
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Example Inc.</author>
+    <author>John Murray</author>
+    <authorId>gYAAgFPCViUqswOvaRvSwB1Mf2w</authorId>
     <splashscreen>splash.png:splash.png</splashscreen>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
@@ -65,19 +66,19 @@
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration id="com.qnx.qcc.toolChain.414445635" name="Default">
+    <configuration id="com.qnx.qcc.toolChain.537959576" name="Default">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1071864382" name="Device-Debug">
+    <configuration id="com.qnx.qcc.toolChain.102546573" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.893071038" name="Device-Release">
+    <configuration id="com.qnx.qcc.toolChain.2065595469" name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.714431056" name="Simulator-Debug">
+    <configuration id="com.qnx.qcc.toolChain.1927861175" name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
     </configuration>
@@ -87,7 +88,6 @@
         <image>generic_tag.png</image>
     </icon>
 
-    <asset path="icon.png">icon.png</asset>
     <asset path="assets">assets</asset>
     <!--  The splash screen that will appear when your application is launching. Should be 1024x600. -->
     <!-- <splashscreen></splashscreen> -->

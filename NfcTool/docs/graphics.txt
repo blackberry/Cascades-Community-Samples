@@ -1,8 +1,0 @@
-Icons from http://openclipart.org
-
-Except for:
-- generic_tag.png : from RIM development
-- generic_tag_larger.png : scaled version of the above
-- splash.png : background image comprising generic_tag.png
-- white_item_bg.png : made with Photoshop
-
