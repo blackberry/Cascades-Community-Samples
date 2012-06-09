@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2011-2012 Research In Motion Limited.
+* Copyright (c) 2012 Research In Motion Limited.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -35,16 +35,16 @@ typedef enum {
 } state_t;
 
 
-static bool shutdown;
+static bool shutdown = false;
 static screen_context_t screen_ctx;
 static screen_window_t vf_win = NULL;
 static const char vf_group[] = "viewfinder_window_group";
-static state_t state;
+static state_t state = STATE_STARTUP;
 static camera_handle_t handle = CAMERA_HANDLE_INVALID;
 static bool shouldmirror = false;
 static bool touch = false;
-static int photo_done_domain;
-static int main_bps_chid;
+static int photo_done_domain = -1;
+static int main_bps_chid = -1;
 
 
 static void
@@ -288,7 +288,7 @@ main(int argc, char **argv)
     int attribs[] = { SCREEN_BLIT_COLOR, 0x00000000, SCREEN_BLIT_END };
     screen_fill(screen_ctx, screen_buf, attribs);
     screen_post_window(screen_win, screen_buf, 1, rect, 0);
-    // position the window at zorder=1000
+    // position the window at an arbitrary z-order
     int i = APP_ZORDER;
     screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
 
