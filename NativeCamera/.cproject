@@ -41,6 +41,7 @@
 								<option id="com.qnx.qcc.option.linker.debug.748079698" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.1658346166" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="pps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
@@ -170,6 +171,7 @@
 								<option id="com.qnx.qcc.option.linker.profile2.1234876225" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.243090388" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="pps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
@@ -234,6 +236,7 @@
 								<option id="com.qnx.qcc.option.linker.coverage.688642737" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.1145575039" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="pps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
@@ -295,6 +298,7 @@
 								<option id="com.qnx.qcc.option.linker.debug.269226292" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.1750964237" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="pps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
@@ -358,6 +362,7 @@
 								<option id="com.qnx.qcc.option.linker.profile2.1027304180" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.1059966217" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="pps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
@@ -421,6 +426,7 @@
 								<option id="com.qnx.qcc.option.linker.coverage.2090519380" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.1515423890" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="pps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
