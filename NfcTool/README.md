@@ -21,6 +21,22 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 1. BlackBerry Dev Alpha Device Software 10.0.4
 2. BlackBerry 10 Native SDK 10.0.4
 
+**How to Build NfcTool**
+
+We took the decision to distribute only the contents of the "src/" and "assets/" directories along with the "NfcTool.pro" and "bar-descriptor.xml" files with this example.
+
+We've found it to be the more reliable technique whilst the meta-data associated with an NDK project is still subject to change between versions of the NDK. You are less likely to run into issues with a project if you create it as a new empty project in your workspace and copy files into it rather than import a project with a structure from an older version of the IDE.
+
+Here's what you should do:
+
+* Create a new empty Cascades C++ project in your workspace called "NfcTool"
+    * File > New > BlackBerry Cascades C++ Project
+    * Enter Project Name: NfcTool > Next
+    * Select: Standard empty project > Finish
+* Replace contents of the "src/" and "assets/" directories in the project by the contents of "src" and "assets" in this repo
+* Replace "NfcTool.pro" and "bar-descriptor.xml" in the project by the ones in this repo
+    * These files just ensure that the "libnfc.so" library is available to the build process since it's not included in the library path by default; and that the correct images are used for the application icon and splash screen.
+
 **Known Issues**
 
 None
