@@ -23,7 +23,7 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 **How to Build NfcTool**
 
-We took the decision to distribute only the contents of the "src/" and "assets/" directories along with the "NfcTool.pro" and "bar-descriptor.xml" files with this example.
+We took the decision to distribute only the contents of the "src/" and "assets/" directories along with the "NfcTool.pro" file with this example.
 
 We've found it to be the more reliable technique whilst the meta-data associated with an NDK project is still subject to change between versions of the NDK. You are less likely to run into issues with a project if you create it as a new empty project in your workspace and copy files into it rather than import a project with a structure from an older version of the IDE.
 
@@ -33,9 +33,16 @@ Here's what you should do:
     * File > New > BlackBerry Cascades C++ Project
     * Enter Project Name: NfcTool > Next
     * Select: Standard empty project > Finish
-* Replace contents of the "src/" and "assets/" directories in the project by the contents of "src" and "assets" in this repo
-* Replace "NfcTool.pro" and "bar-descriptor.xml" in the project by the ones in this repo
-    * These files just ensure that the "libnfc.so" library is available to the build process since it's not included in the library path by default; and that the correct images are used for the application icon and splash screen.
+* You've now got a clean project set up appropriately for your version of the IDE
+* Delete the "app.cpp" and "app.hpp" files from the project's "src/" directory -- we don't need them
+* Replace contents of the "src/" and "assets/" directories in the project by the contents of "src/" and "assets/" from this repo
+* Replace "NfcTool.pro" in the project by the one in this repo
+    * This file just ensure that the "libnfc.so" library is available to the build process since it's not included in the library path by default.
+* You'll also now have a "bar-descriptor.xml" which is correct for your verion of the IDE.
+    * You need to make sure it's populated with your own Debug Token 
+    * Also, if you want to ensure that the application has the correct icon and startup splash screen (I'm sure you do!) open the "bar-descriptor.xml" file, select the "Application" tab and choose:
+        * "assets/images/generic_tag.png" as the Icon image
+        * "assets/images/generic_tag.png" as both the "Landscape" and "Portrait" splash screen images
 
 **Known Issues**
 
