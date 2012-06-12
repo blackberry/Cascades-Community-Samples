@@ -17,8 +17,8 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 
 **Release History**
-V2 - Added transfer of vCard using SNEP
-V1 - Reading and Writing NDEF tags
+* V2 - Added transfer of vCard using SNEP
+* V1 - Reading and Writing NDEF tags
 
 
 **Dependencies**
