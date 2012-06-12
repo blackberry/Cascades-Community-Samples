@@ -25,6 +25,7 @@
 #include "WriteSp.hpp"
 #include "WriteText.hpp"
 #include "WriteCustom.hpp"
+#include "SendVcard.hpp"
 #include "About.hpp"
 #include "EventLog.hpp"
 
@@ -47,6 +48,7 @@ private:
     WriteSp* _writeSp;
     WriteText* _writeText;
     WriteCustom* _writeCustom;
+    SendVcard* _sendVcard;
     EventLog* _eventLog;
     About* _about;
 
@@ -68,6 +70,7 @@ signals:
     void write_sp();
     void write_text();
     void write_custom();
+    void send_vcard_selected();
     void about_selected();
 
 public slots:

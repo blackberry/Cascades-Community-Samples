@@ -54,7 +54,7 @@ void StateManager::setDetectAndWriteState(bool detect_and_write_state) {
 }
 
 bool StateManager::inNoNfcState() const {
-	bool no_nfc_state = !(m_inReadState || m_inDetectAndWriteState);
+	bool no_nfc_state = !(m_inReadState || m_inDetectAndWriteState || m_inNdefPushState);
 	qDebug() << "StateManager::inNoNfcState=" << no_nfc_state;
 	return no_nfc_state;
 }
@@ -66,3 +66,15 @@ void StateManager::setNoNfcState() {
 	emit inReadStateChanged();
 	emit inDetectAndWriteStateChanged();
 }
+
+bool StateManager::inNdefPushState() const {
+	qDebug() << "StateManager::inNdefPushState=" << m_inNdefPushState;
+	return m_inNdefPushState;
+}
+
+void StateManager::setNdefPushState(bool ndef_push_state) {
+	qDebug() << "StateManager::setNdefPushState=" << ndef_push_state;
+	m_inNdefPushState = ndef_push_state;
+	emit inNdefPushStateChanged();
+}
+

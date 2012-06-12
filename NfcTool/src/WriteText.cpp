@@ -29,7 +29,7 @@
 using namespace bb::cascades;
 
 WriteText::WriteText() :
-		_appVersion(QString(Settings::AppVersion)) {
+	_appVersion(QString(Settings::AppVersion)) {
 	qDebug() << "constructing WriteURI...";
 	_text = Settings::TEXT;
 	_qml = QmlDocument::create("write_text.qml");

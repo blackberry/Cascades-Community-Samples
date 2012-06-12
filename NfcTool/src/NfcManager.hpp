@@ -46,6 +46,12 @@ private:
 	QString *_ndefDomain;
 	QString *_ndefType;
 	QString *_ndefPayload;
+	QString *_first_name;
+	QString *_last_name;
+	QString *_address;
+	QString *_email;
+	QString *_mobile;
+
     QFuture<void> *future;
     QFutureWatcher<void> *watcher;
 
@@ -59,6 +65,7 @@ public:
 	void writeSp(QString* sp_uri, QString* sp_text);
 	void writeText(QString* text);
 	void writeCustom(QString* domain, QString* type, QString* payload);
+	void sendVcard(QString* first_name, QString* last_name, QString* address, QString* email, QString* mobile);
 	void stopNdefWriter();
 
 public slots:

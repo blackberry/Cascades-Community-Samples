@@ -32,6 +32,11 @@ public:
 	static const char* SP_TEXT;
 	static const char* TEXT;
 	static const char* URI;
+	static const char* FIRST_NAME;
+	static const char* LAST_NAME;
+	static const char* ADDRESS;
+	static const char* EMAIL;
+	static const char* MOBILE;
 
 	// NFC RTD useful constants
 

@@ -30,7 +30,7 @@ using namespace bb::cascades;
 class EventLog : public QObject
 {
     Q_OBJECT
-	Q_PROPERTY(QString _message READ getMessage WRITE setMessage)
+	Q_PROPERTY(QString message READ getMessage WRITE setMessage NOTIFY detectMessageChanged)
 	Q_PROPERTY(QString appVersion READ appVersion WRITE setAppVersion NOTIFY detectAppVersionChanged)
 
 public:
@@ -65,6 +65,7 @@ signals:
 	void back();
 	void hide();
     void detectAppVersionChanged();
+    void detectMessageChanged();
 };
 
 #endif // ifndef EventLog_h

@@ -106,6 +106,25 @@ void NfcManager::writeCustom(QString* domain, QString* type, QString* payload) {
 	qDebug() << "NfcManager::writeCustom done";
 }
 
+void NfcManager::sendVcard(QString* first_name, QString* last_name, QString* address, QString* email, QString* mobile) {
+	qDebug() << "NfcManager::sendVcard";
+	_first_name = first_name;
+	_last_name = last_name;
+	_address = address;
+	_email = email;
+	_mobile = mobile;
+	Logger::getInstance()->clearLog();
+	future = new QFuture<void>;
+	watcher = new QFutureWatcher<void>;
+	_workerInstance = new NfcWorker();
+	*future = QtConcurrent::run(_workerInstance, &NfcWorker::sendVcard, first_name, last_name, address, email, mobile);
+	watcher->setFuture(*future);
+	QObject::connect(watcher, SIGNAL(finished()), this, SLOT(workerStopped()));
+	QObject::connect(_workerInstance, SIGNAL(message(QVariant)), this, SLOT(message(QVariant)), Qt::QueuedConnection);
+
+	qDebug() << "NfcManager::sendVcard done";
+}
+
 void NfcManager::stopNdefListener() {
 	qDebug() << "NfcManager::stopNdefListener";
 	stopWorker();
