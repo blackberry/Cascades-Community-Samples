@@ -44,6 +44,12 @@ Here's what you should do:
         * "assets/images/generic_tag.png" as the Icon image
         * "assets/images/generic_tag.png" as both the "Landscape" and "Portrait" splash screen images
 
+**But I don't want to build it myself**
+
+If you don't want to build this sample applictaion yourself we've included a pre-build and signed BAR file. You can find it in the folder "installable-bar-files" as follows:
+
+* NfcTool-1_0_0_1.bar
+
 **Known Issues**
 
 None
