@@ -33,14 +33,14 @@ Container {
             id: itemBackground
             imageSource: "asset:///images/white_item_bg.png"
             preferredWidth: 768
-            preferredHeight: 209
+            preferredHeight: 178
         }
         Container {
             id: highlightContainer
             background: Color.create ("#75b5d3")
             opacity: 0.0
             preferredWidth: 760
-            preferredHeight: 168
+            preferredHeight: 166
             layoutProperties: DockLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Center
             }

@@ -111,9 +111,7 @@ QString EventLog::appVersion() const {
 void EventLog::setAppVersion(QString appVersion) {
 	if(_appVersion.compare(appVersion) == 0)
 		return;
-
 	_appVersion = appVersion;
-
 	emit detectAppVersionChanged();
 }
 

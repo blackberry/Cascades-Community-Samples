@@ -22,6 +22,7 @@ class StateManager: public QObject {
 Q_OBJECT
 Q_PROPERTY(bool inReadState READ inReadState WRITE setReadState NOTIFY inReadStateChanged)
 Q_PROPERTY(bool inDetectAndWriteState READ inDetectAndWriteState WRITE setDetectAndWriteState NOTIFY inDetectAndWriteStateChanged)
+Q_PROPERTY(bool inNdefPushState READ inNdefPushState WRITE setNdefPushState NOTIFY inNdefPushStateChanged)
 
 public:
 	static StateManager* getInstance();
@@ -31,16 +32,20 @@ public:
 	void setDetectAndWriteState(bool detect_and_write_state);
 	bool inNoNfcState() const;
 	void setNoNfcState();
+	bool inNdefPushState() const;
+	void setNdefPushState(bool ndef_push_state);
 
 signals:
 	void inReadStateChanged();
 	void inDetectAndWriteStateChanged();
+	void inNdefPushStateChanged();
 
 private:
 	StateManager();
 	static StateManager* _instance;
 	bool m_inReadState;
 	bool m_inDetectAndWriteState;
+	bool m_inNdefPushState;
 
 };
 

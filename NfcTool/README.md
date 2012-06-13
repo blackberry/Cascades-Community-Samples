@@ -1,6 +1,6 @@
 # NFC Tag Reading and Writing Sample
 
-The purpose of this application is to demonstrate how to read and write various sorts of NDEF messages from and to NFC tags using the BlackBerry 10 NFC APIs.
+The purpose of this application is to demonstrate how to use selected BlackBerry 10 NFC APIs. The Release History section gives details of those NFC APIs which are covered.
 
 The sample code for this application is Open Source under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
@@ -14,6 +14,11 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 * [John Murray](https://github.com/jcmurray)
 * [Martin Woolley](https://github.com/mdwoolley)
+
+
+**Release History**
+* V2 - Added transfer of vCard using SNEP
+* V1 - Reading and Writing NDEF tags
 
 
 **Dependencies**
@@ -46,9 +51,10 @@ Here's what you should do:
 
 **But I don't want to build it myself**
 
-If you don't want to build this sample applictaion yourself we've included a pre-build and signed BAR file. You can find it in the folder "installable-bar-files" as follows:
+If you don't want to build this sample application yourself we've included a pre-build and signed BAR files for each version. You can find them in the folder "installable-bar-files" as follows:
 
-* NfcTool-1_0_0_1.bar
+* NfcTool-2_0_0_1.bar -- Signed BAR file for Version 2 (V2) of the application
+* NfcTool-1_0_0_1.bar -- Signed BAR file for Version 1 (V1) of the application
 
 **Known Issues**
 

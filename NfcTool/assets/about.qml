@@ -38,7 +38,7 @@ Page {
                 }
                 
                 Label {
-                    text: " Welcome to NFC Tool"
+                    text: " Welcome to NFC Tool V2.0"
                     textStyle {
                         base: SystemDefaults.TextStyles.TitleText
                         fontWeight: FontWeight.Light

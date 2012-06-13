@@ -43,7 +43,8 @@ public:
 		WRITE_URI_TAG,
 		WRITE_TEXT_TAG,
 		WRITE_SP_TAG,
-		WRITE_CUSTOM_TAG
+		WRITE_CUSTOM_TAG,
+		SEND_VCARD
 	};
 
 signals:
@@ -60,6 +61,7 @@ public slots:
 	void prepareToWriteNdefTextTag(QString text);
 	void prepareToWriteNdefSpTag(QString sp_uri, QString sp_text);
 	void prepareToWriteNdefCustomTag(QString domain, QString type, QString payload);
+	void prepareToSendVcard(QString first_name, QString last_name, QString address, QString email, QString mobile);
 
 public:
 	void readTag(QList<NdefType *> types);
@@ -67,6 +69,7 @@ public:
 	void writeSpTag(QString* sp_uri, QString* sp_text);
 	void writeTextTag(QString* text);
 	void writeCustomTag(QString* domain, QString* type, QString* payload);
+	void sendVcard(QString* first_name, QString* last_name, QString* address, QString* email, QString* mobile);
 
 private:
 	void handleNfcEvent(bps_event_t *event);
@@ -75,12 +78,16 @@ private:
 	void handleNfcWriteTextTagEvent(bps_event_t *event);
 	void handleNfcWriteUriTagEvent(bps_event_t *event);
 	void handleNfcReadNdefTagEvent(bps_event_t *event);
+	void handleSendVcardEvent(bps_event_t *event);
 	void parseNdefMessage(nfc_target_t *target);
 	nfc_ndef_record_t* makeUriRecord(uchar_t prefix, QString uri);
 	nfc_ndef_record_t* makeTextRecord(QString language, QString text);
 	nfc_ndef_record_t* makeSpRecord();
 	nfc_ndef_record_t* makeCustomRecord(QString domain, QString type, QString text);
+	nfc_ndef_record_t* makeVcardMessage(QString name, QString address, QString email, QString mobile);
+	nfc_ndef_record_t* makeMediaRecord(QString type, QString text);
 	static void checkReturnCode(int rc, int line, const char *file, const char *func);
+
 
 	const int BPS_EVENT_TIMEOUT;
 	int _bpsInterruptDomain;
@@ -98,6 +105,11 @@ private:
 	QString _ndefDomain;
 	QString _ndefType;
 	QString _ndefPayload;
+	QString _first_name;
+	QString _last_name;
+	QString _address;
+	QString _email;
+	QString _mobile;
 };
 
 #endif /* NFCWORKER_HPP_ */
