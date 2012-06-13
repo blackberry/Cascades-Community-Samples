@@ -16,7 +16,7 @@
 
 // General constants
 
-const char* Settings::AppVersion = "1.0";
+const char* Settings::AppVersion = "2.0";
 const char* Settings::DOMAIN = "my.domain.com";
 const char* Settings::TYPE = "myrecordtype";
 const char* Settings::CONTENT = "content";
@@ -24,6 +24,11 @@ const char* Settings::SP_URI = "http://www.bbc.co.uk";
 const char* Settings::SP_TEXT = "The world's greatest news organisation";
 const char* Settings::TEXT = "Hello, I am an NFC tag!";
 const char* Settings::URI = "http://www.bbc.co.uk";
+const char* Settings::FIRST_NAME = "Fred";
+const char* Settings::LAST_NAME = "Flintstone";
+const char* Settings::ADDRESS = "301 Cobblestone Way, Bedrock";
+const char* Settings::EMAIL = "fred@dinomail.com";
+const char* Settings::MOBILE = "+11231231234";
 
 // NFC RTD useful constants
 
