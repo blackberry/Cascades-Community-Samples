@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+
+<!-- BlackBerry 10 application descriptor file.
+
+    Specifies parameters for identifying, installing, and launching native applications on BlackBerry 10.
+
+-->
+
+    <!-- A universally unique application identifier. Must be unique across all BlackBerry 10 applications.
+         Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
+    <id>com.example.helloopenal</id>
+
+    <!-- The name that is displayed in the BlackBerry 10 application installer.
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+    <name>HelloOpenAL</name>
+
+    <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
+         Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
+         An updated version of application must have a versionNumber value higher than the previous version. Required. -->
+    <versionNumber>1.0.0</versionNumber>
+
+    <!-- Fourth digit segment of the package version. First three segments are taken from the
+         <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
+    <buildId>1</buildId>
+
+    <!-- Description, displayed in the BlackBerry 10 application installer.
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+    <description>The modified &quot;Cascades Cowbell&quot; application that shows how to use OpenAL API and OggVorbis library to 
+load compressed audio data.</description>
+
+    <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
+    <author>Example Inc.</author>
+
+    <!--  The splash screen that will appear when your application is launching. -->
+    <splashscreen>background.png</splashscreen>
+
+    <initialWindow>
+        <aspectRatio>landscape</aspectRatio>
+        <autoOrients>false</autoOrients>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+    </initialWindow>
+
+    <!--  The category where the application appears. Either core.games or core.media. -->
+    <category>core.games</category>
+    <configuration id="com.qnx.qcc.toolChain.1982646308" name="Default">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7-g/cowbell" entry="true" type="Qnx/Elf">cowbell</asset>
+       <asset path="external-lib/oggvorbis/lib/qnx/arm/libvorbis.a" type="Qnx/Elf">lib/libvorbis.a</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.toolChain.840177385" name="Device-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7-g/cowbell" entry="true" type="Qnx/Elf">cowbell</asset>
+       <asset path="external-lib/oggvorbis/lib/qnx/arm/libvorbis.a" type="Qnx/Elf">lib/libvorbis.a</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.toolChain.782877594" name="Device-Release">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7/cowbell" entry="true" type="Qnx/Elf">cowbell</asset>
+       <asset path="external-lib/oggvorbis/lib/qnx/arm/libvorbis.a" type="Qnx/Elf">lib/libvorbis.a</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.toolChain.26149944" name="Simulator-Debug">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="x86/o-g/cowbell" entry="true" type="Qnx/Elf">cowbell</asset>
+    </configuration>
+
+    <!--  The icon for the application, which should be 86x86. -->
+    <icon>
+        <image>icon.png</image>
+    </icon>
+
+
+    <asset path="icon.png">icon.png</asset>
+    <asset path="assets">assets</asset>
+    <asset path="assets/images/background.png">background.png</asset>
+
+    <!-- Request permission to execute native code.  Required for native applications. -->
+    <action system="true">run_native</action>
+    <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+
+</qnx>
