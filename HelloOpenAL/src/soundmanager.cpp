@@ -101,7 +101,7 @@ SoundManager::SoundManager(QString soundDirectory)
 			if (fread(header, 1, 12, file) != 12)
 			{
 				qDebug() << "Invalid header for audio file " << path;
-				alDeleteBuffers(1, mSoundBuffers[fileInfo.fileName()]);
+				alDeleteBuffers(1, &mSoundBuffers[fileInfo.fileName()]);
 				goto cleanup;
 			}
 
@@ -111,7 +111,7 @@ SoundManager::SoundManager(QString soundDirectory)
 				if (!loadWav(file, mSoundBuffers[fileInfo.fileName()]))
 				{
 					qDebug() << "Invalid wav file: " << path;
-					alDeleteBuffers(1, mSoundBuffers[fileInfo.fileName()]);
+					alDeleteBuffers(1, &mSoundBuffers[fileInfo.fileName()]);
 					goto cleanup;
 				}
 			}
@@ -120,7 +120,7 @@ SoundManager::SoundManager(QString soundDirectory)
 				if (!loadOgg(file, mSoundBuffers[fileInfo.fileName()]))
 				{
 					qDebug() << "Invalid ogg file: " << path;
-					alDeleteBuffers(1, mSoundBuffers[fileInfo.fileName()]);
+					alDeleteBuffers(1, &mSoundBuffers[fileInfo.fileName()]);
 					goto cleanup;
 				}
 			}
