@@ -2,11 +2,11 @@ TEMPLATE = app
 TARGET = cowbell
 
 CONFIG += qt warn_on debug_and_release cascades
-LIBS   += -lOpenAL -lalut -lasound -L../external-lib/oggvorbis/lib/qnx/arm/ -L../external-lib/oggvorbis/lib/qnx/x86/ -lvorbis
+LIBS   += -lOpenAL -lalut -L../external-lib/oggvorbis/lib/qnx/arm/ -L../external-lib/oggvorbis/lib/qnx/x86/ -lvorbis
 
 INCLUDEPATH += ../src ../external-lib/oggvorbis/include
 SOURCES += ../src/*.cpp 
-HEADERS += ../src/*.h ../external-lib/oggvorbis/include/vorbis/*.h ../external-lib/oggvorbis/include/ogg/*.h
+HEADERS += ../src/*.h
 
 device {
 	CONFIG(release, debug|release) {		

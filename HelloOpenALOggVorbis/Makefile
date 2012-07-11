@@ -1,4 +1,4 @@
-QMAKE_TARGET  = HelloOpenAL
+QMAKE_TARGET  = HelloOpenALOggVorbis
 QMAKE         = $(QNX_HOST)/usr/bin/qmake
 TARGET        = $(QMAKE_TARGET)
 

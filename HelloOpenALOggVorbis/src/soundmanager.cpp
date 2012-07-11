@@ -82,57 +82,49 @@ SoundManager::SoundManager(QString soundDirectory)
 			alGenBuffers(1, &mSoundBuffers[fileInfo.fileName()]);
 
 			error = alGetError();
-			if (error != AL_NO_ERROR)
-			{
+			if (error != AL_NO_ERROR) {
 				reportOpenALError(error);
 				break;
 			}
 
 			// Load sound file.
 			FILE* file = fopen(path, "rb");
-			if (!file)
-			{
+			if (!file) {
 				qDebug() << "Failed to load audio file " << path;
 				break;
 			}
 
 			// Read the file header
 			char header[12];
-			if (fread(header, 1, 12, file) != 12)
-			{
+			ALuint bufferId = mSoundBuffers[fileInfo.fileName()];
+			if (fread(header, 1, 12, file) != 12) {
 				qDebug() << "Invalid header for audio file " << path;
-				alDeleteBuffers(1, &mSoundBuffers[fileInfo.fileName()]);
+				alDeleteBuffers(1, &bufferId);
 				goto cleanup;
 			}
 
 			// Check the file format & load the buffer with audio data.
-			if (memcmp(header, "RIFF", 4) == 0)
-			{
-				if (!loadWav(file, mSoundBuffers[fileInfo.fileName()]))
-				{
+			if (memcmp(header, "RIFF", 4) == 0) {
+				if (!loadWav(file, bufferId)) {
 					qDebug() << "Invalid wav file: " << path;
-					alDeleteBuffers(1, &mSoundBuffers[fileInfo.fileName()]);
+					alDeleteBuffers(1, &bufferId);
 					goto cleanup;
 				}
 			}
-			else if (memcmp(header, "OggS", 4) == 0)
-			{
-				if (!loadOgg(file, mSoundBuffers[fileInfo.fileName()]))
-				{
+			else if (memcmp(header, "OggS", 4) == 0) {
+				if (!loadOgg(file, bufferId)) {
 					qDebug() << "Invalid ogg file: " << path;
-					alDeleteBuffers(1, &mSoundBuffers[fileInfo.fileName()]);
+					alDeleteBuffers(1, &bufferId);
 					goto cleanup;
 				}
 			}
-			else
-			{
+			else {
 				qDebug() << "Unsupported audio file: " << path;
 				goto cleanup;
 			}
 
 		cleanup:
-			if (file)
-			{
+			if (file) {
 				fclose(file);
 			}
         }
@@ -194,8 +186,7 @@ bool SoundManager::loadWav(FILE* file, ALuint buffer)
 	unsigned char stream[12];
 
 	// Verify the wave fmt magic value meaning format.
-	if (fread(stream, 1, 8, file) != 8 || memcmp(stream, "fmt ", 4) != 0 )
-	{
+	if (fread(stream, 1, 8, file) != 8 || memcmp(stream, "fmt ", 4) != 0 ) 	{
 		qDebug() << "Failed to verify the magic value for the wave file format.";
 		return false;
 	}
@@ -207,16 +198,14 @@ bool SoundManager::loadWav(FILE* file, ALuint buffer)
 	section_size |= stream[4];
 
 	// Check for a valid pcm format.
-	if (fread(stream, 1, 2, file) != 2 || stream[1] != 0 || stream[0] != 1)
-	{
+	if (fread(stream, 1, 2, file) != 2 || stream[1] != 0 || stream[0] != 1) {
 		qDebug() << "Unsupported audio file format (must be a valid PCM format).";
 		return false;
 	}
 
 	// Get the channel count (16-bit little-endian).
 	int channels;
-	if (fread(stream, 1, 2, file) != 2)
-	{
+	if (fread(stream, 1, 2, file) != 2) {
 		qDebug() << "Failed to read the wave file's channel count.";
 		return false;
 	}
@@ -225,8 +214,7 @@ bool SoundManager::loadWav(FILE* file, ALuint buffer)
 
 	// Get the sample frequency (32-bit little-endian).
 	ALuint frequency;
-	if (fread(stream, 1, 4, file) != 4)
-	{
+	if (fread(stream, 1, 4, file) != 4) {
 		qDebug() << "Failed to read the wave file's sample frequency.";
 		return false;
 	}
@@ -239,16 +227,14 @@ bool SoundManager::loadWav(FILE* file, ALuint buffer)
 	// The next 6 bytes hold the block size and bytes-per-second.
 	// We don't need that info, so just read and ignore it.
 	// We could use this later if we need to know the duration.
-	if (fread(stream, 1, 6, file) != 6)
-	{
+	if (fread(stream, 1, 6, file) != 6) {
 		qDebug() << "Failed to read past the wave file's block size and bytes-per-second.";
 		return false;
 	}
 
 	// Get the bit depth (16-bit little-endian).
 	int bits;
-	if (fread(stream, 1, 2, file) != 2)
-	{
+	if (fread(stream, 1, 2, file) != 2) {
 		qDebug() << "Failed to read the wave file's bit depth.";
 		return false;
 	}
@@ -257,70 +243,59 @@ bool SoundManager::loadWav(FILE* file, ALuint buffer)
 
 	// Now convert the given channel count and bit depth into an OpenAL format.
 	ALuint format = 0;
-	if (bits == 8)
-	{
+	if (bits == 8) {
 		if (channels == 1)
 			format = AL_FORMAT_MONO8;
 		else if (channels == 2)
 			format = AL_FORMAT_STEREO8;
 	}
-	else if (bits == 16)
-	{
+	else if (bits == 16) {
 		if (channels == 1)
 			format = AL_FORMAT_MONO16;
 		else if (channels == 2)
 			format = AL_FORMAT_STEREO16;
 	}
-	else
-	{
+	else {
 		qDebug() << "Incompatible wave file format: ( " << channels << ", " << bits << ")";
 		return false;
 	}
 
 	// Check against the size of the format header as there may be more data that we need to read.
-	if (section_size > 16)
-	{
+	if (section_size > 16) {
 		unsigned int length = section_size - 16;
 
 		// Extension size is 2 bytes.
-		if (fread(stream, 1, length, file) != length)
-		{
+		if (fread(stream, 1, length, file) != length) {
 			qDebug() << "Failed to read extension size from wave file.";
 			return false;
 		}
 	}
 
 	// Read in the rest of the file a chunk (section) at a time.
-	while (true)
-	{
+	while (true) {
 		// Check if we are at the end of the file without reading the data.
-		if (feof(file))
-		{
+		if (feof(file)) {
 			qDebug() << "Failed to load wave file; file appears to have no data.";
 			return false;
 		}
 
 		// Read in the type of the next section of the file.
-		if (fread(stream, 1, 4, file) != 4)
-		{
+		if (fread(stream, 1, 4, file) != 4) {
 			qDebug() << "Failed to read next section type from wave file.";
 			return false;
 		}
 
 		// Data chunk.
-		if (memcmp(stream, "data", 4) == 0)
-		{
+		if (memcmp(stream, "data", 4) == 0) {
 			// Read how much data is remaining and buffer it up.
 			unsigned int dataSize;
-			if (fread(&dataSize, sizeof(int), 1, file) != 1)
-			{
+			if (fread(&dataSize, sizeof(int), 1, file) != 1) {
 				qDebug() << "Failed to read size of data section from wave file.";
 				return false;
 			}
 
 			char* data = new char[dataSize];
-			if (fread(data, sizeof(char), dataSize, file) != dataSize)
-			{
+			if (fread(data, sizeof(char), dataSize, file) != dataSize) 	{
 				qDebug() << "Failed to load wave file; file is missing data.";
 				delete data;
 				return false;
@@ -348,15 +323,13 @@ bool SoundManager::loadWav(FILE* file, ALuint buffer)
 		// - Labeled Text ("ltxt")
 		// - Sampler ("smpl")
 		// - Instrument ("inst")
-		else
-		{
+		else {
 			// Store the name of the chunk so we can report errors informatively.
 			char chunk[5] = { 0 };
 			memcpy(chunk, stream, 4);
 
 			// Read the chunk size.
-			if (fread(stream, 1, 4, file) != 4)
-			{
+			if (fread(stream, 1, 4, file) != 4) {
 				qDebug() << "Failed to read size of " << chunk << "chunk from wave file.";
 				return false;
 			}
@@ -367,8 +340,7 @@ bool SoundManager::loadWav(FILE* file, ALuint buffer)
 			section_size |= stream[0];
 
 			// Seek past the chunk.
-			if (fseek(file, section_size, SEEK_CUR) != 0)
-			{
+			if (fseek(file, section_size, SEEK_CUR) != 0) {
 				qDebug() << "Failed to seek past " << chunk << "in wave file.";
 				return false;
 			}
@@ -389,8 +361,7 @@ bool SoundManager::loadOgg(FILE* file, ALuint buffer)
 
 	rewind(file);
 
-	if ((result = ov_open(file, &ogg_file, NULL, 0)) < 0)
-	{
+	if ((result = ov_open(file, &ogg_file, NULL, 0)) < 0) {
 		fclose(file);
 		qDebug() << "Failed to open ogg file.";
 		return false;
@@ -407,27 +378,22 @@ bool SoundManager::loadOgg(FILE* file, ALuint buffer)
 	unsigned int data_size = ov_pcm_total(&ogg_file, -1) * info->channels * 2;
 	char* data = new char[data_size];
 
-	while (size < data_size)
-	{
+	while (size < data_size) {
 		result = ov_read(&ogg_file, data + size, data_size - size, 0, 2, 1, &section);
-		if (result > 0)
-		{
+		if (result > 0) {
 			size += result;
 		}
-		else if (result < 0)
-		{
+		else if (result < 0) {
 			delete data;
 			qDebug() << "Failed to read ogg file; file is missing data.";
 			return false;
 		}
-		else
-		{
+		else {
 			break;
 		}
 	}
 
-	if (size == 0)
-	{
+	if (size == 0) {
 		delete data;
 		qDebug() << "Filed to read ogg file; unable to read any data.";
 		return false;
@@ -436,8 +402,7 @@ bool SoundManager::loadOgg(FILE* file, ALuint buffer)
 	alBufferData(buffer, format, data, data_size, info->rate);
 
 	ALenum error = alGetError();
-	if (error != AL_NO_ERROR)
-	{
+	if (error != AL_NO_ERROR) {
 		reportOpenALError(error);
 	}
 
