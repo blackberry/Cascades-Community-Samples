@@ -14,7 +14,7 @@
 */
 
 
-#include "cowbellapp.h"
+#include "hellooggvorbis.h"
 
 using ::bb::cascades::Application;
 
@@ -24,7 +24,7 @@ int main(int argc, char **argv)
     Application app(argc, argv);
 
     // Our app is initialized.
-    CowBellApp mainApp;
+    HelloOggVorbis mainApp;
 
     // We complete the transaction started in the app constructor and start the client event loop here
     // when loop is exited the Application deletes the scene which deletes all its children.

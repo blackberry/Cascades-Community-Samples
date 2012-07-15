@@ -1,4 +1,4 @@
-Cowbell - Basic sound handling using OpenAL and OggVorbis
+HelloOggVorbis - Basic Ogg file handling using OpenAL and OggVorbis
 
 ========================================================================
 Sample Description.
@@ -6,7 +6,8 @@ Sample Description.
 This sample is extended from the original cascades cowbell sample at \
 https://github.com/blackberry/Cascades-Samples. The objective of this sample 
 is to serve as a tutorial for setting up OpenAL and OggVorbis SDK to play 
-compressed .ogg vorbis sound format.  
+compressed .ogg vorbis sound format. The sample also shows how to decode the 
+regular .wav files without ALUT.
 
  
 ========================================================================

@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = cowbell
+TARGET = hellooggvorbis
 
 CONFIG += qt warn_on debug_and_release cascades
 LIBS   += -lOpenAL -lalut -L../external-lib/oggvorbis/lib/qnx/arm/ -L../external-lib/oggvorbis/lib/qnx/x86/ -lvorbis

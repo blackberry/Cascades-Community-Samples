@@ -12,14 +12,14 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-#include "cowbellapp.h"
+#include "hellooggvorbis.h"
 
 #include <bb/cascades/Page>
 #include <bb/cascades/QmlDocument>
 
 using namespace bb::cascades;
 
-CowBellApp::CowBellApp()
+HelloOggVorbis::HelloOggVorbis()
 {
     // Here we create a QMLDocument and load it, we are using build patterns.
     QmlDocument *qml = QmlDocument::create().load("cowbell.qml");
@@ -46,13 +46,13 @@ CowBellApp::CowBellApp()
     }
 }
 
-CowBellApp::~CowBellApp()
+HelloOggVorbis::~HelloOggVorbis()
 {
     // Destroy the sound manager.
     delete mSoundManager;
 }
 
-void CowBellApp::playSound(const QString &msg)
+void HelloOggVorbis::playSound(const QString &msg)
 {
     mSoundManager->play(msg);
 }

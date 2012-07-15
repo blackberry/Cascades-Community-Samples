@@ -14,27 +14,25 @@
 */
 
 
-#ifndef COWBELLAPP_H
-#define COWBELLAPP_H
+#ifndef HELLOOGGVORBIS_H
+#define HELLOOGGVORBIS_H
 
 #include <bb/cascades/Application>
 #include "soundmanager.h"
 
 /**
- * CowBellApp
+ * Hello OggVorbis App
  *
- * This sample illustrates how a simple toy instrument can be built using
- * Cascades. As the user hit a cowbell in different places a sound
- * is triggered with different volumes. A transform rotation is applied to 
- * give the illusion of the bell hanging around the neck of a cow.
+ * This sample is a fork of the Cascades Cowbell App and it illustrates how a
+ * to use OpenAL and OggVorbis to load and play compressed audio.
  */
-class CowBellApp: public QObject
+class HelloOggVorbis: public QObject
 {
 Q_OBJECT
 
 public:
-    CowBellApp();
-    ~CowBellApp();
+	HelloOggVorbis();
+    ~HelloOggVorbis();
 
     /**
      * Invokable function used for triggering sounds from QML.
@@ -50,4 +48,4 @@ private:
 
 };
 
-#endif // ifndef COWBELLAPP_H
+#endif // ifndef HELLOOGGVORBIS_H
