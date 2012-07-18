@@ -299,7 +299,6 @@ void HelloCameraApp::onStopCamera()
 
 void HelloCameraApp::onTakePicture()
 {
-    int x[2];
     qDebug() << "onTakePicture";
     if (mCameraHandle != CAMERA_HANDLE_INVALID) {
         camera_take_photo(mCameraHandle,
