@@ -1,0 +1,2 @@
+GoodCitizenCascades is a Cascades version of the NDK sample app, Good Citizen.  It features best practices for how to properly structure the OpenGL code and link it in with Cascades, how to leverage Actions and the use of NavigatorPanes for multiple panels, as well as how to process touch events and use them to control a 3D scene rendered in OpenGL, using Qt objects and JavaScript.  
+Built initially for the Cascades + OpenGL session presented at Blackberry 10 Jam in Orlando, Florida, if you update or modify this example, please update the running version info as well.

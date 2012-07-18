@@ -14,96 +14,84 @@
  * limitations under the License.
  */
  
-import bb.cascades 1.0
+ import bb.cascades 1.0
 
 NavigationPane {
     Page {
         id: nav
-         //title: "Good Citizen Cascades"
-    
-	    content:
-	        Container {
-	        id: back
-	        objectName: "back"
-	        
+        content: Container {
+            id: back
+            objectName: "back"           
             layout: StackLayout {
-                }
-                    
-            background: Color.create ("#262626")
-                    
+            }
+            background: Color.create("#262626")
             layoutProperties: StackLayoutProperties {
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Center
             }
-                   
             ForeignWindow {
-                 id: goodCitizenCascadesFW
-                 objectName: "goodCitizenCascadesFW"
-                 preferredWidth: 768
-                 preferredHeight: 1140
-                 visible: false
-	
-		         layoutProperties: DockLayoutProperties {
-		              horizontalAlignment: HorizontalAlignment.Center
-		              verticalAlignment: VerticalAlignment.Top
-		         }
-            }
+                id: goodCitizenCascadesFW
+                objectName: "goodCitizenCascadesFW"
+                preferredWidth: 768
+                preferredHeight: 1140
+                visible: false
+                layoutProperties: DockLayoutProperties {
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Top
+                }
+            }           
         }
-        
-	    actions: [
-	        ActionItem {
-	            title: "Translate"
-	            imageSource: "asset:///images/actions/translate.png"
-	            
-	            onTriggered: {
-                    _goodCitizen.setTouchMode("translate");                    	                
-                    _navPane.deprecatedPushQmlByString ("ToolAxis.qml");
-	            }
-	        },
-	        ActionItem {
-	            title: "Rotation"
-	            imageSource: "asset:///images/actions/rotate.png"
-	            
-	            onTriggered: {
-                    _goodCitizen.setTouchMode("rotate");                    	                
-                    _navPane.deprecatedPushQmlByString ("ToolAxis.qml");
-	            }
-	        },
-	        ActionItem {
-	            title: "Scale"
-	            imageSource: "asset:///images/actions/scale.png"
-	            
-	            onTriggered: {
-                    _goodCitizen.setTouchMode("scale");                    	                
-                    _navPane.deprecatedPushQmlByString ("ToolAxis.qml");
-	            }
-	        },
-	        ActionItem {
-	            title: "Color"
-	            imageSource: "asset:///images/actions/colour.png"
-	            
-	            onTriggered: {
-                    _navPane.deprecatedPushQmlByString ("Color.qml");
-	            }
-	        },
-	        ActionItem {
-	            title: "Objects"
-	            imageSource: "asset:///images/actions/objects.png"
-	            
-	            onTriggered: {
-                    _navPane.deprecatedPushQmlByString ("Objects.qml");
-	            }
-	        },
-	        ActionItem {
-	            title: "Reset"
-	            imageSource: "asset:///images/actions/reset.png"
-	            
-	            onTriggered: {
-                    _goodCitizen.reset();                    	                
-	            }
-	        }
-	    ]
-	}
+
+        actions: [
+            ActionItem {
+                title: "Translate"
+                imageSource: "asset:///images/actions/translate.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    _goodCitizen.setTouchMode("translate");
+                    _navPane.deprecatedPushQmlByString("ToolAxis.qml");
+                }
+            },
+            ActionItem {
+                title: "Rotation"
+                imageSource: "asset:///images/actions/rotate.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    _goodCitizen.setTouchMode("rotate");
+                    _navPane.deprecatedPushQmlByString("ToolAxis.qml");
+                }
+            },
+            ActionItem {
+                title: "Scale"
+                imageSource: "asset:///images/actions/scale.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    _goodCitizen.setTouchMode("scale");
+                    _navPane.deprecatedPushQmlByString("ToolAxis.qml");
+                }
+            },
+            ActionItem {
+                title: "Color"
+                imageSource: "asset:///images/actions/colour.png"
+                onTriggered: {
+                    _navPane.deprecatedPushQmlByString("Color.qml");
+                }
+            },
+            ActionItem {
+                title: "Objects"
+                imageSource: "asset:///images/actions/objects.png"
+                onTriggered: {
+                    _navPane.deprecatedPushQmlByString("Objects.qml");
+                }
+            },
+            ActionItem {
+                title: "Reset"
+                imageSource: "asset:///images/actions/reset.png"
+                onTriggered: {
+                    _goodCitizen.reset();
+                }
+            }
+        ]
+        actionBarVisibility: ChromeVisibility.Visible
+    }
 }
-	
-	

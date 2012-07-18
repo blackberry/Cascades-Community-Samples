@@ -18,7 +18,7 @@ TEMPLATE = app
 TARGET = GoodCitizenCascades
 
 CONFIG += qt warn_on debug_and_release cascades
-LIBS   += -lpps -lscreen -lEGL -lGLESv1_CM -lfreetype -lpng  -lbb -lQtCascades
+LIBS   += -lpps -lscreen -lEGL -lGLESv1_CM -lfreetype -lpng  -lbb
 #LIBS   += -lpps -lscreen -lEGL -lGLESv1_CM -lfreetype -lpng  -lbb -lQtCascades -lheimdall ${QNX_TARGET}/../target-override/armle-v7/usr/lib/libQtCascades_main.a
 
 INCLUDEPATH += ../src
