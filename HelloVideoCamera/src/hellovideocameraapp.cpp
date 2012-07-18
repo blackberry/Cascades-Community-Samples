@@ -38,16 +38,33 @@ HelloVideoCameraApp::HelloVideoCameraApp() :
     qDebug() << "HelloVideoCameraApp";
 
     // create our foreign window
-    // NOTE: there is a bug in 10.0.4 which forces us to re-create the
-    // foreign window whenever the backing screen window is detached.
     // Using .id() in the builder is equivalent to mViewfinderWindow->setWindowId()
     mViewfinderWindow = ForeignWindow::create()
         .id(QString("cameraViewfinder"));
+    // NOTE that there is a bug in ForeignWindow in 10.0.6 whereby the
+    // SCREEN_PROPERTY_SOURCE_SIZE is updated when windows are attached.
+    // We don't want this to happen, so we are disabling WindowFrameUpdates.
+    // What this means is that if the ForeignWindow geometry is changed, then
+    // the underlying screen window properties are not automatically updated to
+    // match.  You will have to manually do so by listening for controlFrameChanged
+    // signals.  This is outside of the scope of this sample.
+    mViewfinderWindow->setWindowFrameUpdateEnabled(false);
+
     QObject::connect(mViewfinderWindow,
                      SIGNAL(windowAttached(unsigned long,
                                            const QString &, const QString &)),
                      this,
                      SLOT(onWindowAttached(unsigned long,
+                          const QString &,const QString &)));
+
+    // NOTE that there is a bug in ForeignWindow in 10.0.6 whereby
+    // when a window is detached, it's windowHandle is not reset to 0.
+    // We need to connect a detach handler to implement a workaround.
+    QObject::connect(mViewfinderWindow,
+                     SIGNAL(windowDetached(unsigned long,
+                                           const QString &, const QString &)),
+                     this,
+                     SLOT(onWindowDetached(unsigned long,
                           const QString &,const QString &)));
 
     // create a bunch of camera control buttons
@@ -107,8 +124,8 @@ HelloVideoCameraApp::~HelloVideoCameraApp()
 
 
 void HelloVideoCameraApp::onWindowAttached(unsigned long handle,
-                                      const QString &group,
-                                      const QString &id)
+                                           const QString &group,
+                                           const QString &id)
 {
     qDebug() << "onWindowAttached: " << handle << ", " << group << ", " << id;
     screen_window_t win = (screen_window_t)handle;
@@ -122,12 +139,33 @@ void HelloVideoCameraApp::onWindowAttached(unsigned long handle,
     // viewfinder, so that the user can decide when and where to place it
     i = 1;
     screen_set_window_property_iv(win, SCREEN_PROPERTY_VISIBLE, &i);
+    // There is a bug in ForeignWindow in 10.0.6 which defers window context
+    // flushing until some future UI update.  As a result, the window will
+    // not actually be visible until someone flushes the context.  This is
+    // fixed in the next release.  For now, we will just manually flush the
+    // window context.
+    screen_context_t ctx;
+    screen_get_window_property_pv(win, SCREEN_PROPERTY_CONTEXT, (void**)&ctx);
+    screen_flush_context(ctx, 0);
 }
 
 
+void HelloVideoCameraApp::onWindowDetached(unsigned long handle,
+                                           const QString &group,
+                                           const QString &id)
+{
+    qDebug() << "onWindowDetached: " << handle << ", " << group << ", " << id;
+    // There is a bug in ForeignWindow in 10.0.6 whereby the windowHandle is not
+    // reset to 0 when a detach event happens.  We must forcefully zero it here
+    // in order for a re-attach to work again in the future.
+    mViewfinderWindow->setWindowHandle(0);
+}
+
+
+
 int HelloVideoCameraApp::createViewfinder(camera_unit_t cameraUnit,
-                                     const QString &group,
-                                     const QString &id)
+                                          const QString &group,
+                                          const QString &id)
 {
     qDebug() << "createViewfinder";
     if (mCameraHandle != CAMERA_HANDLE_INVALID) {
@@ -142,7 +180,7 @@ int HelloVideoCameraApp::createViewfinder(camera_unit_t cameraUnit,
         return EIO;
     }
     qDebug() << "camera opened";
-    // set bitrate - it has no sane default presently
+    // configure viewfinder properties so our ForeignWindow can find the resulting screen window
     if (camera_set_videovf_property(mCameraHandle,
                                     CAMERA_IMGPROP_WIN_GROUPID, group.toStdString().c_str(),
                                     CAMERA_IMGPROP_WIN_ID, id.toStdString().c_str()) == CAMERA_EOK) {
@@ -170,7 +208,6 @@ void HelloVideoCameraApp::onStartFront()
 {
     qDebug() << "onStartFront";
     if (mViewfinderWindow) {
-        // create a window and see if we can catch the join
         if (createViewfinder(CAMERA_UNIT_FRONT,
                              mViewfinderWindow->windowGroup().toStdString().c_str(),
                              mViewfinderWindow->windowId().toStdString().c_str()) == EOK) {
@@ -184,7 +221,6 @@ void HelloVideoCameraApp::onStartRear()
 {
     qDebug() << "onStartRear";
     if (mViewfinderWindow) {
-        // create a window and see if we can catch the join
         if (createViewfinder(CAMERA_UNIT_REAR,
                              mViewfinderWindow->windowGroup().toStdString().c_str(),
                              mViewfinderWindow->windowId().toStdString().c_str()) == EOK) {
@@ -198,32 +234,17 @@ void HelloVideoCameraApp::onStopCamera()
 {
     qDebug() << "onStopCamera";
     if (mCameraHandle != CAMERA_HANDLE_INVALID) {
+        // NOTE that closing the camera causes the viewfinder to stop.
+        // When the viewfinder stops, it's window is destroyed and the
+        // ForeignWindow object will emit a windowDetached signal.
         camera_close(mCameraHandle);
         mCameraHandle = CAMERA_HANDLE_INVALID;
-        // This is a HACK
-        // ForeignWindow currently does not properly handle detach events,
-        // so there is no way to disconnect and reconnect a screen window to it.
-        // Instead, we have to delete the old ForeignWindow instance, and dynamically
-        // create a new one to replace it.
-        // We can use Container::replace() to do this.
-        ForeignWindow *oldViewfinderWindow = mViewfinderWindow;
-        mViewfinderWindow = ForeignWindow::create()
-            .id(QString("viewfinderWindow"));
-        mViewfinderWindow->setWindowId(QString("cameraViewfinder"));
-        Container *container = (Container*)oldViewfinderWindow->parent();
-        container->replace(container->indexOf(oldViewfinderWindow), mViewfinderWindow);
-        delete oldViewfinderWindow;
-        QObject::connect(mViewfinderWindow,
-                         SIGNAL(windowAttached(unsigned long,
-                                               const QString &, const QString &)),
-                         this,
-                         SLOT(onWindowAttached(unsigned long,
-                              const QString &,const QString &)));
         // reset button visibility
         mStartStopButton->setVisible(false);
         mStopButton->setVisible(false);
         mStartFrontButton->setVisible(true);
         mStartRearButton->setVisible(true);
+
     }
 }
 
@@ -237,9 +258,18 @@ void HelloVideoCameraApp::onStartStopRecording()
         // otherwise, it is treated as a "stop" button.
         if (mVideoFileDescriptor == -1) {
 
-            // LEGAL REQUIREMENTS DICTATE THAT ALL CAMERA APPS MUST PRODUCE AN AUDIBLE
-            // TONE WHEN RECORDING FUNCTION IS STARTED.  DO THIS OR YOUR APP WILL BE
-            // PULLED FROM APP WORLD.
+            // THE CAMERA SERVICE DOES NOT PLAY SOUNDS WHEN PICTURES ARE TAKEN OR
+            // VIDEOS ARE RECORDED.  IT IS THE APP DEVELOPER'S RESPONSIBILITY TO
+            // PLAY AN AUDIBLE SHUTTER SOUND WHEN A PICTURE IS TAKEN AND WHEN VIDEO
+            // RECORDING STARTS AND STOPS.  NOTE THAT WHILE YOU MAY CHOOSE TO MUTE
+            // SUCH SOUNDS, YOU MUST ENSURE THAT YOUR APP ADHERES TO ALL LOCAL LAWS
+            // OF REGIONS WHERE IT IS DISTRIBUTED.  FOR EXAMPLE, IT IS ILLEGAL TO
+            // MUTE OR MODIFY THE SHUTTER SOUND OF A CAMERA APPLICATION IN JAPAN OR
+            // KOREA.
+            // TBD:
+            //   RIM will be providing clarification of this policy as part of the
+            //   NDK developer agreement and App World guidelines.  A link will
+            //   be provided when the policy is publicly available.
             soundplayer_play_sound("event_video_record_start_sound");
 
             char filename[CAMERA_ROLL_NAMELEN];
