@@ -39,76 +39,68 @@ Page {
                 }
             }
 
-			Container {
-			    layout: StackLayout {
-			    }
-			
-			    topMargin: 70
-			    bottomMargin: 50;
-
-			    TextArea {
-			        editable: false
-			        text: "Enter the domain for your EXTERNAL type"
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			            color: Color.LightGray
-			            lineSpacing: 1.1
-			        }
-			    }
-			
-			    TextArea {
-			        preferredHeight: 65
-			        id: txf_domain
-			        objectName: "txf_domain"
-			        hintText: "Enter the domain for your EXTERNAL type"
-			        text: _writeCustMenu._domain
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			        }
-			    }
-			    
-			    TextArea {
-			        editable: false
-			        text: "Enter your chosen Type Name"
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			            color: Color.LightGray
-			            lineSpacing: 1.1
-			        }
-			    }
-			
-			    TextArea {
-			        preferredHeight: 65
-			        id: txf_type
-			        objectName: "txf_type"
-			        hintText: "Enter your chosen type name"
-			        text: _writeCustMenu._type
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			        }
-			    }
-			    
-			    TextArea {
-			        editable: false
-			        text: "Enter your tag Content"
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			            color: Color.LightGray
-			            lineSpacing: 1.1
-			        }
-			    }
-			
-			    TextArea {
-			        preferredHeight: 65
-			        id: txf_content
-			        objectName: "txf_content"
-			        hintText: "Enter your tag content"
-			        text: _writeCustMenu._content
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			        }
-			    }   
-			}
+		    TextArea {
+		        editable: false
+		        text: "Enter the domain for your EXTERNAL type"
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		            color: Color.LightGray
+		            lineSpacing: 1.1
+		        }
+		    }
+		
+		    TextArea {
+		        preferredHeight: 65
+		        id: txf_domain
+		        objectName: "txf_domain"
+		        hintText: "Enter the domain for your EXTERNAL type"
+		        text: _writeCustMenu._domain
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		        }
+		    }
+		    
+		    TextArea {
+		        editable: false
+		        text: "Enter your chosen Type Name"
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		            color: Color.LightGray
+		            lineSpacing: 1.1
+		        }
+		    }
+		
+		    TextArea {
+		        preferredHeight: 65
+		        id: txf_type
+		        objectName: "txf_type"
+		        hintText: "Enter your chosen type name"
+		        text: _writeCustMenu._type
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		        }
+		    }
+		    
+		    TextArea {
+		        editable: false
+		        text: "Enter your tag Content"
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		            color: Color.LightGray
+		            lineSpacing: 1.1
+		        }
+		    }
+		
+		    TextArea {
+		        preferredHeight: 65
+		        id: txf_content
+		        objectName: "txf_content"
+		        hintText: "Enter your tag content"
+		        text: _writeCustMenu._content
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		        }
+		    }   
 
             TextArea {
                 editable: false
@@ -127,6 +119,7 @@ Page {
 	        id: write_custom_action
 	        title: "Write"
 	        imageSource: "images/write.png"
+	        ActionBar.placement: ActionBarPlacement.OnBar
 	        onTriggered: {
 	            console.log("Write Custom Triggered");
 	            writeCustom.writeCustomRequested();

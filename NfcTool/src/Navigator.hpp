@@ -28,8 +28,6 @@ namespace bb
     }
 }
 
-
-
 class Navigator {
 
 private:

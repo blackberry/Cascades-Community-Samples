@@ -39,55 +39,47 @@ Page {
                 }
             }
 
-			Container {
-			    layout: StackLayout {
-			    }
-			
-			    topMargin: 70
-			    bottomMargin: 50;
-			
-			    TextArea {
-			        editable: false
-			        text: "Enter the URI you wish to write to the tag"
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			            color: Color.LightGray
-			            lineSpacing: 1.1
-			        }
-			    }
-			
-			    TextArea {
-			        preferredHeight: 65
-			        id: txf_uri
-			        objectName: "txf_uri"
-			        hintText: "Enter the URI you wish to write to the tag"
-			        text: _writeSpMenu._uri
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			        }
-			    }
-			    
-			    TextArea {
-			        editable: false
-			        text: "Enter some text for your smart poster"
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			            color: Color.LightGray
-			            lineSpacing: 1.1
-			        }
-			    }
-			
-			    TextArea {
-			        preferredHeight: 65
-			        id: txf_text
-			        objectName: "txf_text"
-			        hintText: "Enter some text for your smart poster"
-			        text: _writeSpMenu._text
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			        }
-			    }   
-			}
+		    TextArea {
+		        editable: false
+		        text: "Enter the URI you wish to write to the tag"
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		            color: Color.LightGray
+		            lineSpacing: 1.1
+		        }
+		    }
+		
+		    TextArea {
+		        preferredHeight: 65
+		        id: txf_uri
+		        objectName: "txf_uri"
+		        hintText: "Enter the URI you wish to write to the tag"
+		        text: _writeSpMenu._uri
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		        }
+		    }
+		    
+		    TextArea {
+		        editable: false
+		        text: "Enter some text for your smart poster"
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		            color: Color.LightGray
+		            lineSpacing: 1.1
+		        }
+		    }
+		
+		    TextArea {
+		        preferredHeight: 65
+		        id: txf_text
+		        objectName: "txf_text"
+		        hintText: "Enter some text for your smart poster"
+		        text: _writeSpMenu._text
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		        }
+		    }   
 
             TextArea {
                 editable: false
@@ -106,6 +98,7 @@ Page {
 	        id: write_sp_action
 	        title: "Write"
 	        imageSource: "images/write.png"
+	        ActionBar.placement: ActionBarPlacement.OnBar
 	        onTriggered: {
 	            console.log("Write Sp Triggered");
                 writeSp.writeSpRequested(); 
