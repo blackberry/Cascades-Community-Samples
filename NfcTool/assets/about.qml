@@ -38,7 +38,7 @@ Page {
                 }
                 
                 Label {
-                    text: " Welcome to NFC Tool V2.0"
+                    text: " Welcome to NFC Tool V" + _about.appVersion
                     textStyle {
                         base: SystemDefaults.TextStyles.TitleText
                         fontWeight: FontWeight.Light
@@ -73,7 +73,7 @@ Page {
                     }
                     animations: [
                         SequentialAnimation {
-                            id: "animation"
+                            id: animation
                             animations: [
                                 FadeTransition {
                                     duration: 1000

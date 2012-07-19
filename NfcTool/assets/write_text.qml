@@ -39,33 +39,25 @@ Page {
                 }
             }
 
-			Container {
-			    layout: StackLayout {
-			    }
-			
-			    topMargin: 70
-			    bottomMargin: 50;
-			
-			    TextArea {
-			        editable: false
-			        text: "Enter the text you wish to write to the tag"
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			            color: Color.LightGray
-			            lineSpacing: 1.1
-			        }
-			    }
-			
-			    TextArea {
-			        preferredHeight: 65
-			        id: txf_text
-			        objectName: "txf_text"
-			        hintText: "Enter the text you wish to write to the tag"
-			        text: _writeTextMenu._text
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			        }
-			    }
+		    TextArea {
+		        editable: false
+		        text: "Enter the text you wish to write to the tag"
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		            color: Color.LightGray
+		            lineSpacing: 1.1
+		        }
+		    }
+		
+		    TextArea {
+		        preferredHeight: 65
+		        id: txf_text
+		        objectName: "txf_text"
+		        hintText: "Enter the text you wish to write to the tag"
+		        text: _writeTextMenu._text
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		        }
 			}
 
             TextArea {
@@ -85,6 +77,7 @@ Page {
 	        id: write_text_action
 	        title: "Write"
 	        imageSource: "images/write.png"
+	        ActionBar.placement: ActionBarPlacement.OnBar
 	        onTriggered: {
 	            console.log("Write Text Triggered");
                 writeText.writeTextRequested(); 

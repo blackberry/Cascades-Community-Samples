@@ -28,6 +28,7 @@
 #include "SendVcard.hpp"
 #include "About.hpp"
 #include "EventLog.hpp"
+#include "NfcManager.hpp"
 
 using namespace bb::cascades;
 
@@ -42,6 +43,7 @@ public:
 
     QString appVersion() const;
 	void setAppVersion(QString appVersion);
+	bool wasLaunchedByInvoke() const;
 
 private:
     WriteURI* _writeURI;
@@ -51,17 +53,19 @@ private:
     SendVcard* _sendVcard;
     EventLog* _eventLog;
     About* _about;
+    NfcManager* _nfcManager;
+    bool _launchedByInvoke;
 
     QString _appVersion;
 
+    void startEventProcessing();
     void createModules();
     void connectMainMenuReturnSignals();
+    void deleteModules();
 
-    //main menu content
     QmlDocument *_qml;
 	AbstractPane *_root;
     void findAndConnectControls();
-	void startListening();
 
 signals:
     void detectAppVersionChanged();
@@ -75,10 +79,9 @@ signals:
 
 public slots:
 	void onMainMenuTriggered();
-	void stopListening();
-	void onListSelectionChanged(const QVariantList indexPath,bool selected);
+	void onListSelectionChanged(const QVariantList indexPath);
 	void backFromEventLog();
-
+	void cleanUpOnExit();
 
 private slots:
 

@@ -11,7 +11,7 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/import bb.cascades 1.0
+*/
 import bb.cascades 1.0
 
 // Item component for the list presenting available recipes.
@@ -82,10 +82,12 @@ Container {
             highlightContainer.opacity = 0.0;
         }
     }
-    ListItem.onActiveChanged: {
+
+    ListItem.onActivationChanged: {
         setHighlight (ListItem.active);
     }
-    ListItem.onSelectedChanged: {
+    ListItem.onSelectionChanged: {
         setHighlight (ListItem.selected);
     }
+
 }

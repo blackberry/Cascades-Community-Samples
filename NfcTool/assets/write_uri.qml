@@ -39,34 +39,26 @@ Page {
                 }
             }
 
-			Container {
-			    layout: StackLayout {
-			    }
-			
-			    topMargin: 70
-			    bottomMargin: 50;
-			
-			    TextArea {
-			        editable: false
-			        text: "Enter the URI you wish to write to the tag"
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			            color: Color.LightGray
-			            lineSpacing: 1.1
-			        }
-			    }
-			
-			    TextArea {
-			        preferredHeight: 65
-			        id: txf_text
-			        objectName: "txf_uri"
-			        hintText: "Enter the uri you wish to write to the tag"
-			        text: _writeUriMenu._uri
-			        textStyle {
-			            base: SystemDefaults.TextStyles.BodyText
-			        }
-			    }
-			}
+		    TextArea {
+		        editable: false
+		        text: "Enter the URI you wish to write to the tag"
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		            color: Color.LightGray
+		            lineSpacing: 1.1
+		        }
+		    }
+		
+		    TextArea {
+		        preferredHeight: 65
+		        id: txf_text
+		        objectName: "txf_uri"
+		        hintText: "Enter the uri you wish to write to the tag"
+		        text: _writeUriMenu._uri
+		        textStyle {
+		            base: SystemDefaults.TextStyles.BodyText
+		        }
+		    }
 
             TextArea {
                 editable: false
@@ -85,6 +77,7 @@ Page {
 	        id: write_uri_action
 	        title: "Write"
 	        imageSource: "images/write.png"
+	        ActionBar.placement: ActionBarPlacement.OnBar
 	        onTriggered: {
 	            console.log("Write URI Triggered");
                 writeUri.writeUriRequested(); 

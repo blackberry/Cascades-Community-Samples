@@ -54,7 +54,7 @@ NavigationPane {
         }
     }
     onTopChanged: {
-        if (pane == menuListPage) {
+        if (page == menuListPage) {
             // Clear selection when returning to the menu list page.
             menuList.clearSelection ();
         }

@@ -11,8 +11,7 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/
-import bb.cascades 1.0
+*/import bb.cascades 1.0
 import "common"
 
 Page {
@@ -20,16 +19,14 @@ Page {
         id: theEventLog
         objectName: "theEventLog"
         signal eventLogBackButton()
-    
         Container {
             layout: StackLayout {
                 topPadding: 50
                 leftPadding: 30
                 rightPadding: 30
             }
-
             TextArea {
-                text: (_el.message == "" || _el.message == undefined) ? "Event log" : "Event log\n"+_el.message
+                text: (_el.message == "" || _el.message == undefined) ? "Event log" : "Event log\n" + _el.message
                 editable: false
                 textStyle {
                     base: SystemDefaults.TextStyles.BigText
@@ -37,22 +34,30 @@ Page {
                     fontWeight: FontWeight.Bold
                 }
             }
-
             TextArea {
                 editable: false
-                text: "Newest items first"            
+                text: "Newest items first v2"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
                     color: Color.LightGray
                     lineSpacing: 1.1
                 }
             }
-
-            EventLogUi {
+            ScrollView {
+                scrollViewProperties {
+                    scrollMode: ScrollMode.Vertical
+                }
+                Container {
+                    ListView {
+                        dataModel: _model
+                        listItemManager: _manager
+                        preferredWidth: 768
+                        preferredHeight: 800
+                    }
+                }
             }
         }
-	}
-
+    }
     paneProperties: NavigationPaneProperties {
         backButton: ActionItem {
             onTriggered: {
