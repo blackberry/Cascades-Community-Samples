@@ -33,6 +33,9 @@ public slots:
 	void onWindowAttached(unsigned long handle,
 	                      const QString &group,
 	                      const QString &id);
+    void onWindowDetached(unsigned long handle,
+                          const QString &group,
+                          const QString &id);
 	void onStartFront();
 	void onStartRear();
 	void onStopCamera();

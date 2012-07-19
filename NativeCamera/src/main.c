@@ -25,9 +25,6 @@
 #include <bps/soundplayer.h>
 
 
-// an arbitrary ZORDER for our application window.
-#define APP_ZORDER (100)
-
 typedef enum {
     STATE_STARTUP = 0,
     STATE_VIEWFINDER,
@@ -75,7 +72,8 @@ handle_screen_event(bps_event_t *event)
             int i = (shouldmirror?1:0);
             screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_MIRROR, &i);
             // place viewfinder in front of the black application background window
-            i = APP_ZORDER + 1;
+            // child window z-orders are relative to their parent, not absolute.
+            i = +1;
             screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
             // make viewfinder window visible
             i = 1;
@@ -143,8 +141,18 @@ static void
 shutter_callback(camera_handle_t handle,
                  void* arg)
 {
-    // LEGAL REQUIREMENTS DICTATE THAT ALL CAMERA APPS MUST PRODUCE AN AUDIBLE
-    // SHUTTER SOUND.  DO THIS, OR YOUR APP WILL BE PULLED FROM APP WORLD.
+    // THE CAMERA SERVICE DOES NOT PLAY SOUNDS WHEN PICTURES ARE TAKEN OR
+    // VIDEOS ARE RECORDED.  IT IS THE APP DEVELOPER'S RESPONSIBILITY TO
+    // PLAY AN AUDIBLE SHUTTER SOUND WHEN A PICTURE IS TAKEN AND WHEN VIDEO
+    // RECORDING STARTS AND STOPS.  NOTE THAT WHILE YOU MAY CHOOSE TO MUTE
+    // SUCH SOUNDS, YOU MUST ENSURE THAT YOUR APP ADHERES TO ALL LOCAL LAWS
+    // OF REGIONS WHERE IT IS DISTRIBUTED.  FOR EXAMPLE, IT IS ILLEGAL TO
+    // MUTE OR MODIFY THE SHUTTER SOUND OF A CAMERA APPLICATION IN JAPAN OR
+    // KOREA.
+    // TBD:
+    //   RIM will be providing clarification of this policy as part of the
+    //   NDK developer agreement and App World guidelines.  A link will
+    //   be provided when the policy is publicly available.
     soundplayer_play_sound("event_camera_shutter");
 }
 
@@ -288,9 +296,6 @@ main(int argc, char **argv)
     int attribs[] = { SCREEN_BLIT_COLOR, 0x00000000, SCREEN_BLIT_END };
     screen_fill(screen_ctx, screen_buf, attribs);
     screen_post_window(screen_win, screen_buf, 1, rect, 0);
-    // position the window at an arbitrary z-order
-    int i = APP_ZORDER;
-    screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_ZORDER, &i);
 
     // Signal bps library that navigator and screen events will be requested
     bps_initialize();
