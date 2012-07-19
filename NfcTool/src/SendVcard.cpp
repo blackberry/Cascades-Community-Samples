@@ -1,17 +1,17 @@
 /* Copyright (c) 2012 Research In Motion Limited.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/Control>
@@ -34,7 +34,7 @@ SendVcard::SendVcard() {
 	_mobile = Settings::MOBILE;
 	_qml = QmlDocument::create("vcard.qml");
 	_qml->setContextProperty("_sendVcard", this);
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootNode<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -42,13 +42,13 @@ SendVcard::SendVcard() {
 }
 
 SendVcard::~SendVcard() {
-	delete _eventLog;
+	qDebug() << "XXXX SendVcard destructor";
 }
 
 void SendVcard::createModules() {
-	qDebug() << "creating instances of SendVcard modules...";
-	_eventLog = new EventLog("Bring a tag close.....");
-	qDebug() << "...done";
+	qDebug() << "XXXX creating instances of SendVcard modules...";
+	_eventLog = EventLog::getInstance();
+	qDebug() << "XXXX ...done";
 }
 
 void SendVcard::connectNavigationSignals() {
@@ -56,7 +56,7 @@ void SendVcard::connectNavigationSignals() {
 }
 
 void SendVcard::findAndConnectControls() {
-	qDebug() << "finding all SendVcard controls signals and slots...";
+	qDebug() << "XXXX finding all SendVcard controls signals and slots...";
 
 	QObject* obj = _root->findChild<QObject*>((const QString) "sendVcard");
 	QObject::connect(obj, SIGNAL(sendVcardRequested()), this,
@@ -67,8 +67,8 @@ void SendVcard::findAndConnectControls() {
 	TextArea* txf_address = _root->findChild<TextArea*>("txf_address");
 	TextArea* txf_email = _root->findChild<TextArea*>("txf_email");
 	TextArea* txf_mobile = _root->findChild<TextArea*>("txf_mobile");
-	qDebug() << "found SendVcard text fields";
-	qDebug() << "connecting all TextField signals and slots...";
+	qDebug() << "XXXX found SendVcard text fields";
+	qDebug() << "XXXX connecting all TextField signals and slots...";
 	QObject::connect(txf_first_name, SIGNAL(textChanged(QString)), this,
 			SLOT(onFirstNameChanged(QString)));
 	QObject::connect(txf_last_name, SIGNAL(textChanged(QString)), this,
@@ -81,23 +81,23 @@ void SendVcard::findAndConnectControls() {
 			SLOT(onMobileChanged(QString)));
 
 	// refresh _root
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootNode<Page>();
 
-	qDebug() << "...done";
+	qDebug() << "XXXX ...done";
 }
 
 void SendVcard::startSendVcardProcess() {
-	qDebug() << "startSendVcardProcess()";
+	qDebug() << "XXXX startSendVcardProcess()";
 	NfcManager* nfc = NfcManager::getInstance();
 
-	qDebug() << "Telling NfcManager to start NDEF push process";
-	qDebug() << "setting inNdefPushState=true";
+	qDebug() << "XXXX Telling NfcManager to start NDEF push process";
+	qDebug() << "XXXX setting inNdefPushState=true";
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setNdefPushState(true);
 
 	nfc->sendVcard(&_first_name, &_last_name, &_address, &_email, &_mobile);
 
-	qDebug() << "switching to event log screen";
+	qDebug() << "XXXX switching to event log screen";
 	_eventLog->show();
 }
 
@@ -106,16 +106,14 @@ void SendVcard::backFromEventLog() {
 }
 
 void SendVcard::show() {
-	qDebug() << "SendVcard: show()";
+	qDebug() << "XXXX SendVcard: show()";
 
-	qDebug() << "finding NavigationPane object from cache";
+	qDebug() << "XXXX finding NavigationPane object from cache";
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
-	// refresh _root
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootNode<Page>();
 	navpane->push(_root);
 
-	//find and reconnect all the controls again, because we had to refresh the root pointer
 	findAndConnectControls();
 }
 
@@ -124,7 +122,7 @@ QString SendVcard::getFirstName() const {
 }
 
 void SendVcard::setFirstName(QString first_name) {
-	qDebug() << "SendVcard:setFirstName(....)";
+	qDebug() << "XXXX SendVcard:setFirstName(....)";
 	if (_first_name.compare(first_name) == 0)
 		return;
 
@@ -138,7 +136,7 @@ QString SendVcard::getLastName() const {
 }
 
 void SendVcard::setLastName(QString last_name) {
-	qDebug() << "SendVcard:setLastName(....)";
+	qDebug() << "XXXX SendVcard:setLastName(....)";
 	if (_last_name.compare(last_name) == 0)
 		return;
 
@@ -147,13 +145,12 @@ void SendVcard::setLastName(QString last_name) {
 	emit detectLastNameChanged();
 }
 
-
 QString SendVcard::getAddress() const {
 	return _address;
 }
 
 void SendVcard::setAddress(QString address) {
-	qDebug() << "SendVcard:setAddress(....)";
+	qDebug() << "XXXX SendVcard:setAddress(....)";
 	if (_address.compare(address) == 0)
 		return;
 
@@ -167,7 +164,7 @@ QString SendVcard::getEmail() const {
 }
 
 void SendVcard::setEmail(QString email) {
-	qDebug() << "SendVcard:setEmail(....)";
+	qDebug() << "XXXX SendVcard:setEmail(....)";
 	if (_email.compare(email) == 0)
 		return;
 
@@ -181,7 +178,7 @@ QString SendVcard::getMobile() const {
 }
 
 void SendVcard::setMobile(QString mobile) {
-	qDebug() << "SendVcard:setMobile(....)";
+	qDebug() << "XXXX SendVcard:setMobile(....)";
 	if (_mobile.compare(mobile) == 0)
 		return;
 
@@ -190,28 +187,27 @@ void SendVcard::setMobile(QString mobile) {
 	emit detectMobileChanged();
 }
 
-
 void SendVcard::onFirstNameChanged(QString first_name) {
-	qDebug() << "SendVcard:onFirstNameChanged(....)";
+	qDebug() << "XXXX SendVcard:onFirstNameChanged(....)";
 	setFirstName(first_name);
 }
 
 void SendVcard::onLastNameChanged(QString last_name) {
-	qDebug() << "SendVcard:onLastNameChanged(....)";
+	qDebug() << "XXXX SendVcard:onLastNameChanged(....)";
 	setLastName(last_name);
 }
 
 void SendVcard::onAddressChanged(QString address) {
-	qDebug() << "SendVcard:onAddressChanged(....)";
+	qDebug() << "XXXX SendVcard:onAddressChanged(....)";
 	setAddress(address);
 }
 
 void SendVcard::onEmailChanged(QString email) {
-	qDebug() << "SendVcard:onEmailChanged(....)";
+	qDebug() << "XXXX SendVcard:onEmailChanged(....)";
 	setEmail(email);
 }
 
 void SendVcard::onMobileChanged(QString mobile) {
-	qDebug() << "SendVcard:onMobileChanged(....)";
+	qDebug() << "XXXX SendVcard:onMobileChanged(....)";
 	setMobile(mobile);
 }

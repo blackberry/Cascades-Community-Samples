@@ -1,17 +1,17 @@
 /* Copyright (c) 2012 Research In Motion Limited.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/Control>
@@ -29,12 +29,12 @@
 using namespace bb::cascades;
 
 WriteText::WriteText() :
-	_appVersion(QString(Settings::AppVersion)) {
-	qDebug() << "constructing WriteURI...";
+		_appVersion(QString(Settings::AppVersion)) {
+	qDebug() << "XXXX constructing WriteURI...";
 	_text = Settings::TEXT;
 	_qml = QmlDocument::create("write_text.qml");
 	_qml->setContextProperty("_writeTextMenu", this);
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootNode<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -42,13 +42,13 @@ WriteText::WriteText() :
 }
 
 WriteText::~WriteText() {
-	delete _eventLog;
+	qDebug() << "XXXX WriteText destructor";
 }
 
 void WriteText::createModules() {
-	qDebug() << "creating instances of WriteText modules...";
-	_eventLog = new EventLog("Bring a tag close.....");
-	qDebug() << "...done";
+	qDebug() << "XXXX creating instances of WriteText modules...";
+	_eventLog = EventLog::getInstance();
+	qDebug() << "XXXX ...done";
 }
 
 void WriteText::connectNavigationSignals() {
@@ -56,65 +56,53 @@ void WriteText::connectNavigationSignals() {
 }
 
 void WriteText::findAndConnectControls() {
-	qDebug() << "finding all WriteText controls signals and slots...";
+	qDebug() << "XXXX finding all WriteText controls signals and slots...";
 
 	QObject* obj = _root->findChild<QObject*>((const QString) "writeText");
 	QObject::connect(obj, SIGNAL(writeTextRequested()), this,
 			SLOT(startWriteProcess()));
 
 	TextArea* txf_text = _root->findChild<TextArea*>("txf_text");
-	qDebug() << "found WriteText text fields";
-	qDebug() << "connecting all TextArea signals and slots...";
+	qDebug() << "XXXX found WriteText text fields";
+	qDebug() << "XXXX connecting all TextArea signals and slots...";
 	QObject::connect(txf_text, SIGNAL(textChanged(QString)), this,
 			SLOT(onTextChanged(QString)));
 
-	// refresh _root
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootNode<Page>();
 
-	qDebug() << "...done";
+	qDebug() << "XXXX ...done";
 }
 
 void WriteText::startWriteProcess() {
-	qDebug() << "startWriteProcess()";
+	qDebug() << "XXXX startWriteProcess()";
 	NfcManager* nfc = NfcManager::getInstance();
 
-	qDebug() << "Telling NfcManager to start write process";
+	qDebug() << "XXXX Telling NfcManager to start write process";
 
-	// this transition should really be handled by the NfcManager when integrated
-	qDebug() << "setting inDetectAndWriteState=true";
+	qDebug() << "XXXX setting inDetectAndWriteState=true";
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setDetectAndWriteState(true);
 
 	nfc->writeText(&_text);
 
-	qDebug() << "switching to event log screen";
+	qDebug() << "XXXX switching to event log screen";
 	_eventLog->show();
 }
 
-void WriteText::stopListening() {
-	StateManager* state_mgr = StateManager::getInstance();
-	if (state_mgr->inDetectAndWriteState()) {
-		qDebug() << "stopListening()";
-		NfcManager* nfc = NfcManager::getInstance();
-		nfc->stopNdefWriter();
-	}
-}
-
 void WriteText::backFromEventLog() {
-	stopListening();
+
 }
 
 void WriteText::show() {
-	qDebug() << "WriteText: show()";
+	qDebug() << "XXXX WriteText: show()";
 
-	qDebug() << "finding NavigationPane object from cache";
+	qDebug() << "XXXX finding NavigationPane object from cache";
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
-	// refresh _root
-	_root = _qml->createRootNode<AbstractPane>();
+
+	_root = _qml->createRootNode<Page>();
 	navpane->push(_root);
 
-	//find and reconnect all the controls again, because we had to refresh the_root pointer
 	findAndConnectControls();
 }
 
@@ -136,7 +124,7 @@ QString WriteText::getText() const {
 }
 
 void WriteText::setText(QString text) {
-	qDebug() << "WriteText:setText(....)";
+	qDebug() << "XXXX WriteText:setText(....)";
 	if (_text.compare(text) == 0)
 		return;
 	_text = text;
@@ -144,6 +132,6 @@ void WriteText::setText(QString text) {
 }
 
 void WriteText::onTextChanged(QString text) {
-	qDebug() << "WriteText:onTextChanged(....)";
+	qDebug() << "XXXX WriteText:onTextChanged(....)";
 	setText(text);
 }

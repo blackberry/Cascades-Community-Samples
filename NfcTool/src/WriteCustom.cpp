@@ -1,17 +1,17 @@
 /* Copyright (c) 2012 Research In Motion Limited.
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/Control>
@@ -33,7 +33,7 @@ WriteCustom::WriteCustom() :
 	_content = Settings::CONTENT;
 	_qml = QmlDocument::create("write_custom.qml");
 	_qml->setContextProperty("_writeCustMenu", this);
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootNode<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -41,13 +41,13 @@ WriteCustom::WriteCustom() :
 }
 
 WriteCustom::~WriteCustom() {
-	delete _eventLog;
+	qDebug() << "XXXX WriteCustom destructor";
 }
 
 void WriteCustom::createModules() {
-	qDebug() << "creating instances of WriteCustom modules...";
-	_eventLog = new EventLog("Bring a tag close.....");
-	qDebug() << "...done";
+	qDebug() << "XXXX creating instances of WriteCustom modules...";
+	_eventLog = EventLog::getInstance();
+	qDebug() << "XXXX ...done";
 }
 
 void WriteCustom::connectNavigationSignals() {
@@ -55,7 +55,7 @@ void WriteCustom::connectNavigationSignals() {
 }
 
 void WriteCustom::findAndConnectControls() {
-	qDebug() << "finding all WriteCustom controls signals and slots...";
+	qDebug() << "XXXX finding all WriteCustom controls signals and slots...";
 
 	QObject* obj = _root->findChild<QObject*>((const QString) "writeCustom");
 	QObject::connect(obj, SIGNAL(writeCustomRequested()), this,
@@ -64,8 +64,8 @@ void WriteCustom::findAndConnectControls() {
 	TextArea* txf_domain = _root->findChild<TextArea*>("txf_domain");
 	TextArea* txf_type = _root->findChild<TextArea*>("txf_type");
 	TextArea* txf_content = _root->findChild<TextArea*>("txf_content");
-	qDebug() << "found WriteCustom text fields";
-	qDebug() << "connecting all TextField signals and slots...";
+	qDebug() << "XXXX found WriteCustom text fields";
+	qDebug() << "XXXX connecting all TextField signals and slots...";
 	QObject::connect(txf_domain, SIGNAL(textChanged(QString)), this,
 			SLOT(onDomainChanged(QString)));
 	QObject::connect(txf_type, SIGNAL(textChanged(QString)), this,
@@ -73,53 +73,42 @@ void WriteCustom::findAndConnectControls() {
 	QObject::connect(txf_content, SIGNAL(textChanged(QString)), this,
 			SLOT(onContentChanged(QString)));
 
-	// refresh _root
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootNode<Page>();
 
-	qDebug() << "...done";
+	qDebug() << "XXXX ...done";
 }
 
 void WriteCustom::startWriteProcess() {
-	qDebug() << "startWriteProcess()";
+	qDebug() << "XXXX startWriteProcess()";
 	NfcManager* nfc = NfcManager::getInstance();
 
-	qDebug() << "Telling NfcManager to start write process";
+	qDebug() << "XXXX Telling NfcManager to start write process";
 
 	// this transition should really be handled by the NfcManager when integrated
-	qDebug() << "setting inDetectAndWriteState=true";
+	qDebug() << "XXXX setting inDetectAndWriteState=true";
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setDetectAndWriteState(true);
 
 	nfc->writeCustom(&_domain, &_type, &_content);
 
-	qDebug() << "switching to event log screen";
+	qDebug() << "XXXX switching to event log screen";
 	_eventLog->show();
 }
 
-void WriteCustom::stopListening() {
-	StateManager* state_mgr = StateManager::getInstance();
-	if (state_mgr->inDetectAndWriteState()) {
-		qDebug() << "stopListening()";
-		NfcManager* nfc = NfcManager::getInstance();
-		nfc->stopNdefWriter();
-	}
-}
-
 void WriteCustom::backFromEventLog() {
-	stopListening();
+
 }
 
 void WriteCustom::show() {
-	qDebug() << "WriteCustom: show()";
+	qDebug() << "XXXX WriteCustom: show()";
 
-	qDebug() << "finding NavigationPane object from cache";
+	qDebug() << "XXXX finding NavigationPane object from cache";
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
-	// refresh _root
-	_root = _qml->createRootNode<AbstractPane>();
+
+	_root = _qml->createRootNode<Page>();
 	navpane->push(_root);
 
-	//find and reconnect all the controls again, because we had to refresh the root pointer
 	findAndConnectControls();
 }
 
@@ -141,7 +130,7 @@ QString WriteCustom::getDomain() const {
 }
 
 void WriteCustom::setDomain(QString domain) {
-	qDebug() << "WriteCustom:setDomain(....)";
+	qDebug() << "XXXX WriteCustom:setDomain(....)";
 	if (_domain.compare(domain) == 0)
 		return;
 
@@ -155,7 +144,7 @@ QString WriteCustom::getType() const {
 }
 
 void WriteCustom::setType(QString type) {
-	qDebug() << "WriteCustom:setType(....)";
+	qDebug() << "XXXX WriteCustom:setType(....)";
 	if (_type.compare(type) == 0)
 		return;
 
@@ -169,7 +158,7 @@ QString WriteCustom::getContent() const {
 }
 
 void WriteCustom::setContent(QString content) {
-	qDebug() << "WriteCustom:setContent(....)";
+	qDebug() << "XXXX WriteCustom:setContent(....)";
 	if (_content.compare(content) == 0)
 		return;
 
@@ -179,17 +168,17 @@ void WriteCustom::setContent(QString content) {
 }
 
 void WriteCustom::onDomainChanged(QString domain) {
-	qDebug() << "WriteCustom:onDomainChanged(....)";
+	qDebug() << "XXXX WriteCustom:onDomainChanged(....)";
 	setDomain(domain);
 
 }
 
 void WriteCustom::onTypeChanged(QString type) {
-	qDebug() << "WriteCustom:onTypeChanged(....)";
+	qDebug() << "XXXX WriteCustom:onTypeChanged(....)";
 	setType(type);
 }
 
 void WriteCustom::onContentChanged(QString content) {
-	qDebug() << "WriteCustom:onContentChanged(....)";
+	qDebug() << "XXXX WriteCustom:onContentChanged(....)";
 	setContent(content);
 }

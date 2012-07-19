@@ -34,84 +34,79 @@ Page {
                     fontWeight: FontWeight.Bold
                 }
             }
-            Container {
-                layout: StackLayout {
-                }
-                topMargin: 70
-                bottomMargin: 50
-                TextArea {
-                    editable: false
-                    text: "First Name:"
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                        color: Color.LightGray
-                    }
-                }
-                TextArea {
-                    preferredHeight: 65
-                    id: txf_first_name
-                    objectName: "txf_first_name"
-                    hintText: "Enter your first name"
-                    text: _sendVcard._first_name
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                    }
-                }
-                TextArea {
-                    editable: false
-                    text: "Last Name:"
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                        color: Color.LightGray
-                    }
-                }
-                TextArea {
-                    preferredHeight: 65
-                    id: txf_last_name
-                    objectName: "txf_last_name"
-                    hintText: "Enter your last name"
-                    text: _sendVcard._last_name
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                    }
-                }
-                TextArea {
-                    editable: false
-                    text: "Address:"
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                        color: Color.LightGray
-                    }
-                }
-                TextArea {
-                    preferredHeight: 65
-                    id: txf_address
-                    objectName: "txf_address"
-                    hintText: "Enter your address"
-                    text: _sendVcard._address
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                    }
-                }
-                TextArea {
-                    editable: false
-                    text: "Email:"
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                        color: Color.LightGray
-                    }
-                }
-                TextArea {
-                    preferredHeight: 65
-                    id: txf_email
-                    objectName: "txf_email"
-                    hintText: "Enter your email address"
-                    text: _sendVcard._email
-                    textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                    }
+            TextArea {
+                editable: false
+                text: "First Name:"
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                    color: Color.LightGray
                 }
             }
+            TextArea {
+                preferredHeight: 65
+                id: txf_first_name
+                objectName: "txf_first_name"
+                hintText: "Enter your first name"
+                text: _sendVcard._first_name
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                }
+            }
+            TextArea {
+                editable: false
+                text: "Last Name:"
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                    color: Color.LightGray
+                }
+            }
+            TextArea {
+                preferredHeight: 65
+                id: txf_last_name
+                objectName: "txf_last_name"
+                hintText: "Enter your last name"
+                text: _sendVcard._last_name
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                }
+            }
+            TextArea {
+                editable: false
+                text: "Address:"
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                    color: Color.LightGray
+                }
+            }
+            TextArea {
+                preferredHeight: 65
+                id: txf_address
+                objectName: "txf_address"
+                hintText: "Enter your address"
+                text: _sendVcard._address
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                }
+            }
+            TextArea {
+                editable: false
+                text: "Email:"
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                    color: Color.LightGray
+                }
+            }
+            TextArea {
+                preferredHeight: 65
+                id: txf_email
+                objectName: "txf_email"
+                hintText: "Enter your email address"
+                text: _sendVcard._email
+                textStyle {
+                    base: SystemDefaults.TextStyles.BodyText
+                }
+            }
+
             TextArea {
                 editable: false
                 text: "Mobile:"
@@ -137,6 +132,7 @@ Page {
             id: send_vcard_action
             title: "Send vCard"
             imageSource: "images/snep.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
                 console.log ("Send vCard Triggered");
                 sendVcard.sendVcardRequested ();
