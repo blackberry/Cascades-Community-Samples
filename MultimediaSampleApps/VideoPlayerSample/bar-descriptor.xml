@@ -51,7 +51,6 @@
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Example Inc.</author>
     <icon>
        <image>icon_play.png</image>
     </icon>
@@ -67,10 +66,10 @@
     </initialWindow>
     
     <!--  The category where the application appears. Either core.games or core.media. -->
-    <category>core.games</category>
+    <category>core.media</category>
     <configuration id="com.qnx.qcc.toolChain.1487485984" name="Default">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/VideoPlayerSample" entry="true" type="Qnx/Elf">VideoPlayerSample</asset>
+       <asset path="C:/cascades_community_samples/Cascades-Community-Samples/MultimediaSampleApps/VideoPlayerSample/arm/o.le-v7/VideoPlayerSample" entry="true" type="Qnx/Elf">VideoPlayerSample</asset>
     </configuration>
     <configuration id="com.qnx.qcc.toolChain.184292542" name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
