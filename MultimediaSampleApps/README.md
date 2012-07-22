@@ -1,6 +1,6 @@
-/*
- * MultimediaSampleApps
- */
+
+MultimediaSampleApps
+
  
 This is where you will find some sample applications related to multimedia. Right now, there is only one (a simple video player application) but a few more might be coming shortly.
 
