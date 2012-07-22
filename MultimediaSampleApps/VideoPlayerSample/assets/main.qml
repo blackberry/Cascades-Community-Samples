@@ -37,7 +37,7 @@ Page {
         property string localVideoPath: "/app/native/assets/BB10DevAlpha.wmv"
         
         property double minScreenScale: 0.2        //THIS IS THE MINIMUM SCALE FACTOR THAT WILL BE APPLIED TO THE SCREEN SIZE
-        property double maxScreenScale: 2.5        //THIS IS THE MAXIMUM SCALE FACTOR THAT WILL BE APPLIED TO THE SCREEN SIZE
+        property double maxScreenScale: 2.0        //THIS IS THE MAXIMUM SCALE FACTOR THAT WILL BE APPLIED TO THE SCREEN SIZE
         property double initialScreenScale: 1.0    // Starts the video with original dimensions (that is, scale factor 1.0)
                                                     //NOTE: this is not to be confused with the "initialScale" property of the ForeignWindow below
                                                     //        They both start with the same value but the "initialScale" value is different for every new pinch 
@@ -52,7 +52,6 @@ Page {
         
         //background
         ImageView {
-            //imageSource: "asset:///images/black_pattern09.jpg"
             imageSource: "asset:///images/background.jpg"
             preferredWidth: maxContainer.preferredWidth
             preferredHeight: maxContainer.preferredHeight
@@ -100,6 +99,14 @@ Page {
             } else if (event.isMove()) {
                 videoSurface.translationX = event.localX - xDown + startingX;
                 videoSurface.translationY = event.localY - yDown + startingY;
+                
+            } else if (event.isUp() ) {
+                // Since the playPauseImage is on top of this layer and since overlap touch has been set to be true, 
+                // pressing down on the playPauseImage and letting it go will result into here
+                // For this edge case, reset the scale values of this image (which is being used a button, below)
+                playPauseImage.scaleX = 1.00;
+                playPauseImage.scaleY = 1.00;
+                playPauseImage.opacity = 1.00;
             }
         } // onTouch
 
@@ -245,7 +252,6 @@ Page {
                 value: maxContainer.initialScreenScale     // starting with the default size of the video
                 onValueChanging: {
                     requestedValue = value;
-                    //console.log("Slider onValueChanging : value = " + value + " : requestedValue = " + requestedValue);
                     
                     videoSurface.preferredWidth = player.videoDimensions.width * value;
                     videoSurface.minWidth = player.videoDimensions.width  * value;
@@ -268,7 +274,7 @@ Page {
                 //background: Color.Red
                 ImageView {
                     id: playPauseImage
-                    preferredWidth: 150
+                    preferredWidth: 120
                     preferredHeight: 150
                     imageSource: "asset:///images/play.png"
                     property bool playing: false
@@ -277,24 +283,35 @@ Page {
                         verticalAlignment: VerticalAlignment.Top
                     }
                     onTouch: {
-                        if (event.isUp()) {
+                        
+                        if (event.isDown() ) {
+                            // changing the size of the picture a bit to do implicit animation of the button represented by this image
+                            scaleX = 1.10;
+                            scaleY = 1.20;
+                            opacity = 0.6;
+                            
+                        } else if (event.isUp()) {
+                            // do the actual operations of the button on release of the touch
+                            
+                            // first, set the scaling and opacity back to the original
+                            scaleX = 1.00;
+                            scaleY = 1.00;
+                            opacity = 1.00;
+                            
                             if (playing) {
-                                if (player.pause() != MediaError.MediaErrorNone ) {
+                                var result = player.pause();
+                                if (result != MediaError.MediaErrorNone) {
                                     // Error handling
-                                } // if
+                                    console.log("ERROR: ImageView : onTouch : player.pause()");
+                                }
                             } else {
-                                
-                                //if ( player.source == "" ) {
-                                    // source is still empty; set it
-                                  //  player.source = app.currPath + maxContainer.videoPathToAppend;
-                                   // console.log("set the player.source = " + player.source);
-                                //}
-                                
-                                if ( player.play() != MediaError.MediaErrorNone ) {
+                                var result = player.play();
+                                if (result != MediaError.MediaErrorNon) {
                                     // Error handling
-                                } // if
-                            } 
-                        } // if event.isUP
+                                    console.log("ERROR: ImageView : onTouch : player.play()");
+                                }
+                            } // else
+                        }
                     } // onTouch
                 } // ImageView
                 
@@ -313,8 +330,7 @@ Page {
                     //background: Color.Green
                     Label {
                         id: currentTime
-                        //NOTE: Using absolute value here
-                        text: "0:00"
+                        // the "text" will be set when media plays
                         textStyle {
                             color: Color.White
                             fontWeight: FontWeight.Normal
@@ -329,6 +345,7 @@ Page {
                         property bool seekInProgress: false
                         property int requestedValue
                         property bool wasPlaying: false
+                        //NOTE: Using absolute value here for the preferredWidth
                         preferredWidth : maxContainer.preferredWidth - 2*85
                         layoutProperties: StackLayoutProperties {
                             verticalAlignment: VerticalAlignment.Bottom
@@ -338,16 +355,15 @@ Page {
                         toValue: player.duration
                         onTouch: {
                             if (event.isDown()) {
-                                console.log("Slider event.isDown");
+                                
                                 seekInProgress = true;
                                 if (playPauseImage.playing) {
                                     wasPlaying = true;
-                                    console.log("Was Playing = true");
-                                    // pause the playback so that the it doesn't keep trying to play it (because the audio sounds
+                                    // pause the playback so that the it doesn't keep trying to play it while being dragged/seeked (which causes audio disrupt)
                                     player.pause();
                                 }
                             } else if (event.isUp() || event.isCancel()) {
-                                console.log("Slider event.isDown || event.isCancel");
+                                
                                 seekInProgress = false;
                                 if (wasPlaying) {
                                     player.play();
@@ -357,7 +373,6 @@ Page {
                         }
                         onValueChanging: {
                             requestedValue = value
-                            //console.log("progressSlider onValueChanging : value = " + value + " : requestedValue = " + requestedValue);
                             if (seekInProgress) {
                                 player.seekTime(value);
                             }
@@ -365,7 +380,7 @@ Page {
                     } // progressSlider   
                     Label {
                         id: totalTime
-                        // note: the "text" property of this will be set when the video start playing
+                        // Note: the "text" attribute will be set when the media plays
                         textStyle {
                             color: Color.White
                             fontWeight: FontWeight.Normal
