@@ -17,7 +17,7 @@
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
-#include <bb/cascades/Navigationpane>
+#include <bb/cascades/NavigationPane>
 #include <QSettings>
 #include "LocationEngine.h"
 
