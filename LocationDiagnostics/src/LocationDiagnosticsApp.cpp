@@ -85,6 +85,12 @@ void LocationDiagnosticsApp::startLocationSession(bool trackingMode) {
 	} else if(method==5){
 		engine->positionSource()->setProperty("provider", "network");
 		engine->positionSource()->setProperty("fixType", "wifi");
+	} else if(method==6){
+		engine->positionSource()->setProperty("provider", "gnss");
+		engine->positionSource()->setProperty("fixType", "gps_ms_based");
+	} else if(method==5){
+		engine->positionSource()->setProperty("provider", "gnss");
+		engine->positionSource()->setProperty("fixType", "gps_ms_assisted");
 	}
 
 	int assistMethod = appPage->findChild<QObject*>("qddAssistance")->property("selectedIndex").value<int>();

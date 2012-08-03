@@ -11,9 +11,7 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/
-
-import bb.cascades 1.0
+*/import bb.cascades 1.0
 
 NavigationPane {
     id: navPane
@@ -114,6 +112,26 @@ NavigationPane {
                             objectName: "qoWiFi"
                             text: "WiFi"
                             description: "WiFi only"
+                            selected: _locationDiagnostics.getValueFor(qoWiFi.objectName, "yes")
+                            onSelectedChanged: {
+                                _locationDiagnostics.saveValueFor(qoWiFi.objectName, selected)
+                            }
+                        }
+                        Option {
+                            id: qoMSB
+                            objectName: "qoMSB"
+                            text: "MS-Based"
+                            description: "MS-Based only"
+                            selected: _locationDiagnostics.getValueFor(qoWiFi.objectName, "yes")
+                            onSelectedChanged: {
+                                _locationDiagnostics.saveValueFor(qoWiFi.objectName, selected)
+                            }
+                        }
+                        Option {
+                            id: qoMSA
+                            objectName: "qoMSA"
+                            text: "MS-Assisted"
+                            description: "MS-Assisted only"
                             selected: _locationDiagnostics.getValueFor(qoWiFi.objectName, "yes")
                             onSelectedChanged: {
                                 _locationDiagnostics.saveValueFor(qoWiFi.objectName, selected)

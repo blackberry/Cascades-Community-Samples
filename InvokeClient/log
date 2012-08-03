@@ -1,0 +1,490 @@
+NavigatorPrivate::NavigatorPrivate - width=768
+NavigatorPrivate::NavigatorPrivate - height=1280
+NavigatorPrivate::NavigatorPrivate - angle=0
+
+### TIMESTAMP pid=104243405 at 17252200 ms -> "server thread started"
+### Server Thread: STARTED
+startScreenEventThread(SUCCESS)
+### PPS Thread: STARTED (10)
+ERROR:: QNXPpsSubscriptionServer: QNXPpsSubscriptionServer::createObject: (13) Failed to create dir /pps/services/automation/framework
+
+ERROR:: QNXPpsSubscriptionServer: QNXPpsSubscriptionServer::subscribe: Failed to open /pps/services/automation/framework/control?delta,notify=5bf:00000001
+
+
+### TIMESTAMP pid=104243405 at 17252314 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252315 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252315 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252316 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252316 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252316 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252316 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252394 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252394 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252401 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252401 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252405 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252405 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252406 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252406 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252412 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252412 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252412 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252412 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252417 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252417 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252417 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252417 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252421 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252421 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252421 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252421 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252428 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252428 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252428 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252428 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252432 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252432 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252432 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252432 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252434 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252434 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252434 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252434 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252437 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252437 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252438 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252438 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252439 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252439 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252439 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252439 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252442 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252442 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252442 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252442 ms -> "waiting for events begin"
+
+### TIMESTAMP pid=104243405 at 17252508 ms -> "waiting for events end"
+
+### TIMESTAMP pid=104243405 at 17252508 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17252818 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17252819 ms -> "renderFrame begin"
+
+### TIMESTAMP pid=104243405 at 17253095 ms -> "renderFrame end"
+
+### TIMESTAMP pid=104243405 at 17253095 ms -> "handle incoming events begin (2)"
+
+### TIMESTAMP pid=104243405 at 17253095 ms -> "handle incoming events end (2)"
+
+### TIMESTAMP pid=104243405 at 17253095 ms -> "updateMainScreen begin"
+
+### TIMESTAMP pid=104243405 at 17253096 ms -> "updateMainScreen end"
+
+### BAD_FRAME pid=104243405 at 17253096 ms -> t: 588 ms p1: 310 ms, r: 276 ms, p2: 0 ms, u: 1 ms
+
+### TIMESTAMP pid=104243405 at 17253096 ms -> "handle incoming events begin (1)"
+
+### TIMESTAMP pid=104243405 at 17253096 ms -> "handle incoming events end (1)"
+
+### TIMESTAMP pid=104243405 at 17253096 ms -> "renderFrame begin"
+NavigatorPrivate::handleBpsEvent: Event received: navigator active. WindowGroupID: mainWindow-104243405-0
+
+### TIMESTAMP pid=104243405 at 17253147 ms -> "renderFrame end"
+
+### TIMESTAMP pid=104243405 at 17253147 ms -> "handle incoming events begin (2)"
+
+### TIMESTAMP pid=104243405 at 17253148 ms -> "handle incoming events end (2)"
+
+### TIMESTAMP pid=104243405 at 17253148 ms -> "updateMainScreen begin"
+
+### TIMESTAMP pid=104243405 at 17253150 ms -> "updateMainScreen end"
+
+### BAD_FRAME pid=104243405 at 17253150 ms -> t: 53 ms p1: 0 ms, r: 50 ms, p2: 1 ms, u: 2 ms
+NavigatorPrivate::handleBpsEvent - window state
+NavigatorPrivate::handleWindowStateEvent - fullscreen
+
+### BAD_FRAME pid=104243405 at 17253197 ms -> t: 47 ms p1: 0 ms, r: 46 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17253285 ms -> t: 88 ms p1: 0 ms, r: 88 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17253327 ms -> t: 41 ms p1: 0 ms, r: 41 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17253381 ms -> t: 53 ms p1: 0 ms, r: 52 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17253418 ms -> t: 21 ms p1: 0 ms, r: 4 ms, p2: 0 ms, u: 16 ms
+
+### BAD_FRAME pid=104243405 at 17253632 ms -> t: 29 ms p1: 0 ms, r: 29 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17253669 ms -> t: 20 ms p1: 0 ms, r: 5 ms, p2: 0 ms, u: 14 ms
+
+### BAD_FRAME pid=104243405 at 17254639 ms -> t: 18 ms p1: 0 ms, r: 11 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17254671 ms -> t: 31 ms p1: 0 ms, r: 16 ms, p2: 0 ms, u: 15 ms
+
+### BAD_FRAME pid=104243405 at 17256728 ms -> t: 20 ms p1: 0 ms, r: 17 ms, p2: 1 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17256746 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17256791 ms -> t: 28 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 10 ms
+################bb.action.OPEN################image/png################Test data..NavigatorPrivate::handleBpsEvent - window state
+NavigatorPrivate::handleWindowStateEvent - thumbnail
+
+### BAD_FRAME pid=104243405 at 17257162 ms -> t: 38 ms p1: 0 ms, r: 36 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17257202 ms -> t: 40 ms p1: 0 ms, r: 40 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257251 ms -> t: 49 ms p1: 0 ms, r: 48 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17257278 ms -> t: 27 ms p1: 0 ms, r: 27 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257315 ms -> t: 37 ms p1: 0 ms, r: 37 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257372 ms -> t: 57 ms p1: 0 ms, r: 56 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17257405 ms -> t: 33 ms p1: 0 ms, r: 33 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257456 ms -> t: 51 ms p1: 0 ms, r: 51 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257490 ms -> t: 34 ms p1: 0 ms, r: 34 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257522 ms -> t: 32 ms p1: 0 ms, r: 32 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257554 ms -> t: 31 ms p1: 0 ms, r: 31 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257586 ms -> t: 32 ms p1: 0 ms, r: 32 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257656 ms -> t: 70 ms p1: 0 ms, r: 69 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17257707 ms -> t: 51 ms p1: 0 ms, r: 51 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257740 ms -> t: 33 ms p1: 0 ms, r: 32 ms, p2: 0 ms, u: 1 ms
+NavigatorPrivate::handleBpsEvent - unknown
+
+### BAD_FRAME pid=104243405 at 17257771 ms -> t: 30 ms p1: 0 ms, r: 30 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257809 ms -> t: 38 ms p1: 0 ms, r: 38 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257854 ms -> t: 45 ms p1: 0 ms, r: 45 ms, p2: 0 ms, u: 0 ms
+NavigatorPrivate::handleBpsEvent - window state
+NavigatorPrivate::handleWindowStateEvent - invisible
+
+### BAD_FRAME pid=104243405 at 17257907 ms -> t: 52 ms p1: 0 ms, r: 52 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257937 ms -> t: 30 ms p1: 0 ms, r: 30 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17257982 ms -> t: 44 ms p1: 0 ms, r: 44 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17258010 ms -> t: 27 ms p1: 0 ms, r: 4 ms, p2: 0 ms, u: 23 ms
+
+### BAD_FRAME pid=104243405 at 17258041 ms -> t: 30 ms p1: 0 ms, r: 30 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17258093 ms -> t: 52 ms p1: 0 ms, r: 52 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17258174 ms -> t: 80 ms p1: 0 ms, r: 80 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17258252 ms -> t: 78 ms p1: 0 ms, r: 67 ms, p2: 0 ms, u: 11 ms
+
+### BAD_FRAME pid=104243405 at 17258291 ms -> t: 39 ms p1: 0 ms, r: 39 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17258357 ms -> t: 66 ms p1: 0 ms, r: 66 ms, p2: 0 ms, u: 0 ms
+NavigatorPrivate::handleBpsEvent: Event received: navigator inactive. WindowGroupId: mainWindow-104243405-0
+
+### BAD_FRAME pid=104243405 at 17258424 ms -> t: 65 ms p1: 0 ms, r: 65 ms, p2: 0 ms, u: 0 ms
+NavigatorPrivate::handleBpsEvent - window state
+NavigatorPrivate::handleWindowStateEvent - thumbnail
+NavigatorPrivate::handleBpsEvent: Event received: navigator active. WindowGroupID: mainWindow-104243405-0
+
+### BAD_FRAME pid=104243405 at 17279668 ms -> t: 25 ms p1: 0 ms, r: 25 ms, p2: 0 ms, u: 0 ms
+NavigatorPrivate::handleBpsEvent - window state
+NavigatorPrivate::handleWindowStateEvent - fullscreen
+
+### BAD_FRAME pid=104243405 at 17279693 ms -> t: 24 ms p1: 0 ms, r: 24 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17279717 ms -> t: 24 ms p1: 0 ms, r: 24 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17279741 ms -> t: 24 ms p1: 0 ms, r: 24 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17280517 ms -> t: 26 ms p1: 0 ms, r: 25 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17280573 ms -> t: 23 ms p1: 0 ms, r: 21 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17281868 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17282646 ms -> t: 29 ms p1: 0 ms, r: 27 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17282669 ms -> t: 23 ms p1: 0 ms, r: 23 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17282774 ms -> t: 21 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17284104 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17284896 ms -> t: 24 ms p1: 0 ms, r: 21 ms, p2: 2 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17285000 ms -> t: 20 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17285019 ms -> t: 18 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17285468 ms -> t: 19 ms p1: 1 ms, r: 13 ms, p2: 0 ms, u: 5 ms
+
+### BAD_FRAME pid=104243405 at 17285490 ms -> t: 22 ms p1: 0 ms, r: 22 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17285708 ms -> t: 35 ms p1: 0 ms, r: 27 ms, p2: 0 ms, u: 8 ms
+
+### BAD_FRAME pid=104243405 at 17285730 ms -> t: 22 ms p1: 0 ms, r: 22 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17285766 ms -> t: 20 ms p1: 0 ms, r: 9 ms, p2: 1 ms, u: 10 ms
+
+### BAD_FRAME pid=104243405 at 17285835 ms -> t: 36 ms p1: 0 ms, r: 29 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17285859 ms -> t: 24 ms p1: 0 ms, r: 24 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17285899 ms -> t: 24 ms p1: 0 ms, r: 8 ms, p2: 0 ms, u: 16 ms
+
+### BAD_FRAME pid=104243405 at 17285920 ms -> t: 21 ms p1: 0 ms, r: 5 ms, p2: 1 ms, u: 15 ms
+
+### BAD_FRAME pid=104243405 at 17285960 ms -> t: 33 ms p1: 0 ms, r: 26 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17286093 ms -> t: 36 ms p1: 0 ms, r: 29 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17287103 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17287124 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17287214 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17287644 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 1 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17288017 ms -> t: 21 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 3 ms
+
+### BAD_FRAME pid=104243405 at 17288044 ms -> t: 26 ms p1: 0 ms, r: 26 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17288094 ms -> t: 32 ms p1: 0 ms, r: 31 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17289331 ms -> t: 25 ms p1: 0 ms, r: 24 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17289384 ms -> t: 19 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17289998 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17291050 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17291453 ms -> t: 20 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17291506 ms -> t: 19 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17292473 ms -> t: 22 ms p1: 0 ms, r: 19 ms, p2: 1 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17292545 ms -> t: 22 ms p1: 0 ms, r: 21 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17292563 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17292617 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17293588 ms -> t: 24 ms p1: 0 ms, r: 23 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17293673 ms -> t: 18 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17294472 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17295757 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17295781 ms -> t: 24 ms p1: 0 ms, r: 22 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17295884 ms -> t: 20 ms p1: 0 ms, r: 17 ms, p2: 2 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17295904 ms -> t: 18 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17296500 ms -> t: 30 ms p1: 0 ms, r: 29 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17296581 ms -> t: 31 ms p1: 0 ms, r: 28 ms, p2: 0 ms, u: 3 ms
+
+### BAD_FRAME pid=104243405 at 17296617 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17296674 ms -> t: 24 ms p1: 0 ms, r: 22 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17296694 ms -> t: 18 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17296784 ms -> t: 40 ms p1: 0 ms, r: 40 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17297006 ms -> t: 40 ms p1: 0 ms, r: 32 ms, p2: 0 ms, u: 8 ms
+
+### BAD_FRAME pid=104243405 at 17297066 ms -> t: 25 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17297102 ms -> t: 36 ms p1: 0 ms, r: 29 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17297173 ms -> t: 20 ms p1: 0 ms, r: 5 ms, p2: 0 ms, u: 15 ms
+
+### BAD_FRAME pid=104243405 at 17297209 ms -> t: 36 ms p1: 0 ms, r: 29 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17297311 ms -> t: 37 ms p1: 0 ms, r: 30 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17297417 ms -> t: 25 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 8 ms
+
+### BAD_FRAME pid=104243405 at 17297976 ms -> t: 20 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17298048 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17298068 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 1 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17299364 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17299948 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 1 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17300151 ms -> t: 20 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17300206 ms -> t: 20 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17302269 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17302389 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17303222 ms -> t: 19 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17303244 ms -> t: 21 ms p1: 0 ms, r: 20 ms, p2: 1 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17303319 ms -> t: 24 ms p1: 0 ms, r: 21 ms, p2: 0 ms, u: 3 ms
+
+### BAD_FRAME pid=104243405 at 17303338 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17303407 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17303608 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304468 ms -> t: 19 ms p1: 0 ms, r: 13 ms, p2: 0 ms, u: 6 ms
+
+### BAD_FRAME pid=104243405 at 17304489 ms -> t: 18 ms p1: 0 ms, r: 17 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304543 ms -> t: 20 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17304687 ms -> t: 60 ms p1: 0 ms, r: 49 ms, p2: 0 ms, u: 11 ms
+
+### BAD_FRAME pid=104243405 at 17304709 ms -> t: 21 ms p1: 0 ms, r: 19 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304753 ms -> t: 44 ms p1: 0 ms, r: 37 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17304786 ms -> t: 32 ms p1: 1 ms, r: 29 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304824 ms -> t: 21 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304846 ms -> t: 20 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17304869 ms -> t: 22 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17304896 ms -> t: 27 ms p1: 0 ms, r: 26 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304918 ms -> t: 22 ms p1: 0 ms, r: 21 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304940 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304961 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17304984 ms -> t: 22 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17306082 ms -> t: 64 ms p1: 0 ms, r: 63 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17306151 ms -> t: 19 ms p1: 0 ms, r: 13 ms, p2: 0 ms, u: 6 ms
+
+### BAD_FRAME pid=104243405 at 17306609 ms -> t: 22 ms p1: 0 ms, r: 21 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17306628 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17306732 ms -> t: 21 ms p1: 0 ms, r: 20 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17307378 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17307728 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17308018 ms -> t: 24 ms p1: 0 ms, r: 23 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17308234 ms -> t: 32 ms p1: 0 ms, r: 24 ms, p2: 0 ms, u: 8 ms
+
+### BAD_FRAME pid=104243405 at 17308305 ms -> t: 21 ms p1: 0 ms, r: 8 ms, p2: 0 ms, u: 13 ms
+
+### BAD_FRAME pid=104243405 at 17308354 ms -> t: 32 ms p1: 0 ms, r: 25 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17308382 ms -> t: 28 ms p1: 0 ms, r: 28 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17308422 ms -> t: 24 ms p1: 0 ms, r: 9 ms, p2: 0 ms, u: 15 ms
+
+### BAD_FRAME pid=104243405 at 17308459 ms -> t: 20 ms p1: 0 ms, r: 9 ms, p2: 0 ms, u: 11 ms
+
+### BAD_FRAME pid=104243405 at 17308498 ms -> t: 39 ms p1: 0 ms, r: 32 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17308598 ms -> t: 20 ms p1: 0 ms, r: 14 ms, p2: 0 ms, u: 6 ms
+
+### BAD_FRAME pid=104243405 at 17308632 ms -> t: 34 ms p1: 0 ms, r: 27 ms, p2: 0 ms, u: 7 ms
+
+### BAD_FRAME pid=104243405 at 17308711 ms -> t: 27 ms p1: 0 ms, r: 26 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17310958 ms -> t: 26 ms p1: 0 ms, r: 25 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17311061 ms -> t: 20 ms p1: 0 ms, r: 19 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17312135 ms -> t: 22 ms p1: 0 ms, r: 13 ms, p2: 0 ms, u: 9 ms
+
+### BAD_FRAME pid=104243405 at 17312187 ms -> t: 51 ms p1: 0 ms, r: 51 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17312228 ms -> t: 24 ms p1: 0 ms, r: 22 ms, p2: 0 ms, u: 2 ms
+
+### BAD_FRAME pid=104243405 at 17313188 ms -> t: 24 ms p1: 0 ms, r: 23 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17313956 ms -> t: 18 ms p1: 0 ms, r: 16 ms, p2: 1 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17314046 ms -> t: 24 ms p1: 0 ms, r: 17 ms, p2: 1 ms, u: 6 ms
+
+### BAD_FRAME pid=104243405 at 17314092 ms -> t: 45 ms p1: 1 ms, r: 44 ms, p2: 0 ms, u: 0 ms
+
+### BAD_FRAME pid=104243405 at 17315404 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p2: 0 ms, u: 1 ms
+
+### BAD_FRAME pid=104243405 at 17315424 ms -> t: 19 ms p1: 0 ms, r: 18 ms, p
