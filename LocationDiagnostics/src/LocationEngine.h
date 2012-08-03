@@ -29,7 +29,9 @@
 
 #include <bb/cascades/controls/page.h>
 #include <bb/multimedia/MediaPlayer.hpp>
+#include <stdio.h>
 
+using namespace std;
 using namespace QtMobilitySubset;
 using namespace bb::cascades;
 using namespace bb::multimedia;
@@ -52,7 +54,6 @@ public:
 public Q_SLOTS:
 	void positionUpdated(const QGeoPositionInfo & pos);
     void positionUpdateTimeout();
-    void positioningMethodChanged(int optionIndex );
 
     void satellitesInUseUpdated(const QList<QGeoSatelliteInfo> & satellites);
     void satellitesInViewUpdated(const QList<QGeoSatelliteInfo> & satellites);
@@ -65,7 +66,7 @@ private:
     QGeoSatelliteInfoSource *_satelliteSource;
     void printField( QString & key, QVariant & value );
     void dumpRawPositionData( QString & label, QVariantMap & rawDat );
-    void log(QString msg);
+    void logQString(QString msg);
 };
 
 #endif /* LOCATIONENGINE_H_ */

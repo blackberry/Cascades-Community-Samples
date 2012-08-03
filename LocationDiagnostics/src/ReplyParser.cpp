@@ -51,20 +51,6 @@ bool ReplyParser::satellitesSize(int *size) {
 	return true;
 }
 
-bool ReplyParser::setSatelliteIndex(int index) {
-	int size = 0;
-	if (satellitesSize(&size) == false) {
-		return false;
-	}
-
-	if (index < 0 || index >= size) {
-		return false;
-	}
-
-	_satIndex = index;
-
-	return true;
-}
 
 bool ReplyParser::satelliteId(double *id) {
 	QVariantList satellites;
