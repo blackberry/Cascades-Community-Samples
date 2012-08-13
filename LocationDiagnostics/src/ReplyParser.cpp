@@ -7,113 +7,202 @@
 
 #include "ReplyParser.h"
 
-ReplyParser::ReplyParser(const QVariant & replyData) :
-		_replyData(replyData), _satIndex(0) {
-}
-;
+RawLocationParser::RawLocationParser(const QVariant & replyData) :
+		_replyData(replyData) {
 
-bool ReplyParser::latitude(double *lat) {
-	return parseDouble(lat, _replyData, "latitude");
 }
 
-bool ReplyParser::longitude(double *lon) {
-	return parseDouble(lon, _replyData, "longitude");
+double RawLocationParser::latitude() {
+	return parseDouble(_replyData, "latitude");
 }
 
-bool ReplyParser::altitude(double *alt) {
-	return parseDouble(alt, _replyData, "altitude");
+double RawLocationParser::longitude() {
+	return parseDouble(_replyData, "longitude");
 }
 
-bool ReplyParser::horizontalAccuracy(double *acc) {
-	return parseDouble(acc, _replyData, "accuracy");
+double RawLocationParser::altitude() {
+	return parseDouble(_replyData, "altitude");
 }
 
-bool ReplyParser::verticalAccuracy(double *acc) {
-	return parseDouble(acc, _replyData, "altitudeAccuracy");
+double RawLocationParser::horizontalAccuracy() {
+	return parseDouble(_replyData, "accuracy");
 }
 
-bool ReplyParser::heading(double *heading) {
-	return parseDouble(heading, _replyData, "heading");
+double RawLocationParser::verticalAccuracy() {
+	return parseDouble(_replyData, "altitudeAccuracy");
 }
 
-bool ReplyParser::speed(double *speed) {
-	return parseDouble(speed, _replyData, "speed");
+double RawLocationParser::heading() {
+	return parseDouble(_replyData, "heading");
 }
 
-bool ReplyParser::satellitesSize(int *size) {
+double RawLocationParser::speed() {
+	return parseDouble(_replyData, "speed");
+}
+
+double RawLocationParser::ttff() {
+	return parseDouble(_replyData, "ttff");
+}
+
+double RawLocationParser::gpsWeek() {
+	return parseDouble(_replyData, "gpsWeek");
+}
+
+double RawLocationParser::gpsTow() {
+	return parseDouble(_replyData, "gpsTow");
+}
+
+double RawLocationParser::utc() {
+	return parseDouble(_replyData, "utc");
+}
+
+double RawLocationParser::hdop() {
+	return parseDouble(_replyData, "hdop");
+}
+
+double RawLocationParser::vdop() {
+	return parseDouble(_replyData, "vdop");
+}
+
+double RawLocationParser::pdop() {
+	return parseDouble(_replyData, "pdop");
+}
+
+bool RawLocationParser::propagated() {
+	return parseBool(_replyData, "propagated");
+}
+
+QString RawLocationParser::positionMethod() {
+	QString fixType = parseString(_replyData, "fix_type");
+	QString provider = parseString(_replyData, "provider");
+	return fixType + " [" + provider + "]";
+}
+
+QString RawLocationParser::error() {
+	QString err = parseString(_replyData, "err");
+	QString errstr = parseString(_replyData, "errstr");
+	return err + ": " + errstr;
+}
+
+int RawLocationParser::numberOfSatellites() {
 	QVariantList satellites;
 	bool sizeFound = parseList(&satellites, _replyData, "satellites");
 	if (sizeFound == false) {
-		return false;
+		return 0;
 	}
 
-	*size = satellites.size();
-	return true;
+	return satellites.size();
 }
 
+double RawLocationParser::satelliteId(int satIndex) {
+	QVariantList satellites;
+	if (parseList(&satellites, _replyData, "satellites") == false) {
+		return qQNaN();
+	}
+	QVariant sat = satellites.at(satIndex);
+	return parseDouble(sat, "id");
+}
 
-bool ReplyParser::satelliteId(double *id) {
+double RawLocationParser::satelliteCarrierToNoiseRatio(int satIndex) {
+	QVariantList satellites;
+	if (parseList(&satellites, _replyData, "satellites") == false) {
+		return qQNaN();
+	}
+	QVariant sat = satellites.at(satIndex);
+	return parseDouble(sat, "cno");
+}
+
+bool RawLocationParser::satelliteEphemerisAvailable(int satIndex) {
 	QVariantList satellites;
 	if (parseList(&satellites, _replyData, "satellites") == false) {
 		return false;
 	}
-	QVariant sat = satellites.at(_satIndex);
-	return parseDouble(id, sat, "id");
+	QVariant sat = satellites.at(satIndex);
+	return parseBool(sat, "ephemeris");
 }
 
-bool ReplyParser::satelliteCarrierToNoiseRatio(double *cno) {
+double RawLocationParser::satelliteAzimuth(int satIndex) {
+	QVariantList satellites;
+	if (parseList(&satellites, _replyData, "satellites") == false) {
+		return qQNaN();
+	}
+	QVariant sat = satellites.at(satIndex);
+	return parseDouble(sat, "azimuth");
+}
+
+double RawLocationParser::satelliteElevation(int satIndex) {
+	QVariantList satellites;
+	if (parseList(&satellites, _replyData, "satellites") == false) {
+		return qQNaN();
+	}
+	QVariant sat = satellites.at(satIndex);
+	return parseDouble(sat, "elevation");
+}
+
+bool RawLocationParser::satelliteTracked(int satIndex) {
 	QVariantList satellites;
 	if (parseList(&satellites, _replyData, "satellites") == false) {
 		return false;
 	}
-	QVariant sat = satellites.at(_satIndex);
-	return parseDouble(cno, sat, "cno");
+	QVariant sat = satellites.at(satIndex);
+	return parseBool(sat, "tracked");
 }
 
-bool ReplyParser::parseDouble(double *out, const QVariant & replyData,
-		const QString & key) {
+bool RawLocationParser::satelliteUsed(int satIndex) {
+	QVariantList satellites;
+	if (parseList(&satellites, _replyData, "satellites") == false) {
+		return false;
+	}
+	QVariant sat = satellites.at(satIndex);
+	return parseBool(sat, "used");
+}
+
+bool RawLocationParser::satelliteAlmanac(int satIndex) {
+	QVariantList satellites;
+	if (parseList(&satellites, _replyData, "satellites") == false) {
+		return false;
+	}
+	QVariant sat = satellites.at(satIndex);
+	return parseBool(sat, "almanac");
+}
+
+double RawLocationParser::parseDouble(const QVariant & replyData, const QString & key) {
 	// replyData is a QVariantMap holding all of the reply parameters
 	QVariantMap positionData = replyData.toMap();
 
 	QVariant val = positionData.value(key);
 	if (val.isValid() && val.canConvert<double>()) {
-		*out = val.toDouble();
-		return true;
+		return val.toDouble();
 	}
 
-	return false;
+	return qQNaN();
 }
 
-bool ReplyParser::parseBool(bool *out, const QVariant & replyData,
-		const QString & key) {
+bool RawLocationParser::parseBool(const QVariant & replyData, const QString & key) {
 	// replyData is a QVariantMap holding all of the reply parameters
 	QVariantMap positionData = replyData.toMap();
 
 	QVariant val = positionData.value(key);
 	if (val.isValid() && val.canConvert<bool>()) {
-		*out = val.toBool();
-		return true;
+		return val.toBool();
 	}
 
 	return false;
 }
 
-bool ReplyParser::parseString(QString *out, const QVariant & replyData,
-		const QString & key) {
+QString RawLocationParser::parseString(const QVariant & replyData, const QString & key) {
 	// replyData is a QVariantMap holding all of the reply parameters
 	QVariantMap positionData = replyData.toMap();
 
 	QVariant val = positionData.value(key);
 	if (val.isValid() && val.canConvert<QString>()) {
-		*out = val.toString();
-		return true;
+		return val.toString();
 	}
 
-	return false;
+	return "";
 }
 
-bool ReplyParser::parseList(QVariantList *out, const QVariant & replyData,
-		const QString & key) {
+bool RawLocationParser::parseList(QVariantList *out, const QVariant & replyData, const QString & key) {
 	// replyData is a QVariantMap holding all of the reply parameters
 	QVariantMap positionData = replyData.toMap();
 
@@ -125,6 +214,4 @@ bool ReplyParser::parseList(QVariantList *out, const QVariant & replyData,
 
 	return false;
 }
-
-
 

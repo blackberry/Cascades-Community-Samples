@@ -87,11 +87,7 @@ void LocationEngine::positionUpdated(const QGeoPositionInfo& pos) {
 	_locationPage->findChild<QObject*>("qllVerticalAccuracy")->setProperty("text", pos.attribute(QGeoPositionInfo::VerticalAccuracy));
 	_locationPage->findChild<QObject*>("qllMagneticVariation")->setProperty("text", pos.attribute(QGeoPositionInfo::MagneticVariation));
 
-	logQString("update");
-	QVariant replayData = _positionSource->property("replayDat");
-
-
-
+	parseRawData();
 }
 
 QGeoPositionInfoSource* LocationEngine::positionSource() {
@@ -104,14 +100,6 @@ void LocationEngine::positionUpdateTimeout() {
 
 void LocationEngine::satellitesInUseUpdated(const QList<QGeoSatelliteInfo>& satellites) {
 	logQString("satellitesInUseUpdated received.");
-}
-
-bool LocationEngine::isSoundEnabled() {
-	return soundEnabled;
-}
-
-void LocationEngine::setSoundEnabled(bool enabled) {
-	soundEnabled = enabled;
 }
 
 void LocationEngine::satellitesInViewUpdated(const QList<QGeoSatelliteInfo>& satellites) {
@@ -131,9 +119,65 @@ void LocationEngine::resetEngine(QString type) {
 	logQString(type + " RESET.");
 }
 
+bool LocationEngine::isSoundEnabled() {
+	return soundEnabled;
+}
+
+void LocationEngine::setSoundEnabled(bool enabled) {
+	soundEnabled = enabled;
+}
+
+void LocationEngine::parseRawData() {
+	// Parsing the raw data from the low level Location Manager. Use this only if a field is not accessible via QGeoPositionInfo above.
+	QVariant replyData = _positionSource->property("replyDat");
+	if(!replyData.isValid()){
+		logQString("!!! Invalid replyDat.");
+		//return;
+	}
+
+	RawLocationParser parser(replyData);
+
+	double latitude = parser.latitude();
+	double longitude = parser.longitude();
+	double altitude = parser.altitude();
+	double hAccuracy = parser.horizontalAccuracy();
+	double vAccuracy = parser.verticalAccuracy();
+	double heading = parser.heading();
+	double speed = parser.speed();
+	double ttff = parser.ttff();
+	double gpsWeek = parser.gpsWeek();
+	double gpsTow = parser.gpsTow();
+	double utc = parser.utc();
+	double hdop = parser.hdop();
+	double vdop = parser.vdop();
+	double pdop = parser.pdop();
+	bool propagated = parser.propagated();
+
+	QString method = parser.positionMethod();
+	_locationPage->findChild<QObject*>("qllMethod")->setProperty("text", method);
+
+	logQString("Method: " + method + ", Latitude: " + QString().setNum(latitude) + ", Longitude: " + QString().setNum(longitude) + ", Altitude: " + QString().setNum(altitude) + ", Horizontal Accuracy: " + QString().setNum(hAccuracy) + ", Vertical Accuracy: " + QString().setNum(vAccuracy) + ", Heading: " + QString().setNum(heading) + ", Speed: " + QString().setNum(speed) + ", TTFF: " + QString().setNum(ttff) + ", GPS Week: " + QString().setNum(gpsWeek) + ", GPS TOW: " + QString().setNum(gpsTow) + ", UTC: " + QString().setNum(utc) + ", Horizontal Dilution: " + QString().setNum(hdop) + ", Vertical Dilution: " + QString().setNum(vdop) + ", Positional Dilution: " + QString().setNum(pdop) + ", Propagated: " + QString().setNum(propagated));
+	QString error = parser.error();
+	if(error.length()>3){
+		logQString("!!! [Error] " + error);
+	}
+
+	for (int i = 0; i < parser.numberOfSatellites(); i++) {
+		double id = parser.satelliteId(i);
+		double cno = parser.satelliteCarrierToNoiseRatio(i);
+		bool ephemerisAvailable = parser.satelliteEphemerisAvailable(i);
+		double azimuth = parser.satelliteAzimuth(i);
+		double elevation = parser.satelliteElevation(i);
+		bool tracked = parser.satelliteTracked(i);
+		bool used = parser.satelliteUsed(i);
+		logQString("\t[Satellite " + QString().setNum(i) + "]" + ", ID: " + QString().setNum(id) + ", CNO: " + QString().setNum(cno) + ", Ephemeris Available: " + ephemerisAvailable + ", Azimuth: " + QString().setNum(azimuth) + ", Elevation: " + QString().setNum(elevation) + ", Tracked: " + tracked + ", Used: " + used);
+	}
+}
+
 void LocationEngine::logQString(QString msg) {
-	QString text = _locationPage->findChild<QObject*>("logs")->property("text").toString();
-	_locationPage->findChild<QObject*>("logs")->setProperty("text", text + "\n" + msg);
-	cout << "Location Diagnostics: " << msg.toLocal8Bit().constData() << endl;
+	//QString text = _locationPage->findChild<QObject*>("logs")->property("text").toString();
+	//_locationPage->findChild<QObject*>("logs")->setProperty("text", text + "\n" + msg);
+
+	cout << "Location Diagnostics: "<< msg.toLocal8Bit().constData() << endl;
 }
 

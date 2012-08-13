@@ -10,45 +10,49 @@
 
 #include <QtCore/QObject>
 #include <QtCore/qvariant.h>
+#include <qnumeric.h>
 
 /**
  * A utility class to parse the raw reply from the lower level Location Manager of the OS.
  */
-class ReplyParser: public QObject {
+class RawLocationParser: public QObject {
 Q_OBJECT
 
 public:
-	ReplyParser(const QVariant & replyData);
-	bool latitude(double *lat);
-	bool longitude(double *lon);
-	bool altitude(double *alt);
-	bool horizontalAccuracy(double *acc);
-	bool verticalAccuracy(double *acc);
-	bool heading(double *heading);
-	bool speed(double *speed);
-	bool ttff(double *ttff);
-	bool gpsWeek(double *gpsWeek);
-	bool gpsTow(double *gpsTow);
-	bool utc(double *utc);
-	bool hdop(double *hdop);
-	bool propagated(bool *propagated);
+	RawLocationParser(const QVariant & replyData);
+	double latitude();
+	double longitude();
+	double altitude();
+	double horizontalAccuracy();
+	double verticalAccuracy();
+	double heading();
+	double speed();
+	double ttff();
+	double gpsWeek();
+	double gpsTow();
+	double utc();
+	double hdop();
+	double vdop();
+	double pdop();
+	bool propagated();
+	QString positionMethod();
+	QString error();
 
-	bool satellitesSize(int *size);
-
-	bool satelliteId(double *id);
-	bool satelliteCarrierToNoiseRatio(double *cno);
-	bool satelliteEphemeris(bool *ephemeris);
-	bool satelliteAzimuth(double *azimuth);
-	bool satelliteElevation(double *elevation);
-	bool satelliteTracked(bool *tracked);
-	bool satelliteUsed(bool *used);
+	int numberOfSatellites();
+	double satelliteId(int satIndex);
+	double satelliteCarrierToNoiseRatio(int satIndex);
+	bool satelliteEphemerisAvailable(int satIndex);
+	double satelliteAzimuth(int satIndex);
+	double satelliteElevation(int satIndex);
+	bool satelliteTracked(int satIndex);
+	bool satelliteUsed(int satIndex);
+	bool satelliteAlmanac(int satIndex);
 
 private:
 	const QVariant & _replyData;
-	int _satIndex;
-	bool parseDouble(double *out, const QVariant & replyData, const QString & key);
-	bool parseBool(bool *out, const QVariant & replyData, const QString & key);
-	bool parseString(QString *out, const QVariant & replyData, const QString & key);
+	double parseDouble(const QVariant & replyData, const QString & key);
+	bool parseBool(const QVariant & replyData, const QString & key);
+	QString parseString(const QVariant & replyData, const QString & key);
 	bool parseList(QVariantList *out, const QVariant & replyData, const QString & key);
 
 };

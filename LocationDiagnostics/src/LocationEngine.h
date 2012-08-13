@@ -31,6 +31,8 @@
 #include <bb/multimedia/MediaPlayer.hpp>
 #include <stdio.h>
 
+#include<ReplyParser.h>
+
 using namespace std;
 using namespace QtMobilitySubset;
 using namespace bb::cascades;
@@ -67,6 +69,7 @@ private:
     void printField( QString & key, QVariant & value );
     void dumpRawPositionData( QString & label, QVariantMap & rawDat );
     void logQString(QString msg);
+    void parseRawData();
 };
 
 #endif /* LOCATIONENGINE_H_ */
