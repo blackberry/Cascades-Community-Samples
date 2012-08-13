@@ -1,11 +1,11 @@
 /*
- * ReplyParser.cpp
+ * RawLocationParser.cpp
  *
  *  Created on: Jul 18, 2012
  *      Author: shaque
  */
 
-#include "ReplyParser.h"
+#include "RawLocationParser.h"
 
 RawLocationParser::RawLocationParser(const QVariant & replyData) :
 		_replyData(replyData) {

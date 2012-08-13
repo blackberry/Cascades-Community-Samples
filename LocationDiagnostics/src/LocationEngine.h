@@ -31,7 +31,7 @@
 #include <bb/multimedia/MediaPlayer.hpp>
 #include <stdio.h>
 
-#include<ReplyParser.h>
+#include<RawLocationParser.h>
 
 using namespace std;
 using namespace QtMobilitySubset;

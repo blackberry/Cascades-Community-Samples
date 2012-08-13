@@ -1,12 +1,12 @@
 /*
- * ReplyParser.h
+ * RawLocationParser.h
  *
  *  Created on: Jul 18, 2012
  *      Author: shaque
  */
 
-#ifndef REPLYPARSER_H_
-#define REPLYPARSER_H_
+#ifndef RAWLOCATIONPARSER_H_
+#define RAWLOCATIONPARSER_H_
 
 #include <QtCore/QObject>
 #include <QtCore/qvariant.h>
@@ -57,4 +57,4 @@ private:
 
 };
 
-#endif /* REPLYPARSER_H_ */
+#endif /* RAWLOCATIONPARSER_H_ */
