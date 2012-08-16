@@ -37,6 +37,8 @@ public:
 	static const char* ADDRESS;
 	static const char* EMAIL;
 	static const char* MOBILE;
+	static const char* EMULATE_URI;
+	static const char* EMULATE_TEXT;
 
 	// NFC RTD useful constants
 

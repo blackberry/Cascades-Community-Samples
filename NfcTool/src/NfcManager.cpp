@@ -78,6 +78,28 @@ void NfcManager::stopNfcWorker() {
 	if (_workerInstance)
 		_workerInstance->interruptBpsWaitLoop(NfcWorker::TERMINATE);
 }
+void NfcManager::startTagEmulation(QString *uri, QString *text) {
+	qDebug() << "XXXX NfcManager::startTagEmulation";
+	_ndefSpUri  = uri;
+	_ndefSpText = text;
+	Logger::getInstance()->clearLog();
+	emit message("Touch reader");
+	_workerInstance = NfcWorker::getInstance();
+	QObject::connect(this, SIGNAL(start_tag_emulation(QVariant,QVariant)),
+			        _workerInstance, SLOT(emulateTag(QVariant,QVariant)),
+			         Qt::QueuedConnection);
+	emit start_tag_emulation(QVariant::fromValue(*uri), QVariant::fromValue(*text));
+	qDebug() << "XXXX NfcManager::startTagEmulation done";
+}
+
+void NfcManager::stopTagEmulation() {
+	qDebug() << "XXXX NfcManager::stopTagEmulation";
+	Logger::getInstance()->clearLog();
+	_workerInstance = NfcWorker::getInstance();
+	QObject::connect(this, SIGNAL(stop_tag_emulation()), _workerInstance, SLOT(stopEmulatingTag()), Qt::QueuedConnection);
+	emit stop_tag_emulation();
+	qDebug() << "XXXX NfcManager::stopTagEmulation done";
+}
 
 void NfcManager::writeUri(QString* uri) {
 	qDebug() << "XXXX NfcManager::writeUri";
