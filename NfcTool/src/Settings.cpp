@@ -16,7 +16,7 @@
 
 // General constants
 
-const char* Settings::AppVersion = "2.1";
+const char* Settings::AppVersion = "3.0";
 const char* Settings::DOMAIN = "my.domain.com";
 const char* Settings::TYPE = "myrecordtype";
 const char* Settings::CONTENT = "content";
@@ -29,6 +29,8 @@ const char* Settings::LAST_NAME = "Flintstone";
 const char* Settings::ADDRESS = "301 Cobblestone Way, Bedrock";
 const char* Settings::EMAIL = "fred@dinomail.com";
 const char* Settings::MOBILE = "+11231231234";
+const char* Settings::EMULATE_URI = "http://developer.blackberry.com";
+const char* Settings::EMULATE_TEXT = "BlackBerry Developer Zone";
 
 // NFC RTD useful constants
 

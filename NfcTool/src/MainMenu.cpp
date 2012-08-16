@@ -88,6 +88,10 @@ void MainMenu::deleteModules() {
 		delete _about;
 		_about = 0;
 	}
+	if (_emulateSp) {
+		delete _emulateSp;
+		_emulateSp = 0;
+	}
 	if (_eventLog) {
 		delete _eventLog;
 		_eventLog = 0;
@@ -107,6 +111,7 @@ void MainMenu::createModules() {
 	_writeCustom = new WriteCustom();
 	_sendVcard = new SendVcard();
 	_eventLog = EventLog::getInstance();
+	_emulateSp = new EmulateSp();
 	_about = new About();
 	qDebug() << "XXXX ...done";
 }
@@ -139,8 +144,8 @@ void MainMenu::findAndConnectControls() {
 	QObject::connect(this, SIGNAL(write_sp()), _writeSp, SLOT(show()));
 	QObject::connect(this, SIGNAL(write_text()), _writeText, SLOT(show()));
 	QObject::connect(this, SIGNAL(write_custom()), _writeCustom, SLOT(show()));
-	QObject::connect(this, SIGNAL(send_vcard_selected()), _sendVcard,
-			SLOT(show()));
+	QObject::connect(this, SIGNAL(send_vcard_selected()), _sendVcard, SLOT(show()));
+	QObject::connect(this, SIGNAL(emulate_tag_selected()), _emulateSp, SLOT(show()));
 	QObject::connect(this, SIGNAL(about_selected()), _about, SLOT(show()));
 
 	qDebug() << "XXXX ...done";
@@ -180,12 +185,18 @@ void MainMenu::onListSelectionChanged(const QVariantList indexPath) {
 			} else if (item.compare("item_custom") == 0) {
 				qDebug() << "XXXX Write Custom was selected!";
 				emit write_custom();
+
 			} else if (item.compare("item_about") == 0) {
 				qDebug() << "XXXX About was selected!";
 				emit about_selected();
+
 			} else if (item.compare("item_snep_vcard") == 0) {
 				qDebug() << "XXXX Send vCard (SNEP) was selected!";
 				emit send_vcard_selected();
+
+			} else if (item.compare("item_emulate_tag") == 0) {
+				qDebug() << "XXXX Emulate Tag was selected!";
+				emit emulate_tag_selected();
 			}
 		}
 	}
@@ -200,7 +211,6 @@ void MainMenu::onMainMenuTriggered() {
 	Application::setScene(_root);
 
 	findAndConnectControls();
-
 }
 
 void MainMenu::backFromEventLog() {

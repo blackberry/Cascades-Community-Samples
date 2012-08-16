@@ -44,7 +44,8 @@ public:
 		WRITE_TEXT_TAG,
 		WRITE_SP_TAG,
 		WRITE_CUSTOM_TAG,
-		SEND_VCARD
+		SEND_VCARD,
+		EMULATE_TAG
 	};
 
 signals:
@@ -69,6 +70,8 @@ public slots:
 	void prepareToSendVcard(const QVariant &first_name,
 			const QVariant &last_name, const QVariant &address,
 			const QVariant &email, const QVariant &mobile);
+	void prepareToEmulateTag(const QVariant &the_uri, const QVariant &the_text);
+	void prepareToStopEmulation();
 	void writeUriTag(const QVariant &uri);
 	void writeSpTag(const QVariant &sp_uri, const QVariant &sp_text);
 	void writeTextTag(const QVariant &text);
@@ -77,6 +80,8 @@ public slots:
 	void sendVcard(const QVariant &first_name, const QVariant &last_name,
 			const QVariant &address, const QVariant &email,
 			const QVariant &mobile);
+	void emulateTag(const QVariant &uri, const QVariant &text);
+	void stopEmulatingTag();
 
 public:
 	static NfcWorker* getInstance();
@@ -93,6 +98,7 @@ private:
 	void handleNfcWriteTextTagEvent(bps_event_t *event);
 	void handleNfcWriteUriTagEvent(bps_event_t *event);
 	void handleSendVcardEvent(bps_event_t *event);
+	void handleEmulateNfcEvent(bps_event_t *event);
 	void parseNdefMessage(nfc_ndef_message_t *ndefMessage);
 	nfc_ndef_record_t* makeUriRecord(uchar_t prefix, QString uri);
 	nfc_ndef_record_t* makeTextRecord(QString language, QString text);
@@ -116,6 +122,7 @@ private:
 	QMutex _interruptMutex;
 	TaskToPerform_t _taskToPerform;
 	bool _navigatorExitReceived;
+	nfc_ndef_message_t *_emulateNdefMessage;
 
 	QString _ndefUri;
 	QString _ndefText;

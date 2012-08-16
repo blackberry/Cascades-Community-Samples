@@ -5,5 +5,6 @@
     <menuitem title="Write Text"             image="asset:///images/text.png" file="write_text.qml" itemName="item_text"/>
     <menuitem title="Write Custom"           image="asset:///images/custom.png" file="write_custom.qml" itemName="item_custom"/>
     <menuitem title="Send vCard (SNEP)"      image="asset:///images/snep.png" file="snep_vcard.qml" itemName="item_snep_vcard"/>
+    <menuitem title="Emulate Tag"            image="asset:///images/tag.png" file="emulate_tag.qml" itemName="item_emulate_tag"/>
     <menuitem title="About"                  image="asset:///images/about.png" file="about.qml" itemName="item_about"/>
 </root>

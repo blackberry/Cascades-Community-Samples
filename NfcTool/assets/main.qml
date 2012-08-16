@@ -18,7 +18,10 @@ import "common"
 NavigationPane {
     id: nav
     objectName: "navPane"
-        
+    
+    function updateData() {
+    }
+    
     Page {
         id: menuListPage
         

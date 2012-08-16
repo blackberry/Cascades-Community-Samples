@@ -34,14 +34,19 @@ NfcWorker* NfcWorker::_instance;
  * BPS_EVENT_TIMEOUT(3000) ==  3 seconds timeout on BPS blocking waits
  */
 NfcWorker::NfcWorker(QObject *parent) :
-		QObject(parent), BPS_EVENT_TIMEOUT(3000), _failedToInitialize(false), _timeToDie(
-				false), _taskToPerform(NONE_SET), _navigatorExitReceived(false) {
+		QObject(parent), BPS_EVENT_TIMEOUT(3000), _failedToInitialize(false),
+				_timeToDie(false), _taskToPerform(NONE_SET), _navigatorExitReceived(false),
+				_emulateNdefMessage(0) {
 }
 
 NfcWorker::~NfcWorker() {
 	qDebug() << "XXXX NfcWorker destructor";
 	_timeToDie = true;
 	_instance = 0;
+
+	if (_emulateNdefMessage) {
+		CHECK(nfc_delete_ndef_message(_emulateNdefMessage, true));
+	}
 }
 
 NfcWorker* NfcWorker::getInstance() {
@@ -64,6 +69,18 @@ void NfcWorker::readTag() {
 	QObject::connect(this, SIGNAL(read_selected()), _eventLog, SLOT(show()));
 	qDebug() << "XXXX NfcWorker::readTag() event log connection made";
 	qDebug() << "XXXX NfcWorker::readTag() ends...";
+}
+
+void NfcWorker::emulateTag(const QVariant &uri, const QVariant &text) {
+	qDebug() << "XXXX NfcWorker::emulateTag() starts...";
+	prepareToEmulateTag(uri, text);
+	qDebug() << "XXXX NfcWorker::emulateTag() ends...";
+}
+
+void NfcWorker::stopEmulatingTag() {
+	qDebug() << "XXXX NfcWorker::stopEmulatingTag() starts...";
+	prepareToStopEmulation();
+	qDebug() << "XXXX NfcWorker::stopEmulatingTag() ends...";
 }
 
 void NfcWorker::writeUriTag(const QVariant &uri) {
@@ -333,6 +350,77 @@ void NfcWorker::prepareToReadNdefTagViaInvoke() {
 	_taskToPerform = READ_NDEF_TAG;
 }
 
+void NfcWorker::prepareToEmulateTag(const QVariant &the_uri, const QVariant &the_text) {
+	if (_failedToInitialize) {
+		return;
+	}
+
+	QString uri = the_uri.toString();
+	QString text = the_text.toString();
+
+	qDebug() << "XXXX NfcWorker::prepareToEmulateTag entered ...";
+
+	qDebug() << "XXXX setting inTagEmulationState=true";
+	StateManager* state_mgr = StateManager::getInstance();
+	state_mgr->setTagEmulationState(true);
+
+	emit clearMessages();
+	emit message(QString("Preparing to emulate NDEF tag"));
+
+	_taskToPerform = EMULATE_TAG;
+
+	nfc_ndef_record_t* spNdefRecord;
+
+	_ndefSpUri = uri;
+	_ndefSpText = text;
+
+	spNdefRecord = makeSpRecord();
+
+	if (_emulateNdefMessage) {
+		CHECK(nfc_delete_ndef_message(_emulateNdefMessage, true));
+		_emulateNdefMessage = 0;
+	}
+
+	CHECK(nfc_create_ndef_message(&_emulateNdefMessage));
+	CHECK(nfc_set_sp_uri(spNdefRecord, _ndefSpUri.toUtf8().constData()));
+	CHECK(nfc_add_sp_title(spNdefRecord, Settings::LANG_EN, _ndefSpText.toUtf8().constData()));
+	CHECK(nfc_add_ndef_record(_emulateNdefMessage, spNdefRecord));
+	CHECK(nfc_start_ndef_tag_emulation(_emulateNdefMessage));
+
+	emit message(QString("Emulating Sp Tag:"));
+	emit message(QString("%1").arg(_ndefSpUri));
+	emit message(QString("%1").arg(_ndefSpText));
+}
+
+void NfcWorker::prepareToStopEmulation() {
+	if (_failedToInitialize) {
+		return;
+	}
+
+	qDebug() << "XXXX NfcWorker::prepareToStopEmulation entered ...";
+	qDebug() << "XXXX setting inTagEmulationState=false";
+
+	StateManager* state_mgr = StateManager::getInstance();
+	state_mgr->setTagEmulationState(false);
+
+	if (state_mgr->inReadState()) {
+		_taskToPerform = READ_NDEF_TAG;
+	}
+
+	emit message(QString("Preparing to stop Tag emulation"));
+
+	if (_emulateNdefMessage) {
+		CHECK(nfc_delete_ndef_message(_emulateNdefMessage, true));
+		_emulateNdefMessage = 0;
+	}
+
+	CHECK(nfc_stop_ndef_tag_emulation());
+
+	emit message(QString("Tag emulation stopped"));
+
+	qDebug() << "XXXX NfcWorker::prepareToStopEmulation exited ...";
+}
+
 void NfcWorker::prepareToWriteNdefUriTag(const QVariant &the_uri) {
 	if (_failedToInitialize) {
 		return;
@@ -489,7 +577,7 @@ void NfcWorker::prepareToSendVcard(const QVariant &the_first_name,
  * All detected NFC events are handled here other than NDEF Read Tag events
  */
 void NfcWorker::handleNfcEvent(bps_event_t *event) {
-	emit message("Handling an NFC event");
+	//emit message("Handling an NFC event");
 	qDebug() << "XXXX Handling an NFC event";
 
 	switch (_taskToPerform) {
@@ -521,6 +609,11 @@ void NfcWorker::handleNfcEvent(bps_event_t *event) {
 	case SEND_VCARD:
 		qDebug() << "XXXX Handling an NFC event in SEND_VCARD state";
 		handleSendVcardEvent(event);
+		break;
+
+	case EMULATE_TAG:
+		qDebug() << "XXXX Handling an NFC event in EMULATE_TAG state";
+		handleEmulateNfcEvent(event);
 		break;
 
 	case NONE_SET:
@@ -559,6 +652,7 @@ void NfcWorker::handleNavigatorEvent(bps_event_t *event) {
 	case WRITE_TEXT_TAG:
 	case WRITE_URI_TAG:
 	case SEND_VCARD:
+	case EMULATE_TAG:
 	case NONE_SET:
 		qDebug() << "XXXX Ignoring a Navigator event";
 		break;
@@ -947,12 +1041,32 @@ void NfcWorker::handleSendVcardEvent(bps_event_t *event) {
 		emit message(QString("vCard sent OK"));
 	} else {
 		qDebug()
-				<< "XXXX NfcWorker::handleSendVcardEvent - NFC BPS event that we didn't register for< "
+				<< "XXXX NfcWorker::handleSendVcardEvent - NFC BPS event that we didn't register for: "
 				<< code;
 	}
 
 	qDebug() << "XXXX SendVcard done";
+}
 
+void NfcWorker::handleEmulateNfcEvent(bps_event_t *event) {
+	uint16_t code = bps_event_get_code(event);
+
+	qDebug() << "XXXX NfcWorker::handleEmulateNfcEvent - processing event code: " << code;
+
+	if (NFC_VIRTUAL_TAG_SELECTION_EVENT == code) {
+		qDebug() << "XXXX Nfc Virtual Tag Selection Event detected";
+		emit message("NFC Virtual Tag Selection Event detected");
+
+	} else if (NFC_VIRTUAL_TAG_LEFT_EVENT == code) {
+		qDebug() << "XXXX Nfc Virtual Tag Left Event detected";
+		emit message("NFC Virtual Tag Left Event detected");
+
+	} else if (NFC_VIRTUAL_TAG_READ_EVENT == code) {
+		qDebug() << "XXXX Nfc Virtual Tag Read Event detected";
+		emit message("NFC Virtual Tag Read Event detected");
+	}
+
+	qDebug() << "XXXX Emulate done";
 }
 
 nfc_ndef_record_t* NfcWorker::makeMediaRecord(QString type, QString text) {
