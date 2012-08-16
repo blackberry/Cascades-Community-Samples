@@ -57,7 +57,7 @@ void StateManager::setDetectAndWriteState(bool detect_and_write_state) {
 
 bool StateManager::inNoNfcState() const {
 	bool no_nfc_state = !(m_inReadState || m_inDetectAndWriteState
-			|| m_inNdefPushState);
+			|| m_inNdefPushState || m_inTagEmulationState);
 	qDebug() << "XXXX StateManager::inNoNfcState=" << no_nfc_state;
 	return no_nfc_state;
 }
@@ -67,6 +67,7 @@ void StateManager::setNoNfcState() {
 	m_inReadState = false;
 	m_inDetectAndWriteState = false;
 	m_inNdefPushState = false;
+	m_inTagEmulationState = false;
 	emit inReadStateChanged();
 	emit inDetectAndWriteStateChanged();
 	emit inNdefPushStateChanged();
@@ -74,7 +75,7 @@ void StateManager::setNoNfcState() {
 
 bool StateManager::inDefaultState() const {
 	bool default_state = m_inReadState
-			&& !(m_inDetectAndWriteState || m_inNdefPushState);
+			&& !(m_inDetectAndWriteState || m_inNdefPushState || m_inTagEmulationState);
 	qDebug() << "XXXX StateManager::inDefaultState=" << default_state;
 	return default_state;
 }
@@ -84,6 +85,7 @@ void StateManager::setDefaultState() {
 	m_inReadState = true;
 	m_inDetectAndWriteState = false;
 	m_inNdefPushState = false;
+	m_inTagEmulationState = false;
 	emit inDetectAndWriteStateChanged();
 	emit inNdefPushStateChanged();
 }
@@ -109,4 +111,15 @@ void StateManager::setEventLogShowing(bool event_log_showing) {
 	qDebug() << "XXXX StateManager::setEventLogShowing=" << event_log_showing;
 	m_event_log_is_showing = event_log_showing;
 	emit inEventLogShowingStateChanged();
+}
+
+bool StateManager::inTagEmulationState() const {
+	qDebug() << "XXXX StateManager::inTagEmulationState=" << m_inTagEmulationState;
+	return m_inTagEmulationState;
+}
+
+void StateManager::setTagEmulationState(bool tag_emulation_state) {
+	qDebug() << "XXXX StateManager::setTagEmulationState=" << tag_emulation_state;
+	m_inTagEmulationState = tag_emulation_state;
+	emit inTagEmulationStateChanged();
 }

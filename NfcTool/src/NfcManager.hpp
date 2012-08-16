@@ -63,6 +63,8 @@ public:
 	void sendVcard(QString* first_name, QString* last_name, QString* address,
 			QString* email, QString* mobile);
 	void stopNfcWorker();
+	void startTagEmulation(QString *uri, QString *text);
+	void stopTagEmulation();
 
 signals:
 	void start_write_uri(const QVariant &uri);
@@ -73,6 +75,8 @@ signals:
 	void start_send_vcard(const QVariant &first_name, const QVariant &last_name,
 			const QVariant &address, const QVariant &email,
 			const QVariant &mobile);
+	void start_tag_emulation(const QVariant &uri, const QVariant &text);
+	void stop_tag_emulation();
 	void nfcManagerStopped();
 
 public slots:

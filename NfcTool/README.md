@@ -21,6 +21,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
+* **V3** - Added ability to emulate virtual NDEF Tags
 * **V2.1** - Refactored to exploit features in BlackBerry Dev Alpha Device 10.0.6
 * **V2** - Added transfer of vCard using SNEP
 * **V1** - Reading and Writing NDEF tags
@@ -90,9 +91,10 @@ If you don't want to build this sample application yourself we've included a
 pre-build and signed BAR files for each version. You can find them in the 
 folder "installable-bar-files" as follows:
 
-* **NfcTool-2_1_0_2.bar** -- Signed BAR file for Version 2.1 (V2.1) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.6 )
-* **NfcTool-2_0_0_1.bar** -- Signed BAR file for Version 2 (V2) of the application  ( requires BlackBerry Dev Alpha Device Software 10.0.4 )
-* **NfcTool-1_0_0_1.bar** -- Signed BAR file for Version 1 (V1) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.4 )
+* **NfcTool-3\_0\_0\_51.bar** -- Signed BAR file for Version 3.0 (V3.0) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.6 )
+* **NfcTool-2\_1\_0\_2.bar** -- Signed BAR file for Version 2.1 (V2.1) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.6 )
+* **NfcTool-2\_0\_0\_1.bar** -- Signed BAR file for Version 2 (V2) of the application  ( requires BlackBerry Dev Alpha Device Software 10.0.4 )
+* **NfcTool-1\_0\_0\_1.bar** -- Signed BAR file for Version 1 (V1) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.4 )
 
 **Known Issues**
 

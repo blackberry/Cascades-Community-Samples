@@ -27,6 +27,7 @@
 #include "WriteCustom.hpp"
 #include "SendVcard.hpp"
 #include "About.hpp"
+#include "EmulateSp.hpp"
 #include "EventLog.hpp"
 #include "NfcManager.hpp"
 
@@ -53,6 +54,7 @@ private:
     SendVcard* _sendVcard;
     EventLog* _eventLog;
     About* _about;
+    EmulateSp *_emulateSp;
     NfcManager* _nfcManager;
     bool _launchedByInvoke;
 
@@ -75,6 +77,7 @@ signals:
     void write_text();
     void write_custom();
     void send_vcard_selected();
+    void emulate_tag_selected();
     void about_selected();
 
 public slots:
