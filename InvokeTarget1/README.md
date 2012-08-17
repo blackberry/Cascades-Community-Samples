@@ -1,6 +1,7 @@
 # Invoke Target 1
 
 Demonstrates the Invocation Framework of BlackBerry 10. This app acts as a Target that can be invoked by InvokeClient. 
+NOTE: There is another sample called InvokeTarget2 which is identical to this. If both targets are installed on the device, InvokeClient is able to demo the UX when there are two targets for a target filter.
 
 **Feature Summary**
 
