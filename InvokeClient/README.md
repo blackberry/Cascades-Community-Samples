@@ -1,6 +1,6 @@
 # Invoke Client
 
-Demonstrates the Invocation Framework of BlackBerry 10. This app acts as a client that can invoke target apps registered with the Invocation Framework. Easiest way to take it for a spin is to also download Invoke Target sample application. 
+Demonstrates the Invocation Framework of BlackBerry 10. This app acts as a client that can invoke target apps registered with the Invocation Framework. Easiest way to take it for a spin is to also download InvokeTarget1 and InvokeTarget2 samples. 
 
 **Feature Summary**
 
