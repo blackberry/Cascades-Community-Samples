@@ -1,0 +1,32 @@
+/**
+ * Lists.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This class lets us push each of the List sample pages to the stack
+
+NavigationPane {
+    id: animationsPane
+    Lists1 {
+        actions: [
+            ActionItem {
+                title: "Lists 2"
+                imageSource: "asset:///images/icons/lists2icon.png"
+                onTriggered: {
+                    animationsPane.deprecatedPushQmlByString ("lists/Lists2.qml");
+                }
+            },
+            ActionItem {
+                title: "Lists 3"
+                imageSource: "asset:///images/icons/lists3icon.png"
+                onTriggered: {
+                    animationsPane.deprecatedPushQmlByString ("lists/Lists3.qml");
+                }
+            }
+        ]
+    }
+}

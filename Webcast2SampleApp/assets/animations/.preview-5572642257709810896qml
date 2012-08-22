@@ -1,0 +1,12 @@
+import bb.cascades 1.0
+
+Page {
+    content: Container {
+        background: Color.create ("#E9C2A6")
+        preferredWidth: maxWidth
+        preferredHeight: maxHeight
+        MovableComponent {
+            imageSource: "asset:///images/icons/icon.png"
+        }
+    }
+}

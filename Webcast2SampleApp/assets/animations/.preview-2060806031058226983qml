@@ -1,0 +1,71 @@
+/**
+ * MovableComponent.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+Container {
+    property alias imageSource: image.imageSource
+    id: movableImage
+    property int touchX: 0
+    property int touchY: 0
+    ImageView {
+        id: image
+    }
+    animations: [
+        TranslateTransition {
+            id: touchPause
+            delay: 1000
+            onEnded: {
+                pulseAnimation.play ();
+            }
+        },
+        SequentialAnimation {
+            id: pulseAnimation
+            ScaleTransition {
+                duration: 350
+                fromX: 1.0
+                toX: 1.1
+                fromY: 1.0
+                toY: 1.1
+                easingCurve: StockCurve.QuadraticInOut
+            }
+            ScaleTransition {
+                duration: 350
+                fromX: 1.2
+                toX: 1.0
+                fromY: 1.2
+                toY: 1.0
+                easingCurve: StockCurve.QuadraticInOut
+            }
+            onEnded: {
+                pulseAnimation.play ();
+            }
+            onStopped: {
+                restoreScaleAnimation.play ();
+            }
+        },
+        ScaleTransition {
+            id: restoreScaleAnimation
+            duration: 200
+            toX: 1.0
+            toY: 1.0
+        }
+    ]
+    onTouch: {
+        if (event.isDown ()) {
+            touchPause.play ();
+            movableImage.touchX = event.localX
+            movableImage.touchY = event.localY
+        } else if (event.isCancel () || event.isUp ()) {
+            touchPause.stop ();
+            pulseAnimation.stop ();
+        } else if (event.isMove () && pulseAnimation.isPlaying ()) {
+            movableImage.translationX = event.screenX - movableImage.touchX;
+            movableImage.translationY = event.screenY - movableImage.touchY;
+        }
+    }
+}

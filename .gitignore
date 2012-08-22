@@ -3,3 +3,10 @@
 *.o
 HelloOggVorbis/arm/*
 HelloOggVorbis/x86/*
+SmartSignals/arm/*
+SmartSignals/x86/*
+Webcast1SampleApp/arm/*
+Webcast1SampleApp/x86/*
+Webcast2SampleApp/arm/*
+Webcast2SampleApp/x86/*
+192.168.23.128/*
