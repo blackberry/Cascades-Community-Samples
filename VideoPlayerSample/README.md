@@ -19,9 +19,9 @@ This application is built for BlackBerry 10 Beta2 SDK (June 2012)
 
 **Author (s)**
 
-* [Shadab Rashid](https://github.com/surashid)
-  [@surashid](http://twitter.com/surashid)
-  (based on an application by Brian Vanpee & Sulman Choudhry)
+[Shadab Rashid](https://github.com/surashid)
+[@surashid](http://twitter.com/surashid)
+(based on an application by Brian Vanpee & Sulman Choudhry)
 
 
 **Current issue(s)**
