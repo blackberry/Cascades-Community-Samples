@@ -1,0 +1,35 @@
+/**
+ * ReferencedAnimation.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This sample is the same as ContainedAnimation.qml but references BounceAnimation.qml
+// rather than defining the animation in-line
+
+Page {
+    content: Container {
+        background: Color.LightGray
+        Container {
+            preferredHeight: 450
+            preferredWidth: 450
+            ImageView {
+                imageSource: "asset:///images/ball.png"
+                
+                //Referene the BounceAnimation class where the animation is defined
+                animations: BounceAnimation {
+                    id: bounce
+                }
+            }
+        }
+        Button {
+            text: "Bounce the Ball"
+            onClicked: {
+                bounce.play ();
+            }
+        }
+    }
+}

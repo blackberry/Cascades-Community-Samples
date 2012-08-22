@@ -1,0 +1,44 @@
+/**
+ * TaskList.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This class will use the TaskControl custom component (see TaskControl.qml)
+
+
+Page {
+    content: Container {
+        background: Color.create ("#BEE554")
+        
+        //This TextField will get updated with the changes to any tasks
+        TextField {
+            id: updateField
+        }
+        TaskControl {
+            taskName: "Get Milk"
+            //When the task changes (CheckBox is toggled) we can capture the event here
+            onTaskStatusChanged: {
+                updateField.text = taskName + " - " + (completed ? "Completed!" : "Not Completed")
+            }
+        }
+        TaskControl {
+            taskName: "Run 20km"
+            completed: true
+            //When the task changes (CheckBox is toggled) we can capture the event here
+            onTaskStatusChanged: {
+                updateField.text = taskName + " - " + (completed ? "Completed!" : "Not Completed")
+            }
+        }
+        TaskControl {
+            taskName: "Finish Webcast"
+            //When the task changes (CheckBox is toggled) we can capture the event here
+            onTaskStatusChanged: {
+                updateField.text = taskName + " - " + (completed ? "Completed!" : "Not Completed")
+            }
+        }
+    }
+}

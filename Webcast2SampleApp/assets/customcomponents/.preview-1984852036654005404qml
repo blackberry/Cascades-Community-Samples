@@ -1,0 +1,89 @@
+import bb.cascades 1.0
+
+Container {
+    property bool selected: false
+    property bool active: false
+    property alias titleText: title.text
+    property alias descriptionText: description.text
+    property alias imageSource: ballotIcon.imageSource
+    attachedObjects: [
+        TextStyleDefinition {
+            id: blackBoldStyle
+            base: SystemDefaults.TextStyles.BodyText
+            color: Color.Black
+            fontWeight: FontWeight.Bold
+        }
+    ]
+    
+    background: selected ? Color.LightGray : Color.create("#BBFFFFFF")
+    opacity: active ? 0.75 : 1.0
+    
+    preferredHeight: 200
+    layout: StackLayout {
+        layoutDirection: LayoutDirection.LeftToRight
+    }
+    Container {
+        layoutProperties: StackLayoutProperties {
+            spaceQuota: 2.0
+        }
+        Label {
+            id: title
+            enabled: false
+            layoutProperties: StackLayoutProperties {
+                spaceQuota: 1.25
+            }
+            textStyle {
+                base: blackBoldStyle.style
+                size: 45
+            }
+        }
+        TextArea {
+            id: description
+            enabled: false
+            backgroundVisible: false
+            hintText: ""
+            preferredHeight: 50
+            layoutProperties: StackLayoutProperties {
+                spaceQuota: 3.25
+            }
+            textStyle {
+                base: SystemDefaults.TextStyles.BodyText
+                size: 30
+            }
+        }
+    }
+    Container {
+        background: selected ? Color.White : Color.Black
+        layout: StackLayout {
+            leftPadding: 10.0
+            rightPadding: 10.0
+            bottomPadding: 10.0
+            topPadding: 10.0
+        }
+        layoutProperties: StackLayoutProperties {
+            spaceQuota: 0.8
+        }
+        Container {
+            layout: DockLayout {
+            }
+            ImageView {
+                id: ballotIcon
+            }
+            Container {
+                visible: selected
+                background: Color.White
+                opacity: 0.9
+                layoutProperties: DockLayoutProperties {
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
+                }
+                Label {
+                    text: "VOTE"
+                    textStyle {
+                        base: blackBoldStyle.style
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+import bb.cascades 1.0
+
+Page {
+    content: Container {
+        background: Color.create ("#EAF5E1")
+        ListView {
+            dataModel: XmlDataModel {
+                source: "../models/samplenominees.xml"
+            }
+        }
+    }
+}

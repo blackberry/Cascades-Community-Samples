@@ -1,0 +1,32 @@
+/**
+ * Animations.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This class lets us push each of the Animations sample pages to the stack
+
+NavigationPane {
+    id: animationsPane
+    ContainedAnimation {
+        actions: [
+            ActionItem {
+                title: "Sample 2"
+                imageSource: "asset:///images/icons/animationicon2.png"
+                onTriggered: {
+                    animationsPane.deprecatedPushQmlByString ("animations/ReferencedAnimation.qml");
+                }
+            },
+            ActionItem {
+                title: "Sample 3"
+                imageSource: "asset:///images/icons/dragndropicon.png"
+                onTriggered: {
+                    animationsPane.deprecatedPushQmlByString ("animations/DragAndDropIcons.qml");
+                }
+            }
+        ]
+    }
+}
