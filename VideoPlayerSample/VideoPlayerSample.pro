@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = VideoPlayerSample
 
 CONFIG += qt warn_on debug_and_release cascades
-LIBS   += -lbb -lbbmultimedia -lmmrndclient -lstrm -lasound -lscreen
+LIBS   += -lbbmultimedia -lmmrndclient -lstrm -lasound -lscreen
 
 INCLUDEPATH += ../src
 SOURCES += ../src/*.cpp
