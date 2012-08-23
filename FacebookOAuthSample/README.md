@@ -2,8 +2,7 @@
 
 FacebookOAuthSample demonstrates the use of Qt/C++ APIs to interact with Facebook's Graph API.  It also makes use of Cascades controls to display the authentication flow.
 
-***BB10FBManager*** 
- - provides async functions to call Facebook's Graph API
+***BB10FBManager*** - provides async functions to call Facebook's Graph API
 
 ***MyFBApp*** - Cascades app that demonstrates the use of BB10FBManager
 
