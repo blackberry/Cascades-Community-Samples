@@ -1,0 +1,34 @@
+------------------------------
+Whole Auth Flow
+------------------------------
+
+https://www.facebook.com/dialog/oauth?client_id=398462743548463&redirect_uri=https://www.facebook.com/connect/login_success.html&scope=publish_stream&display=touch&response_type=token
+
+http://m.facebook.com/login.php?app_id=398462743548463&cancel=https://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.&fbconnect=1&next=https://www.facebook.com/dialog/permissions.request?_path=permissions.request&app_id=398462743548463&redirect_uri=https://www.facebook.com/connect/login_success.html&display=touch&response_type=token&perms=publish_stream&fbconnect=1&from_login=1&client_id=398462743548463&rcount=1
+
+https://m.facebook.com/login.php?m=m&next=https://www.facebook.com/dialog/permissions.request?_path=permissions.request&app_id=398462743548463&redirect_uri=https://www.facebook.com/connect/login_success.html&display=touch&response_type=token&perms=publish_stream&fbconnect=1&from_login=1&client_id=398462743548463&refsrc=http://m.facebook.com/login.php&refid=9
+
+https://www.facebook.com/dialog/permissions.request?_path=permissions.request&app_id=398462743548463&redirect_uri=https://www.facebook.com/connect/login_success.html&display=touch&response_type=token&perms=publish_stream&fbconnect=1&from_login=1&client_id=398462743548463&refsrc=http://m.facebook.com/login.php&refid=9&m_sess=soD26YxJ-RNsOTkZM&_rdr
+
+--------------------------------
+Logged in, Denied App Install
+--------------------------------
+"https://www.facebook.com/connect/login_success.html?error_reason=user_denied&error=access_denied&error_description=The+user+denied+your+request.#_=_" 
+
+----------------------------------------------
+Chose to install app, but left on permission dialog
+----------------------------------------------
+"https://www.facebook.com/dialog/permissions.request" 
+"http://www.facebook.com/home.php" 
+
+----------------------------------------------
+Installed app, unchecked permission, install
+----------------------------------------------
+"https://www.facebook.com/dialog/permissions.request" 
+"https://www.facebook.com/connect/login_success.html#access_token=AAAFqZAlZAJEi8BAMVaSqPOgDKnc1Urr5ulNxjw03rYI7vGKlZBzOnZCVNhACt2lMOYwTulKLZBTYasmrMvsoEbzygEKg2cGk846IuowGO4AZDZD&expires_in=5184000"
+
+----------------------------------------
+Installed app, accepted permissions
+----------------------------------------
+"https://www.facebook.com/dialog/permissions.request?m_sess=soD26YxJ-RNsOTkZM" 
+"https://www.facebook.com/connect/login_success.html#access_token=AAAFqZAlZAJEi8BAHt2G1DnC48j5StMQbUpZBTVgRVoUxlA13gW17CJf0MBeRnfZCgWLUiOI2tW9B9w8a2IxpgsY3jHXgT1jJmTAXy4s5JwZDZD&expires_in=5184000" 
