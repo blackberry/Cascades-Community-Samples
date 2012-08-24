@@ -1,5 +1,3 @@
 .metadata/*
 *.DS_Store
 *.o
-HelloOggVorbis/arm/*
-HelloOggVorbis/x86/*
