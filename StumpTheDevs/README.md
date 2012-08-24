@@ -2,6 +2,9 @@
 
 This directory collects challenges and solutions in the
 [Stump The BlackBerry Devs!](http://devblog.blackberry.com/2012/08/stump-blackberry-devs/) Program.
+Challenge submissions are tweets sent to [@BlackBerryDev](http://twitter.com/BlackBerryDev)
+tagged as _#StumpTheBlackBerryDevs_.  You can use a search engine like Topsy to
+[search for them](http://topsy.com/s?q=%23StumpTheBlackBerryDevs).
 
 Challenges and their solutions are grouped together.  Usually the community submits challenges and the solutions come from RIM's team, but any combinations will be accepted; we will fine-tune the arrangement as we go.
 
