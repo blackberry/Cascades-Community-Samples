@@ -1,7 +1,0 @@
-<root>
-    <item name="Chien" imagePath="asset:///images/dog.jpg" infoText="La lignée actuelle des chiens était domestiquée à partir de loups gris sur il ya 15.000 ans. Restes de chiens domestiques ont été trouvés en Sibérie et en Belgique d'environ 33.000 ans."/>
-    <item name="Chat" imagePath="asset:///images/cat.jpg" infoText="Les chats sont semblables dans l'anatomie à l'autre félins, avec de fortes, les organes flexibles, des réflexes rapides, vives griffes rétractables, et des dents adaptées à tuer de petites proies."/>
-    <item name="Cheval" imagePath="asset:///images/horse.jpg" infoText="Le cheval a évolué au cours des 45 à 55 derniers millions d'années à partir d'un petit multi-doigts créature dans le grand, un seul animal de doigts aujourd'hui."/>
-    <item name="Panda" imagePath="asset:///images/panda.jpg" infoText="Le panda géant vit dans une des chaînes de montagnes peu dans le centre de la Chine, principalement dans le Sichuan province, mais aussi dans les Shaanxi et du Gansu provinces."/>
-    <item name="Tigre" imagePath="asset:///images/tiger.jpg" infoText="Le tigre (Panthera tigris) est la plus grande espèce de félin , atteignant une longueur totale du corps d'un maximum de 3,3 mètres (11 pi) et pesant jusqu'à 306 kg (670 lb)."/>
-</root>
