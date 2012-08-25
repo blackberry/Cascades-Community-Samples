@@ -20,3 +20,10 @@ to this [Growing List](http://blackberry.github.com/approvedSignatories.html).
 [Make This!](http://rimdevblog.files.wordpress.com/2012/08/stump1.jpg) Post-it note from [Introductory Post](http://devblog.blackberry.com/2012/08/stump-blackberry-devs/) (August 10, 2012)   
 *__Solution__* from [Brian Scheirer](https://twitter.com/BrianScheirer): [Couldn't Stump Me...](http://bbcascadescode.tumblr.com/post/29860845308/couldnt-stump-me-redux) (August 20, 2012 - updated version)
 
+**Challenge**
+[Screenshot](http://www.tux-planet.fr/public/images/screenshots/software/xbmc/xbmc-media-center-videos.jpg)
+from
+Ed Kabulow, [@EKambulow](http://twitter.com/EKambulow)
+
+**Challenge**
+Request from [@alexchristou](http://twitter.com/alexchristou): _@BlackBerryDev STUMP THIS #StumpTheBlackBerryDevs http://t.co/8XFuN8yV_
