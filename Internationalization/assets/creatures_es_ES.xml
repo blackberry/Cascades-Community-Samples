@@ -1,0 +1,7 @@
+<root>
+    <item name="Perro" imagePath="asset:///images/dog.jpg" infoText="El linaje actual de los perros fue domesticada de los lobos grises hace aproximadamente 15.000 años. Los restos de perros domésticos han sido encontrados en Siberia y en Bélgica desde aproximadamente hace 33.000 años."/>
+    <item name="Gato" imagePath="asset:///images/cat.jpg" infoText="Los gatos son similares en la anatomía de los otros felinos, con cuerpos fuertes y flexibles, los reflejos rápidos y agudos garras retráctiles y dientes adaptados para matar a una presa pequeña."/>
+    <item name="Caballo" imagePath="asset:///images/horse.jpg" infoText="El caballo ha evolucionado en los últimos 45 a 55 millones de años a partir de una pequeña criatura de varios dedos en la grande, solo con punta de los animales de hoy."/>
+    <item name="Panda" imagePath="asset:///images/panda.jpg" infoText="El panda gigante vive en un cordilleras pocos en el centro de China, principalmente en Sichuan, provincia, sino también en la de Shaanxi y Gansu provincias."/>
+    <item name="Tigre" imagePath="asset:///images/tiger.jpg" infoText="El tigre (Panthera tigris) es la mayor especie de felino , alcanzando una longitud total de hasta 3,3 metros (11 pies) y un peso de hasta 306 kg (670 lb)."/>
+</root>
