@@ -1,0 +1,7 @@
+<root>
+    <item name="Dog" imagePath="asset:///images/dog.jpg" infoText="The present lineage of dogs was domesticated from gray wolves about 15,000 years ago. Remains of domesticated dogs have been found in Siberia and Belgium from about 33,000 years ago"/>
+    <item name="Cat" imagePath="asset:///images/cat.jpg" infoText="Cats are similar in anatomy to the other felids, with strong, flexible bodies, quick reflexes, sharp retractable claws, and teeth adapted to killing small prey."/>
+    <item name="Horse" imagePath="asset:///images/horse.jpg" infoText="The horse has evolved over the past 45 to 55 million years from a small multi-toed creature into the large, single-toed animal of today."/>
+    <item name="Panda" imagePath="asset:///images/panda.jpg" infoText="The giant panda lives in a few mountain ranges in central China, mainly in Sichuan province, but also in the Shaanxi and Gansu provinces."/>
+    <item name="Tiger" imagePath="asset:///images/tiger.jpg" infoText="The tiger (Panthera tigris) is the largest cat species, reaching a total body length of up to 3.3 metres (11 ft) and weighing up to 306 kg (670 lb)."/>
+</root>
