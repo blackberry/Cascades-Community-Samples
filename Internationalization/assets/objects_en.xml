@@ -1,5 +1,0 @@
-<root>
-    <item name="Automobile" imagePath="asset:///images/automobile.jpg" infoText="An automobile, autocar, motor car or car is a wheeled motor vehicle used for transporting passengers, which also carries its own engine or motor."/>
-    <item name="Mountain" imagePath="asset:///images/mountain.jpg" infoText="A mountain is a large landform that stretches above the surrounding land in a limited area usually in the form of a peak."/>
-    <item name="Telephone" imagePath="asset:///images/telephone.jpg" infoText="Developed in the mid-1870s by Alexander Graham Bell and others, the telephone has long been considered indispensable to businesses, households and governments, is now one of the most common appliances in the developed world."/>
-</root>

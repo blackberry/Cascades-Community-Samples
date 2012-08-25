@@ -1,5 +1,0 @@
-<root>
-    <item name="Automóvil" imagePath="asset:///images/automobile.jpg" infoText="Un automóvil, autocar, automóvil o un coche es una de ruedas vehículo de motor utilizado para el transporte de pasajeros , que también lleva su propio motor o el motor."/>
-    <item name="Montaña" imagePath="asset:///images/mountain.jpg" infoText="Una montaña es una gran forma de relieve que se extiende por encima de la tierra circundante en un área limitada por lo general en forma de un pico."/>
-    <item name="Teléfono" imagePath="asset:///images/telephone.jpg" infoText="Desarrollado a mediados de la década de 1870 por Alexander Graham Bell y otros, el teléfono ha sido considerado indispensable para las empresas, los hogares y los gobiernos, es ahora una de las más comunes aplicaciones en el mundo desarrollado"/>
-</root>
