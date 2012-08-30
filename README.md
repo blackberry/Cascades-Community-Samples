@@ -8,3 +8,6 @@ First contribution was the sample showed during the BlackBerry 10 [Super Jam ses
 
 
 When adding to this repo, please have a readme saying what version it works on.
+
+Challenges and Solutions to the _#StumpTheBlackBerryDev_ program are listed
+[here](http://blackberry.github.com/Cascades-Community-Samples).
