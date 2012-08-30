@@ -1,4 +1,7 @@
-#Stump the BlackBerry Devs#
+---
+layout: basic
+title: Stump the BlackBerry Devs
+---
 
 This directory collects challenges and solutions in the
 [Stump The BlackBerry Devs!](http://devblog.blackberry.com/2012/08/stump-blackberry-devs/) Program.
@@ -26,7 +29,7 @@ to this [Growing List](http://blackberry.github.com/approvedSignatories.html).
 <td style="vertical-align: top;">
 <p>
 <strong>Challenge</strong><br/>
-The post-it note from the <a href=""http://devblog.blackberry.com/2012/08/stump-blackberry-devs/">DevBlog post</a>
+The post-it note from the <a href="http://devblog.blackberry.com/2012/08/stump-blackberry-devs/">DevBlog post</a>
 that introduced the program
 on Aug 10, 2012
 (<a href="http://rimdevblog.files.wordpress.com/2012/08/stump1.jpg">original image</a>).
