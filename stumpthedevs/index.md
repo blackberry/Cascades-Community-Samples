@@ -40,7 +40,7 @@ Although the image was not intended as a challenge but Brian delivered a good so
 From <a href="https://twitter.com/BrianScheirer">Brian Scheirer</a>
 <ul style="margin-left: -1em; margin-top: -5px;">
 <li> Post: <a href="http://bbcascadescode.tumblr.com/post/29860845308/couldnt-stump-me-redux">Couldn't Stump Me...</a> (August 20, 2012).</li>
-<li> Code: On its way</li>
+<li> Code: <a href="http://github.com/blackberry/Cascades-Community-Samples/stumpers/Blamo">Cascades-Community-Samples/stumpers/Blamo</a></li>
 </ul>
 </p>
 </td>
