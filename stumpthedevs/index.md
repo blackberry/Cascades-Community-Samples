@@ -4,7 +4,7 @@ title: Stump the BlackBerry Devs
 ---
 
 This directory collects challenges and solutions in the
-[Stump The BlackBerry Devs!](http://devblog.blackberry.com/2012/08/stump-blackberry-devs/) Program.
+[Stump The BlackBerry Devs!](http://devblog.blackberry.com/2012/08/stump-blackberry-devs/) program.
 Challenges can be submitted via tweets to [@BlackBerryDev](http://twitter.com/BlackBerryDev)
 tagged _#StumpTheBlackBerryDevs_  (you can search for challenges using a tool like
 [topsy](http://topsy.com/s?q=%23StumpTheBlackBerryDevs)).
