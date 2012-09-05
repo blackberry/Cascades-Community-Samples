@@ -1,0 +1,49 @@
+/**
+ * ContainedAnimation.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This sample shows an in-line animation on an ImageView component
+
+Page {
+    content: Container {
+        background: Color.Gray
+        Container {
+            preferredHeight: 450
+            preferredWidth: 450
+            ImageView {
+                imageSource: "asset:///images/ball.png"
+                //Here we define a grouped animation to be applied to the ImageView
+                animations: ParallelAnimation {
+                    //This ID allows the animation to get referenced and started/stopped
+                    id: bounce
+                    animations: [
+                        TranslateTransition {
+                            fromY: 0
+                            toY: 300
+                            duration: 1000
+                            easingCurve: StockCurve.DoubleBounceOut
+                        },
+                        TranslateTransition {
+                            fromX: 0
+                            toX: 300
+                            duration: 1000
+                            easingCurve: StockCurve.QuarticOut
+                        }
+                    ]
+                }
+            }
+        }
+        Button {
+            text: "Bounce the Ball"
+            onClicked: {
+                //Trigger the animation to start playing
+                bounce.play ();
+            }
+        }
+    }
+}

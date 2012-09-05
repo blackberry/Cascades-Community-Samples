@@ -1,0 +1,42 @@
+/**
+ * CustomControls.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This class lets us push each of the CustomControl sample pages to the stack
+
+NavigationPane {
+    id: animationsPane
+    TaskList {
+        actions: [
+            ActionItem {
+                title: "Sample 2"
+                imageSource: "asset:///images/icons/customcontrol2.png"
+                onTriggered: {
+                    animationsPane.push (ballotPage);
+                }
+            }
+        ]
+    }
+    Ballot {
+        id: ballotPage
+        paneProperties: NavigationPaneProperties {
+            //This overrides the back button letting us add our own icon and functionality
+            backButton: ActionItem {
+                title: "First page"
+                imageSource: "asset:///images/icons/customcontrol1.png"
+                onTriggered: {
+                    animationsPane.pop ();
+                }
+            }
+        }
+    }
+    //By default all pages are added to the stack, so we pop off the second
+    onCreationCompleted: {
+        animationsPane.pop (ballotPage)
+    }
+}

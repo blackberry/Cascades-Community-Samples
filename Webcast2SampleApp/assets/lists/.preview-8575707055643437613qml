@@ -1,0 +1,45 @@
+import bb.cascades 1.0
+import "../customcomponents"
+
+Page {
+    content: Container {
+        background: Color.create ("#EAF5E1")
+        ListView {
+            dataModel: XmlDataModel {
+                id: dataModel
+                source: "../models/samplenominees.xml"
+            }
+            stickyHeaders: true
+            listItemComponents: [
+                ListItemComponent {
+                    type: "header"
+                    Container {
+                        background: Color.Gray
+                        preferredWidth: maxWidth
+                        Label {
+                            text: ListItemData.title
+                            textStyle {
+                                base: SystemDefaults.TextStyles.BodyText
+                                size: 50
+                                fontWeight: FontWeight.Bold
+                                color: Color.White
+                            }
+                        }
+                    }
+                },
+                ListItemComponent {
+                    type: "sample"
+                    ImageBallotComponent {
+                        titleText: ListItemData.title
+                        descriptionText: ListItemData.description
+                        imageSource: "../images/ballotimages/" + ListItemData.imageName
+                    }
+                }
+            ]
+            onSelectionChanged: {
+                var selectedItem = dataModel.data (indexPath);
+                selectedItem.selected = selected;
+            }
+        }
+    }
+}

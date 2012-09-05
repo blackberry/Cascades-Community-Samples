@@ -1,0 +1,46 @@
+/**
+ * Ballot.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+// This class is a simple test case for the custom ImageBallotComponent class
+
+Page {
+    content: Container {
+        background: Color.create ("#FF8C00")
+        ImageBallotComponent {
+            titleText: "Vote for Garett"
+            descriptionText: "He will make a great mayor and promises more Cascades webcasts if elected!"
+            imageSource: "asset:///images/ballotimages/garettscaled.png"
+            //Set the selected and active elements to be controlled by the ToggleButtons below 
+            selected: selected.checked
+            active: active.checked
+        }
+        Container {
+            layout: StackLayout {
+                layoutDirection: LayoutDirection.LeftToRight
+            }
+            Label {
+                text: "Ballot Selected: "
+            }
+            ToggleButton {
+                id: selected
+            }
+        }
+        Container {
+            layout: StackLayout {
+                layoutDirection: LayoutDirection.LeftToRight
+            }
+            Label {
+                text: "Ballot Active: "
+            }
+            ToggleButton {
+                id: active
+            }
+        }
+    }
+}

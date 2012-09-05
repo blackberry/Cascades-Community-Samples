@@ -1,0 +1,12 @@
+<root>
+	<header title="Animation Sample" />
+		<sample name="Animations" icon="animationicon.png" description="Explicit and Implicit Animations" qmlFile="Animations.qml" />
+	<header title="Layout Samples" />
+		<sample name="Absolute Layouts" icon="absoluteicon.png" description="Use 'x' and 'y' Coordinates" qmlFile="AbsoluteLayoutExample.qml" />
+		<sample name="Dock Layouts" icon="dockicon.png" description="Left, Right, Center, Top, Bottom" qmlFile="DockLayoutExample.qml" />
+		<sample name="Stack Layouts" icon="stackicon.png" description="From the Left, Right, Top, Bottom" qmlFile="StackLayoutExample.qml" />
+	<header title="Menu Sample" />
+		<sample name="Action and ContextAction" icon="menuicon.png" description="Page-Wide and Context Menus" qmlFile="Menus.qml" />
+	<header title="Signals and Slots Sample" />
+		<sample name="Buttons and Sliders" icon="signalsloticon.png" description="Sliders Control the Background" qmlFile="SignalsAndSlots.qml" />
+</root>
