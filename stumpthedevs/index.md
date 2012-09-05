@@ -40,7 +40,7 @@ Although the image was not intended as a challenge but Brian delivered a good so
 From <a href="https://twitter.com/BrianScheirer">Brian Scheirer</a>
 <ul style="margin-left: -1em; margin-top: -5px;">
 <li> Post: <a href="http://bbcascadescode.tumblr.com/post/29860845308/couldnt-stump-me-redux">Couldn't Stump Me...</a> (August 20, 2012).</li>
-<li> Code: On its way</li>
+<li> Code: <a href="http://github.com/blackberry/Cascades-Community-Samples/stumpers/Blamo">Cascades-Community-Samples/stumpers/Blamo</a></li>
 </ul>
 </p>
 </td>
@@ -179,4 +179,11 @@ on Aug 24, 2012.
 </table>
 
 
+####Still to Incorporate####
+
+From @igorminic - via [twitter](http://twitter.com/igorminic/statuses/243450247563583489) on Sept 5, 2012.  All links at [behance.net](http://behance.net).
+
+* [Gabi - reinvention of Facebook](http://www.behance.net/gallery/GABI-Reinvention-of-Facebook/4793585)
+* [Partly Cloudy - The Ultimate Infoviz Weather App](http://www.behance.net/gallery/Partly-Cloudy-The-Ultimate-Infoviz-Weather-App/4887789)
+* [Fashionr - iPhone App for fashion lovers](http://www.behance.net/gallery/Fashionr-iPhone-App/3539487)
 
