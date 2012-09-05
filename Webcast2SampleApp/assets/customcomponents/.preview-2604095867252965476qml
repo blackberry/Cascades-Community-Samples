@@ -1,0 +1,31 @@
+import bb.cascades 1.0
+
+NavigationPane {
+    id: animationsPane
+    TaskList {
+        actions: [
+            ActionItem {
+                title: "Sample 2"
+                imageSource: "asset:///images/icons/customcontrol2.png"
+                onTriggered: {
+                    animationsPane.deprecatedPushQmlByString ("Ballot.qml");
+                }
+            }
+        ]
+    }
+    Ballot {
+        id: ballotPage
+        paneProperties: NavigationPaneProperties {
+            backButton: ActionItem {
+                title: "First page"
+                imageSource: "asset:///images/icons/customcontrol1.png"
+                onTriggered: {
+                    animationsPane.popAndDelete ();
+                }
+            }
+        }
+        onCreationCompleted: {
+            animationsPane.pop (ballotPage)
+        }
+    }
+}

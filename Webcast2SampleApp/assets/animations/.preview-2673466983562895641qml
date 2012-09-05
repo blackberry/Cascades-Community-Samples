@@ -1,0 +1,21 @@
+/**
+ * DragAndDropIcon.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This sample simply houses our MovableComponent control (see MovableComponent.qml)
+
+Page {
+    content: Container {
+        background: Color.create ("#E9C2A6")
+        preferredWidth: maxWidth
+        preferredHeight: maxHeight
+        MovableComponent {
+            imageSource: "asset:///images/icons/icon.png"
+        }
+    }
+}

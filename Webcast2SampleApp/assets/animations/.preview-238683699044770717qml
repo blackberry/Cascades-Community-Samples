@@ -1,0 +1,28 @@
+/**
+ * BounceAnimation.qml
+ * 
+ * Copyright © 1998-2011 Research In Motion Ltd.
+ * 
+ */
+
+import bb.cascades 1.0
+
+//This sample defines an Animation which can be referenced by 
+// other classes within this application
+
+ParallelAnimation {
+    animations: [
+        TranslateTransition {
+            fromY: 0
+            toY: 300
+            duration: 1000
+            easingCurve: StockCurve.DoubleBounceOut
+        },
+        TranslateTransition {
+            fromX: 0
+            toX: 300
+            duration: 1000
+            easingCurve: StockCurve.QuarticOut
+        }
+    ]
+}
