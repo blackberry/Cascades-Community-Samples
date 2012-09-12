@@ -17,19 +17,41 @@ please use our
 [Standard Contribution Process](http://blackberry.github.com/howToContribute.html) and add your name
 to this [Growing List](http://blackberry.github.com/approvedSignatories.html).
 
-##Submissions##
+#Submissions#
 
-###Ticker Component###
+##Ticker Component##
 
-From @mkrk, via [twitter](https://twitter.com/mkrk/status/242063890949746689) on Sept 1st, 2012:  
-* How to make a custom cascades components that takes text as input and displays scroll horizontally like ticker
+<p>
+<strong>Challenge</strong><br/>
+From @mkrk, via <a href="https://twitter.com/mkrk/status/242063890949746689">twitter</a>
+on Sept 1st, 2012:  
+<ul>
+<li>How to make a custom cascades components that takes text as input and displays scroll horizontally like ticker
+</li>
+</ul>
+</p>
 
-###Transparent Webview###
+##Transparent Webview##
 
-From @bill_bsb, via [twitter](https://twitter.com/bill_bsb/status/235665610783223808) on Aug 15, 2012:
-* Transparent Webview with aninmated GIFs/CSS and native images
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="bill_bsb-large.jpeg" target="_blank"><img src="bill_bsb-large.jpeg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong><br/>
+From @bill_bsb, via <a href="https://twitter.com/bill_bsb/status/235665610783223808">twitter</a> on Aug 15, 2012:
+<ul>
+<li>Transparent Webview with aninmated GIFs/CSS and native images</li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
 
-###Post-It Note###
+
+##Post-It Note##
 
 <table>
 <tr>
@@ -37,7 +59,7 @@ From @bill_bsb, via [twitter](https://twitter.com/bill_bsb/status/23566561078322
 <a href="makethis-medium.jpg" target="_blank"><img src="makethis-small.jpg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
 </td>
 <td style="vertical-align: top;">
-<p>
+<p style="margin-top:0; -webkit-margin-top:0">
 <strong>Challenge</strong><br/>
 The post-it note from the <a href="http://devblog.blackberry.com/2012/08/stump-blackberry-devs/">DevBlog post</a>
 that introduced the program
@@ -57,7 +79,89 @@ From <a href="https://twitter.com/BrianScheirer">Brian Scheirer</a>
 </tr>
 </table>
 
-###'Greek Betting' Flow###
+
+##OK!##
+
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="flashy1980-medium.jpg" target="_blank"><img src="flashy1980-medium.jpg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong><br/>
+From @flashy1980, via <a href="https://twitter.com/flashy1980/status/234941068947382273">twitter</a> on Aug 13, 2012:
+<ul>
+<li>Multiple images with text?</li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+##CameraGenius##
+
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="igorminic-camera.jpeg" target="_blank"><img src="igorminic-camera.jpeg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong><br/>
+From @igorminic, via <a href="https://twitter.com/igorminic/status/243645823261478912">twitter</a> on Sep 6, 2012:
+<ul>
+<li>Complex interface (for a camera)</li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+
+##Grid##
+
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="eldrover.jpg" target="_blank"><img src="eldrover.jpg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong><br/>
+From @eldrover, via <a href="https://twitter.com/eldrover/status/241720357810237441
+">twitter</a> on Aug 31, 2012:
+<ul>
+<li>Programmatically generate a grid</li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+##Hide/Unhide##
+
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="pbillings512.jpeg" target="_blank"><img src="pbillings512.jpeg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong><br/>
+From @pbillings512, via <a href="https://twitter.com/pbillings512/status/241754914735403008">twitter</a> on Aug 13, 2012:
+<ul>
+<li>Hide sections disclosing information underneath</li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+
+
+
+##'Greek Betting' Flow##
 
 <table>
 <tr>
@@ -65,7 +169,7 @@ From <a href="https://twitter.com/BrianScheirer">Brian Scheirer</a>
 <a href="alexchristou-large.jpg" target="_blank"><img src="alexchristou-small.jpg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
 </td>
 <td style="vertical-align: top;">
-<p>
+<p style="margin-top:0; -webkit-margin-top:0">
 <strong>Challenge</strong><br/>
 By <a href="http://twitter.com/alexchristou">Alex Christou</a>
 requesting 4 screens with flow between them.
@@ -83,7 +187,7 @@ on Aug 21, 2012
 </tr>
 </table>
 
-###Carousels###
+##Carousels##
 
 There are a couple of requests for carousels
 
@@ -93,7 +197,7 @@ There are a couple of requests for carousels
 <a href="edkambulow-large.jpg" target="_blank"><img src="edkambulow-small.jpg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
 </td>
 <td style="vertical-align: top;">
-<p>
+<p style="margin-top:0; -webkit-margin-top:0">
 <strong>Challenge</strong><br/>
 By <a href="http://twitter.com/EKambulow">Ed Kambulow</a> for
 a 3D carousel like the one in <a href="http://xbmc.org/">XBMC</a>.
@@ -118,7 +222,7 @@ on Aug 26, 2012
 <a href="dmitriypumano-large.jpg" target="_blank"><img src="dmitriypumano-small.jpg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
 </td>
 <td style="vertical-align: top;">
-<p>
+<p style="margin-top:0; -webkit-margin-top:0">
 <strong>Challenge</strong><br/>
 By <a ref="http://vk.com/pumano">Dmitriy Pumano</a> for a horizontal 3D Carousel Gallery
 without arrows.
@@ -136,7 +240,7 @@ on Aug 26, 2012
 </tr>
 </table>
 
-####Graphs#####
+##Graphs###
 
 <table>
 <tr>
@@ -144,7 +248,7 @@ on Aug 26, 2012
 <a href="vinniesimonetti-large.jpg" target="_blank"><img src="vinniesimonetti-small.jpg" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
 </td>
 <td style="vertical-align: top;">
-<p>
+<p style="margin-top:0; -webkit-margin-top:0">
 <strong>Challenge</strong><br/>
 By <a href="http://twitter.com/rcmaniac25">Vinnie Simonetti</a>
 for a graph in the display.
@@ -163,7 +267,7 @@ on Aug 26, 2012
 </tr>
 </table>
 
-####Flip an Image####
+##Flip an Image##
 
 <table>
 <tr>
@@ -171,7 +275,7 @@ on Aug 26, 2012
 <a href="bell-large.png"><img src="bell-small.png" style="border: 2px solid lightgray; margin-right: 8px;" title="Nothing here, move on" width="64px;" align="left"/></a>
 </td>
 <td style="vertical-align: top;">
-<p>
+<p style="margin-top:0; -webkit-margin-top:0">
 <strong>Challenge</strong><br/>
 <a href="http://twitter.com/marioboikov">Mario Boikov</a> asks: <em>"How do you do a Flip around the y-axel with #Cascades and #QML?"</em>.
 Challenge via a
@@ -189,11 +293,85 @@ on Aug 24, 2012.
 </table>
 
 
-####Still to Incorporate####
+##WolfenQt##
+
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="wolfenqt.png" target="_blank"><img src="wolfenqt.png" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong><br/>
+From @bill_bsb, via <a href="https://twitter.com/bill_bsb/status/235659908970868736">twitter</a> on Aug 15, 2012:
+<ul>
+<li>Port of Wolfen Qt</li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+
+##More from Igor Minic##
 
 From @igorminic - via [twitter](http://twitter.com/igorminic/statuses/243450247563583489) on Sept 5, 2012.  All links at [behance.net](http://behance.net).
 
-* [Gabi - reinvention of Facebook](http://www.behance.net/gallery/GABI-Reinvention-of-Facebook/4793585)
-* [Partly Cloudy - The Ultimate Infoviz Weather App](http://www.behance.net/gallery/Partly-Cloudy-The-Ultimate-Infoviz-Weather-App/4887789)
-* [Fashionr - iPhone App for fashion lovers](http://www.behance.net/gallery/Fashionr-iPhone-App/3539487)
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="Facebook.png" target="_blank"><img src="Facebook.png" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong>
+</p>
+<p>
+<ul>
+<li><a href="http://www.behance.net/gallery/GABI-Reinvention-of-Facebook/4793585">GABI - Facebook</a></li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="Fashionr.png" target="_blank"><img src="Fashionr.png" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong>
+</p>
+<p>
+<ul>
+<li>
+<a href="http://www.behance.net/gallery/Fashionr-iPhone-App/3539487">Fashionr - iPhone App for fashion lovers</a>
+</li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+<table>
+<tr>
+<td style="vertical-align: top;">
+<a href="Cloudy.png" target="_blank"><img src="Cloudy.png" style="border: 2px solid lightgray; margin-right: 8px;" height="64px" align="left"/></a>
+</td>
+<td style="vertical-align: top;">
+<p style="margin-top:0; -webkit-margin-top:0">
+<strong>Challenge</strong>
+</p>
+<p>
+<ul>
+<li><a href="http://www.behance.net/gallery/Partly-Cloudy-The-Ultimate-Infoviz-Weather-App/4887789">Partly Cloudy - The Ultimate Infoviz Weather App</a></li>
+</ul>
+</p>
+</td>
+</tr>
+</table>
+
+
 
