@@ -19,6 +19,16 @@ to this [Growing List](http://blackberry.github.com/approvedSignatories.html).
 
 ##Submissions##
 
+###Ticker Component###
+
+From @mkrk, via [twitter](https://twitter.com/mkrk/status/242063890949746689) on Sept 1st, 2012:  
+* How to make a custom cascades components that takes text as input and displays scroll horizontally like ticker
+
+###Transparent Webview###
+
+From @bill_bsb, via [twitter](https://twitter.com/bill_bsb/status/235665610783223808) on Aug 15, 2012:
+* Transparent Webview with aninmated GIFs/CSS and native images
+
 ###Post-It Note###
 
 <table>
