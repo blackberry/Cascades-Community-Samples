@@ -18,7 +18,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QMetaType>
 
-#include <bb/cascades/ForeignWindow>
+#include <bb/cascades/ForeignWindowControl>
 #include <bb/cascades/Button>
 
 #include <camera/camera_api.h>
@@ -30,12 +30,9 @@ class HelloCameraApp : public QObject
 {
     Q_OBJECT
 public slots:
-	void onWindowAttached(unsigned long handle,
+	void onWindowAttached(screen_window_t win,
 	                      const QString &group,
 	                      const QString &id);
-    void onWindowDetached(unsigned long handle,
-                          const QString &group,
-                          const QString &id);
 	void onStartFront();
 	void onStartRear();
 	void onStopCamera();
@@ -58,7 +55,7 @@ private:
                               camera_buffer_t *buf,
                               void *arg);
 
-    ForeignWindow *mViewfinderWindow;
+    ForeignWindowControl *mViewfinderWindow;
     Button *mStartFrontButton;
     Button *mStartRearButton;
     Button *mStopButton;

@@ -13,11 +13,12 @@
 * limitations under the License.
 */
 #include <bb/cascades/Application>
-#include <bb/cascades/ForeignWindow>
+#include <bb/cascades/ForeignWindowControl>
 #include <bb/cascades/Container>
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/DockLayout>
-#include <bb/cascades/DockLayoutProperties>
+#include <bb/cascades/LayoutProperties>
+#include <bb/cascades/WindowProperty>
 #include <bb/cascades/Button>
 #include <bb/cascades/Page>
 
@@ -29,58 +30,40 @@
 
 using namespace bb::cascades;
 
+// define this to debug the ForeignWindowControl race condition
+#define BREAK_FWC
+// define this to enable a workaround for the above race condition
+#define WORKAROUND_FWC
+
 HelloCameraApp::HelloCameraApp() :
         mCameraHandle(CAMERA_HANDLE_INVALID)
 {
     qDebug() << "HelloCameraApp";
 
     // create our foreign window
-    // Using .id() in the builder is equivalent to mViewfinderWindow->setWindowId()
-    mViewfinderWindow = ForeignWindow::create()
-        .id(QString("cameraViewfinder"));
-    // NOTE that there is a bug in ForeignWindow in 10.0.6 whereby the
-    // SCREEN_PROPERTY_SOURCE_SIZE is updated when windows are attached.
-    // We don't want this to happen, so we are disabling WindowFrameUpdates.
-    // What this means is that if the ForeignWindow geometry is changed, then
-    // the underlying screen window properties are not automatically updated to
-    // match.  You will have to manually do so by listening for controlFrameChanged
-    // signals.  This is outside of the scope of this sample.
-    mViewfinderWindow->setWindowFrameUpdateEnabled(false);
+    mViewfinderWindow = ForeignWindowControl::create()
+        .windowId(QString("cameraViewfinder"));
+    // Allow Cascades to update the native window's size, position, and visibility, but not the source-size.
+    // Cascades may otherwise attempt to redefine the buffer source-size to match the window size, which would yield
+    // undesirable results.  You can experiment with this if you want to see what I mean.
+    mViewfinderWindow->setUpdatedProperties(WindowProperty::Position | WindowProperty::Size | WindowProperty::Visible);
 
     QObject::connect(mViewfinderWindow,
-                     SIGNAL(windowAttached(unsigned long,
-                                           const QString &, const QString &)),
-                     this,
-                     SLOT(onWindowAttached(unsigned long,
-                          const QString &,const QString &)));
-
-    // NOTE that there is a bug in ForeignWindow in 10.0.6 whereby
-    // when a window is detached, it's windowHandle is not reset to 0.
-    // We need to connect a detach handler to implement a workaround.
-    QObject::connect(mViewfinderWindow,
-                     SIGNAL(windowDetached(unsigned long,
-                                           const QString &, const QString &)),
-                     this,
-                     SLOT(onWindowDetached(unsigned long,
-                          const QString &,const QString &)));
+                     SIGNAL(windowAttached(screen_window_t, const QString &, const QString &)),
+                     this, SLOT(onWindowAttached(screen_window_t, const QString &,const QString &)));
 
     // create a bunch of camera control buttons
     // NOTE: some of these buttons are not initially visible
-    mStartFrontButton = Button::create("Front Camera");
-    mStartRearButton = Button::create("Rear Camera");
-    mStopButton = Button::create("Stop Camera");
+    mStartFrontButton = Button::create("Front Camera")
+        .onClicked(this, SLOT(onStartFront()));
+    mStartRearButton = Button::create("Rear Camera")
+        .onClicked(this, SLOT(onStartRear()));
+    mStopButton = Button::create("Stop Camera")
+        .onClicked(this, SLOT(onStopCamera()));
     mStopButton->setVisible(false);
-    mTakePictureButton = Button::create("Take Picture");
+    mTakePictureButton = Button::create("Take Picture")
+        .onClicked(this, SLOT(onTakePicture()));
     mTakePictureButton->setVisible(false);
-    // connect actions to the buttons
-    QObject::connect(mStartFrontButton,
-                     SIGNAL(clicked()), this, SLOT(onStartFront()));
-    QObject::connect(mStartRearButton,
-                     SIGNAL(clicked()), this, SLOT(onStartRear()));
-    QObject::connect(mStopButton,
-                     SIGNAL(clicked()), this, SLOT(onStopCamera()));
-    QObject::connect(mTakePictureButton,
-                     SIGNAL(clicked()), this, SLOT(onTakePicture()));
 
     // note that since saving pictures happens in a different thread,
     // we need to use a signal/slot in order to re-enable the 'take picture' button.
@@ -92,22 +75,20 @@ HelloCameraApp::HelloCameraApp() :
     Container* container = Container::create()
         .layout(DockLayout::create())
         .add(Container::create()
-            .layoutProperties(DockLayoutProperties::create()
-                .horizontal(HorizontalAlignment::Center)
-                .vertical(VerticalAlignment::Center))
+            .horizontal(HorizontalAlignment::Center)
+            .vertical(VerticalAlignment::Center)
             .add(mViewfinderWindow))
         .add(Container::create()
-            .layoutProperties(DockLayoutProperties::create()
-                .horizontal(HorizontalAlignment::Center)
-                .vertical(VerticalAlignment::Bottom))
+            .horizontal(HorizontalAlignment::Center)
+            .vertical(VerticalAlignment::Bottom)
             .layout(StackLayout::create()
-                .direction(LayoutDirection::LeftToRight))
+                .orientation(LayoutOrientation::LeftToRight))
             .add(mStartFrontButton)
             .add(mStartRearButton)
             .add(mTakePictureButton)
             .add(mStopButton));
 
-   Application::setScene(Page::create().content(container));
+   Application::instance()->setScene(Page::create().content(container));
 }
 
 
@@ -117,42 +98,28 @@ HelloCameraApp::~HelloCameraApp()
 }
 
 
-void HelloCameraApp::onWindowAttached(unsigned long handle,
+void HelloCameraApp::onWindowAttached(screen_window_t win,
                                       const QString &group,
                                       const QString &id)
 {
-    qDebug() << "onWindowAttached: " << handle << ", " << group << ", " << id;
-    screen_window_t win = (screen_window_t)handle;
+#ifdef BREAK_FWC
+    // typically a value of 1ms will cause the window to only be visible the
+    // first time you start it. on subsequent invocations, it does not become visible
+    // unless you force a refresh of the cascades window.
+    // a value of 10 ms seems to expose the problem every time.
+    usleep(10000);
+#endif
+    qDebug() << "onWindowAttached: " << win << ", " << group << ", " << id;
     // set screen properties to mirror if this is the front-facing camera
     int i = (mCameraUnit == CAMERA_UNIT_FRONT);
     screen_set_window_property_iv(win, SCREEN_PROPERTY_MIRROR, &i);
     // put the viewfinder window behind the cascades window
     i = -1;
     screen_set_window_property_iv(win, SCREEN_PROPERTY_ZORDER, &i);
-    // make the window visible.  by default, the camera creates an invisible
-    // viewfinder, so that the user can decide when and where to place it
-    i = 1;
-    screen_set_window_property_iv(win, SCREEN_PROPERTY_VISIBLE, &i);
-    // There is a bug in ForeignWindow in 10.0.6 which defers window context
-    // flushing until some future UI update.  As a result, the window will
-    // not actually be visible until someone flushes the context.  This is
-    // fixed in the next release.  For now, we will just manually flush the
-    // window context.
-    screen_context_t ctx;
-    screen_get_window_property_pv(win, SCREEN_PROPERTY_CONTEXT, (void**)&ctx);
-    screen_flush_context(ctx, 0);
-}
-
-
-void HelloCameraApp::onWindowDetached(unsigned long handle,
-                                      const QString &group,
-                                      const QString &id)
-{
-    qDebug() << "onWindowDetached: " << handle << ", " << group << ", " << id;
-    // There is a bug in ForeignWindow in 10.0.6 whereby the windowHandle is not
-    // reset to 0 when a detach event happens.  We must forcefully zero it here
-    // in order for a re-attach to work again in the future.
-    mViewfinderWindow->setWindowHandle(0);
+#ifdef WORKAROUND_FWC
+    mViewfinderWindow->setVisible(false);
+    mViewfinderWindow->setVisible(true);
+#endif
 }
 
 
@@ -173,7 +140,6 @@ int HelloCameraApp::createViewfinder(camera_unit_t cameraUnit,
         return EIO;
     }
     qDebug() << "camera opened";
-    // configure viewfinder properties so our ForeignWindow can find the resulting screen window
     if (camera_set_photovf_property(mCameraHandle,
                                     CAMERA_IMGPROP_WIN_GROUPID, group.toStdString().c_str(),
                                     CAMERA_IMGPROP_WIN_ID, id.toStdString().c_str()) == CAMERA_EOK) {
@@ -259,6 +225,7 @@ void HelloCameraApp::onStartFront()
 {
     qDebug() << "onStartFront";
     if (mViewfinderWindow) {
+        // create a window and see if we can catch the join
         if (createViewfinder(CAMERA_UNIT_FRONT,
                              mViewfinderWindow->windowGroup().toStdString().c_str(),
                              mViewfinderWindow->windowId().toStdString().c_str()) == EOK) {
@@ -271,6 +238,7 @@ void HelloCameraApp::onStartRear()
 {
     qDebug() << "onStartRear";
     if (mViewfinderWindow) {
+        // create a window and see if we can catch the join
         if (createViewfinder(CAMERA_UNIT_REAR,
                              mViewfinderWindow->windowGroup().toStdString().c_str(),
                              mViewfinderWindow->windowId().toStdString().c_str()) == EOK) {
@@ -283,9 +251,8 @@ void HelloCameraApp::onStopCamera()
 {
     qDebug() << "onStopCamera";
     if (mCameraHandle != CAMERA_HANDLE_INVALID) {
-        // NOTE that closing the camera causes the viewfinder to stop.
-        // When the viewfinder stops, it's window is destroyed and the
-        // ForeignWindow object will emit a windowDetached signal.
+        // closing the camera handle causes the viewfinder to stop which will in turn
+        // cause it to detach from the foreign window
         camera_close(mCameraHandle);
         mCameraHandle = CAMERA_HANDLE_INVALID;
         // reset button visibility
