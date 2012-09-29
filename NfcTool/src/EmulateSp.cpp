@@ -33,9 +33,9 @@ EmulateSp::EmulateSp() :
 	qDebug() << "XXXX constructing EmulateSp...";
 	_uri = Settings::EMULATE_URI;
 	_text = Settings::EMULATE_TEXT;
-	_qml = QmlDocument::create("emulate_sp.qml");
+	_qml = QmlDocument::create("asset:///emulate_sp.qml");
 	_qml->setContextProperty("_emulateSp", this);
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -72,7 +72,7 @@ void EmulateSp::findAndConnectControls() {
 	QObject::connect(txf_text, SIGNAL(textChanged(QString)), this,
 			SLOT(onTextChanged(QString)));
 
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	qDebug() << "XXXX ...done";
 }
@@ -107,7 +107,7 @@ void EmulateSp::show() {
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
 	// refresh _root
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	navpane->push(_root);
 
 	//find and reconnect all the controls again, because we had to refresh the _root pointer

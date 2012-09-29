@@ -12,7 +12,6 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 * [Cascades for BlackBerry 10](https://bdsc.webapps.blackberry.com/cascades/)
 * [BlackBerry Native SDK for Tablet OS](https://bdsc.webapps.blackberry.com/native/)
 
-
 **Author(s)** 
 
 * [John Murray](https://github.com/jcmurray)
@@ -20,12 +19,17 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 
 **Release History**
-
+* **V3.1** - Modified for Beta 3 release compatibility
+* **V3** - Added ability to emulate virtual NDEF Tags
 * **V3** - Added ability to emulate virtual NDEF Tags
 * **V2.1** - Refactored to exploit features in BlackBerry Dev Alpha Device 10.0.6
 * **V2** - Added transfer of vCard using SNEP
 * **V1** - Reading and Writing NDEF tags
 
+**Known Issues**
+1. Reading a tag when the app is not running causes the app to be launched but the event log is not automatically switched to. Read tag with app already running
+   and the event log is correctly shown.
+2. Work is in progress to add functionality relating to UICC secure element APIs. This is not yet complete and so the code is not yet connected to the UI.
 
 **Dependencies**
 
@@ -66,7 +70,6 @@ Here's what you should do:
 - - -
 	...
 	<invoke-target id="com.example.NfcTool">
-		<require-source-permissions>invoke_across_perimeters</require-source-permissions>
 		<type>APPLICATION</type>
 		<filter>
 			<action>bb.action.OPEN</action>

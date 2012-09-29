@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 		app.installTranslator(&translator);
 	}
 
-	MainMenu mainApp;
+	MainMenu mainApp(&app);
 	QObject::connect(&app, SIGNAL(aboutToQuit()), &mainApp,
 			SLOT(cleanUpOnExit()));
 

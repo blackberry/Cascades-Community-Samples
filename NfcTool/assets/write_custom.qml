@@ -24,14 +24,14 @@ Page {
 
         Container {
             layout: StackLayout {
-                topPadding: 10
-                leftPadding: 30
-                rightPadding: 30
             }
 
-            TextArea {
+            topPadding: 10
+            leftPadding: 30
+            rightPadding: 30
+
+            Label {
                 text: "Write a Custom Tag"
-                editable: false
                 textStyle {
                     base: SystemDefaults.TextStyles.BigText
                     color: Color.LightGray
@@ -39,18 +39,16 @@ Page {
                 }
             }
 
-		    TextArea {
-		        editable: false
+		    Label {
 		        text: "Enter the domain for your EXTERNAL type"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
-		            lineSpacing: 1.1
+		            lineHeight: 1.1
 		        }
 		    }
 		
 		    TextArea {
-		        preferredHeight: 65
 		        id: txf_domain
 		        objectName: "txf_domain"
 		        hintText: "Enter the domain for your EXTERNAL type"
@@ -60,18 +58,16 @@ Page {
 		        }
 		    }
 		    
-		    TextArea {
-		        editable: false
+		    Label {
 		        text: "Enter your chosen Type Name"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
-		            lineSpacing: 1.1
+		            lineHeight: 1.1
 		        }
 		    }
 		
 		    TextArea {
-		        preferredHeight: 65
 		        id: txf_type
 		        objectName: "txf_type"
 		        hintText: "Enter your chosen type name"
@@ -81,18 +77,16 @@ Page {
 		        }
 		    }
 		    
-		    TextArea {
-		        editable: false
+		    Label {
 		        text: "Enter your tag Content"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
-		            lineSpacing: 1.1
+		            lineHeight: 1.1
 		        }
 		    }
 		
 		    TextArea {
-		        preferredHeight: 65
 		        id: txf_content
 		        objectName: "txf_content"
 		        hintText: "Enter your tag content"
@@ -102,13 +96,12 @@ Page {
 		        }
 		    }   
 
-            TextArea {
-                editable: false
+            Label {
                 text: "Once you are happy with the values you have specified in the fields above press the Write button in the Action Bar below.\n\nYou will then be presented with an Event Log screen where you will be able to present a tag to the handset to have your data written to it."
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
                     color: Color.LightGray
-                    lineSpacing: 1.1
+                    lineHeight: 1.1
                 }
             }
         }

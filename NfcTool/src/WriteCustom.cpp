@@ -31,9 +31,9 @@ WriteCustom::WriteCustom() :
 	_domain = Settings::DOMAIN;
 	_type = Settings::TYPE;
 	_content = Settings::CONTENT;
-	_qml = QmlDocument::create("write_custom.qml");
+	_qml = QmlDocument::create("asset:///write_custom.qml");
 	_qml->setContextProperty("_writeCustMenu", this);
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -73,7 +73,7 @@ void WriteCustom::findAndConnectControls() {
 	QObject::connect(txf_content, SIGNAL(textChanged(QString)), this,
 			SLOT(onContentChanged(QString)));
 
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	qDebug() << "XXXX ...done";
 }
@@ -106,7 +106,7 @@ void WriteCustom::show() {
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
 
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	navpane->push(_root);
 
 	findAndConnectControls();

@@ -39,6 +39,13 @@ public:
 	static const char* MOBILE;
 	static const char* EMULATE_URI;
 	static const char* EMULATE_TEXT;
+	static const char* HEX_CLA;
+	static const char* HEX_INS;
+	static const char* HEX_P1P2;
+	static const char* HEX_LC;
+	static const char* HEX_COMMAND;
+	static const char* HEX_LE;
+	static const char* AID;
 
 	// NFC RTD useful constants
 

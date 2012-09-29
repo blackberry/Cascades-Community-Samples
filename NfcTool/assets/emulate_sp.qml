@@ -24,14 +24,14 @@ Page {
         
         Container {
             layout: StackLayout {
-                topPadding: 10
-                leftPadding: 30
-                rightPadding: 30
             }
 
-            TextArea {
+            topPadding: 10
+            leftPadding: 30
+            rightPadding: 30
+
+            Label {
                 text: "Emulate a Smart Tag"
-                editable: false
                 textStyle {
                     base: SystemDefaults.TextStyles.BigText
                     color: Color.LightGray
@@ -39,18 +39,16 @@ Page {
                 }
             }
 
-		    TextArea {
-		        editable: false
+		    Label {
 		        text: "Enter the URI for your tag"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
-		            lineSpacing: 1.1
+		            lineHeight: 1.1
 		        }
 		    }
 		
 		    TextArea {
-		        preferredHeight: 65
 		        id: txf_uri
 		        objectName: "txf_uri"
 		        hintText: "Enter the URI for your tag"
@@ -60,18 +58,16 @@ Page {
 		        }
 		    }
 		    
-		    TextArea {
-		        editable: false
+		    Label {
 		        text: "Enter some text for your tag"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
-		            lineSpacing: 1.1
+		            lineHeight: 1.1
 		        }
 		    }
 		
 		    TextArea {
-		        preferredHeight: 65
 		        id: txf_text
 		        objectName: "txf_text"
 		        hintText: "Enter some text for your tag"
@@ -81,15 +77,6 @@ Page {
 		        }
 		    }   
 
-            TextArea {
-                editable: false
-                text: "Once you are happy with the values you have specified in the fields above press the Emulate button in the Action Bar below.\n\nYou will then be presented with an Event Log screen where you will be able to present your virtual tag to a reader."
-                textStyle {
-                    base: SystemDefaults.TextStyles.BodyText
-                    color: Color.LightGray
-                    lineSpacing: 1.1
-                }
-            }
         }
 	}
 	

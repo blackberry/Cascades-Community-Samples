@@ -26,12 +26,12 @@ AlternatingListItem::~AlternatingListItem() {
 }
 
 void AlternatingListItem::setup(const QString& qmlFile) {
-	QmlDocument* document = QmlDocument::create(this, qmlFile);
+	QmlDocument* document = QmlDocument::create(qmlFile);
 	QDeclarativeContext *derivedContext = new QDeclarativeContext(
 			document->documentContext(), this);
 	derivedContext->setContextProperty("_item", this);
 
-	setRoot(document->createRootNode<Control>(derivedContext));
+	setRoot(document->createRootObject<Control>(derivedContext));
 }
 
 void AlternatingListItem::setTitle(const QString& title) {

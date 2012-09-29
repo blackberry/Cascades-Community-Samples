@@ -32,9 +32,9 @@ SendVcard::SendVcard() {
 	_address = Settings::ADDRESS;
 	_email = Settings::EMAIL;
 	_mobile = Settings::MOBILE;
-	_qml = QmlDocument::create("vcard.qml");
+	_qml = QmlDocument::create("asset:///vcard.qml");
 	_qml->setContextProperty("_sendVcard", this);
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -81,7 +81,7 @@ void SendVcard::findAndConnectControls() {
 			SLOT(onMobileChanged(QString)));
 
 	// refresh _root
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	qDebug() << "XXXX ...done";
 }
@@ -111,7 +111,7 @@ void SendVcard::show() {
 	qDebug() << "XXXX finding NavigationPane object from cache";
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	navpane->push(_root);
 
 	findAndConnectControls();

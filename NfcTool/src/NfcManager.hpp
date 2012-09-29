@@ -27,7 +27,7 @@
 
 class NfcManager: public QObject {
 
-	Q_OBJECT
+Q_OBJECT
 
 private:
 	NfcManager();
@@ -62,6 +62,7 @@ public:
 	void writeCustom(QString* domain, QString* type, QString* payload);
 	void sendVcard(QString* first_name, QString* last_name, QString* address,
 			QString* email, QString* mobile);
+	void iso7816Test(QString* aid, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le);
 	void stopNfcWorker();
 	void startTagEmulation(QString *uri, QString *text);
 	void stopTagEmulation();
@@ -72,11 +73,10 @@ signals:
 	void start_write_text(const QVariant &text);
 	void start_write_custom(const QVariant &domain, const QVariant &type,
 			const QVariant &payload);
-	void start_send_vcard(const QVariant &first_name, const QVariant &last_name,
-			const QVariant &address, const QVariant &email,
-			const QVariant &mobile);
+	void start_send_vcard(const QVariant &first_name, const QVariant &last_name, const QVariant &address, const QVariant &email, const QVariant &mobile);
 	void start_tag_emulation(const QVariant &uri, const QVariant &text);
 	void stop_tag_emulation();
+    void start_iso7816_test(const QVariant &aid, const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hex_p1p2, const QVariant &hex_lc, const QVariant &hex_command, const QVariant &hex_le );
 	void nfcManagerStopped();
 
 public slots:

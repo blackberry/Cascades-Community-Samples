@@ -26,6 +26,7 @@
 #include "WriteText.hpp"
 #include "WriteCustom.hpp"
 #include "SendVcard.hpp"
+#include "ApduDetails.hpp"
 #include "About.hpp"
 #include "EmulateSp.hpp"
 #include "EventLog.hpp"
@@ -39,7 +40,7 @@ class MainMenu : public QObject
 	Q_PROPERTY(QString appVersion READ appVersion WRITE setAppVersion NOTIFY detectAppVersionChanged)
 
 public:
-    MainMenu();
+    MainMenu(Application *app);
     virtual ~MainMenu();
 
     QString appVersion() const;
@@ -52,6 +53,7 @@ private:
     WriteText* _writeText;
     WriteCustom* _writeCustom;
     SendVcard* _sendVcard;
+    ApduDetails* _apduDetails;
     EventLog* _eventLog;
     About* _about;
     EmulateSp *_emulateSp;
@@ -69,6 +71,8 @@ private:
 	AbstractPane *_root;
     void findAndConnectControls();
 
+    Application *_app;
+
 signals:
     void detectAppVersionChanged();
     void read_selected();
@@ -78,6 +82,7 @@ signals:
     void write_custom();
     void send_vcard_selected();
     void emulate_tag_selected();
+    void iso7816_selected();
     void about_selected();
 
 public slots:

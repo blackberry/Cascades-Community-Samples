@@ -33,9 +33,9 @@ WriteSp::WriteSp() :
 	qDebug() << "XXXX constructing WriteSp...";
 	_uri = Settings::SP_URI;
 	_text = Settings::SP_TEXT;
-	_qml = QmlDocument::create("write_sp.qml");
+	_qml = QmlDocument::create("asset:///write_sp.qml");
 	_qml->setContextProperty("_writeSpMenu", this);
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -72,7 +72,7 @@ void WriteSp::findAndConnectControls() {
 	QObject::connect(txf_text, SIGNAL(textChanged(QString)), this,
 			SLOT(onTextChanged(QString)));
 
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	qDebug() << "XXXX ...done";
 }
@@ -104,7 +104,7 @@ void WriteSp::show() {
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
 	// refresh _root
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	navpane->push(_root);
 
 	//find and reconnect all the controls again, because we had to refresh the _root pointer

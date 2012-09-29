@@ -32,9 +32,9 @@ WriteURI::WriteURI() :
 		_appVersion(QString(Settings::AppVersion)) {
 	qDebug() << "XXXX constructing WriteURI...";
 	_uri = Settings::URI;
-	_qml = QmlDocument::create("write_uri.qml");
+	_qml = QmlDocument::create("asset:///write_uri.qml");
 	_qml->setContextProperty("_writeUriMenu", this);
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	createModules();
 	connectNavigationSignals();
@@ -68,7 +68,7 @@ void WriteURI::findAndConnectControls() {
 	QObject::connect(txf_uri, SIGNAL(textChanged(QString)), this,
 			SLOT(onUriChanged(QString)));
 
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 
 	qDebug() << "XXXX ...done";
 }
@@ -100,7 +100,7 @@ void WriteURI::show() {
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
 
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	navpane->push(_root);
 
 	findAndConnectControls();

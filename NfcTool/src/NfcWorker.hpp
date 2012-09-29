@@ -81,6 +81,8 @@ public slots:
 			const QVariant &address, const QVariant &email,
 			const QVariant &mobile);
 	void emulateTag(const QVariant &uri, const QVariant &text);
+	void doIso7816Test(const QVariant &aid, const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hexp1p2, const QVariant &hex_lc,
+			const QVariant &hex_command, const QVariant &hex_le);
 	void stopEmulatingTag();
 
 public:
@@ -136,7 +138,13 @@ private:
 	QString _address;
 	QString _email;
 	QString _mobile;
-
+	QString _aid;
+	QString _hex_cla;
+	QString _hex_ins;
+	QString _hexp1p2;
+	QString _hex_lc;
+	QString _hex_command;
+	QString _hex_le;
 	EventLog* _eventLog;
 };
 

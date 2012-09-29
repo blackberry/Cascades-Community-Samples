@@ -41,28 +41,28 @@ EventLog* EventLog::getInstance() {
 
 EventLog::EventLog() :
 		_appVersion(QString(Settings::AppVersion)) {
-	_qml = QmlDocument::create().load("eventlog.qml");
+	_qml = QmlDocument::create("asset:///eventlog.qml");
 	_qml->setContextProperty("_el", this);
 
 	Logger* logger = Logger::getInstance();
 
 	AlternatingListDataManager* alternatingListDataManager =
-			new AlternatingListDataManager("AlternatingListItemTemplate.qml");
+			new AlternatingListDataManager("asset:///AlternatingListItemTemplate.qml");
 	AlternatingListDataModel* alternatingListDataModel = logger->getDataModel();
 
-	itemmanager = alternatingListDataManager;
+	itemprovider = alternatingListDataManager;
 	datamodel = alternatingListDataModel;
 
 	_qml->setContextProperty("_modelObj", datamodel);
 	_qml->documentContext()->setContextProperty("_model",
 			QVariant::fromValue(datamodel));
 	_qml->documentContext()->setContextProperty("_manager",
-			QVariant::fromValue(itemmanager));
+			QVariant::fromValue(itemprovider));
 
 	alternatingListDataModel->ascendingSortOrder(false);
 
 	qDebug() << "XXXX Constructing EventLog root Page";
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	findAndConnectControls();
 }
 
@@ -100,7 +100,7 @@ void EventLog::show() {
 
 	StateManager* state_mgr = StateManager::getInstance();
 
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	navpane->push(_root);
 
 	state_mgr->setEventLogShowing(true);
@@ -112,8 +112,8 @@ void EventLog::onBackNavigationTriggered() {
 	qDebug() << "XXXX finding NavigationPane object from cache";
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
-	_root = _qml->createRootNode<Page>();
-	navpane->popAndDelete();
+	_root = _qml->createRootObject<Page>();
+	navpane->pop();
 
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setEventLogShowing(false);

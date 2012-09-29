@@ -26,12 +26,13 @@
 
 using namespace bb::cascades;
 
-MainMenu::MainMenu() :
+MainMenu::MainMenu(Application *app) :
 		_nfcManager(0), _appVersion(QString(Settings::AppVersion)) {
 
 	qDebug() << "XXXX NFC Tool V" << Settings::AppVersion;
 	qDebug() << "XXXX loading main menu qml document";
-	_qml = QmlDocument::create("main.qml");
+	_app = app;
+	_qml = QmlDocument::create("asset:///main.qml");
 	_qml->setContextProperty("_mainMenu", this);
 	StateManager* state_mgr = StateManager::getInstance();
 	_qml->setContextProperty("_stateManager", state_mgr);
@@ -84,6 +85,10 @@ void MainMenu::deleteModules() {
 		delete _sendVcard;
 		_sendVcard = 0;
 	}
+	if (_apduDetails) {
+		delete _apduDetails;
+		_apduDetails = 0;
+	}
 	if (_about) {
 		delete _about;
 		_about = 0;
@@ -110,6 +115,7 @@ void MainMenu::createModules() {
 	_writeText = new WriteText();
 	_writeCustom = new WriteCustom();
 	_sendVcard = new SendVcard();
+	_apduDetails = new ApduDetails();
 	_eventLog = EventLog::getInstance();
 	_emulateSp = new EmulateSp();
 	_about = new About();
@@ -146,6 +152,7 @@ void MainMenu::findAndConnectControls() {
 	QObject::connect(this, SIGNAL(write_custom()), _writeCustom, SLOT(show()));
 	QObject::connect(this, SIGNAL(send_vcard_selected()), _sendVcard, SLOT(show()));
 	QObject::connect(this, SIGNAL(emulate_tag_selected()), _emulateSp, SLOT(show()));
+	QObject::connect(this, SIGNAL(iso7816_selected()), _apduDetails, SLOT(show()));
 	QObject::connect(this, SIGNAL(about_selected()), _about, SLOT(show()));
 
 	qDebug() << "XXXX ...done";
@@ -197,6 +204,11 @@ void MainMenu::onListSelectionChanged(const QVariantList indexPath) {
 			} else if (item.compare("item_emulate_tag") == 0) {
 				qDebug() << "XXXX Emulate Tag was selected!";
 				emit emulate_tag_selected();
+			} else if (item.compare("item_iso7816") == 0) {
+				qDebug() << "XXXX ISO7816 APDU was selected!";
+				StateManager* state_mgr = StateManager::getInstance();
+				state_mgr->setEventLogShowing(true);
+				emit iso7816_selected();
 			}
 		}
 	}
@@ -205,10 +217,10 @@ void MainMenu::onListSelectionChanged(const QVariantList indexPath) {
 void MainMenu::onMainMenuTriggered() {
 	qDebug() << "XXXX onMainMenuTriggered()";
 
-	_root = _qml->createRootNode<AbstractPane>();
+	_root = _qml->createRootObject<AbstractPane>();
 
 	qDebug() << "XXXX setting scene to main menu";
-	Application::setScene(_root);
+	_app->setScene(_root);
 
 	findAndConnectControls();
 }

@@ -24,14 +24,14 @@ Page {
 
         Container {
             layout: StackLayout {
-                topPadding: 10
-                leftPadding: 30
-                rightPadding: 30
             }
 
-            TextArea {
+            topPadding: 10
+            leftPadding: 30
+            rightPadding: 30
+
+            Label {
                 text: "Write a Text Tag"
-                editable: false
                 textStyle {
                     base: SystemDefaults.TextStyles.BigText
                     color: Color.LightGray
@@ -39,18 +39,16 @@ Page {
                 }
             }
 
-		    TextArea {
-		        editable: false
+		    Label {
 		        text: "Enter the text you wish to write to the tag"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
-		            lineSpacing: 1.1
+		            lineHeight: 1.1
 		        }
 		    }
 		
 		    TextArea {
-		        preferredHeight: 65
 		        id: txf_text
 		        objectName: "txf_text"
 		        hintText: "Enter the text you wish to write to the tag"
@@ -60,13 +58,12 @@ Page {
 		        }
 			}
 
-            TextArea {
-                editable: false
+            Label {
                 text: "Once you are happy with the values you have specified in the fields above press the Write button in the Action Bar below.\n\nYou will then be presented with an Event Log screen where you will be able to present a tag to the handset to have your data written to it."
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
                     color: Color.LightGray
-                    lineSpacing: 1.1
+                    lineHeight: 1.1
                 }
             }
         }

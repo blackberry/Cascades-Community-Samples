@@ -30,9 +30,9 @@ using namespace bb::cascades;
 About::About() :
 		_appVersion(QString(Settings::AppVersion)) {
 	qDebug() << "XXXX constructing About...";
-	_qml = QmlDocument::create("about.qml");
+	_qml = QmlDocument::create("asset:///about.qml");
 	_qml->setContextProperty("_about", this);
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 }
 
 About::~About() {
@@ -43,7 +43,7 @@ void About::show() {
 	qDebug() << "XXXX finding NavigationPane object from cache";
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
-	_root = _qml->createRootNode<Page>();
+	_root = _qml->createRootObject<Page>();
 	navpane->push(_root);
 }
 

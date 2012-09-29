@@ -11,7 +11,8 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/import bb.cascades 1.0
+*/
+import bb.cascades 1.0
 import "common"
 
 Page {
@@ -21,21 +22,20 @@ Page {
         signal sendVcardRequested ()
         Container {
             layout: StackLayout {
-                topPadding: 10
-                leftPadding: 30
-                rightPadding: 30
             }
-            TextArea {
+            topPadding: 10
+            leftPadding: 30
+            rightPadding: 30
+
+            Label {
                 text: "SNEP: Send a vCard"
-                editable: false
                 textStyle {
                     base: SystemDefaults.TextStyles.BigText
                     color: Color.LightGray
                     fontWeight: FontWeight.Bold
                 }
             }
-            TextArea {
-                editable: false
+            Label {
                 text: "First Name:"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
@@ -43,7 +43,6 @@ Page {
                 }
             }
             TextArea {
-                preferredHeight: 65
                 id: txf_first_name
                 objectName: "txf_first_name"
                 hintText: "Enter your first name"
@@ -52,8 +51,7 @@ Page {
                     base: SystemDefaults.TextStyles.BodyText
                 }
             }
-            TextArea {
-                editable: false
+            Label {
                 text: "Last Name:"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
@@ -61,7 +59,6 @@ Page {
                 }
             }
             TextArea {
-                preferredHeight: 65
                 id: txf_last_name
                 objectName: "txf_last_name"
                 hintText: "Enter your last name"
@@ -70,8 +67,7 @@ Page {
                     base: SystemDefaults.TextStyles.BodyText
                 }
             }
-            TextArea {
-                editable: false
+            Label {
                 text: "Address:"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
@@ -79,7 +75,6 @@ Page {
                 }
             }
             TextArea {
-                preferredHeight: 65
                 id: txf_address
                 objectName: "txf_address"
                 hintText: "Enter your address"
@@ -88,8 +83,7 @@ Page {
                     base: SystemDefaults.TextStyles.BodyText
                 }
             }
-            TextArea {
-                editable: false
+            Label {
                 text: "Email:"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
@@ -97,7 +91,6 @@ Page {
                 }
             }
             TextArea {
-                preferredHeight: 65
                 id: txf_email
                 objectName: "txf_email"
                 hintText: "Enter your email address"
@@ -107,8 +100,7 @@ Page {
                 }
             }
 
-            TextArea {
-                editable: false
+            Label {
                 text: "Mobile:"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
@@ -116,7 +108,6 @@ Page {
                 }
             }
             TextArea {
-                preferredHeight: 65
                 id: txf_mobile
                 objectName: "txf_mobile"
                 hintText: "Enter your mobile number"

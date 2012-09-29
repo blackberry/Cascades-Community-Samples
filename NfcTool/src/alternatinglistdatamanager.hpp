@@ -15,10 +15,10 @@
 #ifndef ALTERNATINGLISTDATAMANAGER_H_
 #define ALTERNATINGLISTDATAMANAGER_H_
 
-#include <bb/cascades/controls/listitemmanager.h>
+#include <bb/cascades/controls/listitemprovider.h>
 #include <bb/cascades/QmlDocument>
 
-class AlternatingListDataManager: public bb::cascades::ListItemManager {
+class AlternatingListDataManager: public bb::cascades::ListItemProvider {
 
 	Q_OBJECT
 

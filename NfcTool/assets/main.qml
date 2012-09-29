@@ -34,9 +34,10 @@ NavigationPane {
             // A Container for the list, padded at the top and bottom to make room for decorations.
             Container {
                 layout: DockLayout {
-                    topPadding: 2
-                    bottomPadding: 2
                 }
+                topPadding: 2
+                bottomPadding: 2
+
                 ListView {
                     id: menuList;
                     objectName: "list"

@@ -17,13 +17,14 @@ import "common"
 
 Container {
     layout: StackLayout {
-        leftPadding: 15
-        rightPadding: 15
     }
+
+    leftPadding: 15
+    rightPadding: 15
 
     ListView {
         dataModel: _model
-        listItemManager: _manager
+        listItemProvider: _manager
         preferredWidth: 768
         preferredHeight: 800
     }

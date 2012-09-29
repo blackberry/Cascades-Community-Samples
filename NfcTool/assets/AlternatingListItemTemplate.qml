@@ -30,24 +30,20 @@ ScrollView {
 	        id: background
 	        preferredHeight: aListItemRoot.preferredHeight-1 // leave one pixel for divider
 	        
-	        layoutProperties: DockLayoutProperties {
-	            verticalAlignment: VerticalAlignment.Top    // dock to top of the row
-	            horizontalAlignment: HorizontalAlignment.Fill // and full width
-	        }
+            verticalAlignment: VerticalAlignment.Top    // dock to top of the row
+            horizontalAlignment: HorizontalAlignment.Fill // and full width
 	    }
 	
 		Label {
 			id: log_entry
-	        layoutProperties: DockLayoutProperties {
-	            verticalAlignment: VerticalAlignment.Top        // docks at top of row
-	            horizontalAlignment: HorizontalAlignment.Fill   // full width
-	        }
+            verticalAlignment: VerticalAlignment.Top        // docks at top of row
+            horizontalAlignment: HorizontalAlignment.Fill   // full width
 			// text: _item.title + "-" + _item.itemLabel + "-" + _item.description
 			text: _item.description
 		    textStyle {
 		        base: SystemDefaults.TextStyles.BodyText
 		        color: Color.create("#00ff00")
-		        lineSpacing: 1.1
+		        lineHeight: 1.1
 		    }
 		}
 	
@@ -56,10 +52,8 @@ ScrollView {
 	        preferredHeight: 1 // 1 pixel in height
 	        background: Color.create("#262626") // divider colour
 	
-	        layoutProperties: DockLayoutProperties {
-	            verticalAlignment: VerticalAlignment.Bottom // docks at bottom of line row
-	            horizontalAlignment: HorizontalAlignment.Fill // full width 
-	        }
+            verticalAlignment: VerticalAlignment.Bottom // docks at bottom of line row
+            horizontalAlignment: HorizontalAlignment.Fill // full width 
 	    }
 	
 	}

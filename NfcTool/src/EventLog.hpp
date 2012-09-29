@@ -23,7 +23,7 @@
 #include <bb/cascades/TouchEvent>
 #include <bb/cascades/ListItemListener>
 #include <bb/cascades/databinding/datamodel.h>
-#include <bb/cascades/controls/listitemmanager.h>
+#include <bb/cascades/controls/listitemprovider.h>
 
 using namespace bb::cascades;
 
@@ -51,7 +51,7 @@ private:
 	QString _message;
 	QString _appVersion;
 
-	ListItemManager* itemmanager;
+	ListItemProvider* itemprovider;
 	DataModel* datamodel;
 
 	void findAndConnectControls();

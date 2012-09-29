@@ -15,7 +15,7 @@
 #include "alternatinglistdatamodel.hpp"
 #include "alternatinglistdatamanager.hpp"
 #include "alternatinglistitem.hpp"
-#include <bb/cascades/HeaderListItem>
+#include <bb/cascades/Header>
 #include <bb/cascades/StandardListItem>
 
 using namespace bb::cascades;
@@ -32,7 +32,7 @@ bb::cascades::VisualNode* AlternatingListDataManager::createItem(
 	Q_UNUSED(list);
 
 	if (type.compare(GroupDataModel::Header) == 0)
-		return HeaderListItem::create();
+		return new Header();
 	else
 		return new AlternatingListItem(m_qmlFile);
 }

@@ -21,26 +21,25 @@ Page {
         signal eventLogBackButton()
         Container {
             layout: StackLayout {
-                topPadding: 50
-                leftPadding: 30
-                rightPadding: 30
             }
-            TextArea {
+            topPadding: 50
+            leftPadding: 30
+            rightPadding: 30
+
+            Label {
                 text: (_el.message == "" || _el.message == undefined) ? "Event log" : "Event log\n" + _el.message
-                editable: false
                 textStyle {
                     base: SystemDefaults.TextStyles.BigText
                     color: Color.LightGray
                     fontWeight: FontWeight.Bold
                 }
             }
-            TextArea {
-                editable: false
+            Label {
                 text: "Newest items first v2"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
                     color: Color.LightGray
-                    lineSpacing: 1.1
+                    lineHeight: 1.1
                 }
             }
             ScrollView {
@@ -50,7 +49,7 @@ Page {
                 Container {
                     ListView {
                         dataModel: _model
-                        listItemManager: _manager
+                        listItemProvider: _manager
                         preferredWidth: 768
                         preferredHeight: 800
                     }

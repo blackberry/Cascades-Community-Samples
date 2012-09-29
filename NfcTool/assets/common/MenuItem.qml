@@ -21,12 +21,11 @@ Container {
     }
     Container {
         layout: DockLayout {
-            topPadding: 2
-            bottomPadding: 2
         }
-        layoutProperties: DockLayoutProperties {
-            horizontalAlignment: HorizontalAlignment.Center
-        }
+
+        topPadding: 2
+        bottomPadding: 2
+        horizontalAlignment: HorizontalAlignment.Center
         
         // Item background image.
         ImageView {
@@ -41,21 +40,23 @@ Container {
             opacity: 0.0
             preferredWidth: 760
             preferredHeight: 166
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-            }
+            horizontalAlignment: HorizontalAlignment.Center
         }
+   
+   //                topPadding: 20
+   //                leftPadding: 20
+   //                horizontalAlignment: HorizontalAlignment.Left
+   //                verticalAlignment: VerticalAlignment.Top
         
         // The Item content an image and a text.
         Container {
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
-                leftPadding: 3
+                orientation: LayoutOrientation.LeftToRight
             }
-            layoutProperties: DockLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Fill
-                verticalAlignment: VerticalAlignment.Center
-            }
+            leftPadding: 3
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Center
+
             ImageView {
                 // The image is bound to the data in models/recipemodel.xml image attribute.
                 imageSource: ListItemData.image
@@ -69,9 +70,7 @@ Container {
                     base: SystemDefaults.TextStyles.TitleText
                     color: Color.Black
                 }
-                layoutProperties: StackLayoutProperties {
-                    verticalAlignment: VerticalAlignment.Center
-                }
+                verticalAlignment: VerticalAlignment.Center
             }
         }
     }
