@@ -99,10 +99,6 @@ folder "installable-bar-files" as follows:
 * **NfcTool-2\_0\_0\_1.bar** -- Signed BAR file for Version 2 (V2) of the application  ( requires BlackBerry Dev Alpha Device Software 10.0.4 )
 * **NfcTool-1\_0\_0\_1.bar** -- Signed BAR file for Version 1 (V1) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.4 )
 
-**Known Issues**
-
-None
-
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
 
