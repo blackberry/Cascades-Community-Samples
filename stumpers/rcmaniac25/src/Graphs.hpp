@@ -26,11 +26,6 @@ namespace bb
     }
 }
 
-/*!
- * @brief Application pane object
- *
- *Use this object to create and init app UI, to create context objects, to register the new meta types etc.
- */
 class Graphs: public QObject
 {
 Q_OBJECT

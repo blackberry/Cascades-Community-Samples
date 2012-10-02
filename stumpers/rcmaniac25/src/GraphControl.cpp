@@ -27,45 +27,33 @@
 using namespace bb;
 using namespace bb::cascades;
 
-/*
- * Colors:
- * light column    0F233C
- * dark column     0D1F35
- * divider lines   35475B
- * label bkg       050C14
- * graph lines     63E2D9 (thickness 3-4 px)
- *
- */
-
 GraphControl::GraphControl(Container *parent) :
         CustomControl(parent)
 {
     Container *content = new Container();
-    //content->setBackground(Color(Color::Red));
 
     // The content Container will be set to lay out children using a dock layout (to center everything on screen).
     content->setLayout(new DockLayout());
 
-    Container *xAxis = Container::create().vertical(VerticalAlignment::Bottom).horizontal(HorizontalAlignment::Fill).background(Color::fromARGB(0xff2F4C6E)).preferredHeight(5);
-    Container *yAxis = Container::create().vertical(VerticalAlignment::Fill).horizontal(HorizontalAlignment::Left).background(Color::fromARGB(0xff2F4C6E)).preferredWidth(5);
-
+    // Decoration grid only, needs adjusting to data for a more realistic implementation
+    Container *xAxis = Container::create().vertical(VerticalAlignment::Bottom).horizontal(
+            HorizontalAlignment::Fill).background(Color::fromARGB(0xff2F4C6E)).preferredHeight(5);
+    Container *yAxis = Container::create().vertical(VerticalAlignment::Fill).horizontal(
+            HorizontalAlignment::Left).background(Color::fromARGB(0xff2F4C6E)).preferredWidth(5);
     content->add(xAxis);
     content->add(yAxis);
 
-    // Decoration grid only, needs adjusting to data for a more realistic implementation
-    for(int x = 200; x < 1280; x += 200) {
-        content->add(Container::create().vertical(VerticalAlignment::Fill).background(Color::fromARGB(0xff2F4C6E)).preferredWidth(3).translate(x, 0));
+    for (int x = 200; x < 1280; x += 200) {
+        content->add(
+                Container::create().vertical(VerticalAlignment::Fill).background(
+                        Color::fromARGB(0xff2F4C6E)).preferredWidth(3).translate(x, 0));
     }
-    for(int y = 200; y < 768; y += 200) {
-        content->add(Container::create().horizontal(HorizontalAlignment::Fill).background(Color::fromARGB(0xff2F4C6E)).preferredHeight(3).translate(0, y));
+    for (int y = 200; y < 768; y += 200) {
+        content->add(
+                Container::create().horizontal(HorizontalAlignment::Fill).background(
+                        Color::fromARGB(0xff2F4C6E)).preferredHeight(3).translate(0, y));
     }
 
-    /*
-    mDebugLabel1 = Label::create().translate(30, 30).text("1");
-    mDebugLabel2 = Label::create().translate(30, 130).text("2");
-    content->add(mDebugLabel1);
-    content->add(mDebugLabel2);
-     */
     mIsCreated = false;
     connect(this, SIGNAL(creationCompleted ()), this, SLOT(onCreationCompleted ()));
 
@@ -84,6 +72,7 @@ void GraphControl::drawLine(QPoint point)
     uint width = mDrawArea->preferredWidth();
     uint height = mDrawArea->preferredHeight();
 
+    // Normalize the point to the max and min in x/y direction.
     QPoint currentPoint(((point.x() - mMinPoint.x()) * mXNormalization),
             ((point.y() - mMinPoint.y()) * mYNormalization));
 
@@ -97,7 +86,7 @@ void GraphControl::drawLine(QPoint point)
 
             if (mPreviousPoint.x() != -1 && mPreviousPoint.y() != -1
                     && mPreviousPoint != currentPoint) {
-                // A straight line
+                // Draw a straight line from the previous point
                 // y = k * x + m
                 // k = (y1-y2) / (x1 - x2)
                 // m = y1 - k * x1
@@ -108,6 +97,7 @@ void GraphControl::drawLine(QPoint point)
 
                 for (int lineX = mPreviousPoint.x(); lineX < currentPoint.x(); lineX++) {
 
+                    // Draw each point as a 4x4 square.
                     for (int i = 0; i < brushSize; i++) {
                         int brushX = lineX + i;
                         int xOffset = brushX * 4;
@@ -121,6 +111,7 @@ void GraphControl::drawLine(QPoint point)
 
                             if ((offset + 3) < arraySize) {
 
+                                // Set the fill color in the buffer at the drawing position calculated above.
                                 mBuffer[(offset)] = (0x63 * ALPHA) >> 8;
                                 mBuffer[(offset + 1)] = (0xE2 * ALPHA) >> 8;
                                 mBuffer[(offset + 2)] = (0xD9 * ALPHA) >> 8;
@@ -138,6 +129,7 @@ void GraphControl::drawLine(QPoint point)
 
 void GraphControl::generatePixels(uint width, uint height, unsigned char* buf)
 {
+    // Clear the buffer.
     for (uint y = 0; y < height; ++y) {
         for (uint x = 0; x < width; ++x) {
             buf[0] = (0xFF * 0x00) >> 8;
@@ -151,15 +143,16 @@ void GraphControl::generatePixels(uint width, uint height, unsigned char* buf)
 
 void GraphControl::setUpDrawArea(uint width, uint height)
 {
+    // Find and destroy the old ImageView used to display the Graph
     Container *content = qobject_cast<Container*>(this->root());
 
     if (content) {
-        // Remove the current recipe once we return to the ListView
         if (mDrawArea && content->remove(mDrawArea)) {
             delete mDrawArea;
         }
     }
 
+    // Create a new Image view and set up a buffer to draw to of the corresponding size
     mDrawArea = new ImageView();
     mDrawArea->setPreferredSize(width, height);
 
@@ -167,7 +160,9 @@ void GraphControl::setUpDrawArea(uint width, uint height)
         mBuffer = (unsigned char*) malloc((width + 1) * height * 4);
     }
 
+    // Clear the buffer.
     generatePixels(width, height, mBuffer);
+
     content->add(mDrawArea);
 
 }
@@ -179,18 +174,17 @@ void GraphControl::drawGraph()
 
     mXNormalization = ((float) width) / (mMaxPoint.x() - mMinPoint.x());
     mYNormalization = ((float) height) / (mMaxPoint.y() - mMinPoint.y());
-
-    //mDebugLabel1->setText(QString::number( mXNormalization));
-    //mDebugLabel2->setText(QString::number( mYNormalization));
-
     setUpDrawArea(width, height);
 
     if (!mValues.isEmpty()) {
         for (int i = 0; i < mValues.size(); ++i) {
+
+            // Draws a line to the the Point in mValues.at(i) in mBuffer.
             drawLine(mValues.at(i));
         }
 
         if (mBuffer) {
+            // Create a new Image from the buffer and display it in the draw area
             Image img(
                     bb::ImageData::fromPixels(mBuffer, bb::PixelFormat::RGBA_Premultiplied, width,
                             height, width * 4));
@@ -201,7 +195,7 @@ void GraphControl::drawGraph()
 
 bool GraphControl::readGraphDataSource()
 {
-    // Now read the data from the file and plot the lines.
+    // Now read the data from the file.
     QString appFolder(QDir::homePath());
     appFolder.chop(4);
     QString dataFileName = appFolder + "app/native/assets/" + mGraphDataSource;
@@ -249,8 +243,6 @@ bool GraphControl::readGraphDataSource()
             }
             dataFile.close();
 
-
-
             return true;
         }
     } else {
@@ -263,6 +255,8 @@ void GraphControl::onCreationCompleted()
 {
     mIsCreated = true;
 
+    // To ensure all properties being set, the reading of data and drawing is
+    //delayed on the first creation of the Control.
     if (!mGraphDataSource.isEmpty()) {
         if (readGraphDataSource()) {
             drawGraph();

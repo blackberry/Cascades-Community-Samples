@@ -33,29 +33,33 @@ namespace bb
 /**
  * GraphControl Description:
  * 
+ * This is a custom control that will present data contained in a file
+ * as a graph.
  */
 class GraphControl: public bb::cascades::CustomControl
 {
 Q_OBJECT
 
     /**
-     *
+     * The path to the data source to be used, needs to be a two column comma separated text file.
      */
-Q_PROPERTY(QString graphDataSource READ graphDataSource WRITE setGraphDataSource NOTIFY graphDataSourceChanged)
+    Q_PROPERTY(QString graphDataSource READ graphDataSource WRITE setGraphDataSource NOTIFY graphDataSourceChanged)
 
 public:
     GraphControl(Container *parent = 0);
     ~GraphControl();
 
     /**
+     * Sets the data source path for the Graph.
      *
-     *
-     * @param graphDataSource
+     * @param graphDataSource the path to the data source.
      */
     void setGraphDataSource(QString graphDataSource);
 
     /**
-     * @return
+     * Returns the current data source path.
+     *
+     * @return A string containing the path to the data source.
      */
     QString graphDataSource();
 
@@ -66,29 +70,30 @@ private slots:
     void onCreationCompleted();
 
 private:
+    // Functions for setting up and drawing to a pixel buffer that will
+    // visualize the graph data in an ImageView.
     void setUpDrawArea(uint width, uint height);
     void generatePixels(uint width, uint height, unsigned char* buf);
     void drawLine(QPoint currentPoint);
     void drawGraph();
     bool readGraphDataSource();
 
-    // State variables
-    int mNbrOfChars;
-
+    // Custom control components.
     ImageView *mDrawArea;
     unsigned char *mBuffer;
     QString mGraphDataSource;
-    bool mIsCreated;
-    QPoint mPreviousPoint;
 
+    // State variable
+    bool mIsCreated;
+
+    // Variables used to draw lines in the pixelbuffer presented in mDrawArea
     QPoint mMaxPoint;
     QPoint mMinPoint;
     QList<QPoint> mValues;
     float mXNormalization;
     float mYNormalization;
+    QPoint mPreviousPoint;
 
-    Label *mDebugLabel1;
-    Label *mDebugLabel2;
 };
 
 #endif // ifndef _GraphControl_H_

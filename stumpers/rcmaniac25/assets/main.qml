@@ -22,6 +22,7 @@ Page {
         layout: DockLayout {
         }
         
+        // This is the custom component containing the Graph (see GraphView.qml)
         GraphView {
         }
     }

@@ -26,14 +26,20 @@ Container {
     layout: DockLayout {
     }
     
+    // A custom control for presenting custom data, see
+    // data/graph.dat and GraphControl.cpp for further detail.
     GraphControl {
         id: graph
         graphDataSource: "data/graph.dat"
+        
+        // The preferred width and height has to be set in the current implementation.
         preferredWidth: 1280 - graphContainer.leftPadding * 2
         preferredHeight: 768 - graphContainer.leftPadding * 2
     }    
     
     onTouch: {
+        // When the user release the finger on the Graph a new data set
+        // is loaded.
         if (event.isUp()) {
             if (graph.graphDataSource == "data/graph3.dat") {
                 graph.graphDataSource = "data/graph.dat"
