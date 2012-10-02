@@ -1,139 +1,116 @@
 /*
-* Copyright (c) 2012 Brian Scheirer
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/import bb.cascades 1.0
+ * Copyright (c) 2012 Brian Scheirer
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */import bb.cascades 1.0
 
 Page {
     //main content container
     content: Container {
-        layoutProperties: DockLayoutProperties {
-            verticalAlignment: VerticalAlignment.Fill
-        }
         background: backgroundPaint.imagePaint
         attachedObjects: [
             ImagePaintDefinition {
                 id: backgroundPaint
                 imageSource: "asset:///images/RPSbkgrdD.png"
             },
-            CustomDialog {
+            Dialog {
                 id: helpdialog
                 Container {
-                    layout: DockLayout {
-                    }
                     preferredWidth: 768
                     preferredHeight: 1280
                     background: Color.create(0.0, 0.0, 0.0, 0.5)
                     Container {
-                        layoutProperties: DockLayoutProperties {
-                            horizontalAlignment: HorizontalAlignment.Center
-                            verticalAlignment: VerticalAlignment.Center
-                        }
                         maxHeight: 875.0
                         maxWidth: 700.0
                         background: Color.create("#DEB887")
+                        horizontalAlignment: HorizontalAlignment.Center
                         TextArea {
                             text: "The evil dragon has taken the princess hostage. The only way to save her is to defeat him in an epic battle of ROCK, PAPER, SCISSORS! 
+            
             The Rules are simple:  
             Rock defeats Scissors. 
             Paper defeats Rock. 
             Scissors defeats Paper."
                             editable: false
-                            textStyle {
-                                size: 50
-                                fontWeight: FontWeight.Bold
-                                color: Color.Black
-                            }
+                            textStyle.fontWeight: FontWeight.Bold
                         }
-                        Button {
-                            text: "Ok, Let's Battle!"
-                            onClicked: helpdialog.visible = false
-                            layoutProperties: StackLayoutProperties {
-                                horizontalAlignment: HorizontalAlignment.Center
-                                spaceQuota: 1
+                        Container {
+                            horizontalAlignment: HorizontalAlignment.Center
+                            Button {
+                                text: "Ok, Let's Battle!"
+                                onClicked: {
+                                    helpdialog.close();
+                                }
                             }
-                        }
-                        Button {
-                            id: menubutton
-                            text: "Main Menu"
-                            onClicked: {
-                                navigationPane.pop();
-                                helpdialog.visible = false
-                            }
-                            layoutProperties: StackLayoutProperties {
-                                horizontalAlignment: HorizontalAlignment.Center
-                                spaceQuota: 1
+                            Button {
+                                id: menubutton
+                                text: "Main Menu"
+                                onClicked: {
+                                    helpdialog.close();
+                                    navigationPane.pop();
+                                }
                             }
                         }
                     }
                 }
             },
-
-Sheet {
-    id: charSelectSheet
-    Page {
-        Container {
-            RadioGroup {
-                id: playerGroup
-                dividersVisible: false
-                Option {
-                    text: "Knight"
-                    value: text
-                    selected: true
-                }
-                Option {
-                    text: "Ninja"
-                    value: text
-                }
-                Option {
-                    text: "King"
-                    value: text
-                }
-                onSelectedIndexChanged: {
-                    console.debug(playerGroup.selectedValue());
-                    var mycharacter = playerGroup.selectedValue()
-                    if (playerGroup.selectedValue() == "Knight") {
-                        playerbody.imageSource = "asset:///images/Knight.png";
-                        previewChar.imageSource = "asset:///images/Knight.png";
-                        player.imageSource = "asset:///images/KRock.png";
-                    } else if (playerGroup.selectedValue() == "Ninja") {
-                        playerbody.imageSource = "asset:///images/Ninja.png";
-                        previewChar.imageSource = "asset:///images/Ninja.png";
-                        player.imageSource = "asset:///images/NRock.png";
-                    } else if (playerGroup.selectedValue() == "King") {
-                        playerbody.imageSource = "asset:///images/King.png";
-                        previewChar.imageSource = "asset:///images/King.png";
-                        player.imageSource = "asset:///images/KiRock.png";
+            Sheet {
+                id: charSelectSheet
+                Page {
+                    Container {
+                        RadioGroup {
+                            id: playerGroup
+                            dividersVisible: false
+                            Option {
+                                text: "Knight"
+                                selected: true
+                            }
+                            Option {
+                                text: "Ninja"
+                            }
+                            Option {
+                                text: "King"
+                            }
+                            onSelectedIndexChanged: {
+                                if (playerGroup.selectedIndex == 0) {
+                                    playerbody.imageSource = "asset:///images/Knight.png";
+                                    previewChar.imageSource = "asset:///images/Knight.png";
+                                    player.imageSource = "asset:///images/KRock.png";
+                                } else if (playerGroup.selectedIndex == 1) {
+                                    playerbody.imageSource = "asset:///images/Ninja.png";
+                                    previewChar.imageSource = "asset:///images/Ninja.png";
+                                    player.imageSource = "asset:///images/NRock.png";
+                                } else if (playerGroup.selectedIndex == 2) {
+                                    playerbody.imageSource = "asset:///images/King.png";
+                                    previewChar.imageSource = "asset:///images/King.png";
+                                    player.imageSource = "asset:///images/KiRock.png";
+                                }
+                                backgroundPaint.imageSource = "asset:///images/RPSbkgrdD.png";
+                                winnerlabel.text = "";
+                                computer.imageSource = "asset:///images/DRock.png";
+                            }
+                        }
+                        Button {
+                            text: "Back to the Battle"
+                            onClicked: charSelectSheet.close()
+                        }
+                        ImageView {
+                            id: previewChar
+                            imageSource: "asset:///images/Knight.png"
+                        }
                     }
-                    backgroundPaint.imageSource = "asset:///images/RPSbkgrdD.png";
-                    winnerlabel.text = "";
-                    computer.imageSource = "asset:///images/DRock.png";
                 }
             }
-            Button {
-                text: "Back to the Battle"
-                onClicked: charSelectSheet.visible = false
-            }
-            ImageView {
-    id: previewChar
-    imageSource: "asset:///images/Knight.png"
-
-	
-}
-        }
-    }
-}
-
         ]
         preferredHeight: 1280.0
         preferredWidth: 768.0
@@ -146,12 +123,12 @@ Sheet {
             //subcontainer of scoreboard for top row
             Container {
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
                 minWidth: 768.0
                 Label {
                     text: "  Scoreboard"
-                    textStyle.size: 50.0
+                    textStyle.fontSizeValue: 10.0
                 }
                 Button {
                     id: resetbutton
@@ -162,10 +139,12 @@ Sheet {
                         tie.text = "0";
                         backgroundPaint.imageSource = "asset:///images/RPSbkgrdD.png";
                         winnerlabel.text = "";
-                        if (playerGroup.selectedValue() == "Knight") {
+                        if (playerGroup.selectedIndex == 0) {
                             player.imageSource = "asset:///images/KRock.png";
-                        } else if (playerGroup.selectedValue() == "Ninja") {
+                        } else if (playerGroup.selectedIndex == 1) {
                             player.imageSource = "asset:///images/NRock.png";
+                        } else if (playerGroup.selectedIndex == 2) {
+                            player.imageSource = "asset:///images/KiRock.png";
                         }
                         computer.imageSource = "asset:///images/DRock.png";
                     }
@@ -176,40 +155,41 @@ Sheet {
             //main subcontainer of scoreboard for botttom row **1**
             Container {
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
-                //container with win,lose,tie tallies	
+
+                //container with win,lose,tie tallies
                 Container {
                     layout: StackLayout {
-                        layoutDirection: LayoutDirection.LeftToRight
+                        orientation: LayoutOrientation.LeftToRight
                     }
                     minWidth: 590.0
                     Label {
                         text: "  Win: "
-                        textStyle.size: 50.0
+                        textStyle.fontSizeValue: 10.0
                     }
                     Label {
                         id: win
                         text: "0"
-                        textStyle.size: 50.0
+                        textStyle.fontSizeValue: 10.0
                     }
                     Label {
                         text: " Loss: "
-                        textStyle.size: 50.0
+                        textStyle.fontSizeValue: 10.0
                     }
                     Label {
                         id: lose
                         text: "0"
-                        textStyle.size: 50.0
+                        textStyle.fontSizeValue: 10.0
                     }
                     Label {
                         text: " Tie: "
-                        textStyle.size: 50.0
+                        textStyle.fontSizeValue: 10.0
                     }
                     Label {
                         id: tie
                         text: "0"
-                        textStyle.size: 50.0
+                        textStyle.fontSizeValue: 10.0
                     }
                 }
                 Button {
@@ -217,7 +197,7 @@ Sheet {
                     text: "Help"
                     preferredWidth: 140.0
                     onClicked: {
-                        helpdialog.visible = true
+                        helpdialog.open();
                     }
                 }
             }
@@ -225,15 +205,15 @@ Sheet {
         //winner label container
         Container {
             layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
             }
             topMargin: 50.0
             preferredHeight: 300.0
+            verticalAlignment: VerticalAlignment.Center
+            horizontalAlignment: HorizontalAlignment.Center
             Label {
                 id: winnerlabel
                 text: ""
-                textStyle.size: 75.0
+                textStyle.fontSizeValue: 15.0
             }
         }
         //character image container **2**
@@ -242,8 +222,8 @@ Sheet {
             }
             gestureHandlers: [
                 DoubleTapHandler {
-                    onDoubleTap: {
-                        charSelectSheet.visible = true;
+                    onDoubleTapped: {
+                        charSelectSheet.open();
                     }
                 }
             ]
@@ -290,11 +270,11 @@ Sheet {
                                 }
                             ]
                             onEnded: {
-                                if (playerGroup.selectedValue() == "Knight") {
+                                if (playerGroup.selectedIndex == 0) {
                                     player.imageSource = "asset:///images/KRock.png";
-                                } else if (playerGroup.selectedValue() == "Ninja") {
+                                } else if (playerGroup.selectedIndex == 1) {
                                     player.imageSource = "asset:///images/NRock.png";
-                                } else if (playerGroup.selectedValue() == "King") {
+                                } else if (playerGroup.selectedIndex == 2) {
                                     player.imageSource = "asset:///images/KiRock.png";
                                 }
                                 var winning = win.text;
@@ -361,11 +341,11 @@ Sheet {
                                 }
                             ]
                             onEnded: {
-                                if (playerGroup.selectedValue() == "Knight") {
+                                if (playerGroup.selectedIndex == 0) {
                                     player.imageSource = "asset:///images/KPaper.png";
-                                } else if (playerGroup.selectedValue() == "Ninja") {
+                                } else if (playerGroup.selectedIndex == 1) {
                                     player.imageSource = "asset:///images/NPaper.png";
-                                } else if (playerGroup.selectedValue() == "King") {
+                                } else if (playerGroup.selectedIndex == 2) {
                                     player.imageSource = "asset:///images/KiPaper.png";
                                 }
                                 var winning = win.text;
@@ -432,13 +412,15 @@ Sheet {
                                 }
                             ]
                             onEnded: {
-                                if (playerGroup.selectedValue() == "Knight") {
+                                if (playerGroup.selectedIndex == 0) {
                                     player.imageSource = "asset:///images/KScissors.png";
-                                } else if (playerGroup.selectedValue() == "Ninja") {
+                                } else if (playerGroup.selectedIndex == 1) {
                                     player.imageSource = "asset:///images/NScissors.png";
-                                } else if (playerGroup.selectedValue() == "King") {
+                                } else if (playerGroup.selectedIndex == 2) {
                                     player.imageSource = "asset:///images/KiScissors.png";
                                 }
+
+                                // player.imageSource = "asset:///images/KScissors.png";
                                 var winning = win.text;
                                 var losing = lose.text;
                                 var ties = tie.text;
@@ -520,13 +502,13 @@ Sheet {
             //container with charater bodies
             Container {
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
                 preferredWidth: 720.0
                 layoutProperties: StackLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                    verticalAlignment: VerticalAlignment.Top
                 }
+                verticalAlignment: VerticalAlignment.Center
+                horizontalAlignment: HorizontalAlignment.Center
                 ImageView {
                     id: playerbody
                     imageSource: "asset:///images/Knight.png"
@@ -545,7 +527,7 @@ Sheet {
         //button container
         Container {
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+                orientation: LayoutOrientation.LeftToRight
             }
             Button {
                 id: rockbutton
@@ -554,11 +536,11 @@ Sheet {
                 onClicked: {
                     backgroundPaint.imageSource = "asset:///images/RPSbkgrdD.png";
                     winnerlabel.text = "";
-                    if (playerGroup.selectedValue() == "Knight") {
+                    if (playerGroup.selectedIndex == 0) {
                         player.imageSource = "asset:///images/KRock.png";
-                    } else if (playerGroup.selectedValue() == "Ninja") {
+                    } else if (playerGroup.selectedIndex == 1) {
                         player.imageSource = "asset:///images/NRock.png";
-                    } else if (playerGroup.selectedValue() == "King") {
+                    } else if (playerGroup.selectedIndex == 2) {
                         player.imageSource = "asset:///images/KiRock.png";
                     }
                     computer.imageSource = "asset:///images/DRock.png";
@@ -573,11 +555,11 @@ Sheet {
                 onClicked: {
                     backgroundPaint.imageSource = "asset:///images/RPSbkgrdD.png";
                     winnerlabel.text = "";
-                    if (playerGroup.selectedValue() == "Knight") {
+                    if (playerGroup.selectedIndex == 0) {
                         player.imageSource = "asset:///images/KRock.png";
-                    } else if (playerGroup.selectedValue() == "Ninja") {
+                    } else if (playerGroup.selectedIndex == 1) {
                         player.imageSource = "asset:///images/NRock.png";
-                    } else if (playerGroup.selectedValue() == "King") {
+                    } else if (playerGroup.selectedIndex == 2) {
                         player.imageSource = "asset:///images/KiRock.png";
                     }
                     computer.imageSource = "asset:///images/DRock.png";
@@ -592,11 +574,11 @@ Sheet {
                 onClicked: {
                     backgroundPaint.imageSource = "asset:///images/RPSbkgrdD.png";
                     winnerlabel.text = "";
-                    if (playerGroup.selectedValue() == "Knight") {
+                    if (playerGroup.selectedIndex == 0) {
                         player.imageSource = "asset:///images/KRock.png";
-                    } else if (playerGroup.selectedValue() == "Ninja") {
+                    } else if (playerGroup.selectedIndex == 1) {
                         player.imageSource = "asset:///images/NRock.png";
-                    } else if (playerGroup.selectedValue() == "King") {
+                    } else if (playerGroup.selectedIndex == 2) {
                         player.imageSource = "asset:///images/KiRock.png";
                     }
                     computer.imageSource = "asset:///images/DRock.png";
