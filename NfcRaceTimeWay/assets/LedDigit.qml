@@ -18,21 +18,21 @@ ImageView {
     preferredWidth: 88
     preferredHeight: 132
     imageSource: regDetails.digit[0]
-//    onImageSourceChanged: {
-//        animation.play ()
-//    }
-//    attachedObjects: [
-//        SequentialAnimation {
-//            id: animation
-//            animations: [
-//                ScaleTransition {
-//                    duration: 500
-//                    toX: 1.0
-//                    fromX: 0.0
-//                    toY: 1.0
-//                    fromY: 0.0
-//                }
-//            ]
-//        }
-//    ]
+    onImageSourceChanged: {
+        animation.play ()
+    }
+    attachedObjects: [
+        SequentialAnimation {
+            id: animation
+            animations: [
+                ScaleTransition {
+                    duration: 500
+                    toX: 1.0
+                    fromX: 0.0
+                    toY: 1.0
+                    fromY: 0.0
+                }
+            ]
+        }
+    ]
 }
