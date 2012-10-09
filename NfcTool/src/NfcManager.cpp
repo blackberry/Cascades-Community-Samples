@@ -22,6 +22,7 @@ NfcManager* NfcManager::_instance;
 NfcManager::NfcManager() :
 		_workerInstance(0), _bpsThread(0), _future(0), _watcher(0) {
 	qDebug() << "XXXX Constructing NfcManager";
+	_workerInstance = NfcWorker::getInstance();
 	qDebug() << "XXXX Done constructing NfcManager";
 }
 
@@ -62,7 +63,6 @@ void NfcManager::startEventProcessing() {
 	qDebug() << "XXXX starting event processing...";
 	_future = new QFuture<void>;
 	_watcher = new QFutureWatcher<void>;
-	_workerInstance = NfcWorker::getInstance();
 	*_future = QtConcurrent::run(_workerInstance, &NfcWorker::startEventLoop);
 	_watcher->setFuture(*_future);
 	QObject::connect(_watcher, SIGNAL(finished()), this, SLOT(workerStopped()));
@@ -76,6 +76,13 @@ void NfcManager::stopNfcWorker() {
 	if (_workerInstance)
 		_workerInstance->interruptBpsWaitLoop(NfcWorker::TERMINATE);
 }
+
+
+void NfcManager::handleTagReadInvocation(QByteArray data) {
+	qDebug() << "XXXX NfcManager::handleTagReadInvocation";
+	_workerInstance->handleTagReadInvocation(data);
+}
+
 void NfcManager::startTagEmulation(QString *uri, QString *text) {
 	qDebug() << "XXXX NfcManager::startTagEmulation";
 	_ndefSpUri = uri;
@@ -156,8 +163,6 @@ void NfcManager::sendVcard(QString* first_name, QString* last_name, QString* add
 			QVariant::fromValue(*mobile));
 	qDebug() << "XXXX NfcManager::sendVcard done";
 }
-
-// NOT IN USE - work in progress
 
 void NfcManager::iso7816Test(QString* aid, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le) {
 	Logger::getInstance()->clearLog();
