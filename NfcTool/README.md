@@ -38,7 +38,7 @@ None.
 
 **How to Build NfcTool**
 
-Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in the **<author>** and **<authorId>** elements that are appropriate for you.
+Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in the **&lt;author&gt;** and **&lt;authorId&gt;** elements that are appropriate for you.
  
 **But I don't want to build it myself**
 
