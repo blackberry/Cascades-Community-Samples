@@ -1,4 +1,4 @@
-# NFC Tag Reading and Writing Sample
+# A Compendium of NFC Samples
 
 The purpose of this application is to demonstrate how to use selected 
 BlackBerry 10 NFC APIs. The Release History section gives details of 
@@ -20,7 +20,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
-* **V4** - Added support for sending ISO7816 APDUs
+* **V4** - Added support for sending ISO7816 APDUs and handling Transaction Events
 * **V3.1** - Modified for Beta 3 release compatibility
 * **V3** - Added ability to emulate virtual NDEF Tags
 * **V2.1** - Refactored to exploit features in BlackBerry Dev Alpha Device 10.0.6
