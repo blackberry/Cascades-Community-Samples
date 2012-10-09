@@ -122,7 +122,7 @@ Page {
         ActionItem {
             id: send_vcard_action
             title: "Send vCard"
-            imageSource: "images/snep.png"
+            imageSource: "images/snep_small.png"
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
                 console.log ("Send vCard Triggered");
