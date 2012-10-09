@@ -16,7 +16,7 @@
 
 // General constants
 
-const char* Settings::AppVersion = "3.1";
+const char* Settings::AppVersion = "4.0";
 const char* Settings::DOMAIN = "my.domain.com";
 const char* Settings::TYPE = "myrecordtype";
 const char* Settings::CONTENT = "content";
@@ -33,11 +33,11 @@ const char* Settings::EMULATE_URI = "http://developer.blackberry.com";
 const char* Settings::EMULATE_TEXT = "BlackBerry Developer Zone";
 const char* Settings::AID = "A000000018308005006563686F00";
 //0x10, 0x41, 0x11, 0x22, 0x00
-const char* Settings::HEX_CLA = "10";
+const char* Settings::HEX_CLA = "80";
 const char* Settings::HEX_INS = "41";
 const char* Settings::HEX_P1P2 = "1122";
-const char* Settings::HEX_LC = "00";
-const char* Settings::HEX_COMMAND = "1041112200 ";
+const char* Settings::HEX_LC = "";
+const char* Settings::HEX_COMMAND = "";
 const char* Settings::HEX_LE = "";
 
 // NFC RTD useful constants

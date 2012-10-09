@@ -88,11 +88,11 @@ public slots:
 public:
 	static NfcWorker* getInstance();
 	void readTag();
+	void handleTagReadInvocation(const QByteArray data);
 
 private:
 	NfcWorker(QObject *parent = 0);
 	void handleNavigatorEvent(bps_event_t *event);
-	void handleNavigatorNdefEvent(bps_event_t *event);
 	void handleNfcEvent(bps_event_t *event);
 	void handleNfcReadNdefTagEvent(bps_event_t *event);
 	void handleNfcWriteCustomTagEvent(bps_event_t *event);
@@ -112,7 +112,6 @@ private:
 	nfc_ndef_record_t* makeMediaRecord(QString type, QString text);
 	static void checkReturnCode(int rc, int line, const char *file,
 			const char *func);
-	QString getNavigatorEventName(int event_code);
 	unsigned long getSysTimeMs();
 
 	static NfcWorker* _instance;

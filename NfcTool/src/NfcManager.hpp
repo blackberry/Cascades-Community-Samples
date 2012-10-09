@@ -56,6 +56,7 @@ public:
 	static NfcManager* getInstance();
 
 	void startEventProcessing();
+	void handleTagReadInvocation(QByteArray data);
 	void writeUri(QString* uri);
 	void writeSp(QString* sp_uri, QString* sp_text);
 	void writeText(QString* text);

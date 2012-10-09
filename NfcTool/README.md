@@ -19,81 +19,34 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 
 **Release History**
+
+* **V4** - Added support for sending ISO7816 APDUs
 * **V3.1** - Modified for Beta 3 release compatibility
-* **V3** - Added ability to emulate virtual NDEF Tags
 * **V3** - Added ability to emulate virtual NDEF Tags
 * **V2.1** - Refactored to exploit features in BlackBerry Dev Alpha Device 10.0.6
 * **V2** - Added transfer of vCard using SNEP
 * **V1** - Reading and Writing NDEF tags
 
 **Known Issues**
-1. Reading a tag when the app is not running causes the app to be launched but the event log is not automatically switched to. Read tag with app already running
-   and the event log is correctly shown.
-2. Work is in progress to add functionality relating to UICC secure element APIs. This is not yet complete and so the code is not yet connected to the UI.
+
+None.
 
 **Dependencies**
 
-1. BlackBerry Dev Alpha Device Software **10.0.9**
-2. BlackBerry 10 Native SDK **10.0.9**
+1. BlackBerry Dev Alpha Beta 3 Device Software **10.0.9**
+1. BlackBerry 10 Native SDK **10.0.9**
 
 **How to Build NfcTool**
 
-We took the decision to distribute only the contents of the **"src/"** and **"assets/"** 
-directories along with the **"NfcTool.pro"** file with this example.
-
-We've found it to be the more reliable technique whilst the meta-data associated with 
-an NDK project is still subject to change between versions of the NDK. You are less 
-likely to run into issues with a project if you create it as a new empty project 
-in your workspace and copy files into it rather than import a project with a 
-structure from an older version of the IDE.
-
-Here's what you should do:
-
-* Create a new empty Cascades C++ project in your workspace called **"NfcTool"**
-    * **File** > **New** > BlackBerry Cascades C++ Project
-    * Enter Project Name: **NfcTool** > **Next**
-    * Select: **Standard empty project** > **Finish**
-* You've now got a clean project set up appropriately for your version of the IDE
-* Delete the **"app.cpp"** and **"app.hpp"** files from the project's **"src/"** directory -- we don't need them
-* Replace contents of the **"src/"** and **"assets/"** directories in the project by the contents of **"src/"** and **"assets/"* from this repo
-* Replace **"NfcTool.pro"** in the project by the one in this repo
-    * This file just ensure that the **"libnfc.so"** and **"libnfc_bps.so"** libraries are available to the build process since they're not included in the library path by default.
-* You'll also now have a **"bar-descriptor.xml"** which is correct for your verion of the IDE.
-    * You need to make sure it's populated with your own **Debug Token** 
-    * Also, if you want to ensure that the application has the correct icon and startup splash screen (I'm sure you do!) open the **"bar-descriptor.xml"** file, select the **"Application"** tab and choose:
-        * **"assets/images/generic\_tag.png"** as the **Icon image**
-        * **"assets/images/splash\_landscape.png"** and **"assets/images/splash.png"** as the **"Landscape"** and **"Portrait"** splash screen images respectively.
-	* In BlackBerry Dev Alpha Device Software 10.0.6 the **Invocation Framework** is now used to register an application to be notified when an NFC NDEF tag is presented to the device. You need to add this registration to your **"bar-descriptor.xml"** file. The registration that we use in this sample application is shown in the code section below.
-
-		Add this stanza to your **"bar-descriptor.xml"** file at the end, just before the closing **"&lt;/qnx&gt;"** tag. The meaning of the various fields is described in the article that accompanies this code sample.
-
-- - -
-	...
-	<invoke-target id="com.example.NfcTool">
-		<type>APPLICATION</type>
-		<filter>
-			<action>bb.action.OPEN</action>
-			<mime-type>application/vnd.rim.nfc.ndef.1.Sp</mime-type>
-		</filter>
-		<filter>
-			<action>bb.action.OPEN</action>
-			<mime-type>application/vnd.rim.nfc.ndef.1.T</mime-type>
-		</filter>
-		<filter>
-			<action>bb.action.OPEN</action>
-			<mime-type>application/vnd.rim.nfc.ndef.1.U</mime-type>
-		</filter>
-	</invoke-target>
-	...
-- - -
-
+Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in the **<author>** and **<authorId>** elements that are appropriate for you.
  
 **But I don't want to build it myself**
 
 If you don't want to build this sample application yourself we've included a 
 pre-build and signed BAR files for each version. You can find them in the 
-folder "installable-bar-files" as follows:
+folder **"/installable-bar-files"** as follows:
 
+* **NfcTool-4\_0\_0\_2.bar** -- Signed BAR file for Version 4.0 (V4.0) of the application ( requires BlackBerry Dev Alpha Device Beta 3 Software 10.0.9 )
 * **NfcTool-3\_0\_0\_51.bar** -- Signed BAR file for Version 3.0 (V3.0) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.6 )
 * **NfcTool-2\_1\_0\_2.bar** -- Signed BAR file for Version 2.1 (V2.1) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.6 )
 * **NfcTool-2\_0\_0\_1.bar** -- Signed BAR file for Version 2 (V2) of the application  ( requires BlackBerry Dev Alpha Device Software 10.0.4 )
