@@ -56,9 +56,5 @@ void AlternatingListDataModel::dumpModel() {
 			after(indexPath)) {
 		QVariant item = data(indexPath);
 		QVariantMap bar = item.toMap();
-		qDebug() << "XXXX Ordinal:" << bar["ordinal"].toInt();
-		qDebug() << "XXXX Label  :" << bar["itemLabel"].toString();
-		qDebug() << "XXXX Title  :" << bar["title"].toString();
-		qDebug() << "XXXX Desc   :" << bar["description"].toString();
 	}
 }

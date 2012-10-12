@@ -20,6 +20,8 @@
 #include <bb/cascades/Control>
 #include <bb/cascades/Container>
 #include <bb/cascades/AbstractPane>
+#include <bb/system/InvokeManager.hpp>
+#include <bb/system/SystemDialog.hpp>
 
 #include "WriteURI.hpp"
 #include "WriteSp.hpp"
@@ -31,6 +33,7 @@
 #include "EmulateSp.hpp"
 #include "EventLog.hpp"
 #include "NfcManager.hpp"
+#include "StateManager.hpp"
 
 using namespace bb::cascades;
 
@@ -45,7 +48,6 @@ public:
 
     QString appVersion() const;
 	void setAppVersion(QString appVersion);
-	bool wasLaunchedByInvoke() const;
 
 private:
     WriteURI* _writeURI;
@@ -58,13 +60,14 @@ private:
     About* _about;
     EmulateSp *_emulateSp;
     NfcManager* _nfcManager;
-    bool _launchedByInvoke;
+    StateManager *_stateManager;
+	bb::system::SystemDialog *_systemDialog;
 
     QString _appVersion;
 
     void startEventProcessing();
     void createModules();
-    void connectMainMenuReturnSignals();
+    void connectSignals();
     void deleteModules();
 
     QmlDocument *_qml;
@@ -72,6 +75,7 @@ private:
     void findAndConnectControls();
 
     Application *_app;
+    bb::system::InvokeManager * _invokeManager;
 
 signals:
     void detectAppVersionChanged();
@@ -84,14 +88,17 @@ signals:
     void emulate_tag_selected();
     void iso7816_selected();
     void about_selected();
+	void launchEventLog();
 
 public slots:
 	void onMainMenuTriggered();
 	void onListSelectionChanged(const QVariantList indexPath);
 	void backFromEventLog();
 	void cleanUpOnExit();
+	void receivedInvokeRequest(const bb::system::InvokeRequest& request);
 
 private slots:
+	void onDialogAccepted();
 
 };
 
