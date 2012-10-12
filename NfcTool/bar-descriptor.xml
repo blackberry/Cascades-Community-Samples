@@ -65,8 +65,12 @@
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
+    <splashScreens>
+       <image>splash_landscape.png</image>
+       <image>splash.png</image>
+    </splashScreens>
     <icon>
-       <image>icon.png</image>
+       <image>generic_tag.png</image>
     </icon>
     <configuration id="com.qnx.qcc.toolChain.1578079286" name="Default">
        <platformArchitecture>armle-v7</platformArchitecture>
@@ -95,6 +99,9 @@
         <include name="*.qm"/>
     </asset>
     <asset path="assets/images/generic_tag_larger.png">generic_tag_larger.png</asset>
+    <asset path="assets/images/generic_tag.png">generic_tag.png</asset>
+    <asset path="assets/images/splash.png">splash.png</asset>
+    <asset path="assets/images/splash_landscape.png">splash_landscape.png</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
