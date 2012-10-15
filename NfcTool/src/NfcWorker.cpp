@@ -627,7 +627,7 @@ void NfcWorker::doIso7816Test(const QVariant &aid, const QVariant &hex_cla, cons
 	fcpResponseType = OPEN_NO_FCP_INFO;
 	openResponseLen = 0;
 
-	rc = nfc_se_session_open_logical_channel(hSESession, the_aid, 12, fcpResponseType, &seChannel, &openResponseLen);
+	rc = nfc_se_session_open_logical_channel(hSESession, the_aid, aid_size, fcpResponseType, &seChannel, &openResponseLen);
 	if (rc != NFC_RESULT_SUCCESS) {
 		qDebug() << QString("XXXX ERROR opening logical channel:%1").arg(rc);
 		emit message(QString("ERROR opening logical channel:%1").arg(rc));
