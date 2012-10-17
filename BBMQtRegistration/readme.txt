@@ -1,4 +1,4 @@
-BBMQtProfileBoxSample
+BBMQtRegistration
 
 Demonstrates how to register an application with the BlackBerry Messenger Social Platform using the
 Qt style BBM SP library.  This sample is designed to easily plug into an existing application.  
