@@ -111,7 +111,7 @@ Page {
         }
         Label {
             id: about1
-            text: "Martin Woolley (@mdwrim) and John Murray (@jcmrim)"
+            text: "Martin Woolley (@mdwrim) and John Murray (@jcmrim) V1.01"
             textStyle {
                 base: SystemDefaults.TextStyles.SmallText
                 fontWeight: FontWeight.Bold

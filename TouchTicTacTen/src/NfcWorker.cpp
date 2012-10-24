@@ -619,16 +619,16 @@ void NfcWorker::handleBidEvent(bps_event_t *event) {
 		// generate random numbers for bid
 
 		srand((unsigned) getSysTimeMs());
-//		c1 = rand() % 256;
-//		c2 = rand() % 256;
-//		c3 = rand() % 256;
-//		c4 = rand() % 128;
+		c1 = rand() % 256;
+		c2 = rand() % 256;
+		c3 = rand() % 256;
+		c4 = rand() % 128;
 
-// make sure we're player 1!
-		c1 = 255;
-		c2 = 255;
-		c3 = 255;
-		c4 = 127;
+//// make sure we're player 1!
+//		c1 = 255;
+//		c2 = 255;
+//		c3 = 255;
+//		c4 = 127;
 
 		int bid = (c4 << 24) + (c3 << 16) + (c2 << 8) + c1;
 		_state->setMyBid(bid);
@@ -865,6 +865,7 @@ void NfcWorker::checkBidStatus() {
 			emit message("You are player 2");
 			return;
 		}
+		emit message("You were equally lucky! Please try again!");
 		qDebug() << "XXXX equal bids received!";
 	}
 }
