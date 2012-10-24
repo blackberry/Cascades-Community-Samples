@@ -36,10 +36,10 @@
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required. -->
     <versionNumber>1.0.0</versionNumber>
+    <buildIdFile>buildnum</buildIdFile>
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the 
          <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
-    <buildId>1</buildId>
                  
     <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
     <!-- <versionLabel></versionLabel> -->
@@ -99,7 +99,7 @@
     <permission system="true">run_native</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
     
-        <invoke-target id="com.example.TouchTicTacToe">
+        <invoke-target id="com.example.TouchTicTacTen.ndef">
 	    <require-source-permissions>invoke_across_perimeters</require-source-permissions>
 	    <type>APPLICATION</type>
 	    <filter>
