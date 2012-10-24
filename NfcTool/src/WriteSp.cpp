@@ -24,7 +24,7 @@
 #include "StateManager.hpp"
 #include "Navigator.hpp"
 
-#include <qdebug>
+#include <QDebug>
 
 using namespace bb::cascades;
 

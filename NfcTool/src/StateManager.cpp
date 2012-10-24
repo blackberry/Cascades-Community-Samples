@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 #include "StateManager.hpp"
-#include <qdebug>
+#include <QDebug>
 
 StateManager* StateManager::_instance;
 

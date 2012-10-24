@@ -1,19 +1,3 @@
-/*
-* Copyright (c) 2012 Brian Scheirer
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-* http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/import bb.cascades 1.0
-
 import bb.cascades 1.0
 
 NavigationPane {
@@ -41,20 +25,28 @@ NavigationPane {
             Paper defeats Rock. 
             Scissors defeats Paper.
 
-***Note*** To change characters during the battle, double tap your character to bring up the character list."
+To change characters during the battle, double tap your character to bring up the character list.
+
+
+This code has been made open source available at: https://github.com/blackberry/Cascades-Community-Samples/tree/master/RockPaperScissors
+
+Copyright (c) 2012 Brian Scheirer
+
+Licensed under the Apache License, Version 2.0 (the \"License\"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
                                     editable: false
                                     textStyle {
-                                        size: 50
                                         fontWeight: FontWeight.Bold
                                         color: Color.Black
                                     }
                                 }
                                 Button {
                                     text: "Menu"
-                                    onClicked: gameInfo.visible = false
-                                    layoutProperties: StackLayoutProperties {
-                                        horizontalAlignment: HorizontalAlignment.Center
-                                    }
+                                    onClicked: gameInfo.close()
+                                    horizontalAlignment: HorizontalAlignment.Center
                                 }
                             }
                         }
@@ -76,21 +68,22 @@ NavigationPane {
                     id: one
                     text: "Play"
                     onClicked: {
-                        navigationPane.deprecatedPushQmlByString("gameScreen.qml");
+                        var page = pageDefinition.createObject();
+                        navigationPane.push(page);
                     }
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
+                    attachedObjects: ComponentDefinition {
+                        id: pageDefinition
+                        source: "gameScreen.qml"
                     }
+                    horizontalAlignment: HorizontalAlignment.Center
                 }
                 Button {
                     id: zero
                     text: "Game Info"
                     onClicked: {
-                        gameInfo.visible = true;
+                        gameInfo.open();
                     }
-                    layoutProperties: StackLayoutProperties {
-                        horizontalAlignment: HorizontalAlignment.Center
-                    }
+                    horizontalAlignment: HorizontalAlignment.Center
                 }
             }
         }

@@ -23,6 +23,7 @@
 #include <bb/cascades/Control>
 #include <bb/cascades/Container>
 #include <bb/cascades/Page>
+#include <bb/system/SystemDialog.hpp>
 
 #include "EventLog.hpp"
 
@@ -70,6 +71,8 @@ private:
 	QString _hex_command;
 	QString _hex_le;
 
+	bb::system::SystemDialog *_systemDialog;
+
 	void findAndConnectControls();
 	void createModules();
 	void connectNavigationSignals();
@@ -87,6 +90,7 @@ public slots:
 	void backFromEventLog();
 
 private slots:
+	void onDialogAccepted();
 
 signals:
 

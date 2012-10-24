@@ -51,11 +51,6 @@ void AlternatingListDataManager::updateItem(bb::cascades::ListView* list,
 	const QString title = map["title"].value<QString>();
 	const QString description = map["description"].value<QString>();
 
-	qDebug() << "XXXX Setting ordinal    : " << ordinal;
-	qDebug() << "XXXX Setting itemLabel  : " << itemLabel;
-	qDebug() << "XXXX Setting title      : " << title;
-	qDebug() << "XXXX Setting description: " << description;
-
 	if (!((itemLabel.isEmpty() or itemLabel.isNull())
 			and (title.isEmpty() or title.isNull())
 			and (description.isEmpty() or description.isNull()))) {

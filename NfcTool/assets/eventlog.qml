@@ -35,7 +35,7 @@ Page {
                 }
             }
             Label {
-                text: "Newest items first v2"
+                text: "Newest items first"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
                     color: Color.LightGray

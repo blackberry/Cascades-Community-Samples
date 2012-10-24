@@ -34,28 +34,54 @@ MainMenu::MainMenu(Application *app) :
 	_app = app;
 	_qml = QmlDocument::create("asset:///main.qml");
 	_qml->setContextProperty("_mainMenu", this);
+	_root = _qml->createRootObject<AbstractPane>();
 	StateManager* state_mgr = StateManager::getInstance();
 	_qml->setContextProperty("_stateManager", state_mgr);
+
+	_invokeManager = new bb::system::InvokeManager();
+	Navigator* nav = Navigator::getInstance();
+	NavigationPane* navpane = dynamic_cast<NavigationPane*>(_root);
+	nav->setNavigationPane(navpane);
+
+	_systemDialog = new bb::system::SystemDialog(this);
+	_systemDialog->setTitle("NFC Transaction");
+	bb::system::SystemUiButton *confirmButton = _systemDialog->confirmButton();
+	confirmButton->setLabel("OK");
+	connect(_systemDialog, SIGNAL(accepted()), this, SLOT(onDialogAccepted()));
+
 	createModules();
 	startEventProcessing();
-	connectMainMenuReturnSignals();
+	qDebug() << "XXXX calling connectSignals";
+	connectSignals();
+	qDebug() << "XXXX done calling connectSignals";
 	onMainMenuTriggered();
 
-	QString uriEnv(getenv("uri"));
-
-	qDebug() << "XXXX value of environment variable 'uri' = " << uriEnv;
-	_launchedByInvoke = false;
-	if (uriEnv.compare("invoke://localhost")) {
-		_launchedByInvoke = true;
-	}
 }
+
 MainMenu::~MainMenu() {
 	qDebug() << "XXXX MainMenu destructor";
 	deleteModules();
 }
 
-bool MainMenu::wasLaunchedByInvoke() const {
-	return _launchedByInvoke;
+void MainMenu::receivedInvokeRequest(const bb::system::InvokeRequest& request) {
+
+	qDebug() << "XXXX invoked by iF: " << request.target() << " MIME=" << request.mimeType() << " ACTION=" << request.action() << " URI=" << request.uri();
+	QByteArray data = request.data();
+	qDebug() << "XXXX got data";
+	if (request.mimeType().compare("application/vnd.rim.nfc.ndef") == 0) {
+		qDebug("XXXX launched because an NFC tag has been presented");
+		emit launchEventLog();
+		_nfcManager = NfcManager::getInstance();
+		_nfcManager->handleTagReadInvocation(data);
+	} else {
+		if (request.mimeType().compare("application/vnd.bb.nfc_transaction") == 0) {
+			qDebug("XXXX launched because an NFC card emulation transaction event has been notified by an applet in the secure element");
+			QString json = QString(data);
+			qDebug() << "XXXX " << json;
+			_systemDialog->setBody(json);
+			_systemDialog->show();
+		}
+	}
 }
 
 void MainMenu::startEventProcessing() {
@@ -122,10 +148,13 @@ void MainMenu::createModules() {
 	qDebug() << "XXXX ...done";
 }
 
-void MainMenu::connectMainMenuReturnSignals() {
-	qDebug()
-			<< "XXXX connecting 'return to main menu' signals for 'Read' use case...";
+void MainMenu::connectSignals() {
+	qDebug() << "XXXX connecting 'return to main menu' signals for 'Read' use case...";
 	QObject::connect(_eventLog, SIGNAL(back()), this, SLOT(backFromEventLog()));
+	QObject::connect(_invokeManager, SIGNAL(invoked(const bb::system::InvokeRequest&)), this, SLOT(receivedInvokeRequest(const bb::system::InvokeRequest&)));
+
+	QObject::connect(this, SIGNAL(launchEventLog()), _eventLog, SLOT(show()));
+
 	qDebug() << "XXXX ...done";
 }
 
@@ -134,16 +163,10 @@ void MainMenu::findAndConnectControls() {
 	qDebug() << "XXXX finding and cacheing NavigationPane object";
 	Navigator* nav = Navigator::getInstance();
 
-	NavigationPane* navpane = dynamic_cast<NavigationPane*>(_root);
-
-	nav->setNavigationPane(navpane);
-
-	qDebug()
-			<< "XXXX finding and connecting the ListView to onListSelectionChanged slot";
+	qDebug() << "XXXX finding and connecting the ListView to onListSelectionChanged slot";
 
 	ListView *listView = _root->findChild<ListView*>("list");
-	QObject::connect(listView, SIGNAL(triggered(const QVariantList)), this,
-			SLOT(onListSelectionChanged(const QVariantList)));
+	QObject::connect(listView, SIGNAL(triggered(const QVariantList)), this, SLOT(onListSelectionChanged(const QVariantList)));
 
 	QObject::connect(this, SIGNAL(read_selected()), _eventLog, SLOT(show()));
 	QObject::connect(this, SIGNAL(write_uri()), _writeURI, SLOT(show()));
@@ -217,8 +240,6 @@ void MainMenu::onListSelectionChanged(const QVariantList indexPath) {
 void MainMenu::onMainMenuTriggered() {
 	qDebug() << "XXXX onMainMenuTriggered()";
 
-	_root = _qml->createRootObject<AbstractPane>();
-
 	qDebug() << "XXXX setting scene to main menu";
 	_app->setScene(_root);
 
@@ -245,4 +266,8 @@ void MainMenu::setAppVersion(QString appVersion) {
 
 void MainMenu::cleanUpOnExit() {
 	qDebug() << "XXXX Clean up on application exit";
+}
+
+void MainMenu::onDialogAccepted() {
+	qDebug() << "XXXX MainMenu:onDialogAccepted()";
 }
