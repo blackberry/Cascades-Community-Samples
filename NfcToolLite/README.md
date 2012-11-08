@@ -1,7 +1,7 @@
 # Leveraging the Invocation Framework and QML for NFC
 
 The purpose of this application is to demonstrate how to use selected 
-BlackBerry 10 NFC APIs fosussing particularly on those that make use of the Invocation Framework allowing many NFC interactions to take place using QML rather than C/C++. The Release History section gives details of 
+BlackBerry 10 NFC APIs focussing particularly on those that make use of the Invocation Framework allowing many NFC interactions to take place using QML rather than C/C++. The Release History section gives details of 
 those NFC APIs which are covered.
 
 The sample code for this application is Open Source under 
@@ -10,7 +10,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 **Applies To**
 
 * [Cascades for BlackBerry 10](https://bdsc.webapps.blackberry.com/cascades/)
-* [BlackBerry Native SDK for Tablet OS](https://bdsc.webapps.blackberry.com/native/)
+* [BlackBerry Native SDK](http://developer.blackberry.com/native/)
 
 **Author(s)** 
 
@@ -31,7 +31,7 @@ None.
 1. BlackBerry Dev Alpha Beta 3 Device Software **10.0.9**
 1. BlackBerry 10 Native SDK **10.0.9**
 
-**How to Build NfcTool**
+**How to Build NfcToolLLite**
 
 Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in the **&lt;author&gt;** and **&lt;authorId&gt;** elements that are appropriate for you.
  
