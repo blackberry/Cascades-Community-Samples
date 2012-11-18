@@ -1,1 +1,0 @@
-include (../BBMSPUserProfile.pro)
