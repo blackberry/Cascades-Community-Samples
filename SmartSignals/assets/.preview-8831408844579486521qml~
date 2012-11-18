@@ -1,0 +1,106 @@
+/* Copyright (c) 2012 Research In Motion Limited.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import bb.cascades 1.0
+
+/**
+ * Use the controller.exe bundled with the simulator to manipulate the sensor
+ * readings and get a feel for how these events can be used within your application.
+ */
+
+Page {
+    content: Container {
+        layout: AbsoluteLayout {
+        }
+        preferredWidth: 1280
+        preferredHeight: 768
+        onCreationCompleted: {
+            lightService.setEnableSkipDuplicates(true);
+        }
+
+        // sky background
+        ImageView {
+            imageSource: "asset:///images/Sky.png"
+        }
+        AlertSign {
+            id: alertSign
+        }
+        ImageView {
+            id: hills
+            imageSource: "asset:///images/Hills.png"
+            translationY: 314.0
+        }
+        Container {
+            preferredHeight: 350
+            preferredWidth: 1280
+            layout: DockLayout {
+            }
+            // Add 3 buttons to the screen, take a look at the onSelected functions
+            // to see what happens when these are selected.
+            Container {
+                id: cloud1
+                CloudButton {
+                    imageSource: "asset:///images/Cloud1.png"
+                    shadowImageSource: "asset:///images/Cloud1_shadow.png"
+                    text: "Azimuth"
+                    onSelected: {
+                        alertSign.activate()
+                        statusBar.setText("Azimuth Pressed")
+                    }
+                }
+                rotationZ: -10.0
+                translationX: 19.0
+                horizontalAlignment: HorizontalAlignment.Left
+                verticalAlignment: VerticalAlignment.Center
+            }
+            CloudButton {
+                id: cloud2
+                imageSource: "asset:///images/Cloud2.png"
+                shadowImageSource: "asset:///images/Cloud2_shadow.png"
+                text: "Pitch"
+                rotationZ: 1.0
+                translationY: 13.0
+                onSelected: {
+                    alertSign.deactivate()
+                    statusBar.setText("Pitch Pressed")
+                }
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Top
+            }
+            Container {
+                id: cloud3
+                CloudButton {
+                    imageSource: "asset:///images/Cloud3.png"
+                    shadowImageSource: "asset:///images/Cloud3_shadow.png"
+                    text: "Roll"
+                    onSelected: {
+                        statusBar.setText("Roll Pressed")
+                    }
+                }
+                rotationZ: 28.0
+                horizontalAlignment: HorizontalAlignment.Right
+                verticalAlignment: VerticalAlignment.Center
+            }
+        }
+
+        // The StatusBar will display some text notifications to the end user
+        StatusBar {
+            id: statusBar
+            preferredHeight: 150
+            preferredWidth: 1280
+            translationY: 768 - statusBar.preferredHeight
+        }
+    }
+}
