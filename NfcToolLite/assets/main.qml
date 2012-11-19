@@ -116,9 +116,11 @@ NavigationPane {
                             }
                         }
                     }
-                    attachedObjects: ComponentDefinition {
-                        id: targetPageDefinition
-                    }
+                    attachedObjects: [
+                        ComponentDefinition {
+                            id: targetPageDefinition
+                        }
+                    ]
                 }
             }
         }
@@ -132,7 +134,11 @@ NavigationPane {
             menuList.clearSelection();
         }
     }
-    
+
+	onPopTransitionEnded: {
+	    page.destroy();
+	}
+	    
     onCreationCompleted: {
         console.log("XXXX main creation complete");
     }
