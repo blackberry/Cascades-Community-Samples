@@ -9,7 +9,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Applies To**
 
-* [Cascades for BlackBerry 10](https://bdsc.webapps.blackberry.com/cascades/)
+* [Cascades for BlackBerry 10](https://developer.blackberry.com/cascades/)
 * [BlackBerry Native SDK](http://developer.blackberry.com/native/)
 
 **Author(s)** 
@@ -20,7 +20,8 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
-* **V1** - Inital version with functionality that covers many of the capabilities found in the original **NFC Tool** sample application.
+* **V1.0.1** - Addressed potential memory leak on dynamic and creation deletion of pages.
+* **V1.0.0** - Inital version with functionality that covers many of the capabilities found in the original **NFC Tool** sample application.
 
 **Known Issues**
 
@@ -31,7 +32,7 @@ None.
 1. BlackBerry Dev Alpha Beta 3 Device Software **10.0.9**
 1. BlackBerry 10 Native SDK **10.0.9**
 
-**How to Build NfcToolLLite**
+**How to Build NfcToolLite**
 
 Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in the **&lt;author&gt;** and **&lt;authorId&gt;** elements that are appropriate for you.
  
@@ -42,6 +43,7 @@ pre-build and signed BAR files for each version. You can find them in the
 folder **"/installable-bar-files"** as follows:
 
 * **NfcToolLite-1\_0\_0\_7.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application ( requires BlackBerry Dev Alpha Device Beta 3 Software 10.0.9 )
+* **NfcToolLite-1\_0\_1\_12.bar** -- Signed BAR file for Version 1.0.1 (V1.0.1) of the application ( requires BlackBerry Dev Alpha Device Beta 3 Software 10.0.9 )
 
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**

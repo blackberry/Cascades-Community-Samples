@@ -16,7 +16,7 @@
 
 // General constants
 
-const char* Settings::AppVersion = "1.0";
+const char* Settings::AppVersion = "1.0.1";
 
 // NFC RTD useful constants
 
