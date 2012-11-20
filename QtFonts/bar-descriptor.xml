@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+
+<!-- BlackBerry® 10 application descriptor file.
+
+    Specifies parameters for identifying, installing, and launching native applications on BlackBerry® 10 OS.
+-->
+
+    <!-- A universally unique application identifier. Must be unique across all BlackBerry applications.
+         Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
+    <id>com.BGmot.AvailableFonts</id>
+
+    <!-- The name that is displayed in the BlackBerry application installer. 
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+    <name>AvailableFonts</name>
+    
+    <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
+         Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
+         An updated version of application must have a versionNumber value higher than the previous version. Required. -->
+    <versionNumber>0.0.0</versionNumber>
+
+    <!-- Fourth digit segment of the package version. First three segments are taken from the 
+         <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
+    <buildId>101</buildId>
+                 
+    <!-- Description, displayed in the BlackBerry application installer.
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+    <description>The AvailableFonts application</description>
+
+    <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
+    <author>BGmot Inc.</author>
+    <platformVersion>10.0.9.386</platformVersion>
+    
+    <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
+    <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
+   
+    <initialWindow>
+        <aspectRatio>portrait</aspectRatio>
+        <autoOrients>false</autoOrients>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+    </initialWindow>
+    
+    <!--  The category where the application appears. Either core.games or core.media. -->
+    <category>core.games</category>
+    <asset path="qtfonts.png">qtfonts.png</asset>
+    <configuration id="com.qnx.qcc.configuration.exe.debug.1407455284" name="Device-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="Device-Debug/QtFonts" entry="true" type="Qnx/Elf">QtFonts</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.configuration.exe.release.835361476" name="Device-Release">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="Device-Release/QtFonts" entry="true" type="Qnx/Elf">QtFonts</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.configuration.exe.profile.687864542" name="Device-Profile">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="Device-Profile/QtFonts" entry="true" type="Qnx/Elf">QtFonts</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.configuration.exe.profile.coverage.1812228769" name="Device-Coverage">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="Device-Coverage/QtFonts" entry="true" type="Qnx/Elf">QtFonts</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.configuration.exe.debug.1574122806" name="Simulator-Debug">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="Simulator-Debug/QtFonts" entry="true" type="Qnx/Elf">QtFonts</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.configuration.exe.profile.423749433" name="Simulator-Profile">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="Simulator-Profile/QtFonts" entry="true" type="Qnx/Elf">QtFonts</asset>
+    </configuration>
+    <configuration id="com.qnx.qcc.configuration.exe.profile.coverage.1654983009" name="Simulator-Coverage">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="Simulator-Coverage/QtFonts" entry="true" type="Qnx/Elf">QtFonts</asset>
+    </configuration>
+    
+    <!--  The icon for the application, which should be 86x86. -->
+    <icon>
+       <image></image>
+       <image>qtfonts.png</image>
+    </icon>
+    
+    <!--  The splash screen that will appear when your application is launching. Should be 1024x600. -->
+    <!-- <splashscreen></splashscreen> -->
+
+    <!-- Request permission to execute native code.  Required for native applications. -->
+    <permission system="true">run_native</permission>
+    
+    <!--  The permissions requested by your application. -->
+    <!--  <permission>access_shared</permission> -->
+    <!--  <permission>record_audio</permission> -->
+    <!--  <permission>read_geolocation</permission> -->
+    <!--  <permission>use_camera</permission> -->
+    <!--  <permission>access_internet</permission> -->
+    <!--  <permission>play_audio</permission> -->
+    <!--  <permission>post_notification</permission> -->
+    <!--  <permission>set_audio_volume</permission> -->
+    <!--  <permission>read_device_identifying_information</permission> -->
+    <!--  <permission>access_led_control</permission> -->
+    <!--  <action>run_when_backgrounded</action> -->
+    
+
+    <!-- Ensure that shared libraries in the package are found at run-time. -->
+    <env var="LD_LIBRARY_PATH" value="/usr/lib/qt4/lib"/>
+    
+</qnx>
