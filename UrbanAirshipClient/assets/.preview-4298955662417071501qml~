@@ -1,0 +1,85 @@
+//-- Default empty project template
+import bb.cascades 1.0
+
+// creates one page with a label
+
+Page {
+    actions: [
+        ActionItem {
+            objectName: "registerActionItem"
+            title: "Register"
+            imageSource: "asset:///images/actionbar/registericon.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+        },
+        ActionItem {
+            objectName: "unregisterActionItem"
+            title: "Unregister"
+            imageSource: "asset:///images/actionbar/unregistericon.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+        }
+    ]
+    attachedObjects: [
+        ActivityDialog {
+            objectName: "activityDialog"
+        }
+    ]
+    Container {
+        leftPadding: 20
+        rightPadding: 20
+        verticalAlignment: VerticalAlignment.Center
+        horizontalAlignment: HorizontalAlignment.Center
+        Container {
+            horizontalAlignment: HorizontalAlignment.Center
+            StatusField {
+                objectName: "createPushSessionStatus"
+                processLabel: "Create Push Session: "
+            }
+            StatusField {
+                objectName: "createPushChannelStatus"
+                processLabel: "Push Channel: "
+            }
+            StatusField {
+                objectName: "registertoLaunchStatus"
+                processLabel: "Register to Launch: "
+            }
+            StatusField {
+                objectName: "registerWithUrbanAirshipStatus"
+                processLabel: "Register to With Urban Airship: "
+            }
+            Container {
+                horizontalAlignment: HorizontalAlignment.Center
+                LegendField {
+                    imageSource: "asset:///images/goodStatus.png"
+                    text: "Created/Registered"
+                }
+                LegendField {
+                    imageSource: "asset:///images/badStatus.png"
+                    text: "Deleted/Unregistered"
+                }
+                LegendField {
+                    imageSource: "asset:///images/disableStatus.png"
+                    text: "Unknown"
+                }
+            }
+        }
+        Divider {
+        }
+        Container {
+            preferredWidth: 550
+            topPadding: 100
+            horizontalAlignment: HorizontalAlignment.Center
+            Container {
+                background: Color.LightGray
+                preferredHeight: 200
+                horizontalAlignment: HorizontalAlignment.Fill
+                Label {
+                    objectName: "logger"
+                    enabled: false
+                    text: "Log"
+                    multiline: true
+                    horizontalAlignment: HorizontalAlignment.Center
+                }
+            }
+        }
+    }
+}

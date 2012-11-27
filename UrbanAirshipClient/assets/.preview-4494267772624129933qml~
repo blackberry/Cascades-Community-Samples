@@ -1,0 +1,16 @@
+import bb.cascades 1.0
+
+Container {
+    property alias imageSource: image.imageSource
+    property alias text: label.text
+    layout: StackLayout {
+        orientation: LayoutOrientation.LeftToRight
+    }
+    ImageView {
+        id: image
+    }
+    Label {
+        id: label
+        verticalAlignment: VerticalAlignment.Center
+    }
+}
