@@ -1,0 +1,27 @@
+import bb.cascades 1.0
+
+Container {
+    property alias processLabel: process.text
+    layout: StackLayout {
+        orientation: LayoutOrientation.LeftToRight
+    }
+    topMargin: 10
+    bottomMargin: 10
+    Label {
+        id: process
+        preferredWidth: 600
+        verticalAlignment: VerticalAlignment.Center
+    }
+    ImageView {
+        id: pic
+        imageSource: "asset:///images/disableStatus.png"
+        verticalAlignment: VerticalAlignment.Center
+    }
+    function setState(state) {
+        if (state) {
+            pic.imageSource = "asset:///images/goodStatus.png"
+        } else {
+            pic.imageSource = "asset:///images/badStatus.png";
+        }
+    }
+}

@@ -1,0 +1,108 @@
+//-- Default empty project template
+import bb.cascades 1.0
+
+// creates one page with a label
+
+Page {
+    actions: [
+        ActionItem {
+            objectName: "registerActionItem"
+            title: "Register"
+            imageSource: "asset:///images/actionbar/registericon.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+        },
+        ActionItem {
+            objectName: "unregisterActionItem"
+            title: "Unregister"
+            imageSource: "asset:///images/actionbar/unregistericon.png"
+            ActionBar.placement: ActionBarPlacement.OnBar
+        }
+    ]
+    attachedObjects: [
+        ActivityDialog {
+            objectName: "activityDialog"
+        }
+    ]
+    Container {
+        leftPadding: 20
+        rightPadding: 20
+        verticalAlignment: VerticalAlignment.Center
+        horizontalAlignment: HorizontalAlignment.Center
+        Container {
+            horizontalAlignment: HorizontalAlignment.Center
+            StatusField {
+                objectName: "createPushSessionStatus"
+                processLabel: "Create Push Session: "
+            }
+            StatusField {
+                objectName: "createPushChannelStatus"
+                processLabel: "Push Channel: "
+            }
+            StatusField {
+                objectName: "registertoLaunchStatus"
+                processLabel: "Register to Launch: "
+            }
+            StatusField {
+                objectName: "registerWithUrbanAirshipStatus"
+                processLabel: "Register to With Urban Airship: "
+            }
+            Container {
+                horizontalAlignment: HorizontalAlignment.Center
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    ImageView {
+                        imageSource: "asset:///images/goodStatus.png"
+                    }
+                    Label {
+                        text: "Created/Registered"
+                        verticalAlignment: VerticalAlignment.Center
+                    }
+                }
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    ImageView {
+                        imageSource: "asset:///images/badStatus.png"
+                    }
+                    Label {
+                        text: "Deleted/Unregistered"
+                        verticalAlignment: VerticalAlignment.Center
+                    }
+                }
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    ImageView {
+                        imageSource: "asset:///images/disableStatus.png"
+                    }
+                    Label {
+                        text: "Unknown"
+                        verticalAlignment: VerticalAlignment.Center
+                    }
+                }
+            }
+        }
+        Divider {
+        }
+        Container {
+            preferredWidth: 550
+            horizontalAlignment: HorizontalAlignment.Center
+            Container {
+                background: Color.LightGray
+                preferredWidth: maxWidth
+                preferredHeight: 200
+                Label {
+                    objectName: "logger"
+                    enabled: false
+                    text: "Log"
+                    multiline: true
+                    horizontalAlignment: HorizontalAlignment.Center
+                }
+            }
+        }
+    }
+}
