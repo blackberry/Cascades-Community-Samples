@@ -1,0 +1,1 @@
+include (../UrbanAirshipClient.pro)
