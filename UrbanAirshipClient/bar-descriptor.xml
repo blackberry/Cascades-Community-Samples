@@ -96,7 +96,7 @@
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
-    <permission>_sys_use_consumer_push</permission>
+    <action system="true">_sys_use_consumer_push</action>
     <permission>access_internet</permission>
     <permission>post_notification</permission>
     <permission>read_device_identifying_information</permission>
