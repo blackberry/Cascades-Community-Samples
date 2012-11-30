@@ -1,18 +1,18 @@
 /* Copyright (c) 2012 Research In Motion Limited.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 import bb.cascades 1.0
 import CustomTimer 1.0
 
@@ -35,7 +35,6 @@ TabbedPane {
         tfUserId.text = "";
         tfPassword.text = "";
         if (tabbedPane.activeTab.title == "Profile") {
-            tfNewUserId.text = data_mgr.getUserid();
             tfNewFirstName.text = data_mgr.getFirstname();
             tfNewLastName.text = data_mgr.getLastname();
         }
@@ -46,7 +45,7 @@ TabbedPane {
         imageSource: "asset:///img/login.png"
         onTriggered: {
             if (p_prev_tab == p_login_tab || p_prev_tab == p_welcome_tab) {
-                var ok = sec_mgr.isPasswordOK(tfUserId.text, tfPassword.text);
+                var ok = sec_mgr.isCredentialsOK(tfUserId.text, tfPassword.text);
                 if (ok) {
                     tabbedPane.remove(login_tab);
                     tabbedPane.remove(about_tab);
@@ -263,19 +262,32 @@ TabbedPane {
                     horizontalAlignment: HorizontalAlignment.Center
                 }
                 TextField {
-                    id: tfNewUserId
-                    hintText: "Enter your user ID"
+                    id: tfCurrentUserId
+                    hintText: "Enter your current user ID"
                     inputMode: TextFieldInputMode.Text
                     input {
                         flags: TextInputFlag.AutoCapitalizationOff
                     }
-                    onTextChanged: {
-                        data_mgr.setUserid(tfNewUserId.text);
+                }
+                TextField {
+                    id: tfCurrentPassword
+                    hintText: "Enter your current password"
+                    inputMode: TextFieldInputMode.Password
+                    input {
+                        flags: TextInputFlag.AutoCapitalizationOff
+                    }
+                }
+                TextField {
+                    id: tfNewUserId
+                    hintText: "Enter your new user ID"
+                    inputMode: TextFieldInputMode.Text
+                    input {
+                        flags: TextInputFlag.AutoCapitalizationOff
                     }
                 }
                 TextField {
                     id: tfNewPassword
-                    hintText: "Enter your password"
+                    hintText: "Enter your new password"
                     inputMode: TextFieldInputMode.Password
                     input {
                         flags: TextInputFlag.AutoCapitalizationOff
@@ -283,7 +295,7 @@ TabbedPane {
                 }
                 TextField {
                     id: tfNewPassword2
-                    hintText: "Enter your password again"
+                    hintText: "Enter your new password again if changing it"
                     inputMode: TextFieldInputMode.Password
                     input {
                         flags: TextInputFlag.AutoCapitalizationOff
@@ -304,21 +316,30 @@ TabbedPane {
                     horizontalAlignment: HorizontalAlignment.Fill
                     onClicked: {
                         var ok = true;
-                        data_mgr.setUserid(tfNewUserId.text);
-                        data_mgr.setFirstname(tfNewFirstName.text);
-                        data_mgr.setLastname(tfNewLastName.text);
-                        if (tfNewPassword.text != "") {
-                            if (tfNewPassword.text == tfNewPassword2.text) {
-                                data_mgr.setPassword(tfNewPassword.text);
-                                lblProfileMessage.text = "";
-                            } else {
-                                lblProfileMessage.text = "Error: Password values do not match";
-                                profile_timer.start();
-                                ok = false;
+                        if (sec_mgr.isCredentialsOK(tfCurrentUserId.text, tfCurrentPassword.text)) {
+                            data_mgr.setUserid(tfNewUserId.text);
+                            data_mgr.setFirstname(tfNewFirstName.text);
+                            data_mgr.setLastname(tfNewLastName.text);
+                            if (tfNewPassword.text != "") {
+                                if (tfNewPassword.text == tfNewPassword2.text) {
+                                    data_mgr.setPassword(tfNewPassword.text);
+                                    lblProfileMessage.text = "";
+                                } else {
+                                    lblProfileMessage.text = "Error: Password values do not match";
+                                    profile_timer.start();
+                                    ok = false;
+                                }
                             }
+                        } else {
+                            ok = false;
+                            lblProfileMessage.text = "Current user_id/password incorrect";
+                            profile_timer.start();
                         }
                         if (ok) {
                             lblProfileMessage.text = "New details saved";
+                            if (tfNewUserId != "") {
+                                tfCurrentUserId.text = tfNewUserId.text;
+                            }
                             profile_timer.start();
                         }
                     }

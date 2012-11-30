@@ -120,11 +120,11 @@ int SecurityManager::makeHash(const QString input_data, unsigned char* messageDi
 
 }
 
-bool SecurityManager::isPasswordOK(QString entered_user_id, QString entered_password) {
-	qDebug() << "XXXX isPasswordOK(" << entered_user_id << "," << entered_password << ")";
-
+bool SecurityManager::isCredentialsOK(QString entered_user_id, QString entered_password) {
+	qDebug() << "XXXX isCredentialsOK(" << entered_user_id << "," << entered_password << ")";
+	int result = SB_SUCCESS;
 	DataManager* data_mgr = DataManager::getInstance();
-	QString current_user_id = data_mgr->getUserid();
+	QString current_user_id_hash_as_hex = data_mgr->getUserid();
 	QString current_password_hash_as_hex = data_mgr->getPassword();
 	bool password_ready = false;
 	// if DataManager was not able to provide the stored password or a default then it will have returned an empty string
@@ -142,17 +142,30 @@ bool SecurityManager::isPasswordOK(QString entered_user_id, QString entered_pass
 		return false;
 	}
 
-	if (current_user_id.compare(entered_user_id) != 0) {
-		qDebug() << "XXXX incorrect credentials entered #1";
+	// hash the user ID entered by the user and compare it with the user_id hash restored from QSettings
+	unsigned char message_digest_user_id[SB_SHA256_DIGEST_LEN];
+	QString entered_user_id_hash = "";
+	result = makeHash(entered_user_id, message_digest_user_id);
+	if (result == SB_SUCCESS) {
+		QByteArray entered_user_id_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest_user_id), SB_SHA256_DIGEST_LEN);
+		QString entered_user_id_hash_as_hex = QString::fromAscii(entered_user_id_data.toHex());
+		qDebug() << "XXXX entered user_id hash:" << entered_user_id_hash_as_hex;
+		qDebug() << "XXXX current user_id hash:" << current_user_id_hash_as_hex;
+		if (current_user_id_hash_as_hex.compare(entered_user_id_hash_as_hex) != 0) {
+			qDebug() << "XXXX incorrect credentials entered #1";
+			return false;
+		}
+	} else {
+		qDebug() << "XXXX SYSTEM ERROR: failed to calculate hash of entered user_id:" << result;
 		return false;
 	}
 
 	// hash the password entered by the user and compare it with the password hash restored from QSettings
-	unsigned char message_digest[SB_SHA256_DIGEST_LEN];
+	unsigned char message_digest_password[SB_SHA256_DIGEST_LEN];
 	QString entered_password_hash = "";
-	int result = makeHash(entered_password, message_digest);
+	result = makeHash(entered_password, message_digest_password);
 	if (result == SB_SUCCESS) {
-		QByteArray entered_password_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest), SB_SHA256_DIGEST_LEN);
+		QByteArray entered_password_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest_password), SB_SHA256_DIGEST_LEN);
 		QString entered_password_hash_as_hex = QString::fromAscii(entered_password_data.toHex());
 		qDebug() << "XXXX entered password hash:" << entered_password_hash_as_hex;
 		qDebug() << "XXXX current password hash:" << current_password_hash_as_hex;

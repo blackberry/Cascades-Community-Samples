@@ -28,7 +28,7 @@ Q_OBJECT
 
 public:
 	static SecurityManager* getInstance();
-	Q_INVOKABLE bool isPasswordOK(QString user_id, QString password);
+	Q_INVOKABLE bool isCredentialsOK(QString user_id, QString password);
 	Q_INVOKABLE void setLoggedIn(bool logged_in_state);
 	Q_INVOKABLE bool isLoggedIn();
 	int initSecurity();

@@ -29,16 +29,27 @@ QString DataManager::KEY_LAST_NAME="last_name";
 
 DataManager::DataManager() {
     QSettings settings;
-    // get user_id from QSettings or set to the default value of "guest"
-    user_id = settings.value(KEY_USER_ID, "guest").toString();
+	SecurityManager* sec_mgr = SecurityManager::getInstance();
+	int result = SB_SUCCESS;
+
+    // get user_id from QSettings or set to the default value of the hex representation of the sha-2 hash of "guest"
+	unsigned char message_digest_user_id[SB_SHA256_DIGEST_LEN];
+	QString user_id_hash="";
+	result = sec_mgr->makeHash("guest", message_digest_user_id);
+	if (result == SB_SUCCESS) {
+		QByteArray user_id_hash_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest_user_id), SB_SHA256_DIGEST_LEN);
+		QString user_id_hash_as_hex = QString::fromAscii(user_id_hash_data.toHex());
+		user_id = settings.value(KEY_USER_ID, user_id_hash_as_hex).toString();
+	} else {
+		qDebug() << "XXXX ERROR: could not establish current user_id value from QSettings";
+	}
 
     // get password from QSettings or set to the default value of the hex representation of the sha-2 hash of "password"
-	unsigned char message_digest[SB_SHA256_DIGEST_LEN];
+	unsigned char message_digest_password[SB_SHA256_DIGEST_LEN];
 	QString password_hash="";
-	SecurityManager* sec_mgr = SecurityManager::getInstance();
-	int result = sec_mgr->makeHash("password", message_digest);
+	result = sec_mgr->makeHash("password", message_digest_password);
 	if (result == SB_SUCCESS) {
-		QByteArray password_hash_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest), SB_SHA256_DIGEST_LEN);
+		QByteArray password_hash_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest_password), SB_SHA256_DIGEST_LEN);
 		QString password_hash_as_hex = QString::fromAscii(password_hash_data.toHex());
 		password = settings.value(KEY_PASSWORD, password_hash_as_hex).toString();
 	} else {
@@ -78,15 +89,26 @@ QString DataManager::getLastname() {
 
 void DataManager::setUserid(QString new_userid) {
     QSettings settings;
-    settings.setValue(KEY_USER_ID,new_userid);
-    user_id = new_userid;
+	SecurityManager* sec_mgr = SecurityManager::getInstance();
+	unsigned char message_digest[SB_SHA256_DIGEST_LEN];
+	QString user_id_hash="";
+	int result = sec_mgr->makeHash(new_userid, message_digest);
+	if (result == SB_SUCCESS) {
+		QByteArray user_id_hash_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest), SB_SHA256_DIGEST_LEN);
+		QString user_id_hash_as_hex = QString::fromAscii(user_id_hash_data.toHex());
+	    settings.setValue(KEY_USER_ID,user_id_hash_as_hex);
+	    qDebug() << "XXXX user ID hash stored in QSettings:" << user_id_hash_as_hex;
+	    user_id = user_id_hash_as_hex;
+	} else {
+		qDebug() << "XXXX ERROR: could not set new user_id in QSettings";
+	}
 }
 
 void DataManager::setPassword(QString new_password) {
     QSettings settings;
+	SecurityManager* sec_mgr = SecurityManager::getInstance();
 	unsigned char message_digest[SB_SHA256_DIGEST_LEN];
 	QString password_hash="";
-	SecurityManager* sec_mgr = SecurityManager::getInstance();
 	int result = sec_mgr->makeHash(new_password, message_digest);
 	if (result == SB_SUCCESS) {
 		QByteArray password_hash_data = QByteArray::fromRawData(reinterpret_cast<const char *>(message_digest), SB_SHA256_DIGEST_LEN);

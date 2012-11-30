@@ -34,8 +34,8 @@ None.
 
 **Dependencies**
 
-1. BlackBerry Dev Alpha Beta 3 Device Software **10.0.9**
-1. BlackBerry 10 Native SDK **10.0.9**
+1. BlackBerry Dev Alpha Beta 4 Device Software **10.0.9**
+1. BlackBerry 10 Native SDK for Beta 4 **10.0.9**
 
 **How to Build PasswordSample**
 
@@ -47,7 +47,7 @@ If you don't want to build this sample application yourself we've included a
 pre-build and signed BAR files for each version. You can find them in the 
 folder **"/installable-bar-files"** as follows:
 
-* **PasswordSample-1\_0\_0\_3.bar** -- Signed BAR file for Version 1 (V1) of the application ( requires BlackBerry Dev Alpha Device Software 10.0.9 )
+* **PasswordSample-1\_0\_0\_10.bar** -- Signed BAR file for Version 1 (V1) of the application ( requires BlackBerry Dev Alpha Device Beta 4 Software 10.0.9 )
 
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**

@@ -19,7 +19,6 @@ Container {
     Container {
         objectName: "cover"
         function loggedInChanged(logged_in) {
-            console.log("XXXX Guess what? loggedInChanged:" + logged_in);
             if (logged_in == true) {
                 backgroundImage.imageSource = "asset:///img/cover_open_padlock.png"
             } else {
