@@ -362,13 +362,10 @@ TabbedPane {
         title: "About"
         imageSource: "asset:///img/about.png"
         onTriggered: {
-            onTriggered:
-            {
-                if (p_prev_tab == p_welcome_tab || p_prev_tab == p_login_tab) {
-                    welcome_tab.title = "Welcome"
-                }
-                p_prev_tab = p_about_tab;
+            if (p_prev_tab == p_welcome_tab || p_prev_tab == p_login_tab) {
+                welcome_tab.title = "Welcome"
             }
+            p_prev_tab = p_about_tab;
         }
         Page {
             actionBarVisibility: ChromeVisibility.Visible
