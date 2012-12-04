@@ -40,7 +40,7 @@ If you don't want to build this sample application yourself we've included a
 pre-build and signed BAR files for each version. You can find them in the 
 folder **"/installable-bar-files"** as follows:
 
-* **NfcSharing-1\_0\_0\_4.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application ( requires BlackBerry Dev Alpha Device Beta 4 Software 10.0.9 )
+* **NfcSharing-1\_0\_0\_5.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application ( requires BlackBerry Dev Alpha Device Beta 4 Software 10.0.9 )
 
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**

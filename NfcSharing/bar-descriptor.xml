@@ -95,9 +95,17 @@
         <include name="*.qm"/>
     </asset>
     <asset public="true" path="assets/files/jcmrim.png">jcmrim.png</asset>
-    <asset path="assets/images/text.png">text.png</asset>
     <asset public="true" path="assets/files/mdwrim.png">mdwrim.png</asset>
     <asset public="true" path="assets/files/robbieDubya.png">robbieDubya.png</asset>
+    <asset path="assets/images/text.png">text.png</asset>
+    <asset public="true" path="assets/files/_MG_0818.jpg">_MG_0818.jpg</asset>
+    <asset public="true" path="assets/files/_MG_1308.jpg">_MG_1308.jpg</asset>
+    <asset public="true" path="assets/files/_MG_2174.jpg">_MG_2174.jpg</asset>
+    <asset public="true" path="assets/files/_MG_4353.jpg">_MG_4353.jpg</asset>
+    <asset public="true" path="assets/files/_MG_5447.jpg">_MG_5447.jpg</asset>
+    <asset public="true" path="assets/files/_MG_8240.jpg">_MG_8240.jpg</asset>
+    <asset public="true" path="assets/files/_MG_8558.jpg">_MG_8558.jpg</asset>
+    <asset public="true" path="assets/files/_MG_8746.jpg">_MG_8746.jpg</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
