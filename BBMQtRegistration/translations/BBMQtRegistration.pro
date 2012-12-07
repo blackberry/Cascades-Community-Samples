@@ -1,1 +1,0 @@
-include (../BBMQtRegistration.pro)
