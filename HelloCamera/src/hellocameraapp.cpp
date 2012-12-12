@@ -33,9 +33,10 @@ using namespace bb::cascades;
 // define this to debug the ForeignWindowControl race condition
 #define BREAK_FWC
 // define this to enable a workaround for the above race condition
-#define WORKAROUND_FWC
+//#define WORKAROUND_FWC
 
-HelloCameraApp::HelloCameraApp() :
+HelloCameraApp::HelloCameraApp(bb::cascades::Application *app) :
+        QObject(app),
         mCameraHandle(CAMERA_HANDLE_INVALID)
 {
     qDebug() << "HelloCameraApp";
@@ -88,13 +89,12 @@ HelloCameraApp::HelloCameraApp() :
             .add(mTakePictureButton)
             .add(mStopButton));
 
-   Application::instance()->setScene(Page::create().content(container));
+   app->setScene(Page::create().content(container));
 }
 
 
 HelloCameraApp::~HelloCameraApp()
 {
-    delete mViewfinderWindow;
 }
 
 
@@ -120,6 +120,10 @@ void HelloCameraApp::onWindowAttached(screen_window_t win,
     mViewfinderWindow->setVisible(false);
     mViewfinderWindow->setVisible(true);
 #endif
+    screen_context_t screen_ctx;
+    screen_get_window_property_pv(win, SCREEN_PROPERTY_CONTEXT, (void **)&screen_ctx);
+    screen_flush_context(screen_ctx, 0);
+
 }
 
 

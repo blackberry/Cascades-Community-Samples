@@ -35,7 +35,7 @@ using namespace bb::cascades;
 #define WORKAROUND_FWC
 
 
-HelloVideoCameraApp::HelloVideoCameraApp() :
+HelloVideoCameraApp::HelloVideoCameraApp(bb::cascades::Application *app) :
         mCameraHandle(CAMERA_HANDLE_INVALID),
         mVideoFileDescriptor(-1)
 {
@@ -93,13 +93,12 @@ HelloVideoCameraApp::HelloVideoCameraApp() :
 			.add(mStopButton));
 
 
-    Application::instance()->setScene(Page::create().content(container));
+    app->setScene(Page::create().content(container));
 }
 
 
 HelloVideoCameraApp::~HelloVideoCameraApp()
 {
-    delete mViewfinderWindow;
 }
 
 
@@ -229,7 +228,11 @@ void HelloVideoCameraApp::onStartStopRecording()
             //   RIM will be providing clarification of this policy as part of the
             //   NDK developer agreement and App World guidelines.  A link will
             //   be provided when the policy is publicly available.
-            soundplayer_play_sound("event_recording_start");
+
+            // NOTE: we use the _blocking variant here so that the sound doesn't bleed over
+            // into our recording.  An alternate solution may involve muting the mic temporarily,
+            // in order to allow video recording to start slightly sooner.
+            soundplayer_play_sound_blocking("event_recording_start");
 
             char filename[CAMERA_ROLL_NAMELEN];
             if (camera_roll_open_video(mCameraHandle,
