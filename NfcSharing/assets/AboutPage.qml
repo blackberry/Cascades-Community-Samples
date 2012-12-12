@@ -232,7 +232,7 @@ Page {
                     }
                 }
                 Label {
-                    text: "NfcSharing V1.0.0"
+                    text: "NfcSharing V1.0.1"
                     enabled: false
                     preferredWidth: 650
                     textStyle {

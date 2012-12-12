@@ -19,6 +19,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
+* **V1.0.1** - Fix to minor race condition.
 * **V1.0.0** - Inital version.
 
 **Known Issues**
@@ -34,17 +35,8 @@ None.
 
 Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in the **&lt;author&gt;** and **&lt;authorId&gt;** elements that are appropriate for you.
  
-**But I don't want to build it myself**
-
-If you don't want to build this sample application yourself we've included a 
-pre-build and signed BAR files for each version. You can find them in the 
-folder **"/installable-bar-files"** as follows:
-
-* **NfcSharing-1\_0\_0\_5.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application ( requires BlackBerry Dev Alpha Device Beta 4 Software 10.0.9 )
-
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
-
 
 ## Contributing Changes
 
