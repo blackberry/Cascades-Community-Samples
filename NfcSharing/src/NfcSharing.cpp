@@ -9,12 +9,12 @@ using namespace bb::cascades;
 NfcSharing::NfcSharing(bb::cascades::Application *app) : QObject(app), _sharingActive(false)
 {
     _qml = QmlDocument::create("asset:///main.qml");
+    _qml->setContextProperty("_nfcSharing", this);
+
     _root = _qml->createRootObject<AbstractPane>();
     _shareFilePage = _root->findChild<QObject*>("shareFilePage");
     _shareDataPage = _root->findChild<QObject*>("shareDataPage");
     _shareUrlPage  = _root->findChild<QObject*>("shareUrlPage");
-
-    _qml->setContextProperty("_nfcSharing", this);
 
     _nfcShareManager = new NfcShareManager();
 
