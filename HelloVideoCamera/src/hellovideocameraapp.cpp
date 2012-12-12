@@ -33,6 +33,7 @@ using namespace bb::cascades;
 
 
 HelloVideoCameraApp::HelloVideoCameraApp(bb::cascades::Application *app) :
+        QObject(app),
         mCameraHandle(CAMERA_HANDLE_INVALID),
         mVideoFileDescriptor(-1)
 {
