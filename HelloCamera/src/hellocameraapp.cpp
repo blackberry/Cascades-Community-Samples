@@ -30,11 +30,6 @@
 
 using namespace bb::cascades;
 
-// define this to debug the ForeignWindowControl race condition
-#define BREAK_FWC
-// define this to enable a workaround for the above race condition
-//#define WORKAROUND_FWC
-
 HelloCameraApp::HelloCameraApp(bb::cascades::Application *app) :
         QObject(app),
         mCameraHandle(CAMERA_HANDLE_INVALID)
@@ -102,13 +97,6 @@ void HelloCameraApp::onWindowAttached(screen_window_t win,
                                       const QString &group,
                                       const QString &id)
 {
-#ifdef BREAK_FWC
-    // typically a value of 1ms will cause the window to only be visible the
-    // first time you start it. on subsequent invocations, it does not become visible
-    // unless you force a refresh of the cascades window.
-    // a value of 10 ms seems to expose the problem every time.
-    usleep(10000);
-#endif
     qDebug() << "onWindowAttached: " << win << ", " << group << ", " << id;
     // set screen properties to mirror if this is the front-facing camera
     int i = (mCameraUnit == CAMERA_UNIT_FRONT);
@@ -116,14 +104,9 @@ void HelloCameraApp::onWindowAttached(screen_window_t win,
     // put the viewfinder window behind the cascades window
     i = -1;
     screen_set_window_property_iv(win, SCREEN_PROPERTY_ZORDER, &i);
-#ifdef WORKAROUND_FWC
-    mViewfinderWindow->setVisible(false);
-    mViewfinderWindow->setVisible(true);
-#endif
     screen_context_t screen_ctx;
     screen_get_window_property_pv(win, SCREEN_PROPERTY_CONTEXT, (void **)&screen_ctx);
     screen_flush_context(screen_ctx, 0);
-
 }
 
 

@@ -31,9 +31,6 @@
 
 using namespace bb::cascades;
 
-// workaround a ForeignWindowControl race condition
-#define WORKAROUND_FWC
-
 
 HelloVideoCameraApp::HelloVideoCameraApp(bb::cascades::Application *app) :
         mCameraHandle(CAMERA_HANDLE_INVALID),
@@ -113,13 +110,9 @@ void HelloVideoCameraApp::onWindowAttached(screen_window_t win,
     // put the viewfinder window behind the cascades window
     i = -1;
     screen_set_window_property_iv(win, SCREEN_PROPERTY_ZORDER, &i);
-#ifdef WORKAROUND_FWC
-    // seems we still need a workaround in R9 for a potential race due to
-    // ForeignWindowControl updating/flushing the window's properties in
-    // parallel with the execution of the onWindowAttached() handler.
-    mViewfinderWindow->setVisible(false);
-    mViewfinderWindow->setVisible(true);
-#endif
+    screen_context_t screen_ctx;
+    screen_get_window_property_pv(win, SCREEN_PROPERTY_CONTEXT, (void **)&screen_ctx);
+    screen_flush_context(screen_ctx, 0);
 }
 
 
