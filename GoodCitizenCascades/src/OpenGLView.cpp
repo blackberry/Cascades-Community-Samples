@@ -19,111 +19,680 @@
 
 #include <QDebug>
 
-OpenGLView::OpenGLView() : QObject(NULL)
+QMutex OpenGLView::m_renderMutex;
+
+void OpenGLView::setRenderingAPI(RENDERING_API api)
+{
+	OpenGLThread::getInstance()->setRenderingAPI(api);
+}
+
+OpenGLView::OpenGLView() : QObject(OpenGLThread::getInstance())
 {
 	// initialize members shared by derived classes
 	m_nbuffers = 2;
+	m_enabled = false;
+	m_initialized = false;
+	m_stale = false;
+	m_altered = false;
+	m_visible = false;
+
+	m_screen_win = NULL;
+	m_screen_dpy = NULL;
+
+	m_angle = 0.0;
+	m_x = 0;
+	m_y = 0;
+	m_width = 0;
+	m_height = 0;
+	m_interval = 0;
+	m_transparency = 0;
 }
 
 OpenGLView::~OpenGLView() {
-	// TODO Auto-generated destructor stub
 }
 
+int OpenGLView::initGL()
+{
+    int numberDisplays;
+    int numberModes;
+    int returnCode;
+    EGLBoolean status;
+    int type;
+    EGLint attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+    EGLint attrib_list[]= { EGL_RED_SIZE,        8,
+                            EGL_GREEN_SIZE,      8,
+                            EGL_BLUE_SIZE,       8,
+                            EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
+                            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES_BIT,
+                            EGL_NONE};
 
-
-int OpenGLView::initGL(EGLContext egl_ctx, EGLConfig egl_conf, EGLDisplay egl_disp, screen_context_t screen_cxt, int usage, int z, const char* group, const char* id) {
-    int format = SCREEN_FORMAT_RGBA8888;
-    EGLint interval = 1;
-
-	m_screen_cxt = screen_cxt;
-	m_egl_disp = egl_disp;
-	m_egl_conf = egl_conf;
-	m_egl_ctx = egl_ctx;
-
-    //int rc = screen_create_window(&m_screen_win, screen_cxt);
-	int rc = screen_create_window_type(&m_screen_win, screen_cxt, SCREEN_CHILD_WINDOW);
-    if (rc) {
-        perror("screen_create_window");
+    // try this first as it will fail if an HDMI display is not attached
+    if (m_api == GL_ES_2) {
+        m_egl_ctx = eglCreateContext(m_egl_disp, m_egl_conf, EGL_NO_CONTEXT, attributes);
+    } else {
+        m_egl_ctx = eglCreateContext(m_egl_disp, m_egl_conf, EGL_NO_CONTEXT, NULL);
+    }
+    if (m_egl_ctx == EGL_NO_CONTEXT) {
+        perror("eglCreateContext");
         return EXIT_FAILURE;
     }
 
-	qDebug()  << "OpenGLView::initialize: "<< m_screen_cxt << ":" << m_egl_disp << ":" << m_egl_conf << ":" << m_egl_ctx << ":" << m_screen_win;
+	screen_get_context_property_iv(m_screen_ctx, SCREEN_PROPERTY_DISPLAY_COUNT, &numberDisplays);
 
-	rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_FORMAT, &format);
-	if (rc) {
+	m_screen_dpy = (screen_display_t *)calloc(numberDisplays, sizeof(screen_display_t));
+	screen_get_context_property_pv(m_screen_ctx, SCREEN_PROPERTY_DISPLAYS, (void **)m_screen_dpy);
+
+
+	for (int index = 0; index < numberDisplays; index++) {
+		int displayID;
+
+        returnCode = screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_ID,  (int *)&displayID);
+    	if (returnCode) {
+    		perror("display ID");
+    		return EXIT_FAILURE;
+    	} else {
+			if (displayID == m_display) {
+			    screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_TYPE,  &type);
+			    if (type == SCREEN_DISPLAY_TYPE_HDMI) {
+			    	returnCode = screen_create_window(&m_screen_win, m_screen_ctx);
+			    	if (returnCode) {
+			            perror("screen_create_window");
+			            return EXIT_FAILURE;
+			        }
+			    } else {
+			    	returnCode = screen_create_window_type(&m_screen_win, m_screen_ctx, SCREEN_CHILD_WINDOW);
+			    	if (returnCode) {
+			            perror("screen_create_window (child window)");
+			            return EXIT_FAILURE;
+			        }
+			    }
+			    if (type == SCREEN_DISPLAY_TYPE_HDMI) {
+					returnCode = screen_set_window_property_pv(m_screen_win, SCREEN_PROPERTY_DISPLAY, (void **)&(m_screen_dpy[index]));
+					if (returnCode) {
+						perror("window display");
+						return EXIT_FAILURE;
+					}
+		        }
+			}
+        }
+	}
+
+	qDebug()  << "OpenGLView::initialize: "<< m_screen_ctx << ":" << m_egl_disp << ":" << m_egl_conf << ":" << m_egl_ctx << ":" << m_screen_win;
+
+
+	int format = SCREEN_FORMAT_RGBA8888;
+	returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_FORMAT, &format);
+	if (returnCode) {
 		perror("screen_set_window_property_iv(SCREEN_PROPERTY_FORMAT)");
 		return EXIT_FAILURE;
 	}
 
-	rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_USAGE, &usage);
-	if (rc) {
-		perror("screen_set_window_property_iv(SCREEN_PROPERTY_USAGE)");
-		return EXIT_FAILURE;
+	if (m_transparency > 0) {
+		returnCode = setWindowTransparency(m_transparency);
+		if (returnCode) {
+			perror("transparency");
+			return EXIT_FAILURE;
+		}
 	}
 
-	rc = screen_get_window_property_pv(m_screen_win, SCREEN_PROPERTY_DISPLAY, (void **)&m_screen_disp);
-	if (rc) {
+	returnCode = screen_get_window_property_pv(m_screen_win, SCREEN_PROPERTY_DISPLAY, (void **)&m_screen_disp);
+	if (returnCode) {
 		perror("screen_get_window_property_pv");
 		return EXIT_FAILURE;
 	}
 
 	int angle = atoi(getenv("ORIENTATION"));
 
-	screen_display_mode_t screen_mode;
-	rc = screen_get_display_property_pv(m_screen_disp, SCREEN_PROPERTY_MODE, (void**)&screen_mode);
-	if (rc) {
-		perror("screen_get_display_property_pv");
+	screen_get_display_property_iv(m_screen_disp, SCREEN_PROPERTY_MODE_COUNT, &numberModes);
+
+	m_screen_modes = (screen_display_mode_t *)calloc(numberModes, sizeof(screen_display_mode_t));
+	returnCode = screen_get_display_property_pv(m_screen_disp, SCREEN_PROPERTY_MODE, (void**)m_screen_modes);
+	if (returnCode) {
+		perror("screen modes");
 		return EXIT_FAILURE;
 	}
 
     int dpi = calculateDPI();
-
     if (dpi == EXIT_FAILURE) {
         fprintf(stderr, "Unable to calculate dpi\n");
         return EXIT_FAILURE;
     }
 
+	returnCode = setWindowPosition(m_x, m_y);
+	if (returnCode) {
+		perror("window position");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setWindowSize(m_width, m_height);
+	if (returnCode) {
+		perror("window size");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setWindowZ(m_z);
+	if (returnCode) {
+		perror("z order");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setWindowBufferSize(m_width, m_height);
+	if (returnCode) {
+		perror("buffer size");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setWindowAngle(m_angle);
+	if (returnCode) {
+		perror("angle");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = screen_create_window_buffers(m_screen_win, m_nbuffers);
+	if (returnCode) {
+		perror("screen_create_window_buffers");
+		return EXIT_FAILURE;
+	}
+
+
+    if (m_api == GL_ES_1) {
+        m_usage = SCREEN_USAGE_OPENGL_ES1 | SCREEN_USAGE_ROTATION;
+    } else if (m_api == GL_ES_2) {
+    	attrib_list[9] = EGL_OPENGL_ES2_BIT;
+    	m_usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION;
+    } else if (m_api == VG) {
+    	attrib_list[9] = EGL_OPENVG_BIT;
+    	m_usage = SCREEN_USAGE_OPENVG | SCREEN_USAGE_ROTATION;
+    } else {
+        fprintf(stderr, "invalid api setting\n");
+        return EXIT_FAILURE;
+    }
+
+	returnCode = setWindowUsage(m_usage);
+	if (returnCode) {
+		perror("screen_set_window_property_iv(window usage)");
+		return EXIT_FAILURE;
+	}
+
+	qDebug()  << "OpenGLView::initGL:eglCreateContext "<< m_egl_ctx;
+	m_egl_surf = eglCreateWindowSurface(m_egl_disp, m_egl_conf, m_screen_win, NULL);
+	if (m_egl_surf == EGL_NO_SURFACE) {
+		OpenGLThread::eglPrintError("eglCreateWindowSurface");
+		return EXIT_FAILURE;
+	}
+
+	getGLContext();
+
+    EGLint interval = 1;
+    status = eglSwapInterval(m_egl_disp, interval);
+	if (status != EGL_TRUE) {
+		OpenGLThread::eglPrintError("eglSwapInterval");
+		return EXIT_FAILURE;
+	}
+
+    status = eglQuerySurface(m_egl_disp, m_egl_surf, EGL_WIDTH, &m_surface_width);
+	if (status != EGL_TRUE) {
+		perror("query surface width");
+		return EXIT_FAILURE;
+	}
+
+    status = eglQuerySurface(m_egl_disp, m_egl_surf, EGL_HEIGHT, &m_surface_height);
+	if (status != EGL_TRUE) {
+		perror("query surface height");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = joinWindowGroup(m_group);
+	if (returnCode) {
+		perror("window group");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setScreenWindowID(m_id);
+	if (returnCode) {
+		perror("window ID");
+		return EXIT_FAILURE;
+	}
+
+	qDebug()  << "OpenGLView::initGL: "<< angle << ":" << numberModes << ":" << m_screen_modes[0].width << ":" << m_screen_modes[0].height << ":" << m_egl_disp << ":" << dpi;
+
+	setInitialized(true);
+
+	return EXIT_SUCCESS;
+}
+
+EGLDisplay OpenGLView::display()
+{
+	return m_egl_disp;
+}
+
+void OpenGLView::setDisplay(VIEW_DISPLAY display)
+{
+	m_display = display;
+}
+
+void OpenGLView::setScreenContext(screen_context_t screen_ctx)
+{
+    m_screen_ctx = screen_ctx;
+}
+
+
+void OpenGLView::setAPI(RENDERING_API api)
+{
+	m_api = api;
+}
+
+void OpenGLView::setScreenEGLConfiguration(EGLConfig egl_conf)
+{
+    m_egl_conf = egl_conf;
+}
+
+void OpenGLView::setScreenEGLDisplay(EGLDisplay egl_disp)
+{
+    m_egl_disp = egl_disp;
+}
+
+void OpenGLView::shutdown() {
+	OpenGLThread::getInstance()->shutdown();
+
+	while (OpenGLThread::getInstance()->isRunning()) {
+		usleep(100);
+	}
+
+}
+
+void OpenGLView::cleanup() {
+    if (m_egl_disp != EGL_NO_DISPLAY) {
+    	releaseGLContext();
+		if (m_egl_ctx != EGL_NO_CONTEXT) {
+			eglDestroyContext(m_egl_disp, m_egl_ctx);
+			m_egl_ctx = EGL_NO_CONTEXT;
+		}
+		if (m_egl_surf != EGL_NO_SURFACE) {
+			eglDestroySurface(m_egl_disp, m_egl_surf);
+			m_egl_surf = EGL_NO_SURFACE;
+		}
+    }
+
+	if (m_screen_win != NULL) {
+		screen_destroy_window(m_screen_win);
+		m_screen_win = NULL;
+	}
+
+	if (m_screen_dpy != NULL) {
+		free(m_screen_dpy);
+	}
+
+	if (m_screen_win != NULL) {
+		free(m_screen_modes);
+	}
+}
+
+void OpenGLView::setEnabled(bool enabled) {
+	m_enabled = enabled;
+}
+
+bool OpenGLView::enabled() {
+	return m_enabled;
+}
+
+void OpenGLView::setInitialized(bool initialized)
+{
+	m_viewMutex.lock();
+
+	m_initialized = initialized;
+
+	m_viewMutex.unlock();
+}
+
+bool OpenGLView::initialized() {
+	bool initialized;
+
+	m_viewMutex.lock();
+
+	initialized = m_initialized;
+
+	m_viewMutex.unlock();
+
+	return initialized;
+}
+
+void OpenGLView::setStale(bool stale)
+{
+	m_viewMutex.lock();
+
+	m_stale = stale;
+
+	m_viewMutex.unlock();
+}
+
+bool OpenGLView::stale() {
+	bool stale;
+
+	m_viewMutex.lock();
+
+	stale = m_stale;
+
+	m_viewMutex.unlock();
+
+	return stale;
+}
+
+void OpenGLView::setAltered(bool altered)
+{
+	m_viewMutex.lock();
+
+	m_altered = altered;
+
+	m_viewMutex.unlock();
+}
+
+bool OpenGLView::altered() {
+	bool altered;
+
+	m_viewMutex.lock();
+
+	altered = m_altered;
+
+	m_viewMutex.unlock();
+
+	return altered;
+}
+
+void OpenGLView::setVisible(bool visible)
+{
+	m_viewMutex.lock();
+
+	m_visible = visible;
+
+	m_viewMutex.unlock();
+}
+
+bool OpenGLView::visible() {
+	bool visible;
+
+	m_viewMutex.lock();
+
+	visible = m_visible;
+
+	m_viewMutex.unlock();
+
+	return visible;
+}
+
+void OpenGLView::setAngle(int angle)
+{
+	if ((angle != 0) && (angle != 90) && (angle != 180) && (angle != 270)) {
+		fprintf(stderr, "Invalid angle\n");
+	} else {
+		m_angle = angle;
+	}
+}
+
+void OpenGLView::setPosition(int x, int y)
+{
+	m_x = x;
+	m_y = y;
+}
+
+void OpenGLView::setSize(int width, int height)
+{
+	m_width = width;
+	m_height = height;
+}
+
+void OpenGLView::setZ(int z)
+{
+	m_z = z;
+}
+
+void OpenGLView::setTransparency(int transparency)
+{
+	m_transparency = transparency;
+}
+
+void OpenGLView::setWindowGroup(const QString &group)
+{
+	m_group = group;
+}
+
+void OpenGLView::setWindowID(const QString id)
+{
+	m_id = id;
+}
+
+int OpenGLView::setWindowAngle(int angle)
+{
+	int returnCode;
+
+	if (m_screen_win != NULL) {
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_ROTATION, &angle);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setWindowPosition(int x, int y)
+{
+	int returnCode;
+	int position[2];
+
+	if (m_screen_win != NULL) {
+		position[0] = x;
+		position[1] = y;
+
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_POSITION, position);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setWindowSize(int width, int height)
+{
+	int returnCode;
 	int size[2];
+
+	if (m_screen_win != NULL) {
+		size[0] = width;
+		size[1] = height;
+
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_SIZE, size);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setWindowZ(int z)
+{
+	int returnCode = 0;
+
+	if (m_screen_win != NULL) {
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_ZORDER, &z);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setWindowTransparency(int transparency)
+{
+	int returnCode = 0;
+
+	if (m_screen_win != NULL) {
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_TRANSPARENCY, &transparency);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setWindowUsage(int usage)
+{
+	int returnCode = 0;
+
+	if (m_screen_win != NULL) {
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_USAGE, &usage);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setWindowSourceSize(int width, int height)
+{
+	int returnCode;
+	int size[2];
+
+	if (m_screen_win != NULL) {
+		size[0] = width;
+		size[1] = height;
+
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_SOURCE_SIZE, size);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setWindowBufferSize(int width, int height)
+{
+	int returnCode;
+	int size[2];
+
+	if (m_screen_win != NULL) {
+		size[0] = width;
+		size[1] = height;
+
+		returnCode = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_BUFFER_SIZE, size);
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::joinWindowGroup(const QString &group)
+{
+	int returnCode = 0;
+
+	if (m_screen_win != NULL) {
+		returnCode = screen_join_window_group(m_screen_win, group.toAscii());
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+int OpenGLView::setScreenWindowID(const QString id)
+{
+	int returnCode = 0;
+
+	if (m_screen_win != NULL) {
+		returnCode = screen_set_window_property_cv(m_screen_win, SCREEN_PROPERTY_ID_STRING, id.toAscii().length(), id.toAscii());
+	} else {
+		returnCode = EXIT_SUCCESS;
+	}
+
+	return returnCode;
+}
+
+
+
+int OpenGLView::regenerate() {
+	int returnCode;
+	EGLBoolean status;
+	EGLint interval = 1;
+
+	OpenGLView::m_renderMutex.lock();
+
+    status = eglQuerySurface(m_egl_disp, m_egl_surf, EGL_WIDTH, &m_surface_width);
+	if (status != EGL_TRUE) {
+		perror("query surface width");
+		return EXIT_FAILURE;
+	}
+
+    status = eglQuerySurface(m_egl_disp, m_egl_surf, EGL_HEIGHT, &m_surface_height);
+	if (status != EGL_TRUE) {
+		perror("query surface height");
+		return EXIT_FAILURE;
+	}
+
+/*
+	rc = screen_get_window_property_iv(m_screen_win, SCREEN_PROPERTY_ROTATION, &rotation);
+	if (rc) {
+		perror("screen_set_window_property_iv");
+		return EXIT_FAILURE;
+	}
+
 	rc = screen_get_window_property_iv(m_screen_win, SCREEN_PROPERTY_BUFFER_SIZE, size);
 	if (rc) {
-		perror("screen_get_window_property_iv");
-		return EXIT_FAILURE;
-	}
-
-	int buffer_size[2] = {size[0], size[1]};
-
-	if ((angle == 0) || (angle == 180)) {
-		if (((screen_mode.width > screen_mode.height) && (size[0] < size[1])) ||
-			((screen_mode.width < screen_mode.height) && (size[0] > size[1]))) {
-				buffer_size[1] = size[0];
-				buffer_size[0] = size[1];
-		}
-	} else if ((angle == 90) || (angle == 270)){
-		if (((screen_mode.width > screen_mode.height) && (size[0] > size[1])) ||
-			((screen_mode.width < screen_mode.height && size[0] < size[1]))) {
-				buffer_size[1] = size[0];
-				buffer_size[0] = size[1];
-		}
-	} else {
-		 fprintf(stderr, "Navigator returned an unexpected orientation angle.\n");
-		 return EXIT_FAILURE;
-	}
-
-	rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_BUFFER_SIZE, buffer_size);
-	if (rc) {
 		perror("screen_set_window_property_iv");
 		return EXIT_FAILURE;
 	}
 
-	rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_ROTATION, &angle);
-	if (rc) {
-		perror("screen_set_window_property_iv");
+	switch (angle - rotation) {
+		case -270:
+		case -90:
+		case 90:
+		case 270:
+			temp = size[0];
+			size[0] = size[1];
+			size[1] = temp;
+			skip = 0;
+			break;
+	}
+*/
+
+	status = eglMakeCurrent(m_egl_disp, NULL, NULL, NULL);
+	if (status != EGL_TRUE) {
+		OpenGLThread::eglPrintError("eglMakeCurrent");
 		return EXIT_FAILURE;
 	}
 
-	rc = screen_create_window_buffers(m_screen_win, m_nbuffers);
-	if (rc) {
-		perror("screen_create_window_buffers");
+	status = eglDestroySurface(m_egl_disp, m_egl_surf);
+	if (status != EGL_TRUE) {
+		OpenGLThread::eglPrintError("eglMakeCurrent");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setWindowPosition(m_x, m_y);
+	if (returnCode) {
+		perror("window position");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setWindowSize(m_width, m_height);
+	if (returnCode) {
+		perror("window size");
+		return EXIT_FAILURE;
+	}
+/*
+	setWindowAngle(m_angle);
+	if (returnCode) {
+		perror("window angle");
+		return EXIT_FAILURE;
+	}
+*/
+	returnCode = setWindowSourceSize(m_width, m_height);
+	if (returnCode) {
+		perror("unable to set window source size");
+		return EXIT_FAILURE;
+	}
+
+	returnCode = setWindowBufferSize(m_width, m_height);
+	if (returnCode) {
+		perror("buffer size");
 		return EXIT_FAILURE;
 	}
 
@@ -133,73 +702,78 @@ int OpenGLView::initGL(EGLContext egl_ctx, EGLConfig egl_conf, EGLDisplay egl_di
 		return EXIT_FAILURE;
 	}
 
-	rc = eglMakeCurrent(m_egl_disp, m_egl_surf, m_egl_surf, m_egl_ctx);
-	if (rc != EGL_TRUE) {
-		OpenGLThread::eglPrintError("eglMakeCurrent");
-		return EXIT_FAILURE;
-	}
+	getGLContext();
 
-	rc = eglSwapInterval(m_egl_disp, interval);
-	if (rc != EGL_TRUE) {
+    status = eglSwapInterval(m_egl_disp, interval);
+	if (status != EGL_TRUE) {
 		OpenGLThread::eglPrintError("eglSwapInterval");
 		return EXIT_FAILURE;
 	}
 
-    eglQuerySurface(m_egl_disp, m_egl_surf, EGL_WIDTH, &m_surface_width);
-    eglQuerySurface(m_egl_disp, m_egl_surf, EGL_HEIGHT, &m_surface_height);
+	OpenGLView::m_renderMutex.unlock();
 
-	rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_ZORDER, &z);
-	if (rc) {
-		perror("screen_set_window_property_iv");
-		return EXIT_FAILURE;
-	}
+	setAltered(false);
 
-	if (group) {
-		rc = screen_join_window_group(m_screen_win, group);
-		if (rc) {
-			perror("screen_set_window_property_iv");
-			return EXIT_FAILURE;
-		}
-	}
-
-	if (id) {
-		rc = screen_set_window_property_cv(m_screen_win, SCREEN_PROPERTY_ID_STRING,
-				sizeof(id), id);
-		if (rc) {
-			perror("screen_set_window_property_iv");
-			return EXIT_FAILURE;
-		}
-	}
-
-	qDebug()  << "OpenGLView::initGL: "<< angle << ":" << screen_mode.width << ":" << screen_mode.height << ":" << m_screen_disp << ":" << dpi << ":" << z << ":" << group << ":" << id;
+	setStale(true);
 
 	return EXIT_SUCCESS;
 }
 
-void OpenGLView::cleanup() {
-    if (m_egl_disp != EGL_NO_DISPLAY) {
-		eglMakeCurrent(m_egl_disp, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
-		if (m_egl_surf != EGL_NO_SURFACE) {
-			eglDestroySurface(m_egl_disp, m_egl_surf);
-			m_egl_surf = EGL_NO_SURFACE;
+void OpenGLView::getGLContext()
+{
+	EGLBoolean status;
+
+	if (m_egl_ctx != eglGetCurrentContext()) {
+		status = eglMakeCurrent(m_egl_disp, m_egl_surf, m_egl_surf, m_egl_ctx);
+		if (status != EGL_TRUE) {
+			OpenGLThread::eglPrintError("getGLContext (eglMakeCurrent)");
 		}
-    }
-	if (m_screen_win != NULL) {
-		screen_destroy_window(m_screen_win);
-		m_screen_win = NULL;
 	}
 }
 
-int OpenGLView::rotate(int angle) {
-	return rotateScreenSurface(angle);
+void OpenGLView::releaseGLContext()
+{
+	EGLBoolean status;
+
+	if (m_egl_ctx != NULL) {
+		status = eglMakeCurrent(m_egl_disp, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
+		if (status != EGL_TRUE) {
+			OpenGLThread::eglPrintError("releaseGLContext (eglMakeCurrent)");
+		}
+	}
 }
 
 void OpenGLView::swapBuffers() {
-    int rc = eglSwapBuffers(m_egl_disp, m_egl_surf);
-    if (rc != EGL_TRUE) {
+	EGLBoolean status;
+
+    status = eglSwapBuffers(m_egl_disp, m_egl_surf);
+    if (status != EGL_TRUE) {
         OpenGLThread::eglPrintError("eglSwapBuffers");
     }
 
+}
+
+void OpenGLView::renderView()
+{
+	OpenGLView::m_renderMutex.lock();
+
+	getGLContext();
+
+	render();
+
+	swapBuffers();
+
+	OpenGLView::m_renderMutex.unlock();
+}
+
+void OpenGLView::add()
+{
+	OpenGLThread::getInstance()->addView(this);
+}
+
+void OpenGLView::remove()
+{
+	OpenGLThread::getInstance()->removeView(this);
 }
 
 
@@ -379,104 +953,14 @@ int OpenGLView::loadTexture(const char* filename, int* width, int* height, float
     }
 }
 
-
-int OpenGLView::rotateScreenSurface(int angle) {
-    int rc, rotation, skip = 1, temp;
-    EGLint interval = 1;
-    int size[2];
-
-    eglQuerySurface(m_egl_disp, m_egl_surf, EGL_WIDTH, &m_surface_width);
-    eglQuerySurface(m_egl_disp, m_egl_surf, EGL_HEIGHT, &m_surface_height);
-
-    if ((angle != 0) && (angle != 90) && (angle != 180) && (angle != 270)) {
-        fprintf(stderr, "Invalid angle\n");
-        return EXIT_FAILURE;
-    }
-
-    rc = screen_get_window_property_iv(m_screen_win, SCREEN_PROPERTY_ROTATION, &rotation);
-    if (rc) {
-        perror("screen_set_window_property_iv");
-        return EXIT_FAILURE;
-    }
-
-    rc = screen_get_window_property_iv(m_screen_win, SCREEN_PROPERTY_BUFFER_SIZE, size);
-    if (rc) {
-        perror("screen_set_window_property_iv");
-        return EXIT_FAILURE;
-    }
-
-    switch (angle - rotation) {
-        case -270:
-        case -90:
-        case 90:
-        case 270:
-            temp = size[0];
-            size[0] = size[1];
-            size[1] = temp;
-            skip = 0;
-            break;
-    }
-
-    if (!skip) {
-        rc = eglMakeCurrent(m_egl_disp, NULL, NULL, NULL);
-        if (rc != EGL_TRUE) {
-            OpenGLThread::eglPrintError("eglMakeCurrent");
-            return EXIT_FAILURE;
-        }
-
-        rc = eglDestroySurface(m_egl_disp, m_egl_surf);
-        if (rc != EGL_TRUE) {
-            OpenGLThread::eglPrintError("eglMakeCurrent");
-            return EXIT_FAILURE;
-        }
-
-        rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_SOURCE_SIZE, size);
-        if (rc) {
-            perror("screen_set_window_property_iv");
-            return EXIT_FAILURE;
-        }
-
-        rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_BUFFER_SIZE, size);
-        if (rc) {
-            perror("screen_set_window_property_iv");
-            return EXIT_FAILURE;
-        }
-        m_egl_surf = eglCreateWindowSurface(m_egl_disp, m_egl_conf, m_screen_win, NULL);
-        if (m_egl_surf == EGL_NO_SURFACE) {
-            OpenGLThread::eglPrintError("eglCreateWindowSurface");
-            return EXIT_FAILURE;
-        }
-
-        rc = eglMakeCurrent(m_egl_disp, m_egl_surf, m_egl_surf, m_egl_ctx);
-        if (rc != EGL_TRUE) {
-            OpenGLThread::eglPrintError("eglMakeCurrent");
-            return EXIT_FAILURE;
-        }
-
-        rc = eglSwapInterval(m_egl_disp, interval);
-        if (rc != EGL_TRUE) {
-            OpenGLThread::eglPrintError("eglSwapInterval");
-            return EXIT_FAILURE;
-        }
-    }
-
-    rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_ROTATION, &angle);
-    if (rc) {
-        perror("screen_set_window_property_iv");
-        return EXIT_FAILURE;
-    }
-
-    return EXIT_SUCCESS;
-}
-
 int OpenGLView::calculateDPI() {
-    int rc;
+    int returnCode;
     int screen_phys_size[2];
 
-	qDebug()  << "OpenGLView::calculateDPI: physical: "<< m_screen_disp;
+	qDebug()  << "OpenGLView::calculateDPI: physical: "<< m_egl_disp;
 
-    rc = screen_get_display_property_iv(m_screen_disp, SCREEN_PROPERTY_PHYSICAL_SIZE, screen_phys_size);
-    if (rc) {
+    returnCode = screen_get_display_property_iv(m_screen_disp, SCREEN_PROPERTY_PHYSICAL_SIZE, screen_phys_size);
+    if (returnCode) {
         perror("screen_get_display_property_iv");
         return EXIT_FAILURE;
     }
@@ -487,10 +971,10 @@ int OpenGLView::calculateDPI() {
     } else {
         int screen_resolution[2];
 
-        qDebug()  << "OpenGLView::calculateDPI: screen: "<< m_screen_disp;
+        qDebug()  << "OpenGLView::calculateDPI: screen: "<< m_egl_disp;
 
-        rc = screen_get_display_property_iv(m_screen_disp, SCREEN_PROPERTY_SIZE, screen_resolution);
-        if (rc) {
+        returnCode = screen_get_display_property_iv(m_screen_disp, SCREEN_PROPERTY_SIZE, screen_resolution);
+        if (returnCode) {
             perror("screen_get_display_property_iv");
             return EXIT_FAILURE;
         }

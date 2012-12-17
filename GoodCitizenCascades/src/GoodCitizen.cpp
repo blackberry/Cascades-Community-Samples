@@ -135,8 +135,10 @@ GLfloat GoodCitizen::light_pos[] = { 0.0f, 25.0f, 0.0f, 1.0f };
 GLfloat GoodCitizen::light_direction[] = { 0.0f, 0.0f, -30.0f, 1.0f };
 
 
-GoodCitizen::GoodCitizen()
+GoodCitizen::GoodCitizen(VIEW_DISPLAY display)
 {
+		setDisplay(display);
+
 	    _toolAxis = new QString("X");
 	    _touchMode = new QString("none");
 	    _model = new QString("cube");
@@ -211,110 +213,48 @@ GoodCitizen::~GoodCitizen() {
 	// TODO Auto-generated destructor stub
 }
 
-void GoodCitizen::bind(const QString &group, const QString id, int x, int y, int width, int height)
+int GoodCitizen::initialize() {
+
+	setZ(-5);
+
+	int returnCode = OpenGLView::initGL();
+	if (returnCode == EXIT_SUCCESS) {
+		//Load shadow textures
+		float tex_x = 1.0f, tex_y = 1.0f;
+		if (EXIT_SUCCESS
+				!= loadTexture("app/native/assets/images/goodcitizen/shadow.png", NULL, NULL,
+						&tex_x, &tex_y, &shadow)) {
+			fprintf(stderr, "Unable to load shadow texture\n");
+		}
+
+		reset(false);
+
+		// reset stale flag for initialization only
+		setStale(false);
+
+		//Common gl setup
+		glShadeModel(GL_SMOOTH);
+		glClearColor(0.775f, 0.775f, 0.775f, 1.0f);
+		glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+		glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
+		glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light_direction);
+
+		glEnable(GL_CULL_FACE);
+	}
+
+	qDebug()  << "GoodCitizen::initialize ";
+
+    return returnCode;
+}
+
+int GoodCitizen::regenerate()
 {
-	m_group = group;
-	m_id = id;
-	m_x = x;
-	m_y = y;
-	m_width = width;
-	m_height = height;
+	int returnCode = OpenGLView::regenerate();
 
-	qDebug()  << "bind: "<< group << ":" << id << ":" << width << ":" << height;
-}
+	reset(true);
 
-int GoodCitizen::initialize(EGLContext egl_ctx, EGLConfig egl_conf, EGLDisplay egl_disp, screen_context_t screen_cxt, int usage) {
-
-	int z = -5;
-	QByteArray groupArr = m_group.toAscii();
-	QByteArray idArr = m_id.toAscii();
-
-	int rc = OpenGLView::initGL(egl_ctx, egl_conf, egl_disp, screen_cxt, usage, z, (const char *)groupArr, (const char *)idArr);
-
-    screenWidth = (float) m_surface_width;
-    screenHeight = (float) m_surface_height;
-
-    //const int num_window_buffers = 2; //must be 2 for RGBA8888
-    //rc = screen_create_window_buffers(m_screen_win, num_window_buffers);
-
-    //int format = SCREEN_FORMAT_RGBA8888;
-    //int rc = screen_get_window_property_iv(m_screen_win, SCREEN_PROPERTY_FORMAT, &format);
-	//qDebug() << "format" << format;
-    //rc = screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_FORMAT, &format);
-
-/*
-	int transparencyMode = SCREEN_TRANSPARENCY_TEST;
-	screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_TRANSPARENCY,
-			&transparencyMode);
-	int opacity = 255;
-	screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_GLOBAL_ALPHA,
-			&opacity);
-*/
-//
-//	int rect[4] = { 0, 0, 1, 1 };
-//	screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_BUFFER_SIZE,
-//			rect + 2);
-//	int dims[2] = { m_width, m_height };
-//	screen_set_window_property_iv(m_screen_win, SCREEN_PROPERTY_SOURCE_SIZE,
-//			dims);
-
-//	screen_buffer_t screen_buf;
-//	screen_create_window_buffers(m_screen_win, 1);
-//	screen_get_window_property_pv(m_screen_win, SCREEN_PROPERTY_RENDER_BUFFERS,
-//			(void **) &screen_buf);
-//	screen_post_window(m_screen_win, screen_buf, 1, rect, 0);
-
-    //Load shadow textures
-    float tex_x = 1.0f, tex_y = 1.0f;
-    if (EXIT_SUCCESS
-            != loadTexture("app/native/assets/images/goodcitizen/shadow.png", NULL, NULL,
-                    &tex_x, &tex_y, &shadow)) {
-        fprintf(stderr, "Unable to load shadow texture\n");
-    }
-
-    reset();
-
-    /*
-    //Load MyriadPro bold to use for our color menu
-    font = bbutil_load_font(
-            "/usr/fonts/font_repository/adobe/MyriadPro-Bold.otf", 15, dpi);
-    if (!font) {
-        return EXIT_FAILURE;
-    }
-
-    float text_width, text_height;
-    bbutil_measure_text(font, "Color Menu", &text_width, &text_height);
-    menu_height = text_height + 10.0f + button_size_y * 4;
-*/
-
-    //See if a savefile exists. If not, initialize to a hidden menu and a red cube.
-
-    //if (!read_from_file()) {
-    //}
-
-    //Common gl setup
-    glShadeModel(GL_SMOOTH);
-    glClearColor(0.775f, 0.775f, 0.775f, 1.0f);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_POSITION, light_pos);
-    glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light_direction);
-
-    glEnable(GL_CULL_FACE);
-
-	qDebug()  << "GoodCitizen::initialize " << screenWidth << ":" << screenHeight;
-
-    return rc;
-}
-
-
-int GoodCitizen::rotate(int angle) {
-	int rc = OpenGLView::rotate(angle);
-
-    screenWidth = (float) m_surface_width;
-    screenHeight = (float) m_surface_height;
-
-    return rc;
+	return returnCode;
 }
 
 void GoodCitizen::cleanup() {
@@ -323,6 +263,7 @@ void GoodCitizen::cleanup() {
 
 void GoodCitizen::render() {
 	//Typical render pass
+    glClearColor(0.775f, 0.775f, 0.775f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//First render background and menu if it is enabled
@@ -411,84 +352,131 @@ void GoodCitizen::render() {
 	glDisable(GL_COLOR_MATERIAL);
 	glDisable(GL_DEPTH_TEST);
 
-	//Use utility code to update the screen
-	swapBuffers();
-
-	//qDebug()  << "GoodCitizen::render: ";
+	// after rendering this view is no longer stale
+	setStale(false);
 }
 
 // properties and slots
 QVariantList& GoodCitizen::objectColor() {
+
+	m_viewMutex.lock();
+
 	QVariantList* objectColor = new QVariantList();
 	*objectColor << obj_color[0] << obj_color[1] << obj_color[2] << obj_color[3];
+
+	m_viewMutex.unlock();
 
 	return *objectColor;
 }
 
-void GoodCitizen::objectColor(QVariantList& color) {
-	color << obj_color[0] << obj_color[1] << obj_color[2] << obj_color[3];
-}
-
 void GoodCitizen::setObjectColor(QVariantList color) {
+
+	m_viewMutex.lock();
+
 	obj_color[0] = color[0].value<float>();
 	obj_color[1] = color[1].value<float>();
 	obj_color[2] = color[2].value<float>();
 	obj_color[3] = color[3].value<float>();
+
+	m_viewMutex.unlock();
+
+	setStale(true);
 }
 
 QString GoodCitizen::toolAxis() {
-	return *(new QString(*_toolAxis));
+	QString *axis;
+
+	m_viewMutex.lock();
+
+	axis = new QString(*_toolAxis);
+
+	m_viewMutex.unlock();
+
+	return *axis;
 }
 
 QString GoodCitizen::touchMode() {
-	return *(new QString(*_touchMode));
+	QString *mode;
+
+	m_viewMutex.lock();
+
+	mode = new QString(*_touchMode);
+
+	m_viewMutex.unlock();
+
+	return *mode;
 }
 
 QString GoodCitizen::model() {
-	return *(new QString(*_model));
+	QString *model;
+
+	m_viewMutex.lock();
+
+	model = new QString(*_model);
+
+	m_viewMutex.unlock();
+
+	return *model;
 }
 
 
 void GoodCitizen::setToolAxis(QString toolAxis) {
 
+	m_viewMutex.lock();
+
 	delete _toolAxis;
 
 	_toolAxis = new QString(toolAxis);
+
+	m_viewMutex.unlock();
+
+	setStale(true);
 }
 
 void GoodCitizen::setTouchMode(QString mode) {
 
+	m_viewMutex.lock();
+
 	delete _touchMode;
 
 	_touchMode = new QString(mode);
+
+	m_viewMutex.unlock();
+
+	setStale(true);
 }
 
 void GoodCitizen::setModel(QString model) {
 
+	m_viewMutex.lock();
+
 	delete _model;
 
 	_model = new QString(model);
+
+	m_viewMutex.unlock();
+
+	setStale(true);
 }
 
 
-
 void GoodCitizen::enable_2D() {
-    glViewport(0, 0, (int) screenWidth, (int) screenHeight);
+    glViewport(0, 0, m_width, m_height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-    glOrthof(0.0f, screenWidth / screenHeight, 0.0f, 1.0f, -1.0f, 1.0f);
+    glOrthof(0.0f, (float)m_width / (float)m_height, 0.0f, 1.0f, -1.0f, 1.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glScalef(1.0f / screenHeight, 1.0f / screenHeight, 1.0f);
+    glScalef(1.0f / (float)m_height, 1.0f / (float)m_height, 1.0f);
 }
 
 void GoodCitizen::enable_3D() {
-    glViewport(0, 0, (int) screenWidth, (int) screenHeight);
+    glViewport(0, 0, m_width, m_height);
 
-    GLfloat aspect_ratio = screenWidth / screenHeight;
+    GLfloat aspect_ratio = (float)m_width / (float)m_height;
 
     GLfloat fovy = 45;
     GLfloat zNear = 1.0f;
@@ -507,14 +495,14 @@ void GoodCitizen::enable_3D() {
     glLoadIdentity();
 }
 
-void GoodCitizen::reset() {
+void GoodCitizen::reset(bool skipColour) {
     float tex_x = 1.0f, tex_y = 1.0f;
 
     obj_pos_x = 0.0f;
     obj_pos_x = 0.0f;
     obj_pos_x = 0.0f;
 
-    if (screenWidth > screenHeight) {
+    if (m_width > m_height) {
         shadow_pos_x = 365.0f;
         shadow_pos_y = 0.0f;
 
@@ -550,10 +538,12 @@ void GoodCitizen::reset() {
     obj_scale_y = 1.0f;
     obj_scale_z = 1.0f;
 
-    obj_color[0] = 1.0f;
-    obj_color[1] = 0.0f;
-    obj_color[2] = 0.0f;
-    obj_color[3] = 1.0f;
+    if (!skipColour) {
+		obj_color[0] = 1.0f;
+		obj_color[1] = 0.0f;
+		obj_color[2] = 0.0f;
+		obj_color[3] = 1.0f;
+    }
 
     shadow_vertices[0] = shadow_pos_x;
     shadow_vertices[1] = shadow_pos_y;
@@ -564,18 +554,25 @@ void GoodCitizen::reset() {
     shadow_vertices[6] = shadow_pos_x + shadow_size_x;
     shadow_vertices[7] = shadow_pos_y + shadow_size_y;
 
+	setStale(true);
 }
 
 void GoodCitizen::update() {
 	if (_autoRotate) {
 		if (!_toolAxis->compare("X")) {
 			obj_angle_roll = fmod((obj_angle_roll + 1.0f), 360.0 );
+
+			setStale(true);
 		} else
 		if (!_toolAxis->compare("Y")) {
 			obj_angle_pitch = fmod((obj_angle_pitch + 1.0f), 360.0 );
+
+			setStale(true);
 		} else
 		if (!_toolAxis->compare("Z")) {
 			obj_angle_yaw = fmod((obj_angle_yaw + 1.0f), 360.0 );
+
+			setStale(true);
 		}
 	}
 }
@@ -585,14 +582,22 @@ void GoodCitizen::onTouch(bb::cascades::TouchEvent *event) {
 	if (event->isDown()) {
 		if (!_touchMode->compare("rotate")) {
 			_autoRotate = false;
+
+			setStale(true);
 		}
 		lastTouchX = lastTouchY = -1;
+
+		qDebug() << "touch down: " << _touchMode->toLatin1() << " : " << event->screenX() << " : " << event->screenY();
 	}
 	if (event->isUp()) {
 		if (!_touchMode->compare("rotate")) {
 		    _autoRotate = true;
+
+			setStale(true);
 		}
 		lastTouchX = lastTouchY = -1;
+
+		qDebug() << "touch up: " << _touchMode->toLatin1() << " : " << event->screenX() << " : " << event->screenY();
 	}
 	if (event->isMove()) {
 		float currTouchX = event->screenX();
@@ -619,6 +624,8 @@ void GoodCitizen::onTouch(bb::cascades::TouchEvent *event) {
 						obj_scale_x = 0;
 					}
 					//qDebug() << "x: " << deltaAxis << " : " << obj_scale_x;
+
+					setStale(true);
 				} else
 				if (!_toolAxis->compare("Y")) {
 					obj_scale_y += deltaAxis;
@@ -626,6 +633,8 @@ void GoodCitizen::onTouch(bb::cascades::TouchEvent *event) {
 						obj_scale_y = 0;
 					}
 					//qDebug() << "y: " << deltaAxis << " : " << obj_scale_y;
+
+					setStale(true);
 				} else
 				if (!_toolAxis->compare("Z")) {
 					obj_scale_z += deltaAxis;
@@ -633,6 +642,8 @@ void GoodCitizen::onTouch(bb::cascades::TouchEvent *event) {
 						obj_scale_z = 0;
 					}
 					//qDebug() << "z: " << deltaAxis << " : " << obj_scale_z;
+
+					setStale(true);
 				}
 			}
 		} else
@@ -652,14 +663,20 @@ void GoodCitizen::onTouch(bb::cascades::TouchEvent *event) {
 				if (!_toolAxis->compare("X")) {
 					obj_pos_x += deltaAxis;
 					//qDebug() << "x: " << deltaAxis << " : " << obj_pos_x << " : " << obj_pos_y << " : " << obj_pos_z;
+
+					setStale(true);
 				} else
 				if (!_toolAxis->compare("Y")) {
 					obj_pos_y += deltaAxis;
 					//qDebug() << "y: " << deltaAxis << " : " << obj_pos_x << " : " << obj_pos_y << " : " << obj_pos_z;
+
+					setStale(true);
 				} else
 				if (!_toolAxis->compare("Z")) {
 					obj_pos_z += deltaAxis;
 					//qDebug() << "z: " << deltaAxis << " : " << obj_pos_x << " : " << obj_pos_y << " : " << obj_pos_z;
+
+					setStale(true);
 				}
 
 				shadow_pos_x = 70.0f + (22.5f * 100.0f / (10.0f - obj_pos_z) ) * (obj_pos_x) - 2.25f * (obj_pos_z);
@@ -725,41 +742,34 @@ void GoodCitizen::onTouch(bb::cascades::TouchEvent *event) {
 				if (_toolAxis->compare("X")) {
 					obj_angle_roll = fmod((obj_angle_roll + deltaAngle), 360.0 );
 					//qDebug() << "roll: " << currAngle << " : " << lastAngle << " : " << deltaAngle << " : " << obj_angle_roll;
+
+					setStale(true);
 				} else
 				if (_toolAxis->compare("Y")) {
 					obj_angle_pitch = fmod((obj_angle_pitch + deltaAngle), 360.0 );
 					//qDebug() << "pitch: " << currAngle << " : " << lastAngle << " : " << deltaAngle << " : " << obj_angle_pitch;
+
+					setStale(true);
 				} else
 				if (_toolAxis->compare("Z")) {
 					obj_angle_yaw = fmod((obj_angle_yaw + deltaAngle), 360.0 );
 					//qDebug() << "yaw: " << currAngle << " : " << lastAngle << " : " << deltaAngle << " : " << obj_angle_yaw;
+
+					setStale(true);
 				}
 
 			}
 		}
 
-
 		lastTouchX = currTouchX;
 		lastTouchY = currTouchY;
-
-/*
-		{
-			ImplicitAnimationController txy =
-					ImplicitAnimationController::create(m_pForeignWindow).enabled(
-							false);
-			this->m_pForeignWindow->setTranslation(x - (300 / 2), y - (300 / 2));
-		}
-*/
 	}
 }
 
-/*
 void GoodCitizen::handleScreenEvent(bps_event_t *event) {
     int screenEvent;
     int buttons;
     int position[2];
-
-    //static bool mouse_pressed = false;
 
     screen_event_t screen_event = screen_event_get_event(event);
 
@@ -793,37 +803,3 @@ void GoodCitizen::handleScreenEvent(bps_event_t *event) {
 			break;
 	}
 }
-
-void GoodCitizen::handleNavigatorEvent(bps_event_t *event) {
-    int rc;
-    bps_event_t *activation_event = NULL;
-
-    switch (bps_event_get_code(event)) {
-    case NAVIGATOR_ORIENTATION_CHECK:
-        //Signal navigator that we intend to resize
-        navigator_orientation_check_response(event, true);
-        break;
-    case NAVIGATOR_ORIENTATION:
-        if (EXIT_FAILURE == resize(event)) {
-            m_isRunning = true;
-        }
-        break;
-    case NAVIGATOR_SWIPE_DOWN:
-    	// initiate app menu animation
-        break;
-
-    case NAVIGATOR_EXIT:
-    	// exit the thread
-		m_isRunning = false;
-        break;
-
-    case NAVIGATOR_WINDOW_ACTIVE:
-    	// reactivate processing when window becomes active
-        break;
-
-    case NAVIGATOR_WINDOW_INACTIVE:
-        // wait for NAVIGATOR_WINDOW_ACTIVE event
-        break;
-    }
-}
-*/

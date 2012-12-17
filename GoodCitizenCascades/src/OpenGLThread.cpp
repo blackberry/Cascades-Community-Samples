@@ -21,31 +21,133 @@
 
 using namespace bb::cascades;
 
-#define MAX_NUMBER_VIEWS 1000
+OpenGLThread OpenGLThread::singleton;
 
 OpenGLThread::OpenGLThread()
 {
-	    m_isRunning = true;
-
-	    m_number_views = 0;
-		m_views = new OpenGLView* [MAX_NUMBER_VIEWS];
-
-		qDebug()  << "OpenGLThread::OpenGLThread: "<< m_isRunning;
+    m_initialized = false;
+    m_egl_initialized = false;
+    m_stopped = false;
+    m_api = GL_UNKNOWN;
+    m_numberDisplays = 0;
+    m_screen_dpy = NULL;
 }
 
 OpenGLThread::~OpenGLThread() {
-	// TODO Auto-generated destructor stub
 }
+
+bool OpenGLThread::renderingAPI()
+{
+	RENDERING_API api = GL_UNKNOWN;
+
+	m_threadMutex.lock();
+
+	api = m_api;
+
+	m_threadMutex.unlock();
+
+	return api;
+}
+
+void OpenGLThread::setRenderingAPI(RENDERING_API api)
+{
+	m_threadMutex.lock();
+
+	m_api = api;
+
+	m_threadMutex.unlock();
+}
+
+bool OpenGLThread::initialized()
+{
+	bool initialized = false;
+
+	m_threadMutex.lock();
+
+	initialized = m_initialized;
+
+	m_threadMutex.unlock();
+
+	return initialized;
+}
+
+void OpenGLThread::setInitialized(bool initialized)
+{
+	m_threadMutex.lock();
+
+	m_initialized = initialized;
+
+	m_threadMutex.unlock();
+}
+
+bool OpenGLThread::eglInitialized()
+{
+	bool initialized = false;
+
+	m_threadMutex.lock();
+
+	initialized = m_egl_initialized;
+
+	m_threadMutex.unlock();
+
+	return initialized;
+}
+
+void OpenGLThread::setEGLInitialized(bool initialized)
+{
+	m_threadMutex.lock();
+
+	m_egl_initialized = initialized;
+
+	m_threadMutex.unlock();
+}
+
+bool OpenGLThread::stopped()
+{
+	bool stopped = false;
+
+	m_threadMutex.lock();
+
+	stopped = m_stopped;
+
+	m_threadMutex.unlock();
+
+	return stopped;
+}
+
+void OpenGLThread::setStopped(bool stopped)
+{
+	m_threadMutex.lock();
+
+	m_stopped = stopped;
+
+	m_threadMutex.unlock();
+}
+
 
 void OpenGLThread::addView(OpenGLView *view) {
 	if (view != NULL) {
-		m_views[m_number_views++] = view;
+		m_viewsMutex.lock();
+
+		m_views.append(view);
+
+		m_viewsMutex.unlock();
+
+		while (!view->initialized() && view->visible()) {
+			usleep(1);
+		}
 	}
 }
 
 void OpenGLThread::removeView(OpenGLView *view) {
 	if (view != NULL) {
-		m_views[--m_number_views] = NULL;
+		m_viewsMutex.lock();
+
+		m_views.remove(m_views.indexOf(view));
+
+		m_viewsMutex.unlock();
+
+		view->cleanup();
 	}
 }
 
@@ -53,42 +155,39 @@ int OpenGLThread::initBPS() {
 	//Initialize BPS library
 	bps_initialize();
 
-	//Initialize application logic
-	if (EXIT_SUCCESS != initGL()) {
-		fprintf(stderr, "initialize failed\n");
-		cleanupEGL();
-		return EXIT_FAILURE;
-	}
-
-	//Signal BPS library that navigator and screen events will be requested
-	if (BPS_SUCCESS != screen_request_events(m_screen_cxt)) {
+	//Create a screen context that will be used to create an EGL surface to to receive libscreen events
+	if (EXIT_SUCCESS != screen_create_context(&m_screen_ctx, 0)) {
 		fprintf(stderr, "screen_request_events failed\n");
-		cleanupEGL();
 		return EXIT_FAILURE;
 	}
 
-	if (BPS_SUCCESS != navigator_request_events(0)) {
-		fprintf(stderr, "navigator_request_events failed\n");
-		cleanupEGL();
+	// wait for rendering API to be set
+	while (renderingAPI() == GL_UNKNOWN) {
+		usleep(10);
+	};
+
+	// initialize EGL
+	if (EXIT_SUCCESS != initEGL()) {
+		fprintf(stderr, "initialize EGL failed\n");
 		return EXIT_FAILURE;
 	}
 
-	//Signal BPS library that navigator orientation is not to be locked
-	if (BPS_SUCCESS != navigator_rotation_lock(false)) {
-		fprintf(stderr, "navigator_rotation_lock failed\n");
-		cleanupEGL();
+	//Signal BPS library that screen events will be requested
+	if (BPS_SUCCESS != screen_request_events(m_screen_ctx)) {
+		fprintf(stderr, "screen_request_events failed\n");
 		return EXIT_FAILURE;
 	}
 
+	setInitialized(true);
 
 	return EXIT_SUCCESS;
 }
 
+int OpenGLThread::initEGL() {
+    int returnCode, type;
+    int num_configs;
 
-int OpenGLThread::initEGL(enum RENDERING_API api) {
-    int rc, num_configs;
-    EGLint attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
-
+    m_numberDisplays = 0;
     EGLint attrib_list[]= { EGL_RED_SIZE,        8,
                             EGL_GREEN_SIZE,      8,
                             EGL_BLUE_SIZE,       8,
@@ -96,63 +195,40 @@ int OpenGLThread::initEGL(enum RENDERING_API api) {
                             EGL_RENDERABLE_TYPE, EGL_OPENGL_ES_BIT,
                             EGL_NONE};
 
-    if (api == GL_ES_1) {
-        m_usage = SCREEN_USAGE_OPENGL_ES1 | SCREEN_USAGE_ROTATION;
-    } else if (api == GL_ES_2) {
-    	attrib_list[9] = EGL_OPENGL_ES2_BIT;
-    	m_usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION;
-    } else if (api == VG) {
-    	attrib_list[9] = EGL_OPENVG_BIT;
-    	m_usage = SCREEN_USAGE_OPENVG | SCREEN_USAGE_ROTATION;
-    } else {
-        fprintf(stderr, "invalid api setting\n");
-        return EXIT_FAILURE;
-    }
+	screen_get_context_property_iv(m_screen_ctx, SCREEN_PROPERTY_DISPLAY_COUNT, &m_numberDisplays);
+
+	m_screen_dpy = (screen_display_t *)calloc(m_numberDisplays, sizeof(screen_display_t));
+	screen_get_context_property_pv(m_screen_ctx, SCREEN_PROPERTY_DISPLAYS, (void **)m_screen_dpy);
 
     m_egl_disp = eglGetDisplay(EGL_DEFAULT_DISPLAY);
     if (m_egl_disp == EGL_NO_DISPLAY) {
         eglPrintError("eglGetDisplay");
-        //cleanupEGL();
         return EXIT_FAILURE;
     }
 
-    rc = eglInitialize(m_egl_disp, NULL, NULL);
-    if (rc != EGL_TRUE) {
+    returnCode = eglInitialize(m_egl_disp, NULL, NULL);
+    if (returnCode != EGL_TRUE) {
         eglPrintError("eglInitialize");
-        //cleanupEGL();
         return EXIT_FAILURE;
     }
 
-    if ((api == GL_ES_1) || (api == GL_ES_2)) {
-        rc = eglBindAPI(EGL_OPENGL_ES_API);
-    } else if (api == VG) {
-        rc = eglBindAPI(EGL_OPENVG_API);
+    if ((m_api == GL_ES_1) || (m_api == GL_ES_2)) {
+        returnCode = eglBindAPI(EGL_OPENGL_ES_API);
+    } else if (m_api == VG) {
+        returnCode = eglBindAPI(EGL_OPENVG_API);
     }
 
-    if (rc != EGL_TRUE) {
+    if (returnCode != EGL_TRUE) {
         eglPrintError("eglBindApi");
-        //cleanupEGL();
         return EXIT_FAILURE;
     }
 
     if(!eglChooseConfig(m_egl_disp, attrib_list, &m_egl_conf, 1, &num_configs)) {
-        //cleanupEGL();
+        perror("eglChooseConfig");
         return EXIT_FAILURE;
     }
 
-    if (api == GL_ES_2) {
-        m_egl_ctx = eglCreateContext(m_egl_disp, m_egl_conf, EGL_NO_CONTEXT, attributes);
-    } else {
-        m_egl_ctx = eglCreateContext(m_egl_disp, m_egl_conf, EGL_NO_CONTEXT, NULL);
-    }
-
-	qDebug()  << "OpenGLThread::initEGL: "<< m_egl_disp << ":" << m_egl_conf << ":" << m_egl_ctx << ":" << num_configs;
-
-    if (m_egl_ctx == EGL_NO_CONTEXT) {
-        eglPrintError("eglCreateContext");
-        //cleanupEGL();
-        return EXIT_FAILURE;
-    }
+	setEGLInitialized(true);
 
     return EXIT_SUCCESS;
 }
@@ -160,16 +236,15 @@ int OpenGLThread::initEGL(enum RENDERING_API api) {
 void
 OpenGLThread::cleanupEGL() {
     //Typical EGL cleanup
-	//bbutil_terminate();
 
     if (m_egl_disp != EGL_NO_DISPLAY) {
-		if (m_egl_ctx != EGL_NO_CONTEXT) {
-			eglDestroyContext(m_egl_disp, m_egl_ctx);
-			m_egl_ctx = EGL_NO_CONTEXT;
-		}
-
         eglTerminate(m_egl_disp);
         m_egl_disp = EGL_NO_DISPLAY;
+    }
+
+    if (m_egl_disp_hdmi != EGL_NO_DISPLAY) {
+        eglTerminate(m_egl_disp_hdmi);
+        m_egl_disp_hdmi = EGL_NO_DISPLAY;
     }
 
     eglReleaseThread();
@@ -177,222 +252,356 @@ OpenGLThread::cleanupEGL() {
     m_initialized = false;
 }
 
-int OpenGLThread::initGL() {
-	int index = 0;
-	int returnCode = EXIT_FAILURE;
 
-	m_initialized = false;
+void OpenGLThread::update() {
+	int index, type;
+	int viewCount = 0;
+	int returnCode = 0;
 
-	//Create a screen context that will be used to create an EGL surface to to receive libscreen events
-	screen_create_context(&m_screen_cxt, 0);
+	m_viewsMutex.lock();
 
-	//Use utility code to initialize EGL for rendering with GL ES 1.1
+	viewCount = m_views.size();
 
-	if (EXIT_SUCCESS != initEGL(GL_ES_1)) {
-	//if (EXIT_SUCCESS != bbutil_init_egl(m_screen_cxt, GL_ES_1)) {
-		fprintf(stderr, "initEGL failed\n");
-		return EXIT_FAILURE;
-	}
+	m_viewsMutex.unlock();
 
-	qDebug()  << "OpenGLThread::initGL: "<< m_egl_disp << ":" << m_egl_conf << ":" << m_egl_ctx << ":" << m_screen_cxt << ":" << m_usage;
+	if (viewCount > 0) {
+		m_viewsMutex.lock();
 
-	// initialize each view
-	for(index = 0; index < m_number_views; index++) {
-		returnCode = m_views[index]->initialize(m_egl_ctx, m_egl_conf, m_egl_disp, m_screen_cxt, m_usage);
-		if (returnCode == EXIT_FAILURE) {
-			break;
+		int attached = 0;
+		for (index = 0; index < m_numberDisplays; index++) {
+	        screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_TYPE,  &type);
+			attached = 0;
+
+	        if (type == SCREEN_DISPLAY_TYPE_HDMI) {
+				screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_ATTACHED, &attached);
+
+				if (attached) {
+					int size[2];
+					screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_SIZE, size);
+					if (size[0] == 0 || size[1] == 0) {
+						attached = 0;
+					}
+				}
+	        }
 		}
+
+		for(index = 0; index < m_views.size(); index++) {
+			if (m_views.at(index)->display() == m_egl_disp_hdmi) {
+				if (attached) {
+					m_views.at(index)->setVisible(true);
+				} else {
+					m_views.at(index)->setVisible(false);
+				}
+			} else {
+				m_views.at(index)->setVisible(true);
+			}
+		}
+
+		for (int index = 0; index < m_views.size(); index++) {
+			if (!m_views.at(index)->initialized() && m_views.at(index)->visible()) {
+
+				m_views.at(index)->setAPI(m_api);
+				m_views.at(index)->setScreenContext(m_screen_ctx);
+				m_views.at(index)->setScreenEGLConfiguration(m_egl_conf);
+				m_views.at(index)->setScreenEGLDisplay(m_egl_disp);
+				returnCode = m_views.at(index)->initialize();
+				if (returnCode == EXIT_FAILURE) {
+
+					qDebug()  << "OpenGLThread::update: view initialization failed: " << index;
+				}
+			}
+
+			if (m_views.at(index)->altered() && m_views.at(index)->visible()) {
+				returnCode = m_views.at(index)->regenerate();
+				if (returnCode == EXIT_FAILURE) {
+
+					qDebug()  << "OpenGLThread::update: view regenerate failed: " << index;
+				}
+			}
+
+			if (m_views.at(index)->initialized() && m_views.at(index)->enabled() && m_views.at(index)->visible()) {
+				m_views.at(index)->update();
+			}
+		}
+
+		m_viewsMutex.unlock();
+	}
+}
+
+void OpenGLThread::cleanup() {
+	int viewCount = 0;
+
+	m_viewsMutex.lock();
+
+	viewCount = m_views.size();
+
+	m_viewsMutex.unlock();
+
+	if (viewCount > 0) {
+		do {
+			removeView(m_views.at(m_views.size()-1));
+
+			m_viewsMutex.lock();
+
+			viewCount = m_views.size();
+
+			m_viewsMutex.unlock();
+
+		} while (viewCount > 0);
 	}
 
-	if (returnCode != EXIT_FAILURE) {
-		m_initialized = true;
-	}
+	qDebug()  << "OpenGLThread::cleanup";
+}
 
-    return returnCode;
+void OpenGLThread::render() {
+	int index, type;
+	int viewCount = 0;
+
+	m_viewsMutex.lock();
+
+	viewCount = m_views.size();
+
+	m_viewsMutex.unlock();
+
+	if (viewCount > 0) {
+		m_viewsMutex.lock();
+
+		int attached = 0;
+		for (index = 0; index < m_numberDisplays; index++) {
+	        screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_TYPE,  &type);
+			int attached = 0;
+
+	        if (type == SCREEN_DISPLAY_TYPE_HDMI) {
+				screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_ATTACHED, &attached);
+
+				if (attached) {
+					int size[2];
+					screen_get_display_property_iv(m_screen_dpy[index], SCREEN_PROPERTY_SIZE, size);
+					if (size[0] == 0 || size[1] == 0) {
+						attached = 0;
+					}
+				}
+	        }
+		}
+
+		for(index = 0; index < m_views.size(); index++) {
+			if (m_views.at(index)->display() == m_egl_disp_hdmi) {
+				if (attached) {
+					m_views.at(index)->setVisible(true);
+				} else {
+					m_views.at(index)->setVisible(false);
+				}
+			} else {
+				m_views.at(index)->setVisible(true);
+			}
+		}
+
+		for (int index = 0; index < m_views.size(); index++) {
+			if (m_views.at(index)->initialized() && m_views.at(index)->enabled() && m_views.at(index)->visible() && m_views.at(index)->stale()) {
+				m_views.at(index)->renderView();
+			}
+		}
+
+		m_viewsMutex.unlock();
+	}
 }
 
 
 void OpenGLThread::handleScreenEvent(bps_event_t *event) {
-    int screenEvent;
     int buttons;
     int position[2];
-
-    //static bool mouse_pressed = false;
+    int index;
+    screen_display_t event_disp;
+    int type;
 
     screen_event_t screen_event = screen_event_get_event(event);
 
     //Query type of screen event and its location on the screen
     screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_TYPE,
-            &screenEvent);
+            &type);
     screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_SOURCE_POSITION,
     		position);
 
-	switch (screenEvent) {
-		case SCREEN_EVENT_MTOUCH_TOUCH:
-			break;
+	switch (type) {
+		case SCREEN_EVENT_DISPLAY:
+			screen_get_event_property_pv(screen_event, SCREEN_PROPERTY_DISPLAY, (void **)&event_disp);
+			for (index = 0; index < m_numberDisplays; index++) {
+				if (event_disp == m_screen_dpy[index]) {
+					int attached = 0;
+					screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_ATTACHED, &attached);
 
-		case SCREEN_EVENT_MTOUCH_MOVE:
-			break;
+					if (attached) {
+						int size[2];
+						screen_get_display_property_iv(event_disp, SCREEN_PROPERTY_SIZE, size);
+						if (size[0] == 0 || size[1] == 0) {
+							attached = 0;
+						}
+					}
 
-		case SCREEN_EVENT_MTOUCH_RELEASE:
-			break;
 
-		case SCREEN_EVENT_POINTER:
-	        screen_get_event_property_iv(screen_event, SCREEN_PROPERTY_BUTTONS,
-				&buttons);
+					int viewCount = 0;
 
-	    	switch (buttons) {
-	    		case SCREEN_LEFT_MOUSE_BUTTON:
-	    		case SCREEN_RIGHT_MOUSE_BUTTON:
-	                //handleClick(position[0], position[1]);
-	    			break;
-	    	}
+					m_viewsMutex.lock();
 
+					viewCount = m_views.size();
+
+					m_viewsMutex.unlock();
+
+					if (viewCount > 0) {
+						m_viewsMutex.lock();
+
+						for(index = 0; index < m_views.size(); index++) {
+							if (m_views.at(index)->display() == m_egl_disp_hdmi && index == 1) {
+								if (attached) {
+									m_views.at(index)->setVisible(true);
+								} else {
+									m_views.at(index)->setVisible(false);
+								}
+							}
+						}
+
+						m_viewsMutex.unlock();
+					}
+				}
+			}
 			break;
 	}
 }
 
-void OpenGLThread::handleNavigatorEvent(bps_event_t *event) {
-    //int rc;
-    //bps_event_t *activation_event = NULL;
-
-    switch (bps_event_get_code(event)) {
-    case NAVIGATOR_ORIENTATION_CHECK:
-        //Signal navigator that we intend to resize
-        navigator_orientation_check_response(event, true);
-        break;
-    case NAVIGATOR_ORIENTATION:
-        if (EXIT_FAILURE == resize(event)) {
-            m_isRunning = true;
-        }
-        break;
-    case NAVIGATOR_SWIPE_DOWN:
-    	// initiate app menu animation
-        break;
-
-    case NAVIGATOR_EXIT:
-    	// exit the thread
-		m_isRunning = false;
-        break;
-
-    case NAVIGATOR_WINDOW_ACTIVE:
-    	// reactivate processing when window becomes active
-        break;
-
-    case NAVIGATOR_WINDOW_INACTIVE:
-        // wait for NAVIGATOR_WINDOW_ACTIVE event
-        break;
-    }
-}
-
-int OpenGLThread::resize(bps_event_t *event) {
-    //Query width and height of the window surface created by utility code
-
-    if (event) {
-        int angle = navigator_event_get_orientation_angle(event);
-    	int index = 0;
-
-        EGLint err = eglGetError();
-        if (err != 0x3000) {
-            fprintf(stderr, "Unable to query EGL surface dimensions\n");
-            return EXIT_FAILURE;
-        }
-
-    	// rotate each view
-    	for(index = 0; index < m_number_views; index++) {
-            // rotate screen surfaces to this angle
-            if (EXIT_FAILURE == m_views[index]->rotate(angle)) {
-                fprintf(stderr, "Unable to handle orientation change\n");
-                return EXIT_FAILURE;
-    		}
-    	}
-
-    }
-
-
-    update();
-
-    if (event) {
-        render();
-
-        navigator_done_orientation(event);
-    }
-
-    return EXIT_SUCCESS;
-}
-
-void OpenGLThread::update() {
+void OpenGLThread::run()
+{
 	int index = 0;
 
-	// render each view
-	for(index = 0; index < m_number_views; index++) {
-		m_views[index]->update();
-	}
-}
+	setStopped(false);
 
-void OpenGLThread::render() {
-	int index = 0;
+	qDebug()  << "OpenGLThread started: " << !stopped();
 
-	// render each view
-	for(index = 0; index < m_number_views; index++) {
-		m_views[index]->render();
-	}
-}
-
-void OpenGLThread::run() {
 	int returnCode = initBPS();
 
-	while (m_initialized && m_isRunning) {
-		//Request and process BPS next available event
+	if (returnCode == EXIT_SUCCESS && initialized() && eglInitialized()) {
 		bps_event_t *event = NULL;
-		int rc = bps_get_event(&event, 0);
-		assert(rc == BPS_SUCCESS);
 
-		if (event) {
-			int domain = bps_event_get_domain(event);
+		while (!stopped()) {
+			do {
+				//Request and process BPS next available event
+				event = NULL;
+				returnCode = bps_get_event(&event, 0);
+				//assert(rc == BPS_SUCCESS);
 
-			if (domain == screen_get_domain()) {
-				handleScreenEvent(event);
-            } else if (domain == navigator_get_domain()) {
-                handleNavigatorEvent(event);
-			}
+				if (event) {
+					int domain = bps_event_get_domain(event);
 
-			if (!m_isRunning) {
+					if (domain == screen_get_domain()) {
+						handleScreenEvent(event);
+
+						int viewCount = 0;
+
+						m_viewsMutex.lock();
+
+						viewCount = m_views.size();
+
+						m_viewsMutex.unlock();
+
+						if (viewCount > 0) {
+							m_viewsMutex.lock();
+
+							for(index = 0; index < m_views.size(); index++) {
+								m_views.at(index)->handleScreenEvent(event);
+							}
+
+							m_viewsMutex.unlock();
+						}
+					}
+				}
+			} while (event);
+
+			if (stopped()) {
 				break;
 			}
+
+			//qDebug()  << "OpenGLThread stopped: " << stopped();
+
+			update();
+
+			render();
+
+			usleep(5);
 		}
 
-		update();
-
-		render();
-
-		//msleep(5);
-	}
-
-	int index = 0;
-
-	// cleanup and remove each view
-	for(index = 0; index < m_number_views; index++) {
-		m_views[index]->cleanup();
-	}
-
-	while(m_number_views > 0) {
-		removeView(m_views[m_number_views-1]);
+		// remove and cleanup each view
+		cleanup();
 	}
 
 	//Stop requesting events from libscreen
-	screen_stop_events(m_screen_cxt);
+	screen_stop_events(m_screen_ctx);
 
 	//Shut down BPS library for this process
 	bps_shutdown();
+
+	setInitialized(false);
 
 	//Use utility code to terminate EGL setup
 	cleanupEGL();
 
 	//Destroy libscreen context
-	screen_destroy_context(m_screen_cxt);
+	screen_destroy_context(m_screen_ctx);
 }
 
+void OpenGLThread::shutdown()
+{
+	setStopped(true);
+}
+
+EGLDisplay OpenGLThread::getDisplay(VIEW_DISPLAY display)
+{
+	EGLDisplay egl_display = EGL_NO_DISPLAY;
+
+	while (!eglInitialized()) {
+		usleep(1);
+	};
+
+	switch (display) {
+		case DISPLAY_DEVICE:
+			egl_display = m_egl_disp;
+		break;
+
+		case DISPLAY_HDMI:
+			egl_display = m_egl_disp_hdmi;
+		break;
+	}
+
+	return egl_display;
+}
+
+bool OpenGLThread::isDisplayAttached(VIEW_DISPLAY display)
+{
+	EGLDisplay egl_display = EGL_NO_DISPLAY;
+
+	while (!eglInitialized()) {
+		usleep(1);
+	};
+
+	switch (display) {
+		case DISPLAY_DEVICE:
+			egl_display = m_egl_disp;
+		break;
+
+		case DISPLAY_HDMI:
+			egl_display = m_egl_disp_hdmi;
+		break;
+	}
+
+	return egl_display;
+}
+
+OpenGLThread* OpenGLThread::getInstance()
+{
+	if (!singleton.isRunning() && !singleton.stopped()) {
+		singleton.start();
+	}
+
+	return &singleton;
+}
 
 void OpenGLThread::eglPrintError(const char *msg) {
     static const char *errmsg[] = {

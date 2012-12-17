@@ -23,11 +23,15 @@
 #include "GoodCitizen.hpp"
 #include "OpenGLThread.hpp"
 
+#include <bb/cascades/Application>
 #include <bb/cascades/Event>
 #include <bb/cascades/UiObject>
 #include <bb/cascades/Control>
-#include <bb/cascades/ForeignWindow>
+#include <bb/cascades/ForeignWindowControl>
+#include <bb/cascades/LayoutUpdateHandler>
 #include <bb/cascades/NavigationPane>
+#include <bb/cascades/OrientationSupport>
+#include <bb/cascades/UIOrientation>
 
 using namespace bb::cascades;
 
@@ -35,26 +39,21 @@ class GoodCitizenApp : public QObject
 {
     Q_OBJECT
 
-public Q_SLOTS:
-
-	void onWindowAttached(unsigned long handle, const QString &group, const QString &id);
-	void onAttachedChanged(bool changed);
-	void onTimeout();
-
 public:
 	GoodCitizenApp();
 
-	unsigned long createForeignWindow(const QString &group,
-			const QString &id,
-			int width, int height);
+public Q_SLOTS:
+	// handle layout changes from device rotation
+	void onLayoutFrameChanged(const QRectF &layoutFrame);
+
+	// custom shutdown handler
+	void shutdown();
 
 private:
-
+	bool m_fwBound;
 	NavigationPane  *m_navPane;
-    ForeignWindow *m_pForeignWindow;
+    ForeignWindowControl *m_pForeignWindowControl;
 	GoodCitizen *m_pGoodCitizen;
-	OpenGLThread *m_pOpenGLThread;
-
 };
 
 #endif // ifndef GOODCITIZENAPP_HPP

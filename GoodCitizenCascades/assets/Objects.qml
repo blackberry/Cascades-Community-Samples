@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2011-2012 Research In Motion Limited.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,225 +16,103 @@
 
 import bb.cascades 1.0
 
-// Color sliders for changing object color
+// panel for selecting object
+
 Page {
     content: Container {
-        background: Color.create ("#262626")
-        preferredWidth: 768
-        
+        background: Color.create("#262626")
+        horizontalAlignment: HorizontalAlignment.Fill
         layout: StackLayout {
         }
+             
+         ForeignWindowControl {
+             id: viewWindow
+             visible: true // becomes visible once attached
+             horizontalAlignment: HorizontalAlignment.Fill
+             verticalAlignment: VerticalAlignment.Fill
+         }
         
         Container {
+            leftPadding: 10
+            rightPadding: leftPadding
+            topPadding: 10
+            bottomPadding: topPadding
+            horizontalAlignment: HorizontalAlignment.Center
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
-                leftPadding: 20
-                rightPadding: leftPadding
-                topPadding: 20
-                bottomPadding: topPadding
+                orientation: LayoutOrientation.LeftToRight
             }
-
-	        layoutProperties: StackLayoutProperties {
-	            horizontalAlignment: HorizontalAlignment.Center
-	        }
-
-
-	        Container {
-	            layout: DockLayout {
-	                leftPadding: 20
-	                rightPadding: leftPadding
-	            }
-	
-		        layoutProperties: StackLayoutProperties {
-		            horizontalAlignment: HorizontalAlignment.Center
-		        }
-		        
-		        ImageView {
-		            id: cubeSelected
-		            imageSource: "asset:///images/objects/cubeSelected.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		            opacity: 0.0
-		            
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-		        }
-	
-		        ImageView {
-		            id: cube
-		            imageSource: "asset:///images/objects/cube.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-
-	                onTouch: {
-	                    cube.opacity = 0.0;
-	                    cubeSelected.opacity = 1.0;
-	                    pyramid.opacity = 1.0;
-	                    pyramidSelected.opacity = 0.0;
-	                    sphere.opacity = 1.0;
-	                    sphereSelected.opacity = 0.0;
-	                    
-	                    _goodCitizen.setModel("cube");                    
-	                }
-		        }
-		        
-	        }
-
-
-	        Container {
-	            layout: DockLayout {
-	                leftPadding: 20
-	                rightPadding: leftPadding
-	            }
-	
-		        layoutProperties: StackLayoutProperties {
-		            horizontalAlignment: HorizontalAlignment.Center
-		        }
-		        
-		        ImageView {
-		            id: pyramidSelected
-		            imageSource: "asset:///images/objects/pyramidSelected.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		            opacity: 0.0
-		            
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-		        }
-	
-		        ImageView {
-		            id: pyramid
-		            imageSource: "asset:///images/objects/pyramid.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-
-	                onTouch: {
-	                    cube.opacity = 1.0;
-	                    cubeSelected.opacity = 0.0;
-	                    pyramid.opacity = 0.0;
-	                    pyramidSelected.opacity = 1.0;
-	                    sphere.opacity = 1.0;
-	                    sphereSelected.opacity = 0.0;
-	                    
-	                    _goodCitizen.setModel("pyramid");                    
-	                }
-		        }
-		        
-	        }
-
-
-
-	        Container {
-	            layout: DockLayout {
-	                leftPadding: 20
-	                rightPadding: leftPadding
-	            }
-	
-		        layoutProperties: StackLayoutProperties {
-		            horizontalAlignment: HorizontalAlignment.Center
-		        }
-		        
-		        ImageView {
-		            id: sphereSelected
-		            imageSource: "asset:///images/objects/sphereSelected.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		            opacity: 0.0
-		            
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-		        }		        
-	
-		        ImageView {
-		            id: sphere
-		            imageSource: "asset:///images/objects/sphere.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-
-	                onTouch: {
-	                    cube.opacity = 1.0;
-	                    cubeSelected.opacity = 0.0;
-	                    pyramid.opacity = 1.0;
-	                    pyramidSelected.opacity = 0.0;
-	                    sphere.opacity = 0.0;
-	                    sphereSelected.opacity = 1.0;
-	                    
-	                    _goodCitizen.setModel("sphere");                    
-	                }
-		        }
-	        }
+            
+            ImageToggleButton {
+                id: cube
+                imageSourceDefault: "asset:///images/objects/cube.png"
+                imageSourceChecked: "asset:///images/objects/cubeSelected.png"
+                imageSourceDisabledUnchecked: "asset:///images/objects/cube.png"
+                imageSourceDisabledChecked: "asset:///images/objects/cubeSelected.png"
+                imageSourcePressedUnchecked: "asset:///images/objects/cube.png"
+                imageSourcePressedChecked: "asset:///images/objects/cubeSelected.png"
+                checked: false
+                onCheckedChanged: {
+                    if (checked == true) {
+                        pyramid.checked = false;
+                        sphere.checked = false;
+                        _goodCitizen.setModel("cube");
+                    }
+                }
+            }
+            ImageToggleButton {
+                id: pyramid
+                imageSourceDefault: "asset:///images/objects/pyramid.png"
+                imageSourceChecked: "asset:///images/objects/pyramidSelected.png"
+                imageSourceDisabledUnchecked: "asset:///images/objects/pyramid.png"
+                imageSourceDisabledChecked: "asset:///images/objects/pyramidSelected.png"
+                imageSourcePressedUnchecked: "asset:///images/objects/pyramid.png"
+                imageSourcePressedChecked: "asset:///images/objects/pyramidSelected.png"
+                checked: false
+                onCheckedChanged: {
+                    if (checked == true) {
+                        cube.checked = false;
+                        sphere.checked = false;
+                        _goodCitizen.setModel("pyramid");
+                    }
+                }
+            }
+            ImageToggleButton {
+                id: sphere
+                imageSourceDefault: "asset:///images/objects/sphere.png"
+                imageSourceChecked: "asset:///images/objects/sphereSelected.png"
+                imageSourceDisabledUnchecked: "asset:///images/objects/sphere.png"
+                imageSourceDisabledChecked: "asset:///images/objects/sphereSelected.png"
+                imageSourcePressedUnchecked: "asset:///images/objects/sphere.png"
+                imageSourcePressedChecked: "asset:///images/objects/sphereSelected.png"
+                checked: false
+                onCheckedChanged: {
+                    if (checked == true) {
+                        cube.checked = false;
+                        pyramid.checked = false;
+                        _goodCitizen.setModel("sphere");
+                    }
+                }
+            }
         }
         
-        ForeignWindow {
-             id: viewWindow
-             preferredWidth: 768
-             preferredHeight: 950
-             visible: true // becomes visible once attached
-
-	         layoutProperties: DockLayoutProperties {
-	              horizontalAlignment: HorizontalAlignment.Center
-	              verticalAlignment: VerticalAlignment.Top
-	         }
-        }
-          
-	    onCreationCompleted : {
+        onCreationCompleted: {
             var loadModel = _goodCitizen.model;
-            console.log(loadModel);
-
-            cube.opacity = 1.0;
-            pyramid.opacity = 1.0;
-            sphere.opacity = 1.0;
-            cubeSelected.opacity = 0.0;
-            pyramidSelected.opacity = 0.0;
-            sphereSelected.opacity = 0.0;
+            console.log("loadModel: " + loadModel);
             
             if (loadModel == "cube") {
-	            cube.opacity = 0.0;
-	            cubeSelected.opacity = 1.0;
-            } else
-            if (loadModel == "pyramid") {
-	            pyramidSelected.opacity = 1.0;
-	            pyramid.opacity = 0.0;
-            } else
-            if (loadModel == "sphere") {
-	            sphereSelected.opacity = 1.0;
-	            sphere.opacity = 0.0;
+                cube.checked = true;
+                pyramid.checked = false;
+                sphere.checked = false;
+            } else if (loadModel == "pyramid") {
+                cube.checked = false;
+                pyramid.checked = true;
+                sphere.checked = false;
+            } else if (loadModel == "sphere") {
+                cube.checked = false;
+                pyramid.checked = false;
+                sphere.checked = true;
             }
         }
-        
     }
-/*        
-    actions: [
-        ActionItem {
-            title: "Back"
-            imageSource: "asset:///images/actions/back.png"
-            
-            onTriggered: {
-                // _navPane is set in code to make it available for all recipe pages.
-                _navPane.pop ();
-            }
-        }
-    ]
-*/  
+    actionBarVisibility: ChromeVisibility.Visible    
 }
