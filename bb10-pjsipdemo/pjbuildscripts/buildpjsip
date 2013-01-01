@@ -1,0 +1,49 @@
+#!/bin/bash
+PJSIPCHECKOUTDIR="pjsip-checkout"
+PJSIPBUILDDIR="pjsip-build"
+OPENCOREAMR="opencore-amr-0.1.3"
+mkdir $PJSIPBUILDDIR
+cp -rv $PJSIPCHECKOUTDIR/$OPENCOREAMR $PJSIPBUILDDIR 
+cp -rv $PJSIPCHECKOUTDIR/trunk $PJSIPBUILDDIR
+cp -p ./generic-configure-bb10 $PJSIPBUILDDIR/$OPENCOREAMR
+pushd $PJSIPBUILDDIR
+pushd $OPENCOREAMR 
+./generic-configure-bb10
+make
+find . -name libopencore-amrnb.a | xargs -i cp -v {} $QNX_TARGET/armle-v7/lib
+if [ ! -d "$QNX_TARGET/usr/include/opencore-amrnb" ]; then
+    # Control will enter here if $DIRECTORY doesn't exist.
+	mkdir $QNX_TARGET/usr/include/opencore-amrnb
+fi
+find . -name "interf_*" | xargs -i cp -v {} $QNX_TARGET/usr/include/opencore-amrnb
+popd
+pushd trunk
+./configure-bb10 --disable-speex-aec --with-opencore-amrnb
+make dep
+make
+find . -name *.h | xargs zip pjincludes
+find . -name "*.h" | cpio -updmv $QNX_TARGET/usr/include
+cp -vf `find . -name *.a`  $QNX_TARGET/armle-v7/lib
+popd
+find . -name *.a | xargs zip -j pjlibs-armle-v7
+
+#simulator
+pushd $OPENCOREAMR 
+make clean
+./generic-configure-bb10 --simulator
+make
+find . -name libopencore-amrnb.a | xargs -i cp -v {} $QNX_TARGET/x86/lib
+popd
+pushd trunk
+make realclean
+./configure-bb10 --simulator --disable-speex-aec --with-opencore-amrnb
+make dep
+make
+cp -vf `find . -name *.a`  $QNX_TARGET/x86/lib
+popd
+find . -name *.a | xargs zip -j pjlibs-x86
+popd
+mv $PJSIPBUILDDIR/pjlibs-armle-v7.zip .
+mv $PJSIPBUILDDIR/pjlibs-x86.zip .
+mv $PJSIPBUILDDIR/trunk/pjincludes.zip .
+rm -rf $PJSIPBUILDDIR
