@@ -1,0 +1,20 @@
+#!/bin/bash
+SDKDIR="sdkdir"
+mkdir $SDKDIR
+cp *.zip $SDKDIR
+pushd $SDKDIR
+mkdir -p usr/include
+mkdir -p armle-v7/lib
+mkdir -p x86/lib
+#
+unzip pjincludes.zip -d ./usr/include
+unzip pjlibs-armle-v7.zip -d ./armle-v7/lib
+unzip pjlibs-x86.zip -d ./x86/lib
+rm *.zip
+zip -r sdkfiles x86 armle-v7 usr
+rm -vrf ./usr
+rm -vrf ./armle-v7
+rm -vrf ./x86
+popd
+mv $SDKDIR/sdkfiles.zip .
+rm -rf $SDKDIR
