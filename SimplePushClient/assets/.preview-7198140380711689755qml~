@@ -1,0 +1,49 @@
+import bb.cascades 1.0
+
+Page {
+    Container {
+        bottomPadding: 20.0
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
+        Container {
+            layout: DockLayout {
+            }
+            horizontalAlignment: HorizontalAlignment.Fill
+            preferredHeight: maxHeight
+            ListView {
+                id: pushListView
+                objectName: "pushListView"
+                listItemComponents: [
+                    ListItemComponent {
+                        type: "item"
+                        StandardListItem {
+                            //imageSource: set based on priority
+                            title: ListItemData.title
+                            description: ListItemData.body
+                            status: ListItemData.timeReceived
+                        }
+                    },
+                    ListItemComponent {
+                        type: "header"
+                        PriorityHeader {
+                            onCreationCompleted: setPriority(parseInt(ListItemData))
+                        }
+                    }
+                ]
+                onSelectionChanged: {
+                }
+            }
+            Label {
+                text: "No push data received"
+                verticalAlignment: VerticalAlignment.Center
+                horizontalAlignment: HorizontalAlignment.Center
+                visible: ! pushListView.visible
+            }
+        }
+        Button {
+            objectName: "clearPushList"
+            text: "Clear Push List"
+            horizontalAlignment: HorizontalAlignment.Center
+        }
+    }
+}

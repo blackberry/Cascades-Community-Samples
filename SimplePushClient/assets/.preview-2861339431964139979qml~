@@ -1,0 +1,26 @@
+import bb.cascades 1.0
+
+Container {
+    property alias title: title.text
+    property alias body: body.text
+    horizontalAlignment: HorizontalAlignment.Fill
+    property int priority
+    PriorityHeader {
+        id: priorityHeader
+        onCreationCompleted: setPriority(priority)
+    }
+    Label {
+        id: title
+        textStyle {
+            base: SystemDefaults.TextStyles.TitleText
+        }
+    }
+    Label {
+        id: body
+        multiline: true
+    }
+    
+    function setPriority (priority) {
+        priorityHeader.seyPriority(priority);
+    }
+}
