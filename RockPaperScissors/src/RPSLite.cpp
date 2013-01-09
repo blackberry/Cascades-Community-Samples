@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2012 Brian Scheirer
+* Copyright (c) 2012, 2013 Brian Scheirer
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,7 +14,8 @@
 * limitations under the License.
 */
 
-#include "app.hpp"
+// Default empty project template
+#include "RPSLite.hpp"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
@@ -22,16 +23,21 @@
 
 using namespace bb::cascades;
 
-App::App()
+RPSLite::RPSLite(bb::cascades::Application *app)
+: QObject(app)
 {
-    QmlDocument *qml = QmlDocument::create("main.qml");
-    qml->setContextProperty("app", this);
-    
-    AbstractPane *root = qml->createRootNode<AbstractPane>();
-    Application::setScene(root);
+    // create scene document from main.qml asset
+    // set parent to created document to ensure it exists for the whole application lifetime
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
+    qml->setContextProperty("rpscp", this);
+
+    // create root object for the UI
+    AbstractPane *root = qml->createRootObject<AbstractPane>();
+    // set created root object as a scene
+    app->setScene(root);
 }
 
-int App::clickedRock(int user1, int user2)
+int RPSLite::clickedRock(int user1, int user2)
 {
 	int winner;
 
@@ -46,7 +52,7 @@ int App::clickedRock(int user1, int user2)
 
 }
 
-int App::clickedPaper(int user1, int user2)
+int RPSLite::clickedPaper(int user1, int user2)
 {
 	int winner;
 
@@ -61,7 +67,7 @@ int App::clickedPaper(int user1, int user2)
 
 }
 
-int App::clickedScissors(int user1, int user2)
+int RPSLite::clickedScissors(int user1, int user2)
 {
 	int winner;
 
@@ -76,11 +82,9 @@ int App::clickedScissors(int user1, int user2)
 
 }
 
-int App::codeWinning(int record)
+int RPSLite::codeWinning(int record)
 {
 	int add1;
 	add1 = record+1;
 	return add1;
 }
-
-
