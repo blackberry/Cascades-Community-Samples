@@ -1,0 +1,37 @@
+import bb.cascades 1.0
+
+Container {
+    id: container
+    preferredWidth: maxWidth
+    topPadding: 10
+    leftPadding: 10
+    bottomPadding: 10
+    Label {
+        id: label
+        textStyle {
+            base: SystemDefaults.TextStyles.TitleText
+            color: Color.White
+            fontWeight: FontWeight.Bold
+        }
+    }
+    function setPriority(priority) {
+        switch (priority) {
+            case 0:
+                label.text = " !";
+                container.background = Color.DarkBlue;
+                break;
+            case 1:
+                container.background = Color.DarkYellow;
+                label.text = "! !";
+                break;
+            case 2:
+                container.background = Color.DarkRed;
+                label.text = "!!!";
+                break;
+            default:
+                container.background = Color.White;
+                break;
+        }
+        console.log(label.text);
+    }
+}

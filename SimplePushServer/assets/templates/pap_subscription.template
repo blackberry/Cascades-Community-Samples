@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!DOCTYPE pap PUBLIC "-//WAPFORUM//DTD PAP 2.1//EN" "http://www.openmobilealliance.org/tech/DTD/pap_2.1.dtd">
+<bpds version="1.0">
+    <subscriptionquery-message pushservice-id="$(username)">
+        <status status-value="active"/>
+    </subscriptionquery-message>
+</bpds>
