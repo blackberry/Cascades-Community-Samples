@@ -33,67 +33,66 @@
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 
-#include <bb/cascades/ForeignWindow>
+#include <bb/cascades/TouchEvent>
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
 #include "OpenGLView.hpp"
+#include "OpenGLThread.hpp"
 
 class GoodCitizen : public OpenGLView {
 
 Q_OBJECT
 
-Q_PROPERTY(QVariantList objectColor READ objectColor WRITE objectColor)
-Q_PROPERTY(QString toolAxis READ toolAxis WRITE setToolAxis)
-Q_PROPERTY(QString touchMode READ touchMode WRITE setTouchMode)
-Q_PROPERTY(QString model READ model WRITE setModel)
+Q_PROPERTY(QVariantList objectColor READ objectColor WRITE setObjectColor) // object color
+Q_PROPERTY(QString toolAxis READ toolAxis WRITE setToolAxis) // tool axis
+Q_PROPERTY(QString touchMode READ touchMode WRITE setTouchMode) // touch mode
+Q_PROPERTY(QString model READ model WRITE setModel) // model
 
 public:
-	GoodCitizen();
+	GoodCitizen(VIEW_DISPLAY display);
 
 	virtual ~GoodCitizen();
 
-	void bind(const QString &group, const QString id, int x, int y, int width, int height);
-
+	// property signals
 	QVariantList& objectColor();
-	void objectColor(QVariantList& color);
-
 	QString toolAxis();
 	QString touchMode();
 	QString model();
 
-Q_SIGNALS:
-	//void result(const QString &result);
 
 public Q_SLOTS:
+	// property slots
 	void setObjectColor(QVariantList objectColor);
 	void setToolAxis(QString toolAxis);
 	void setTouchMode(QString touchMode);
 	void setModel(QString touchMode);
-	void reset();
 
+	// action slots
+	void reset(bool skipColour);
+
+	// touch handler
 	void onTouch(bb::cascades::TouchEvent *event);
 
 public:
-
-	int initialize(EGLContext egl_ctx, EGLConfig egl_conf, EGLDisplay egl_disp, screen_context_t screen_cxt, int usage);
-	virtual void cleanup();
+	// overriden methods from OpenGLView
+	int initialize();
+	int regenerate();
+	void cleanup();
 
 	void handleScreenEvent(bps_event_t *event);
-	void handleNavigatorEvent(bps_event_t *event);
 
-	int rotate(int angle);
 	void update();
 	void render();
 
 private:
+	// view transform functions
 	void enable_2D();
 	void enable_3D();
 
 
-	// geometry definitions
-	// cube
+	// model data
 	static float cube_vertices[];
 	static float cube_normals[];
 	static float pyramid_vertices[];
@@ -105,6 +104,7 @@ private:
 	float obj_pos_x, obj_pos_y, obj_pos_z;
 	float obj_scale_x, obj_scale_y, obj_scale_z;
 
+	// tool parameters
 	bool _autoRotate;
 	QString* _touchMode;
 	QString* _model;
@@ -113,10 +113,9 @@ private:
 	int currTouchX, currTouchY;
 	int lastTouchX, lastTouchY;
 
-	// shadow
+	// shadow data
 	GLfloat shadow_vertices[8];
 	GLfloat shadow_tex_coord[8];
-
 	GLuint shadow;
 	float shadow_pos_x, shadow_pos_y, shadow_size_x, shadow_size_y;
 
@@ -125,18 +124,6 @@ private:
 	static GLfloat light_diffuse[];
 	static GLfloat light_pos[];
 	static GLfloat light_direction[];
-
-	// screens / windows
-	float screenWidth, screenHeight;
-
-	//static font_t* font;
-
-	QString m_group;
-	QString m_id;
-	int m_x;
-	int m_y;
-	int m_width;
-	int m_height;
 };
 
 #endif /* GOODCITIZEN_HPP */
