@@ -60,7 +60,7 @@
    
     <initialWindow>
         <aspectRatio>portrait</aspectRatio>
-        <autoOrients>false</autoOrients>
+        <autoOrients>true</autoOrients>
         <systemChrome>none</systemChrome>
         <transparent>false</transparent>
     </initialWindow>
@@ -77,7 +77,8 @@
     </configuration>
     <configuration id="com.qnx.qcc.toolChain.198832732" name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/GoodCitizenCascades" entry="true" type="Qnx/Elf">GoodCitizenCascades</asset>
+       <entryPointType>Qnx/Cascades</entryPointType>
+       <asset path="arm/o.le-v7/libGoodCitizenCascades.so" entry="true" type="Qnx/Elf">GoodCitizenCascades.so</asset>
     </configuration>
     <configuration id="com.qnx.qcc.toolChain.793067700" name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>

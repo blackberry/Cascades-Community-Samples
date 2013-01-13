@@ -37,7 +37,10 @@
 #include "png.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QMutex>
 #include <QtCore/QVariant>
+
+#include <pthread.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -62,32 +65,136 @@ typedef struct font_t {
 }
 #endif
 
+typedef enum RENDERING_API {GL_UNKNOWN = 0, GL_ES_1 = EGL_OPENGL_ES_BIT, GL_ES_2 = EGL_OPENGL_ES2_BIT, VG = EGL_OPENVG_BIT} RENDERING_API;
+
+typedef enum VIEW_DISPLAY {DISPLAY_UNKNOWN, DISPLAY_DEVICE, DISPLAY_HDMI} VIEW_DISPLAY;
+
+
 class OpenGLView : public QObject {
 
 	Q_OBJECT
+
+	Q_PROPERTY(bool enabled READ enabled WRITE setEnabled)
+
+	friend class OpenGLThread;
 
 public:
 	OpenGLView();
 
 	virtual ~OpenGLView();
 
-	virtual int initialize(EGLContext egl_ctx, EGLConfig egl_conf, EGLDisplay egl_disp, screen_context_t screen_cxt, int  usage) = 0;
-	//virtual void handleScreenEvent(bps_event_t *event);
-	//virtual void handleNavigatorEvent(bps_event_t *event);
+	// must be defined in derived classes
+	virtual int initialize() = 0;
+
+	// display methods
+	void setDisplay(VIEW_DISPLAY display);
+
+	// handle screen events when view is an overlay ie. above Cascades layer
+	virtual void handleScreenEvent(bps_event_t *event) = 0;
+
+	// state functions
+	// enable is used to enable / disable rendering
+	bool enabled();
+	// flags initialization of the view
+	bool initialized();
+
+	// stale flag indicates when the view needs to be rendered again
+	bool stale();
+
+	// this flag signals that the view was altered (rotated or resized) and needs to be regenerated
+	bool altered();
+
+	// custom update handling to be defined in derived class
 	virtual void update() = 0;
+
+	// main render function - obtains GL context and swaps buffer so that the derived class doesn't need to handle it
+	void renderView();
+
+	// custom rendering to be defined in base class
 	virtual void render() = 0;
-	virtual int rotate(int angle);
+
+	// view settings
+	void setAngle(int angle);
+	void setPosition(int x, int y);
+	void setSize(int width, int height);
+	void setZ(int z);
+	void setTransparency(int transparency);
+
+	void setWindowGroup(const QString &group);
+	void setWindowID(const QString id);
+
+	// called by the thread to regenerate the surface
+	virtual int regenerate();
+
+	// custom cleanup to be implemented by derived class
 	virtual void cleanup() = 0;
 
-protected:
-	int initGL(EGLContext egl_ctx, EGLConfig egl_conf, EGLDisplay egl_disp, screen_context_t screen_cxt, int  usage, int z, const char* group, const char* id);
+	// methods to add or remove this view - hide thread functions from caller
+	void add();
+	void remove();
 
-	// OpenGL utility functions for OpenGL views
+	// method to set GL API
+	static void setRenderingAPI(RENDERING_API api);
+
+	// shutdown - call thread function, hiding it from caller
+	static void shutdown();
+
+
+public Q_SLOTS:
+	// state slots
+	void setEnabled(bool enabled);
+	void setInitialized(bool initialized);
+	void setStale(bool stale);
+	void setAltered(bool stale);
+
+protected:
+	// init GL - must be called in derived initialize function
+	int initGL();
+
+	bool visible();
+	void setVisible(bool visible);
+
+
+	// display methods
+	EGLDisplay display();
+
+	// API / screen property calls
+	void setAPI(RENDERING_API api);
+	void setScreenContext(screen_context_t screen_ctx);
+	void setScreenEGLConfiguration(EGLConfig egl_conf);
+	void setScreenEGLDisplay(EGLDisplay egl_disp);
+
+	// window property calls
+	int setWindowAngle(int angle);
+	int setWindowPosition(int x, int y);
+	int setWindowSize(int width, int height);
+	int setWindowZ(int z);
+	int setWindowSourceSize(int width, int height);
+	int setWindowBufferSize(int width, int height);
+	int setWindowTransparency(int transparency);
+	int setWindowUsage(int usage);
+
+	// window group / ID calls
+	int joinWindowGroup(const QString &group);
+	int setScreenWindowID(const QString id);
+
+
+	// OpenGL utility functions for OpenGL views - derived from bb_util.c
 
 	/**
 	 * Swaps default window surface to the screen
 	 */
 	void swapBuffers();
+
+	/*
+	 * makes this view's EGL context curent
+	 */
+	void getGLContext();
+
+	/*
+	 * releases the view's EGL context from being current
+	 */
+	void  releaseGLContext();
 
 	/**
 	 * Loads the font from the specified font file.
@@ -152,33 +259,57 @@ protected:
 
 	int calculateDPI();
 
-	/**
-	 * Rotates the screen to a given angle
-
-	 *
-	 * @param angle to rotate screen surface to, must by 0, 90, 180, or 270
-	 * @return EXIT_SUCCESS if texture loading succeeded otherwise EXIT_FAILURE
-	 */
-
-	int rotateScreenSurface(int angle);
-
-private:
-	int nextp2(int x);
-
 protected:
+	// state
+	bool m_enabled;
+	bool m_initialized;
+	bool m_altered;
+	bool m_visible;
+	bool m_stale;
+	VIEW_DISPLAY m_display;
+
+	// EGL parameters
 	EGLContext m_egl_ctx;
 	EGLConfig m_egl_conf;
 	EGLDisplay m_egl_disp;
 	EGLSurface m_egl_surf;
-
-	// screens / windows
-	screen_context_t m_screen_cxt;
-	screen_window_t m_screen_win;
-	screen_display_t m_screen_disp;
+	int m_usage;
 	int m_nbuffers;
+
 	EGLint m_surface_width;
 	EGLint m_surface_height;
 
+    RENDERING_API m_api;
+
+	// screens / windows
+	screen_context_t m_screen_ctx;
+	screen_window_t m_screen_win;
+	screen_display_t m_screen_disp;
+	screen_display_t *m_screen_dpy;
+	screen_display_mode_t *m_screen_modes;
+
+	// view properties
+	int m_angle;
+	int m_x;
+	int m_y;
+	int m_z;
+	int m_width;
+	int m_height;
+	int m_interval;
+	int m_transparency;
+
+	// window group / ID
+	QString m_group;
+	QString m_id;
+
+	// main mutex for controlling view access
+	QMutex m_viewMutex;
+
+private:
+	int nextp2(int x);
+
+	// mutex for controlling render access across all views
+	static QMutex m_renderMutex;
 };
 
 #endif /* OPENGLVIEW_HPP */

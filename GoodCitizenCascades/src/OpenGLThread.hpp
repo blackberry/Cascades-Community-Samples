@@ -31,17 +31,13 @@
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 
-#include <bb/cascades/ForeignWindow>
+#include <bb/cascades/TouchEvent>
 
 #include <QtCore/QThread>
 #include <QtCore/QList>
 #include <QtCore/QString>
 
 #include "OpenGLView.hpp"
-
-//#include "bbutil.h"
-
-enum RENDERING_API {GL_ES_1 = EGL_OPENGL_ES_BIT, GL_ES_2 = EGL_OPENGL_ES2_BIT, VG = EGL_OPENVG_BIT};
 
 class OpenGLThread :public QThread {
 
@@ -54,57 +50,83 @@ public:
 
 	void run();
 
+	static OpenGLThread *getInstance();
+
+	// signal the thread to shut down
+	void shutdown();
+
+	// add / remove views
 	void addView(OpenGLView *view);
 	void removeView(OpenGLView *view);
 
+	// get the desired display
+	EGLDisplay getDisplay(VIEW_DISPLAY display);
+	bool isDisplayAttached(VIEW_DISPLAY display);
+
+	// read / set the GL rendering API
+	bool renderingAPI();
+	void setRenderingAPI(RENDERING_API api);
+
+	// control the initialized state
+	bool initialized();
+	void setInitialized(bool initialized);
+
+	// control the EGL initialized state
+	bool eglInitialized();
+	void setEGLInitialized(bool initialized);
+
+	// control the stopped state
+	bool stopped();
+	void setStopped(bool initialized);
+
+	// handy print error function derived from bb_util.c
 	static void eglPrintError(const char *msg);
 
 private:
+	// initialize / cleanup functions
 	int initBPS();
-	int initGL();
-
-	// EGL initialization / cleanup functions
-	/**
-	 * Initializes EGL
-	 *
-	 * @param libscreen context that will be used for EGL setup
-	 * @param rendering API that will be used
-	 * @return EXIT_SUCCESS if initialization succeeded otherwise EXIT_FAILURE
-	 */
-	int initEGL(enum RENDERING_API api);
-
-	/**
-	 * Terminates EGL
-	 */
+	int initEGL();
 	void cleanupEGL();
+	void cleanup();
 
-
-	void handleScreenEvent(bps_event_t *event);
-	void handleNavigatorEvent(bps_event_t *event);
 
 	void update();
 	void render();
 
-	int resize(bps_event_t *event);
+
+	// handle screen events - only need to handle display events in the thread
+	virtual void handleScreenEvent(bps_event_t *event);
 
 	// EGL members
 	EGLDisplay m_egl_disp;
+	EGLDisplay m_egl_disp_hdmi;
 	EGLConfig m_egl_conf;
 	EGLContext m_egl_ctx;
     int m_usage;
 
+    RENDERING_API m_api;
+
+    // display info
+    int m_numberDisplays;
+    screen_display_t *m_screen_dpy;
+
 
 	// screens / windows
-	screen_context_t m_screen_cxt;
+	screen_context_t m_screen_ctx;
 	float screenWidth, screenHeight;
 
-	//static font_t* font;
+	QVector<OpenGLView*> m_views;
 
-	int m_number_views;
-	OpenGLView** m_views;
-
+	// state fields
 	bool m_initialized;
-	bool m_isRunning;
+	bool m_egl_initialized;
+	bool m_stopped;
+
+	// mutexes to control thread access
+	QMutex m_viewsMutex;
+	QMutex m_threadMutex;
+
+	static OpenGLThread singleton;
 };
 
 #endif /* OPENGLTHREAD_HPP */
