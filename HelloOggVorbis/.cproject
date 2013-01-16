@@ -140,10 +140,10 @@
 								<inputType id="com.qnx.qcc.inputType.assembler.1698113921" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.636597891" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
-								<option id="com.qnx.qcc.option.linker.libraries.1678529119" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.1678529119" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="vorbis"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.libraryPaths.157100321" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+								<option id="com.qnx.qcc.option.linker.libraryPaths.157100321" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/Users/rmadhava/ndk-10.0.4-workspace/HelloOpenAL/external-lib/oggvorbis/lib/qnx/arm"/>
 								</option>
 							</tool>
@@ -205,9 +205,12 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="cowbell.null.258425439" name="cowbell"/>
 	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/HelloOpenAL"/>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.782877594">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.1982646308">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.26149944">
@@ -216,9 +219,8 @@
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.840177385">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.1982646308">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.toolChain.782877594">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
 </cproject>

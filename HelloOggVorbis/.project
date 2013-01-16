@@ -81,5 +81,6 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 		<nature>com.qnx.tools.ide.bbt.core.bbtnature</nature>
 		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>com.rim.tad.tools.qml.core.qmlNature</nature>
 	</natures>
 </projectDescription>
