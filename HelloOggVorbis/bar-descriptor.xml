@@ -32,7 +32,7 @@
     <author>Example Inc.</author>
 
     <!--  The splash screen that will appear when your application is launching. -->
-    <splashscreen>background.png</splashscreen>
+    <splashScreens>background.png</splashScreens>
 
     <initialWindow>
         <aspectRatio>landscape</aspectRatio>
@@ -43,22 +43,22 @@
 
      <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration id="com.qnx.qcc.toolChain.1982646308" name="Default">
+    <configuration name="Default">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/hellooggvorbis" entry="true" type="Qnx/Elf">hellooggvorbis</asset>
        <asset path="external-lib/oggvorbis/lib/qnx/arm/libvorbis.a" type="Qnx/Elf">lib/libvorbis.a</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.840177385" name="Device-Debug">
+    <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/hellooggvorbis" entry="true" type="Qnx/Elf">hellooggvorbis</asset>
        <asset path="external-lib/oggvorbis/lib/qnx/arm/libvorbis.a" type="Qnx/Elf">lib/libvorbis.a</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.782877594" name="Device-Release">
+    <configuration name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7/hellooggvorbis" entry="true" type="Qnx/Elf">hellooggvorbis</asset>
        <asset path="external-lib/oggvorbis/lib/qnx/arm/libvorbis.a" type="Qnx/Elf">lib/libvorbis.a</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.26149944" name="Simulator-Debug">
+    <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/hellooggvorbis" entry="true" type="Qnx/Elf">hellooggvorbis</asset>
     </configuration>
@@ -71,10 +71,9 @@
 
     <asset path="icon.png">icon.png</asset>
     <asset path="assets">assets</asset>
-    <asset path="assets/images/background.png">background.png</asset>
 
     <!-- Request permission to execute native code.  Required for native applications. -->
-    <action system="true">run_native</action>
+    <permission system="true">run_native</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
 
 </qnx>

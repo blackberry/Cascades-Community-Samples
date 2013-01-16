@@ -474,5 +474,5 @@ bool SoundManager::play(QString fileName, float pitch, float gain)
 bool SoundManager::play(QString fileName)
 {
     // Play the sound with default gain and pitch values.
-    return play(fileName, 4.0f, 4.0f);
+    return play(fileName, 1.0f, 1.0f);
 }
