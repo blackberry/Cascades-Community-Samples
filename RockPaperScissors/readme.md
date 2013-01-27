@@ -3,25 +3,20 @@
 Rock, Paper, Scissors is an an opensource app to show off various features of Cascades in a fun way using QML
 as well as calling C++ functions for some logic.  QML objects/features used:
 
-StackLayout, DockLayout, AbsoluteLayout, Background, CustomDialog, Animations, Button, Label, TextField, ImageView, Sheets, RadioGroup, Signals/Slots, In-line JavaScript
+NavigationPane (with peak), StackLayout, DockLayout, AbsoluteLayout, Background (image and color), CustomDialog, Animations, Button, Label, TextField, ImageView, Sheet, Dialog, RadioGroup, Gesture Handler, System Menu, Signals/Slots, In-line JavaScript, and Advertisment Service
 
-
-Only main.qml and gamescreen.qml shown in actual app. stagingpage.qml and tempmain.qml left in source code to show proression of UI.  tempmain.qml
-very basic UI, stagingpage.qml creates general layout and main.qml has final layout as well as all necessary code for final app.
+Only main.qml and Gamescreen.qml shown in actual app. stagingpage.qml and tempmain.qml left in source code to show proression of UI. tempmain.qml very basic UI, stagingpage.qml creates general layout and Gamescreen.qml has final layout as well as all necessary code for final app.
 
 Explanations of the code can be found at: <br />
-http://bbcascadescode.tumblr.com/post/30503808682/rock-paper-scissors-pt-1 <br />
-http://bbcascadescode.tumblr.com/post/31427173614/rock-paper-scissors-pt-2 <br />
-http://bbcascadescode.tumblr.com/post/31539351569/rock-paper-scissors-pt-3 <br />
-or <br />
-http://opensourcebb.com/osbbx/index.php/tutorials/23-native-tutorials/cascades-tutorials/35-rock-paper-scissors-full-tutorial
+http://bbcascadescode.tumblr.com/<br />
+
 
 The sample code for this application is Open Source under the Apache 2.0 License.
 
 Applies To
 
     BlackBerry 10
-    BlackBerry Cascades Native SDK (Beta2) for BlackBerry 10
+    BlackBerry Cascades Native SDK for BlackBerry 10
 
 Author(s)
 
@@ -40,7 +35,7 @@ To build the Rock Paper Scissors sample application:
 
 
 ************************************************************************
-Copyright (c) 2012 Brian Scheirer
+Copyright (c) 2012, 2013 Brian Scheirer
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
