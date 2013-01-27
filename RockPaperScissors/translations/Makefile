@@ -1,4 +1,4 @@
-QMAKE_TARGET  = RockPaperScissors
+QMAKE_TARGET  = RPSLite
 LUPDATE       = $(QNX_HOST)/usr/bin/lupdate
 LRELEASE      = $(QNX_HOST)/usr/bin/lrelease
 
