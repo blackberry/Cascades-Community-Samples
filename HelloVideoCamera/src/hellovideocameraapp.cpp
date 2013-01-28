@@ -242,7 +242,6 @@ void HelloVideoCameraApp::onStartStopRecording()
                                        NULL) == CAMERA_EOK) {
                     qDebug() << "started recording";
                     mStartStopButton->setText("Stop Recording");
-                    mVideoFileDescriptor = 0;
                     mStopButton->setEnabled(false);
                     mStatusLabel->setText(basename(filename));
                     mStatusLabel->setVisible(true);
