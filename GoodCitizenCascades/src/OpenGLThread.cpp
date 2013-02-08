@@ -142,8 +142,11 @@ void OpenGLThread::addView(OpenGLView *view) {
 void OpenGLThread::removeView(OpenGLView *view) {
 	if (view != NULL) {
 		m_viewsMutex.lock();
+		int index = m_views.indexOf(view);
 
-		m_views.remove(m_views.indexOf(view));
+		if ( index != -1 ) {
+			m_views.remove(index);
+		}
 
 		m_viewsMutex.unlock();
 
