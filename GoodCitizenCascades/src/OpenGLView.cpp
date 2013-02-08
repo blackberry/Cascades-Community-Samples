@@ -269,6 +269,8 @@ EGLDisplay OpenGLView::display()
 void OpenGLView::setDisplay(VIEW_DISPLAY display)
 {
 	m_display = display;
+	m_egl_disp = OpenGLThread::getInstance()->getDisplay(display);
+	setScreenEGLDisplay(m_egl_disp);
 }
 
 void OpenGLView::setScreenContext(screen_context_t screen_ctx)
