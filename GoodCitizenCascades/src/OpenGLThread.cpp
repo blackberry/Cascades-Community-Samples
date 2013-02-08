@@ -191,6 +191,7 @@ int OpenGLThread::initEGL() {
     EGLint attrib_list[]= { EGL_RED_SIZE,        8,
                             EGL_GREEN_SIZE,      8,
                             EGL_BLUE_SIZE,       8,
+                            EGL_DEPTH_SIZE, 	 16,
                             EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
                             EGL_RENDERABLE_TYPE, EGL_OPENGL_ES_BIT,
                             EGL_NONE};
