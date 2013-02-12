@@ -4,11 +4,13 @@
 
 #include <QLocale>
 #include <QTranslator>
+#include <Qt/qdeclarativedebug.h>
+
 #include "NfcSharing.hpp"
 
 using namespace bb::cascades;
 
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     Application app(argc, argv);
 
