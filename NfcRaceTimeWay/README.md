@@ -22,11 +22,12 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 **Release History**
 
 * **V1.1** - Initial release
+* **V1.1.1** - Updates to support 720x720 screen size
 
 **Dependencies**
 
-1. BlackBerry Dev Alpha Device Beta 3 Software **10.0.9**
-1. BlackBerry 10 Native SDK **10.0.9**
+1. BlackBerry 10 Device Software **10.0.9**
+1. BlackBerry 10 Native SDK **10.0.9** (Gold)
 
 **How to Build NfcRaceTimeWay**
 
@@ -63,6 +64,7 @@ pre-build and signed BAR file. You can find it in the
 folder "installable-bar-files" as follows:
 
 * **NfcRaceTime-1\_1\_0\_10.bar** -- Signed BAR file for Version 1.1 (V1.1) of the application ( requires BlackBerry Dev Alpha Beta 3 Device Software (10.0.9) )
+* **NfcRaceTime-1\_1\_1\_50.bar** -- Signed BAR file for Version 1.1.1 (V1.1.1) of the application ( requires BlackBerry 10 Device Software (10.0.9) )
 
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
