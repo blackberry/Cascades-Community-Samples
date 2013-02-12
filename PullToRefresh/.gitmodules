@@ -1,0 +1,9 @@
+[submodule "blackberry-py"]
+	path = blackberry-py
+	url = git@github.com:HorizonXP/blackberry-py.git
+[submodule "adn"]
+	path = adn
+	url = git@github.com:HorizonXP/python-adn.git
+[submodule "requests"]
+	path = requests
+	url = git@github.com:HorizonXP/requests.git
