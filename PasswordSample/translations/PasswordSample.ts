@@ -25,7 +25,7 @@
     </message>
     <message>
         <location filename="../assets/main.qml" line="386"/>
-        <source>V1.0.0</source>
+        <source>V1.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

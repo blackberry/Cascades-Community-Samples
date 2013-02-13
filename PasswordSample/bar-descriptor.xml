@@ -15,8 +15,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
   
--->
-
+-->
 <qnx xmlns="http://www.qnx.com/schemas/application/1.0">
 
 <!-- BlackBerry Tablet OS application descriptor file.
@@ -36,8 +35,8 @@
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required. -->
-  <versionNumber>1.0.0</versionNumber>r>
-  <buildIdFile>buildnum</buildIdFile>
+    <versionNumber>1.0.1</versionNumber>
+    <buildIdFile>buildnum</buildIdFile>
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the 
          <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
@@ -66,40 +65,40 @@
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration id="com.qnx.qcc.toolChain.986697364" name="Default">
+    <icon>
+       <image>icon.png</image>
+    </icon>
+    <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/PasswordSample" entry="true" type="Qnx/Elf">PasswordSample</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.216589881" name="Device-Debug">
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/PasswordSample" entry="true" type="Qnx/Elf">PasswordSample</asset>
+       <asset path="arm/o.le-v7/PasswordSample.so" entry="true" type="Qnx/Elf">PasswordSample.so</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.395300360" name="Device-Release">
+    <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/PasswordSample" entry="true" type="Qnx/Elf">PasswordSample</asset>
+       <asset path="arm-p/o.le-v7-g/PasswordSample" entry="true" type="Qnx/Elf">PasswordSample</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1303470935" name="Simulator-Debug">
+    <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/PasswordSample" entry="true" type="Qnx/Elf">PasswordSample</asset>
     </configuration>
     
     <!--  The icon for the application, which should be 86x86. -->
-    <icon>
-        <image>icon.png</image>
-    </icon>
 
-    <asset path="icon.png">icon.png</asset>
     <asset path="assets">assets</asset>
     
     <!-- Locale support -->
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
+    <asset path="icon.png">icon.png</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
-
 	<cascadesTheme>dark</cascadesTheme>
 	
 </qnx>
