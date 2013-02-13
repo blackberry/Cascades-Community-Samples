@@ -18,7 +18,7 @@ Page {
                     spaceQuota: 1
                 }
                 Label {
-                    text: " Welcome to NFC Sharing V1.0.0"
+                    text: " Welcome to NFC Sharing V1.1.0"
                     textStyle {
                         base: SystemDefaults.TextStyles.TitleText
                         fontWeight: FontWeight.W100
@@ -232,7 +232,7 @@ Page {
                     }
                 }
                 Label {
-                    text: "NfcSharing V1.0.1"
+                    text: "NfcSharing V1.1.0"
                     enabled: false
                     preferredWidth: 650
                     textStyle {
