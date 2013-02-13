@@ -9,8 +9,8 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Applies To**
 
-* [Cascades for BlackBerry 10](https://bdsc.webapps.blackberry.com/cascades/)
-* [BlackBerry Native SDK for Tablet OS](https://bdsc.webapps.blackberry.com/native/)
+* [Cascades for BlackBerry 10](https://developer.blackberry.com/cascades/)
+* [BlackBerry Native SDK](http://developer.blackberry.com/native/)
 
 **Author(s)** 
 
