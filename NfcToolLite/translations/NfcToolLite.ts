@@ -4,6 +4,7 @@
 <context>
     <name>Logger</name>
     <message>
+        <location filename="../assets/Logger.qml" line="26"/>
         <source></source>
         <translation></translation>
     </message>
@@ -11,13 +12,10 @@
 <context>
     <name>reader</name>
     <message>
+        <location filename="../assets/reader.qml" line="35"/>
         <source>
 </source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source></source>
-        <translation></translation>
     </message>
 </context>
 </TS>
