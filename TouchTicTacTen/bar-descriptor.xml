@@ -35,7 +35,7 @@
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required. -->
-    <versionNumber>1.0.0</versionNumber>
+    <versionNumber>1.0.2</versionNumber>
     <buildIdFile>buildnum</buildIdFile>
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the 
@@ -52,8 +52,8 @@
     <!-- <copyright></copyright> -->
 
     <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
-    <author>Martin Woolley</author>
-    <authorId>gYAAgLMrXMtcNrv1o1MfhJyK8bg</authorId>
+    <author>John Murray</author>
+    <authorId>gYAAgFPCViUqswOvaRvSwB1Mf2w</authorId>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
     <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
@@ -65,19 +65,20 @@
     
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
-    <configuration id="com.qnx.qcc.toolChain.1415755867" name="Default">
+    <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/TouchTicTacTen" entry="true" type="Qnx/Elf">TouchTicTacTen</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.380155920" name="Device-Debug">
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/TouchTicTacTen" entry="true" type="Qnx/Elf">TouchTicTacTen</asset>
+       <asset path="arm/o.le-v7/TouchTicTacTen.so" entry="true" type="Qnx/Elf">TouchTicTacTen.so</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.665378728" name="Device-Release">
+    <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/TouchTicTacTen" entry="true" type="Qnx/Elf">TouchTicTacTen</asset>
+       <asset path="arm-p/o.le-v7-g/TouchTicTacTen" entry="true" type="Qnx/Elf">TouchTicTacTen</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1275528115" name="Simulator-Debug">
+    <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/TouchTicTacTen" entry="true" type="Qnx/Elf">TouchTicTacTen</asset>
     </configuration>
@@ -98,8 +99,8 @@
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
-    
-        <invoke-target id="com.example.TouchTicTacTen.ndef">
+
+        <invoke-target id="com.example.TouchTicTacTen">
 	    <require-source-permissions>invoke_across_perimeters</require-source-permissions>
 	    <type>APPLICATION</type>
 	    <filter>

@@ -2,14 +2,14 @@
 
 The purpose of this application is to demonstrate how NFC peer to peer mode can be used in games. This is known as "Proximity Gaming".
 
-Note that there is a Java version of this application for BlackBerry 7.1 devices and games can be played between Blackberry 7 devices and BlackBerry 10 devices. See https://github.com/blackberry/Samples-for-Java/tree/master/NFC/TouchTicTacToe
+Note that there is a Java version of this application for BlackBerry 7.1 devices and games can be played between Blackberry 7 devices and BlackBerry 10 devices. See [BlackBerry 7 version](https://github.com/blackberry/Samples-for-Java/tree/master/NFC/TouchTicTacToe)
 
 The sample code for this application is Open Source under 
 the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Applies To**
 
-* [Cascades for BlackBerry 10](https://bdsc.webapps.blackberry.com/cascades/)
+* [Cascades for BlackBerry 10](https://developer.blackberry.com/cascades/)
 * [BlackBerry Native SDK](http://developer.blackberry.com/native/)
 
 **Author(s)** 
@@ -19,23 +19,27 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 
 **Release History**
+
+* **V1.0.2** - Support for latest NDK ( Gold) and 720x720 screen size
 * **V1** - Initial release
 
 **Known Issues**
+
 1. To start a new game it may be necessary to exit and then start again
 
 **Dependencies**
 
-1. BlackBerry Dev Alpha Device Software **10.0.9**
-2. BlackBerry 10 Native SDK **10.0.9**
+1. BlackBerry 10 Device Software **10.0.9**
+2. BlackBerry 10 Native SDK **10.0.9** (Gold)
 
  
 **I don't want to build it myself**
 
 If you don't want to build this sample application yourself we've included a 
-pre-build and signed BAR files for each version. You can find them in the 
+pre-build and signed BAR file for each version. You can find them in the 
 folder "installable-bar-files":
 
+* **TouchTicTacTen-1\_0\_2\_18.bar** -- Signed BAR file for Version 1.0.2 (V1.0.2) of the application ( requires BlackBerry 10 Software 10.0.9 )
 
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
