@@ -52,7 +52,7 @@ void WriteURI::createModules() {
 }
 
 void WriteURI::connectNavigationSignals() {
-	QObject::connect(_eventLog, SIGNAL(back()), this, SLOT(backFromEventLog()));
+
 }
 
 void WriteURI::findAndConnectControls() {
@@ -90,7 +90,7 @@ void WriteURI::startWriteProcess() {
 }
 
 void WriteURI::backFromEventLog() {
-
+	QObject::disconnect(this, SIGNAL(back()), 0,0);
 }
 
 void WriteURI::show() {

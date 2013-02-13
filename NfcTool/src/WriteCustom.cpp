@@ -51,7 +51,7 @@ void WriteCustom::createModules() {
 }
 
 void WriteCustom::connectNavigationSignals() {
-	QObject::connect(_eventLog, SIGNAL(back()), this, SLOT(backFromEventLog()));
+
 }
 
 void WriteCustom::findAndConnectControls() {
@@ -96,7 +96,7 @@ void WriteCustom::startWriteProcess() {
 }
 
 void WriteCustom::backFromEventLog() {
-
+	QObject::disconnect(this, SIGNAL(back()), 0,0);
 }
 
 void WriteCustom::show() {

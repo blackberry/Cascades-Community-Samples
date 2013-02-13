@@ -14,12 +14,13 @@
  */
 
 // NOT IN USE - work in progress
-
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/Control>
 #include <bb/cascades/Button>
 #include <bb/cascades/TextArea>
+#include <bb/cascades/CheckBox>
+#include <bb/cascades/DropDown>
 #include <bb/platform/NotificationDialog>
 
 #include "ApduDetails.hpp"
@@ -34,13 +35,22 @@
 using namespace bb::cascades;
 
 ApduDetails::ApduDetails() {
-	_aid = Settings::AID;
-	_hex_cla = Settings::HEX_CLA;
-	_hex_ins = Settings::HEX_INS;
-	_hex_p1p2 = Settings::HEX_P1P2;
-	_hex_lc = Settings::HEX_LC;
-	_hex_command = Settings::HEX_COMMAND;
-	_hex_le = Settings::HEX_LE;
+    QSettings settings;
+	_aid = settings.value(Settings::KEY_AID, Settings::AID).toString();
+	_select_only = settings.value(Settings::KEY_SELECT_ONLY, false).toBool();
+	_ppse = settings.value(Settings::KEY_PPSE, false).toBool();
+	_target = settings.value(Settings::KEY_TARGET, Settings::DEFAULT_TARGET).toString();
+	if (_target.compare(Settings::CARD_TARGET) == 0) {
+		_target_inx = 1;
+	} else {
+		_target_inx = 0;
+	}
+	_hex_cla = settings.value(Settings::KEY_HEX_CLA, Settings::HEX_CLA).toString();
+	_hex_ins = settings.value(Settings::KEY_HEX_INS, Settings::HEX_INS).toString();
+	_hex_p1p2 = settings.value(Settings::KEY_HEX_P1P2, Settings::HEX_P1P2).toString();
+	_hex_lc = settings.value(Settings::KEY_HEX_LC, Settings::HEX_LC).toString();
+	_hex_command = settings.value(Settings::KEY_HEX_COMMAND, Settings::HEX_COMMAND).toString();
+	_hex_le = settings.value(Settings::KEY_HEX_LE, Settings::HEX_LE).toString();
 
 	_qml = QmlDocument::create("asset:///apdu.qml");
 	_qml->setContextProperty("_apdu", this);
@@ -50,7 +60,6 @@ ApduDetails::ApduDetails() {
 	_systemDialog->setTitle("Validation Error");
 	bb::system::SystemUiButton *confirmButton = _systemDialog->confirmButton();
 	confirmButton->setLabel("OK");
-	connect(_systemDialog, SIGNAL(accepted()), this, SLOT(onDialogAccepted()));
 
 	createModules();
 	connectNavigationSignals();
@@ -68,7 +77,7 @@ void ApduDetails::createModules() {
 }
 
 void ApduDetails::connectNavigationSignals() {
-	QObject::connect(_eventLog, SIGNAL(back()), this, SLOT(backFromEventLog()));
+
 }
 
 void ApduDetails::findAndConnectControls() {
@@ -78,15 +87,21 @@ void ApduDetails::findAndConnectControls() {
 	QObject::connect(obj, SIGNAL(apduRequested()), this, SLOT(startApduDetailsProcess()));
 
 	TextArea* txf_aid = _root->findChild<TextArea*>("txf_aid");
+	CheckBox* cbx_select_only = _root->findChild<CheckBox*>("cbx_select_only");
+	CheckBox* cbx_ppse = _root->findChild<CheckBox*>("cbx_ppse");
+	DropDown* ddn_target = _root->findChild<DropDown*>("ddn_target");
 	TextArea* txf_cla = _root->findChild<TextArea*>("txf_cla");
 	TextArea* txf_ins = _root->findChild<TextArea*>("txf_ins");
 	TextArea* txf_p1p2 = _root->findChild<TextArea*>("txf_p1p2");
 	TextArea* txf_lc = _root->findChild<TextArea*>("txf_lc");
 	TextArea* txf_command = _root->findChild<TextArea*>("txf_command");
 	TextArea* txf_le = _root->findChild<TextArea*>("txf_le");
-	qDebug() << "XXXX found ApduDetails text fields";
+	qDebug() << "XXXX found ApduDetails fields";
 	qDebug() << "XXXX connecting all TextField signals and slots...";
 	QObject::connect(txf_aid, SIGNAL(textChanged(QString)), this, SLOT(onAidChanged(QString)));
+	QObject::connect(cbx_select_only, SIGNAL(checkedChanged(bool)), this, SLOT(onSelectOnlyChanged(bool)));
+	QObject::connect(cbx_ppse, SIGNAL(checkedChanged(bool)), this, SLOT(onPpseChanged(bool)));
+	QObject::connect(ddn_target, SIGNAL(selectedIndexChanged (int)), this, SLOT(onTargetInxChanged(int)));
 	QObject::connect(txf_cla, SIGNAL(textChanged(QString)), this, SLOT(onClaChanged(QString)));
 	QObject::connect(txf_ins, SIGNAL(textChanged(QString)), this, SLOT(onInsChanged(QString)));
 	QObject::connect(txf_p1p2, SIGNAL(textChanged(QString)), this, SLOT(onP1p2Changed(QString)));
@@ -105,20 +120,25 @@ void ApduDetails::startApduDetailsProcess() {
 	// validate and remove spaces
 
 	_aid.remove(QChar(' '), Qt::CaseInsensitive);
-	_hex_cla.remove(QChar(' '), Qt::CaseInsensitive);
-	_hex_ins.remove(QChar(' '), Qt::CaseInsensitive);
-	_hex_p1p2.remove(QChar(' '), Qt::CaseInsensitive);
-	_hex_lc.remove(QChar(' '), Qt::CaseInsensitive);
-	_hex_command.remove(QChar(' '), Qt::CaseInsensitive);
-	_hex_le.remove(QChar(' '), Qt::CaseInsensitive);
 
+	if (!_select_only) {
+		_hex_cla.remove(QChar(' '), Qt::CaseInsensitive);
+		_hex_ins.remove(QChar(' '), Qt::CaseInsensitive);
+		_hex_p1p2.remove(QChar(' '), Qt::CaseInsensitive);
+		_hex_lc.remove(QChar(' '), Qt::CaseInsensitive);
+		_hex_command.remove(QChar(' '), Qt::CaseInsensitive);
+		_hex_le.remove(QChar(' '), Qt::CaseInsensitive);
+	}
 	_aid = _aid.toUpper();
-	_hex_cla = _hex_cla.toUpper();
-	_hex_ins = _hex_ins.toUpper();
-	_hex_p1p2 = _hex_p1p2.toUpper();
-	_hex_lc = _hex_lc.toUpper();
-	_hex_command = _hex_command.toUpper();
-	_hex_le = _hex_le.toUpper();
+
+	if (!_select_only) {
+		_hex_cla = _hex_cla.toUpper();
+		_hex_ins = _hex_ins.toUpper();
+		_hex_p1p2 = _hex_p1p2.toUpper();
+		_hex_lc = _hex_lc.toUpper();
+		_hex_command = _hex_command.toUpper();
+		_hex_le = _hex_le.toUpper();
+	}
 
 	qDebug() << "XXXX startApduDetailsProcess() is validating user input";
 	if (!Utilities::isValidHex(_aid)) {
@@ -128,63 +148,77 @@ void ApduDetails::startApduDetailsProcess() {
 		return;
 	}
 
-	if (!Utilities::isValidHex(_hex_cla)) {
-		qDebug() << "XXXX CLA does not contain a valid hex string";
-		_systemDialog->setBody("CLA does not contain a valid hex string");
-		_systemDialog->show();
-		return;
+	if (!_select_only) {
+		if (!Utilities::isValidHex(_hex_cla)) {
+			qDebug() << "XXXX CLA does not contain a valid hex string";
+			_systemDialog->setBody("CLA does not contain a valid hex string");
+			_systemDialog->show();
+			return;
+		}
+
+		if (!Utilities::isValidHex(_hex_ins)) {
+			qDebug() << "XXXX INS does not contain a valid hex string";
+			_systemDialog->setBody("INS does not contain a valid hex string");
+			_systemDialog->show();
+			return;
+		}
+
+		if (!Utilities::isValidHex(_hex_p1p2)) {
+			qDebug() << "XXXX P1 P2 does not contain a valid hex string";
+			_systemDialog->setBody("P1 P2 does not contain a valid hex string");
+			_systemDialog->show();
+			return;
+		}
+
+		if (!Utilities::isValidHex(_hex_lc)) {
+			qDebug() << "XXXX LC does not contain a valid hex string";
+			_systemDialog->setBody("LC does not contain a valid hex string");
+			_systemDialog->show();
+			return;
+		}
+
+		if (!Utilities::isValidHex(_hex_command)) {
+			qDebug() << "XXXX COMMAND does not contain a valid hex string";
+			_systemDialog->setBody("COMMAND does not contain a valid hex string");
+			_systemDialog->show();
+			return;
+		}
+
+		if (!Utilities::isValidHex(_hex_le)) {
+			qDebug() << "XXXX LE does not contain a valid hex string";
+			_systemDialog->setBody("LE does not contain a valid hex string");
+			_systemDialog->show();
+			return;
+		}
 	}
 
-	if (!Utilities::isValidHex(_hex_ins)) {
-		qDebug() << "XXXX INS does not contain a valid hex string";
-		_systemDialog->setBody("INS does not contain a valid hex string");
-		_systemDialog->show();
-		return;
-	}
-
-	if (!Utilities::isValidHex(_hex_p1p2)) {
-		qDebug() << "XXXX P1 P2 does not contain a valid hex string";
-		_systemDialog->setBody("P1 P2 does not contain a valid hex string");
-		_systemDialog->show();
-		return;
-	}
-
-	if (!Utilities::isValidHex(_hex_lc)) {
-		qDebug() << "XXXX LC does not contain a valid hex string";
-		_systemDialog->setBody("LC does not contain a valid hex string");
-		_systemDialog->show();
-		return;
-	}
-
-	if (!Utilities::isValidHex(_hex_command)) {
-		qDebug() << "XXXX COMMAND does not contain a valid hex string";
-		_systemDialog->setBody("COMMAND does not contain a valid hex string");
-		_systemDialog->show();
-		return;
-	}
-
-	if (!Utilities::isValidHex(_hex_le)) {
-		qDebug() << "XXXX LE does not contain a valid hex string";
-		_systemDialog->setBody("LE does not contain a valid hex string");
-		_systemDialog->show();
-		return;
-	}
+    QSettings settings;
+    settings.setValue(Settings::KEY_AID,_aid);
+    settings.setValue(Settings::KEY_SELECT_ONLY,_select_only);
+    settings.setValue(Settings::KEY_PPSE,_ppse);
+    settings.setValue(Settings::KEY_TARGET,_target);
+    settings.setValue(Settings::KEY_HEX_CLA,_hex_cla);
+    settings.setValue(Settings::KEY_HEX_INS,_hex_ins);
+    settings.setValue(Settings::KEY_HEX_P1P2,_hex_p1p2);
+    settings.setValue(Settings::KEY_HEX_LC,_hex_lc);
+    settings.setValue(Settings::KEY_HEX_COMMAND,_hex_command);
+    settings.setValue(Settings::KEY_HEX_LE,_hex_le);
 
 	NfcManager* nfc = NfcManager::getInstance();
 
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setNdefPushState(false);
 
-	nfc = NfcManager::getInstance();
+	nfc->iso7816Test(&_aid, _select_only, &_target, &_hex_cla, &_hex_ins, &_hex_p1p2, &_hex_lc, &_hex_command, &_hex_le);
 
-	nfc->iso7816Test(&_aid, &_hex_cla, &_hex_ins, &_hex_p1p2, &_hex_lc, &_hex_command, &_hex_le);
-
-	qDebug() << "XXXX switching to event log screen";
+	qDebug() << "XXXX startApduDetailsProcess switching to event log screen";
 	_eventLog->show();
 }
 
 void ApduDetails::backFromEventLog() {
-
+	NfcManager* nfc = NfcManager::getInstance();
+	nfc->resetWorker();
+	QObject::disconnect(this, SIGNAL(back()), 0,0);
 }
 
 void ApduDetails::show() {
@@ -209,7 +243,59 @@ void ApduDetails::setAid(QString aid) {
 		return;
 
 	_aid = aid;
+
+	QSettings settings;
+    settings.setValue(Settings::KEY_AID,_aid);
+
 	emit detectAidChanged();
+}
+
+bool ApduDetails::getSelectOnly() const {
+	return _select_only;
+}
+
+void ApduDetails::setSelectOnly(bool select_only) {
+	qDebug() << "XXXX ApduDetails:setSelectOnly(....)";
+	_select_only = select_only;
+
+	QSettings settings;
+    settings.setValue(Settings::KEY_SELECT_ONLY,_select_only);
+
+	emit detectSelectOnlyChanged();
+}
+
+bool ApduDetails::getPpse() const {
+	return _ppse;
+}
+
+void ApduDetails::setPpse(bool ppse) {
+	qDebug() << "XXXX ApduDetails:setPpse(....)";
+	_ppse = ppse;
+
+	QSettings settings;
+    settings.setValue(Settings::KEY_PPSE,_ppse);
+
+	emit detectPpseChanged();
+}
+
+int ApduDetails::getTargetInx() const {
+	return _target_inx;
+}
+
+void ApduDetails::setTargetInx(int target_inx) {
+	qDebug() << "XXXX ApduDetails:setTargetInx(....)";
+	_target_inx = target_inx;
+	switch (target_inx) {
+	case 0:
+		_target = Settings::SIM_TARGET;
+		break;
+	case 1:
+		_target = Settings::CARD_TARGET;
+		break;
+	}
+    QSettings settings;
+    settings.setValue(Settings::KEY_TARGET,_target);
+	emit detectTargetInxChanged();
 }
 
 QString ApduDetails::getCla() const {
@@ -222,6 +308,10 @@ void ApduDetails::setCla(QString cla) {
 		return;
 
 	_hex_cla = cla;
+
+	QSettings settings;
+    settings.setValue(Settings::KEY_HEX_CLA,_hex_cla);
+
 	emit detectClaChanged();
 }
 
@@ -235,7 +325,11 @@ void ApduDetails::setIns(QString ins) {
 		return;
 
 	_hex_ins = ins;
-	emit detectInsChanged();
+
+    QSettings settings;
+    settings.setValue(Settings::KEY_HEX_INS,_hex_ins);
+
+emit detectInsChanged();
 }
 
 QString ApduDetails::getP1p2() const {
@@ -248,6 +342,10 @@ void ApduDetails::setP1p2(QString p1p2) {
 		return;
 
 	_hex_p1p2 = p1p2;
+
+	QSettings settings;
+    settings.setValue(Settings::KEY_HEX_P1P2,_hex_p1p2);
+
 	emit detectP1p2Changed();
 }
 
@@ -261,6 +359,10 @@ void ApduDetails::setLc(QString lc) {
 		return;
 
 	_hex_lc = lc;
+
+    QSettings settings;
+    settings.setValue(Settings::KEY_HEX_LC,_hex_lc);
+
 	emit detectLcChanged();
 }
 
@@ -274,6 +376,10 @@ void ApduDetails::setCommand(QString command) {
 		return;
 
 	_hex_command = command;
+
+    QSettings settings;
+    settings.setValue(Settings::KEY_HEX_COMMAND,_hex_command);
+
 	emit detectCommandChanged();
 }
 
@@ -287,12 +393,31 @@ void ApduDetails::setLe(QString le) {
 		return;
 
 	_hex_le = le;
+
+	QSettings settings;
+    settings.setValue(Settings::KEY_HEX_LE,_hex_le);
+
 	emit detectLeChanged();
 }
 
 void ApduDetails::onAidChanged(QString aid) {
 	qDebug() << "XXXX ApduDetails:onAidChanged(....)";
 	setAid(aid);
+}
+
+void ApduDetails::onSelectOnlyChanged(bool select_only) {
+	qDebug() << "XXXX ApduDetails:onSelectOnlyChanged(....)";
+	setSelectOnly(select_only);
+}
+
+void ApduDetails::onPpseChanged(bool ppse) {
+	qDebug() << "XXXX ApduDetails:onPpseChanged(....)";
+	setPpse(ppse);
+}
+
+void ApduDetails::onTargetInxChanged(int target_inx) {
+	qDebug() << "XXXX ApduDetails:onTargetInxChanged:" << target_inx;
+	setTargetInx(target_inx);
 }
 
 void ApduDetails::onClaChanged(QString cla) {
@@ -323,8 +448,4 @@ void ApduDetails::onCommandChanged(QString command) {
 void ApduDetails::onLeChanged(QString le) {
 	qDebug() << "XXXX ApduDetails:onLeChanged(....)";
 	setLe(le);
-}
-
-void ApduDetails::onDialogAccepted() {
-	qDebug() << "XXXX ApduDetails:onDialogAccepted()";
 }

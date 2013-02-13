@@ -31,15 +31,15 @@ QVariant AlternatingListDataModel::data(const QVariantList &indexPath) {
 	return GroupDataModel::data(indexPath);
 }
 
-void AlternatingListDataModel::append(const QString& title,
-		const QString& itemLabel, const QString& desc) {
+void AlternatingListDataModel::append(const QString& colour_code, const QString& itemLabel, const QString& desc) {
 	QVariantMap map;
 
 	map["ordinal"] = m_nextOrdinal++;
 	map["itemLabel"] = itemLabel;
-	map["title"] = title;
+	map["colour_code"] = colour_code;
 	map["description"] = desc;
 	this->insert(map);
+	qDebug() << "XXXX datamodel::append->" << colour_code << " " << desc;
 }
 
 void AlternatingListDataModel::reset() {
@@ -52,8 +52,7 @@ void AlternatingListDataModel::ascendingSortOrder(bool ascending) {
 }
 
 void AlternatingListDataModel::dumpModel() {
-	for (QVariantList indexPath = first(); !indexPath.isEmpty(); indexPath =
-			after(indexPath)) {
+	for (QVariantList indexPath = first(); !indexPath.isEmpty(); indexPath = after(indexPath)) {
 		QVariant item = data(indexPath);
 		QVariantMap bar = item.toMap();
 	}
