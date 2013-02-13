@@ -24,33 +24,33 @@ Page {
         ]
         layout: StackLayout {
         }
-        topPadding: 110
-        Label {
-            text: "Touch Tic Tac Toe"
-            textStyle {
-                base: SystemDefaults.TextStyles.BigText
-                fontWeight: FontWeight.Bold
-                color: Color.create("#E6E9F8")
-            }
-            layoutProperties: StackLayoutProperties {
+        Container {
+            layout: StackLayout {
+                orientation: LayoutOrientation.LeftToRight
             }
             horizontalAlignment: HorizontalAlignment.Center
-        }
-        Label {
-            id: propertytime
+            Label {
+                text: "Touch Tic Tac Toe:"
+                textStyle {
+                    base: SystemDefaults.TextStyles.TitleText
+                    fontWeight: FontWeight.Bold
+                    color: Color.create("#E6E9F8")
+                }
+                layoutProperties: StackLayoutProperties {
+                }
+            }
+            Label {
+                id: propertytime
 
-            // ttt.numMoves is a property that we keep track on in cpp code
-            // every time it's changed the text will be updated.
-            text: "Moves:  " + ttt.numMoves
-            topMargin: 40
-            textStyle {
-                base: SystemDefaults.TextStyles.TitleText
-                fontWeight: FontWeight.Bold
-                color: Color.create("#E6E9F8")
+                // ttt.numMoves is a property that we keep track on in cpp code
+                // every time it's changed the text will be updated.
+                text: "  Moves:  " + ttt.numMoves
+                textStyle {
+                    base: SystemDefaults.TextStyles.TitleText
+                    fontWeight: FontWeight.Bold
+                    color: Color.create("#E6E9F8")
+                }
             }
-            layoutProperties: StackLayoutProperties {
-            }
-            horizontalAlignment: HorizontalAlignment.Center
         }
         Label {
             id: message
@@ -58,7 +58,6 @@ Page {
             // ttt.message is a property that we keep track on in cpp code
             // every time it's changed the text will be updated.
             text: ttt.message
-            topMargin: 40
             textStyle {
                 base: SystemDefaults.TextStyles.SubtitleText
                 fontWeight: FontWeight.Bold
@@ -71,7 +70,6 @@ Page {
 
         // Here we group the containers player area, a background and a nice flare on top
         Container {
-            topMargin: 80
             layout: DockLayout {
             }
             layoutProperties: StackLayoutProperties {
@@ -83,7 +81,7 @@ Page {
                 objectName: "playArea"
                 //The dark gray is an average trick, we can use it to see where we put our player area when layouting.
                 background: Color.DarkGray
-                preferredWidth: 724
+                preferredWidth: 600
                 preferredHeight: preferredWidth
                 layout: StackLayout {
                     orientation: LayoutOrientation.LeftToRight
@@ -95,7 +93,6 @@ Page {
             }
         }
         Container {
-            topMargin: 40
             layout: StackLayout {
                 orientation: LayoutOrientation.LeftToRight
             }
