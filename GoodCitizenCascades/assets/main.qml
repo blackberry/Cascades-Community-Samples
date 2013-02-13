@@ -149,5 +149,5 @@ NavigationPane {
         
         actionBarVisibility: ChromeVisibility.Hidden
     }
-    onPopTransitionEnded: { page.destroy(); }
+    //onPopTransitionEnded: { page.destroy(); }
 }

@@ -142,8 +142,11 @@ void OpenGLThread::addView(OpenGLView *view) {
 void OpenGLThread::removeView(OpenGLView *view) {
 	if (view != NULL) {
 		m_viewsMutex.lock();
+		int index = m_views.indexOf(view);
 
-		m_views.remove(m_views.indexOf(view));
+		if ( index != -1 ) {
+			m_views.remove(index);
+		}
 
 		m_viewsMutex.unlock();
 
@@ -191,6 +194,7 @@ int OpenGLThread::initEGL() {
     EGLint attrib_list[]= { EGL_RED_SIZE,        8,
                             EGL_GREEN_SIZE,      8,
                             EGL_BLUE_SIZE,       8,
+                            EGL_DEPTH_SIZE, 	 16,
                             EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
                             EGL_RENDERABLE_TYPE, EGL_OPENGL_ES_BIT,
                             EGL_NONE};

@@ -70,7 +70,7 @@ Page {
 	            horizontalAlignment: HorizontalAlignment.Fill
                 onValueChanged: {
                     // Updating the Label with value from 0 to 255
-                    redtext.text = (value * 255.0).toFixed(0);
+                    redtext.text = Math.round(value * 255.0);
                     updateObjectColor();
                 }
             }
@@ -118,7 +118,7 @@ Page {
 	            horizontalAlignment: HorizontalAlignment.Fill
                 onValueChanged: {                    
                     // Updating the Label with value from 0 to 255
-                    greentext.text = (value * 255.0).toFixed(0);
+                    greentext.text = Math.round(value * 255.0);
                     updateObjectColor();
                 }
             }
@@ -165,7 +165,7 @@ Page {
 	            horizontalAlignment: HorizontalAlignment.Fill
                 onValueChanged: {
                     // Updating the Label with value from 0 to 255
-                    bluetext.text = (value * 255.0).toFixed(0);
+                    bluetext.text = Math.round(value * 255.0);
                     updateObjectColor();
                 }
             }
@@ -211,7 +211,7 @@ Page {
 	            horizontalAlignment: HorizontalAlignment.Fill
                 onValueChanged: {                    
                     // Updating the Label with value from 0 to 255
-                    alphatext.text = (value * 255.0).toFixed(0);
+                    alphatext.text = Math.round(value * 255.0);
                     updateObjectColor();
                 }
             }
@@ -237,10 +237,10 @@ Page {
             blueSlider.value = loadColor[2];
             alphaSlider.value = loadColor[3];
             
-            redtext.text = (loadColor[0] * 255.0).toFixed(0);
-            greentext.text = (loadColor[1] * 255.0).toFixed(0);
-            bluetext.text = (loadColor[2] * 255.0).toFixed(0);
-            alphatext.text = (loadColor[3] * 255.0).toFixed(0);
+            redtext.text = Math.round(loadColor[0] * 255.0);
+            greentext.text = Math.round(loadColor[1] * 255.0);
+            bluetext.text = Math.round(loadColor[2] * 255.0);
+            alphatext.text = Math.round(loadColor[3] * 255.0);
             
             page.show = true;
         }
