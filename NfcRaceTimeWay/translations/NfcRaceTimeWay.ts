@@ -50,29 +50,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="358"/>
-        <source></source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../assets/main.qml" line="374"/>
-        <source>NFC Race Time Waypoint V1.1 written by:
+        <source>NFC Race Time Waypoint V1.1.1 written by:
  John Murray (@jcmrim) &amp; Martin Woolley (@mdwrim)
 Â© 2012 Research In Motion Limited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="411"/>
+        <location filename="../assets/main.qml" line="364"/>
+        <source></source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../assets/main.qml" line="414"/>
         <source>Race in progress - curent time displayed. Tap to stop race timer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="417"/>
+        <location filename="../assets/main.qml" line="420"/>
         <source>Tap to start race timer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="420"/>
+        <location filename="../assets/main.qml" line="423"/>
         <source>Race finished - finished time displayed</source>
         <translation type="unfinished"></translation>
     </message>

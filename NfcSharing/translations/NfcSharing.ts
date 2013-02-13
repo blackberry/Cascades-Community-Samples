@@ -41,6 +41,11 @@
 <context>
     <name>main</name>
     <message>
+        <location filename="../assets/main.qml" line="7"/>
+        <source>Share Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/main.qml" line="13"/>
         <source>Share Data</source>
         <translation type="unfinished"></translation>
@@ -53,11 +58,6 @@
     <message>
         <location filename="../assets/main.qml" line="25"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../assets/main.qml" line="7"/>
-        <source>Share Files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

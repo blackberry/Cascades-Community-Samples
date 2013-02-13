@@ -35,7 +35,7 @@
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required. -->
-    <versionNumber>1.1.0</versionNumber>
+    <versionNumber>1.1.1</versionNumber>
     <buildIdFile>buildnum</buildIdFile>
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the 
@@ -68,19 +68,20 @@
     <icon>
        <image>tag.png</image>
     </icon>
-    <configuration id="com.qnx.qcc.toolChain.509901387" name="Default">
+    <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/NfcRaceTimeWay" entry="true" type="Qnx/Elf">NfcRaceTimeWay</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1772324429" name="Device-Debug">
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/NfcRaceTimeWay" entry="true" type="Qnx/Elf">NfcRaceTimeWay</asset>
+       <asset path="arm/o.le-v7/NfcRaceTimeWay.so" entry="true" type="Qnx/Elf">NfcRaceTimeWay.so</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1482681337" name="Device-Release">
+    <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/NfcRaceTimeWay" entry="true" type="Qnx/Elf">NfcRaceTimeWay</asset>
+       <asset path="arm-p/o.le-v7-g/NfcRaceTimeWay" entry="true" type="Qnx/Elf">NfcRaceTimeWay</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1240267774" name="Simulator-Debug">
+    <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/NfcRaceTimeWay" entry="true" type="Qnx/Elf">NfcRaceTimeWay</asset>
     </configuration>
@@ -109,4 +110,5 @@
 			<property var="uris" value="ndef://4/my.rim.com/myrecordtype"/>
 		</filter>
 	</invoke-target>
+
 </qnx>
