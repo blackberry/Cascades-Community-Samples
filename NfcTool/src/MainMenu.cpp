@@ -29,6 +29,9 @@ using namespace bb::cascades;
 MainMenu::MainMenu(Application *app) :
 		_nfcManager(0), _appVersion(QString(Settings::AppVersion)) {
 
+	bb::cascades::Application::setOrganizationName("RIM");
+	bb::cascades::Application::setApplicationName("NfcTool");
+
 	qDebug() << "XXXX NFC Tool V" << Settings::AppVersion;
 	qDebug() << "XXXX loading main menu qml document";
 	_app = app;
@@ -47,7 +50,6 @@ MainMenu::MainMenu(Application *app) :
 	_systemDialog->setTitle("NFC Transaction");
 	bb::system::SystemUiButton *confirmButton = _systemDialog->confirmButton();
 	confirmButton->setLabel("OK");
-	connect(_systemDialog, SIGNAL(accepted()), this, SLOT(onDialogAccepted()));
 
 	createModules();
 	startEventProcessing();
@@ -70,7 +72,10 @@ void MainMenu::receivedInvokeRequest(const bb::system::InvokeRequest& request) {
 	qDebug() << "XXXX got data";
 	if (request.mimeType().compare("application/vnd.rim.nfc.ndef") == 0) {
 		qDebug("XXXX launched because an NFC tag has been presented");
-		emit launchEventLog();
+		StateManager* state_mgr = StateManager::getInstance();
+		if(!state_mgr->isEventLogShowing()) {
+			emit launchEventLog();
+		}
 		_nfcManager = NfcManager::getInstance();
 		_nfcManager->handleTagReadInvocation(data);
 	} else {
@@ -149,13 +154,11 @@ void MainMenu::createModules() {
 }
 
 void MainMenu::connectSignals() {
-	qDebug() << "XXXX connecting 'return to main menu' signals for 'Read' use case...";
-	QObject::connect(_eventLog, SIGNAL(back()), this, SLOT(backFromEventLog()));
+	Navigator* nav = Navigator::getInstance();
+	NavigationPane* navpane = nav->getNavigationPane();
+	QObject::connect(navpane, SIGNAL(menuShowing()), this, SLOT(menuShowing()));
 	QObject::connect(_invokeManager, SIGNAL(invoked(const bb::system::InvokeRequest&)), this, SLOT(receivedInvokeRequest(const bb::system::InvokeRequest&)));
-
 	QObject::connect(this, SIGNAL(launchEventLog()), _eventLog, SLOT(show()));
-
-	qDebug() << "XXXX ...done";
 }
 
 void MainMenu::findAndConnectControls() {
@@ -169,13 +172,18 @@ void MainMenu::findAndConnectControls() {
 	QObject::connect(listView, SIGNAL(triggered(const QVariantList)), this, SLOT(onListSelectionChanged(const QVariantList)));
 
 	QObject::connect(this, SIGNAL(read_selected()), _eventLog, SLOT(show()));
+	QObject::connect(this, SIGNAL(tag_details_selected()), this, SLOT(tagDetails()));
 	QObject::connect(this, SIGNAL(write_uri()), _writeURI, SLOT(show()));
 	QObject::connect(this, SIGNAL(write_sp()), _writeSp, SLOT(show()));
 	QObject::connect(this, SIGNAL(write_text()), _writeText, SLOT(show()));
 	QObject::connect(this, SIGNAL(write_custom()), _writeCustom, SLOT(show()));
 	QObject::connect(this, SIGNAL(send_vcard_selected()), _sendVcard, SLOT(show()));
 	QObject::connect(this, SIGNAL(emulate_tag_selected()), _emulateSp, SLOT(show()));
+	QObject::connect(this, SIGNAL(emulate_echo_selected()), this, SLOT(emulateEcho()));
 	QObject::connect(this, SIGNAL(iso7816_selected()), _apduDetails, SLOT(show()));
+	QObject::connect(this, SIGNAL(readIso15693_selected()), this, SLOT(readIso15693()));
+	QObject::connect(this, SIGNAL(writeIso15693_selected()), this, SLOT(writeIso15693()));
+	QObject::connect(this, SIGNAL(readGvb_selected()), this, SLOT(readGvb()));
 	QObject::connect(this, SIGNAL(about_selected()), _about, SLOT(show()));
 
 	qDebug() << "XXXX ...done";
@@ -200,20 +208,28 @@ void MainMenu::onListSelectionChanged(const QVariantList indexPath) {
 				_eventLog->setMessage("Bring a tag close");
 				emit read_selected();
 
+			} else if (item.compare("item_tag_details") == 0) {
+				qDebug() << "XXXX Tag Details was selected!";
+				emit tag_details_selected();
+
 			} else if (item.compare("item_uri") == 0) {
 				qDebug() << "XXXX Write URI was selected!";
+				QObject::connect(_eventLog, SIGNAL(back()), _writeURI, SLOT(backFromEventLog()));
 				emit write_uri();
 
 			} else if (item.compare("item_sp") == 0) {
 				qDebug() << "XXXX Write SP was selected!";
+				QObject::connect(_eventLog, SIGNAL(back()), _writeSp, SLOT(backFromEventLog()));
 				emit write_sp();
 
 			} else if (item.compare("item_text") == 0) {
 				qDebug() << "XXXX Write Text was selected!";
+				QObject::connect(_eventLog, SIGNAL(back()), _writeText, SLOT(backFromEventLog()));
 				emit write_text();
 
 			} else if (item.compare("item_custom") == 0) {
 				qDebug() << "XXXX Write Custom was selected!";
+				QObject::connect(_eventLog, SIGNAL(back()), _writeCustom, SLOT(backFromEventLog()));
 				emit write_custom();
 
 			} else if (item.compare("item_about") == 0) {
@@ -222,16 +238,40 @@ void MainMenu::onListSelectionChanged(const QVariantList indexPath) {
 
 			} else if (item.compare("item_snep_vcard") == 0) {
 				qDebug() << "XXXX Send vCard (SNEP) was selected!";
+				QObject::connect(_eventLog, SIGNAL(back()), _sendVcard, SLOT(backFromEventLog()));
 				emit send_vcard_selected();
 
 			} else if (item.compare("item_emulate_tag") == 0) {
 				qDebug() << "XXXX Emulate Tag was selected!";
+				QObject::connect(_eventLog, SIGNAL(back()), _emulateSp, SLOT(backFromEventLog()));
 				emit emulate_tag_selected();
+			} else if (item.compare("item_emulate_echo") == 0) {
+				qDebug() << "XXXX Emulate Echo was selected!";
+				StateManager* state_mgr = StateManager::getInstance();
+				state_mgr->setEventLogShowing(true);
+				_eventLog->setMessage("Place BlackBerry on reader");
+				emit emulate_echo_selected();
 			} else if (item.compare("item_iso7816") == 0) {
 				qDebug() << "XXXX ISO7816 APDU was selected!";
 				StateManager* state_mgr = StateManager::getInstance();
 				state_mgr->setEventLogShowing(true);
+				QObject::connect(_eventLog, SIGNAL(back()), _apduDetails, SLOT(backFromEventLog()));
 				emit iso7816_selected();
+			} else if (item.compare("item_read_iso15693") == 0) {
+				qDebug() << "XXXX Read ISO15693 was selected!";
+				StateManager* state_mgr = StateManager::getInstance();
+				state_mgr->setEventLogShowing(false);
+				emit readIso15693_selected();
+			} else if (item.compare("item_write_iso15693") == 0) {
+				qDebug() << "XXXX Write ISO15693 was selected!";
+				StateManager* state_mgr = StateManager::getInstance();
+				state_mgr->setEventLogShowing(false);
+				emit writeIso15693_selected();
+			} else if (item.compare("item_read_gvb") == 0) {
+				qDebug() << "XXXX Read GVB was selected!";
+				StateManager* state_mgr = StateManager::getInstance();
+				state_mgr->setEventLogShowing(false);
+				emit readGvb_selected();
 			}
 		}
 	}
@@ -246,9 +286,12 @@ void MainMenu::onMainMenuTriggered() {
 	findAndConnectControls();
 }
 
-void MainMenu::backFromEventLog() {
+void MainMenu::menuShowing() {
+	qDebug() << "XXXX menuShowing()";
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setDefaultState();
+	_nfcManager = NfcManager::getInstance();
+	_nfcManager->resetWorker();
 }
 
 QString MainMenu::appVersion() const {
@@ -268,6 +311,39 @@ void MainMenu::cleanUpOnExit() {
 	qDebug() << "XXXX Clean up on application exit";
 }
 
-void MainMenu::onDialogAccepted() {
-	qDebug() << "XXXX MainMenu:onDialogAccepted()";
+void MainMenu::readIso15693() {
+	qDebug() << "XXXX MainMenu:readIso15693() start";
+	_nfcManager->readIso15693();
+	qDebug() << "XXXX MainMenu:readIso15693() end";
+}
+
+void MainMenu::writeIso15693() {
+	qDebug() << "XXXX MainMenu:writeIso15693() start";
+	QString data = QString("Hello");
+	_nfcManager->writeIso15693(&data);
+	qDebug() << "XXXX MainMenu:writeIso15693() end";
+}
+
+void MainMenu::emulateEcho() {
+	qDebug() << "XXXX MainMenu:emulateEcho() start";
+	_eventLog->show();
+	StateManager* state_mgr = StateManager::getInstance();
+	state_mgr->setEventLogShowing(true);
+	_nfcManager->startEchoEmulation();
+	qDebug() << "XXXX MainMenu:emulateEcho() end";
+}
+
+void MainMenu::tagDetails() {
+	qDebug() << "XXXX MainMenu:tagDetails() start";
+	_eventLog->show();
+	StateManager* state_mgr = StateManager::getInstance();
+	state_mgr->setEventLogShowing(true);
+	_nfcManager->tagDetails();
+	qDebug() << "XXXX MainMenu:tagDetails() end";
+}
+
+void MainMenu::readGvb() {
+	qDebug() << "XXXX MainMenu:readGbv() start";
+	_nfcManager->readGbv();
+	qDebug() << "XXXX MainMenu:readGbv() end";
 }

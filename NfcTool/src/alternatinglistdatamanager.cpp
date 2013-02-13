@@ -48,18 +48,18 @@ void AlternatingListDataManager::updateItem(bb::cascades::ListView* list,
 
 	const int ordinal = map["ordinal"].value<int>();
 	const QString itemLabel = map["itemLabel"].value<QString>();
-	const QString title = map["title"].value<QString>();
+	const QString colour_code = map["colour_code"].value<QString>();
 	const QString description = map["description"].value<QString>();
 
 	if (!((itemLabel.isEmpty() or itemLabel.isNull())
-			and (title.isEmpty() or title.isNull())
+			and (colour_code.isEmpty() or colour_code.isNull())
 			and (description.isEmpty() or description.isNull()))) {
 
 		AlternatingListItem* item = dynamic_cast<AlternatingListItem*>(listItem);
 
 		item->setOrdinal(ordinal);
 		item->setItemLabel(itemLabel);
-		item->setTitle(title);
+		item->setColourCode(colour_code);
 		item->setDescription(description);
 
 	} else {

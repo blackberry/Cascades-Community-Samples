@@ -16,6 +16,7 @@
 #include "NdefType.hpp"
 #include "Logger.hpp"
 #include "NfcWorker.hpp"
+#include "Settings.hpp"
 
 NfcManager* NfcManager::_instance;
 
@@ -23,6 +24,7 @@ NfcManager::NfcManager() :
 		_workerInstance(0), _bpsThread(0), _future(0), _watcher(0) {
 	qDebug() << "XXXX Constructing NfcManager";
 	_workerInstance = NfcWorker::getInstance();
+	QObject::connect(this, SIGNAL(resetWorkerState()), _workerInstance, SLOT(reset()), Qt::QueuedConnection);
 	qDebug() << "XXXX Done constructing NfcManager";
 }
 
@@ -77,7 +79,6 @@ void NfcManager::stopNfcWorker() {
 		_workerInstance->interruptBpsWaitLoop(NfcWorker::TERMINATE);
 }
 
-
 void NfcManager::handleTagReadInvocation(QByteArray data) {
 	qDebug() << "XXXX NfcManager::handleTagReadInvocation";
 	_workerInstance->handleTagReadInvocation(data);
@@ -90,6 +91,7 @@ void NfcManager::startTagEmulation(QString *uri, QString *text) {
 	Logger::getInstance()->clearLog();
 	emit message("Touch reader");
 	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_tag_emulation(QVariant,QVariant)), 0,0);
 	QObject::connect(this, SIGNAL(start_tag_emulation(QVariant,QVariant)), _workerInstance, SLOT(emulateTag(QVariant,QVariant)), Qt::QueuedConnection);
 	emit start_tag_emulation(QVariant::fromValue(*uri), QVariant::fromValue(*text));
 	qDebug() << "XXXX NfcManager::startTagEmulation done";
@@ -99,9 +101,22 @@ void NfcManager::stopTagEmulation() {
 	qDebug() << "XXXX NfcManager::stopTagEmulation";
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(stop_tag_emulation()), 0,0);
 	QObject::connect(this, SIGNAL(stop_tag_emulation()), _workerInstance, SLOT(stopEmulatingTag()), Qt::QueuedConnection);
 	emit stop_tag_emulation();
 	qDebug() << "XXXX NfcManager::stopTagEmulation done";
+}
+
+void NfcManager::startEchoEmulation() {
+	qDebug() << "XXXX NfcManager::startEchoEmulation";
+	Logger::getInstance()->clearLog();
+	emit message("Touch reader");
+	_workerInstance = NfcWorker::getInstance();
+	qDebug() << "XXXX NfcManager::startEchoEmulation disconnecting then connecting signal";
+	QObject::disconnect(this, SIGNAL(start_echo_emulation()), 0,0);
+	QObject::connect(this, SIGNAL(start_echo_emulation()), _workerInstance, SLOT(emulateEcho()), Qt::QueuedConnection);
+	emit start_echo_emulation();
+	qDebug() << "XXXX NfcManager::startEchoEmulation done";
 }
 
 void NfcManager::writeUri(QString* uri) {
@@ -109,6 +124,7 @@ void NfcManager::writeUri(QString* uri) {
 	_ndefUri = uri;
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_write_uri(QVariant)), 0,0);
 	QObject::connect(this, SIGNAL(start_write_uri(QVariant)), _workerInstance, SLOT(writeUriTag(QVariant)), Qt::QueuedConnection);
 	emit start_write_uri(QVariant::fromValue(*uri));
 	qDebug() << "XXXX NfcManager::writeUri done";
@@ -120,6 +136,7 @@ void NfcManager::writeSp(QString* sp_uri, QString* sp_text) {
 	_ndefSpText = sp_text;
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_write_sp(QVariant,QVariant)), 0,0);
 	QObject::connect(this, SIGNAL(start_write_sp(QVariant,QVariant)), _workerInstance, SLOT(writeSpTag(QVariant,QVariant)), Qt::QueuedConnection);
 	emit start_write_sp(QVariant::fromValue(*sp_uri), QVariant::fromValue(*sp_text));
 	qDebug() << "XXXX NfcManager::writeSp done";
@@ -130,6 +147,7 @@ void NfcManager::writeText(QString* text) {
 	_ndefText = text;
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_write_text(QVariant)), 0,0);
 	QObject::connect(this, SIGNAL(start_write_text(QVariant)), _workerInstance, SLOT(writeTextTag(QVariant)), Qt::QueuedConnection);
 	emit start_write_text(QVariant::fromValue(*text));
 	qDebug() << "XXXX NfcManager::writeText done";
@@ -142,8 +160,8 @@ void NfcManager::writeCustom(QString* domain, QString* type, QString* payload) {
 	_ndefPayload = payload;
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();
-	QObject::connect(this, SIGNAL(start_write_custom(QVariant,QVariant,QVariant)), _workerInstance, SLOT(writeCustomTag(QVariant,QVariant,QVariant)),
-			Qt::QueuedConnection);
+	QObject::disconnect(this, SIGNAL(start_write_custom(QVariant,QVariant,QVariant)), 0,0);
+	QObject::connect(this, SIGNAL(start_write_custom(QVariant,QVariant,QVariant)), _workerInstance, SLOT(writeCustomTag(QVariant,QVariant,QVariant)), Qt::QueuedConnection);
 	emit start_write_custom(QVariant::fromValue(*domain), QVariant::fromValue(*type), QVariant::fromValue(*payload));
 	qDebug() << "XXXX NfcManager::writeCustom done";
 }
@@ -157,24 +175,66 @@ void NfcManager::sendVcard(QString* first_name, QString* last_name, QString* add
 	_mobile = mobile;
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();
-	QObject::connect(this, SIGNAL(start_send_vcard(QVariant,QVariant,QVariant,QVariant,QVariant)), _workerInstance,
-			SLOT(sendVcard(QVariant,QVariant,QVariant,QVariant,QVariant)), Qt::QueuedConnection);
-	emit start_send_vcard(QVariant::fromValue(*first_name), QVariant::fromValue(*last_name), QVariant::fromValue(*address), QVariant::fromValue(*email),
-			QVariant::fromValue(*mobile));
+	QObject::disconnect(this, SIGNAL(start_send_vcard(QVariant,QVariant,QVariant,QVariant,QVariant)), 0,0);
+	QObject::connect(this, SIGNAL(start_send_vcard(QVariant,QVariant,QVariant,QVariant,QVariant)), _workerInstance, SLOT(sendVcard(QVariant,QVariant,QVariant,QVariant,QVariant)),
+			Qt::QueuedConnection);
+	emit start_send_vcard(QVariant::fromValue(*first_name), QVariant::fromValue(*last_name), QVariant::fromValue(*address), QVariant::fromValue(*email), QVariant::fromValue(*mobile));
 	qDebug() << "XXXX NfcManager::sendVcard done";
 }
 
-void NfcManager::iso7816Test(QString* aid, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le) {
+void NfcManager::iso7816Test(QString* aid, bool select_only, QString* target, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le) {
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();
-	QObject::connect(this, SIGNAL(start_iso7816_test(QVariant,QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), _workerInstance,
-			SLOT(doIso7816Test(QVariant,QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), Qt::QueuedConnection);
-	emit start_iso7816_test(QVariant::fromValue(*aid), QVariant::fromValue(*hex_cla), QVariant::fromValue(*hex_ins), QVariant::fromValue(*hex_p1p2),
-			QVariant::fromValue(*hex_lc), QVariant::fromValue(*hex_command), QVariant::fromValue(*hex_le));
+	if (target->compare(Settings::SIM_TARGET) == 0) {
+		QObject::disconnect(this, SIGNAL(start_iso7816_SIM_test(QVariant,bool, QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), 0,0);
+		QObject::connect(this, SIGNAL(start_iso7816_SIM_test(QVariant,bool, QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), _workerInstance,
+				SLOT(doIso7816Test(QVariant,bool, QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), Qt::QueuedConnection);
+		emit start_iso7816_SIM_test(QVariant::fromValue(*aid), select_only, QVariant::fromValue(*hex_cla), QVariant::fromValue(*hex_ins), QVariant::fromValue(*hex_p1p2), QVariant::fromValue(*hex_lc),
+				QVariant::fromValue(*hex_command), QVariant::fromValue(*hex_le));
+	} else {
+		QObject::disconnect(this, SIGNAL(start_iso7816_CARD_test(QVariant,bool, QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), 0,0);
+		QObject::connect(this, SIGNAL(start_iso7816_CARD_test(QVariant,bool, QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), _workerInstance,
+				SLOT(prepIso7816CardTest(QVariant,bool, QVariant,QVariant,QVariant,QVariant,QVariant,QVariant)), Qt::QueuedConnection);
+		emit start_iso7816_CARD_test(QVariant::fromValue(*aid), select_only, QVariant::fromValue(*hex_cla), QVariant::fromValue(*hex_ins), QVariant::fromValue(*hex_p1p2), QVariant::fromValue(*hex_lc),
+				QVariant::fromValue(*hex_command), QVariant::fromValue(*hex_le));
+	}
+}
+
+void NfcManager::readIso15693() {
+	Logger::getInstance()->clearLog();
+	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_iso15693_read()), 0,0);
+	QObject::connect(this, SIGNAL(start_iso15693_read()), _workerInstance, SLOT(readIso15693()), Qt::QueuedConnection);
+	emit start_iso15693_read();
+}
+
+void NfcManager::writeIso15693(QString * data) {
+	Logger::getInstance()->clearLog();
+	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_iso15693_write(QVariant)), 0,0);
+	QObject::connect(this, SIGNAL(start_iso15693_write(QVariant)), _workerInstance, SLOT(writeIso15693(QVariant)), Qt::QueuedConnection);
+	emit start_iso15693_write(QVariant::fromValue(*data));
+	qDebug() << "XXXX NfcManager:::writeIso15693 initiating operation";
+}
+
+void NfcManager::readGbv() {
+	Logger::getInstance()->clearLog();
+	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_gvb_read()), 0,0);
+	QObject::connect(this, SIGNAL(start_gvb_read()), _workerInstance, SLOT(readGvb()), Qt::QueuedConnection);
+	emit start_gvb_read();
+}
+
+void NfcManager::tagDetails() {
+	Logger::getInstance()->clearLog();
+	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(read_tag_details()), 0,0);
+	QObject::connect(this, SIGNAL(read_tag_details()), _workerInstance, SLOT(readTagDetails()), Qt::QueuedConnection);
+	emit read_tag_details();
 }
 
 void NfcManager::message(const QVariant &text) {
-	Logger::getInstance()->log("hh:mm:ss", "INF", text.toString());
+	Logger::getInstance()->log("INF", text.toString());
 }
 
 void NfcManager::clearMessages() {
@@ -183,7 +243,12 @@ void NfcManager::clearMessages() {
 
 void NfcManager::workerStopped() {
 	qDebug() << "XXXX NfcManager::workerStopped entered";
-
-	Logger::getInstance()->log("hh:mm:ss", "INF", "Worker thread has stopped");
+	Logger::getInstance()->log("INF", "Worker thread has stopped");
 	emit nfcManagerStopped();
 }
+
+void NfcManager::resetWorker() {
+	qDebug() << "XXXX NfcManager::resetWorker entered";
+	emit resetWorkerState();
+}
+

@@ -63,10 +63,16 @@ public:
 	void writeCustom(QString* domain, QString* type, QString* payload);
 	void sendVcard(QString* first_name, QString* last_name, QString* address,
 			QString* email, QString* mobile);
-	void iso7816Test(QString* aid, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le);
+	void iso7816Test(QString* aid, bool select_only, QString* target, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le);
+	void readIso15693();
+	void writeIso15693(QString* data);
 	void stopNfcWorker();
 	void startTagEmulation(QString *uri, QString *text);
 	void stopTagEmulation();
+	void startEchoEmulation();
+	void stopEchoEmulation();
+	void readGbv();
+	void tagDetails();
 
 signals:
 	void start_write_uri(const QVariant &uri);
@@ -77,13 +83,22 @@ signals:
 	void start_send_vcard(const QVariant &first_name, const QVariant &last_name, const QVariant &address, const QVariant &email, const QVariant &mobile);
 	void start_tag_emulation(const QVariant &uri, const QVariant &text);
 	void stop_tag_emulation();
-    void start_iso7816_test(const QVariant &aid, const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hex_p1p2, const QVariant &hex_lc, const QVariant &hex_command, const QVariant &hex_le );
+	void start_echo_emulation();
+	void stop_echo_emulation();
+    void start_iso7816_SIM_test(const QVariant &aid, bool select_only, const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hex_p1p2, const QVariant &hex_lc, const QVariant &hex_command, const QVariant &hex_le );
+    void start_iso7816_CARD_test(const QVariant &aid, bool select_only, const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hex_p1p2, const QVariant &hex_lc, const QVariant &hex_command, const QVariant &hex_le );
+    void start_iso15693_read();
+    void start_iso15693_write(const QVariant &data);
 	void nfcManagerStopped();
+	void resetWorkerState();
+    void start_gvb_read();
+    void read_tag_details();
 
 public slots:
 	void message(const QVariant &text);
 	void clearMessages();
 	void workerStopped();
+	void resetWorker();
 
 };
 
