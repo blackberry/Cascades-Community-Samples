@@ -20,6 +20,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
+* **V1.1.0** - Changes for 720x720 screen format and latest Gold SDK
 * **V1.0.1** - Addressed potential memory leak on dynamic and creation deletion of pages.
 * **V1.0.0** - Inital version with functionality that covers many of the capabilities found in the original **NFC Tool** sample application.
 
@@ -29,8 +30,8 @@ None.
 
 **Dependencies**
 
-1. BlackBerry Dev Alpha Beta 3 Device Software **10.0.9**
-1. BlackBerry 10 Native SDK **10.0.9**
+1. BlackBerry 10 Device Software **10.0.9**
+1. BlackBerry 10 Native SDK **10.0.9** (Gold)
 
 **How to Build NfcToolLite**
 
@@ -42,8 +43,7 @@ If you don't want to build this sample application yourself we've included a
 pre-build and signed BAR files for each version. You can find them in the 
 folder **"/installable-bar-files"** as follows:
 
-* **NfcToolLite-1\_0\_0\_7.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application ( requires BlackBerry Dev Alpha Device Beta 3 Software 10.0.9 )
-* **NfcToolLite-1\_0\_1\_12.bar** -- Signed BAR file for Version 1.0.1 (V1.0.1) of the application ( requires BlackBerry Dev Alpha Device Beta 3 Software 10.0.9 )
+* **NfcToolLite-1\_1\_0\_68.bar** -- Signed BAR file for Version 1.1 (V1.1) of the application ( requires BlackBerry 10 Software 10.0.9 )
 
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
