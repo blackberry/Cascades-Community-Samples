@@ -24,6 +24,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 * **V1** - Initial release
 
 **Known Issues**
+
 1. To start a new game it may be necessary to exit and then start again
 
 **Dependencies**
