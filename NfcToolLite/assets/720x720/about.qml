@@ -22,8 +22,8 @@ Page {
             animation.play ();
         }
         Container {
-            preferredWidth: 768
-            preferredHeight: 1280
+            preferredWidth: 720
+            preferredHeight: 720
             
             layout: DockLayout {
             }
@@ -31,7 +31,7 @@ Page {
             Container {
                 layout: StackLayout {
                 }
-                topPadding: 20
+                topPadding: 5
                 leftPadding: 20
                 horizontalAlignment: HorizontalAlignment.Left
                 verticalAlignment: VerticalAlignment.Top
@@ -65,7 +65,7 @@ Page {
                 ImageView {
 	                layoutProperties: StackLayoutProperties {
 	                }
-                    imageSource: "asset:///images/generic_tag_larger.png"
+                    imageSource: "asset:///images/generic_tag.png"
                     onTouch: {
                         if (event.isDown ()) {
                             animation.play ()
@@ -127,7 +127,7 @@ Page {
                 layout: DockLayout {
                 }
                 leftPadding: 20
-                bottomPadding: 20
+                bottomPadding: 5
                 verticalAlignment: VerticalAlignment.Bottom
                 horizontalAlignment: HorizontalAlignment.Left
 
