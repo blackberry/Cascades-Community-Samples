@@ -52,7 +52,7 @@ void SendVcard::createModules() {
 }
 
 void SendVcard::connectNavigationSignals() {
-	QObject::connect(_eventLog, SIGNAL(back()), this, SLOT(backFromEventLog()));
+
 }
 
 void SendVcard::findAndConnectControls() {
@@ -102,7 +102,9 @@ void SendVcard::startSendVcardProcess() {
 }
 
 void SendVcard::backFromEventLog() {
-
+	NfcManager* nfc = NfcManager::getInstance();
+	nfc->resetWorker();
+	QObject::disconnect(this, SIGNAL(back()), 0,0);
 }
 
 void SendVcard::show() {

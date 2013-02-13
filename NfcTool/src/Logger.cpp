@@ -15,10 +15,13 @@
 #include "Logger.hpp"
 
 Logger* Logger::_instance;
+QString colour_codes[2];
 
 Logger::Logger() {
 	qDebug() << "XXXX Constructing Logger";
 	_data_model = new AlternatingListDataModel;
+	colour_codes << "#00ff00" << "#00ffff";
+	current_colour = 0;
 	qDebug() << "XXXX Done constructing Logger";
 }
 
@@ -38,10 +41,17 @@ AlternatingListDataModel* Logger::getDataModel() {
 	return _data_model;
 }
 
-void Logger::log(const QString& title, const QString& itemLabel,
-		const QString& desc) {
+void Logger::log(const QString& itemLabel, const QString& desc) {
 	if (_data_model != 0) {
-		_data_model->append(title, itemLabel, desc);
+		_data_model->append(colour_codes[current_colour], itemLabel, desc);
+		switch (current_colour) {
+		case 0:
+			current_colour = 1;
+			break;
+		case 1:
+			current_colour = 0;
+			break;
+		}
 	}
 }
 

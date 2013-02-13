@@ -35,7 +35,7 @@
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
          An updated version of application must have a versionNumber value higher than the previous version. Required. -->
-    <versionNumber>4.0.1</versionNumber>
+    <versionNumber>5.0.0</versionNumber>
     <buildIdFile>buildnum</buildIdFile>
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the 
@@ -66,30 +66,32 @@
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
     <splashScreens>
-       <image>splash_landscape.png</image>
        <image>splash.png</image>
+       <image>splash_landscape.png</image>
+       <image>splash_720x720.png</image>
     </splashScreens>
-    <icon>
-       <image>generic_tag.png</image>
-    </icon>
-    <configuration id="com.qnx.qcc.toolChain.1578079286" name="Default">
+    <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1019757503" name="Device-Debug">
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
+       <asset path="arm/o.le-v7/NfcTool.so" entry="true" type="Qnx/Elf">NfcTool.so</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1753360482" name="Device-Release">
+    <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
+       <asset path="arm-p/o.le-v7-g/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
     </configuration>
-    <configuration id="com.qnx.qcc.toolChain.1828784634" name="Simulator-Debug">
+    <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/NfcTool" entry="true" type="Qnx/Elf">NfcTool</asset>
     </configuration>
     
     <!--  The icon for the application, which should be 86x86. -->
+    <icon>
+        <image>generic_tag.png</image>
+    </icon>
 
     <asset path="icon.png">icon.png</asset>
     <asset path="assets">assets</asset>
@@ -98,16 +100,16 @@
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
-    <asset path="assets/images/generic_tag_larger.png">generic_tag_larger.png</asset>
-    <asset path="assets/images/generic_tag.png">generic_tag.png</asset>
     <asset path="assets/images/splash.png">splash.png</asset>
     <asset path="assets/images/splash_landscape.png">splash_landscape.png</asset>
+    <asset path="assets/images/generic_tag.png">generic_tag.png</asset>
+    <asset path="assets/images/splash_720x720.png">splash_720x720.png</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
-    
-    <invoke-target id="com.example.NfcTool">
+
+	<invoke-target id="com.example.NfcTool">
         <type>APPLICATION</type>
         <filter>
             <action>bb.action.OPEN</action>

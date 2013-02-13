@@ -33,6 +33,9 @@ class ApduDetails: public QObject {
 
 	Q_OBJECT
 	Q_PROPERTY(QString _aid READ getAid WRITE setAid NOTIFY detectAidChanged)
+	Q_PROPERTY(bool _select_only READ getSelectOnly WRITE setSelectOnly NOTIFY detectSelectOnlyChanged)
+	Q_PROPERTY(bool _ppse READ getPpse WRITE setPpse NOTIFY detectPpseChanged)
+	Q_PROPERTY(int _target_inx READ getTargetInx WRITE setTargetInx NOTIFY detectTargetInxChanged)
 	Q_PROPERTY(QString _cla READ getCla WRITE setCla NOTIFY detectClaChanged)
 	Q_PROPERTY(QString _ins READ getIns WRITE setIns NOTIFY detectInsChanged)
 	Q_PROPERTY(QString _p1p2 READ getP1p2 WRITE setP1p2 NOTIFY detectP1p2Changed)
@@ -46,6 +49,12 @@ public:
 
 	QString getAid() const;
 	void setAid(QString aid);
+	bool getSelectOnly() const;
+	void setSelectOnly(bool select_only);
+	bool getPpse() const;
+	void setPpse(bool ppse);
+	int getTargetInx() const;
+	void setTargetInx(int target_inx);
 	QString getCla() const;
 	void setCla(QString cla);
 	QString getIns() const;
@@ -64,6 +73,10 @@ private:
 	Page* _root;
 	EventLog* _eventLog;
 	QString _aid;
+	QString _target;
+	int _target_inx;
+	bool _select_only;
+	bool _ppse;
 	QString _hex_cla;
 	QString _hex_ins;
 	QString _hex_p1p2;
@@ -81,6 +94,9 @@ public slots:
 	void show();
 	void startApduDetailsProcess();
 	void onAidChanged(QString aid);
+	void onSelectOnlyChanged(bool select_only);
+	void onPpseChanged(bool ppse);
+	void onTargetInxChanged(int target_inx);
 	void onClaChanged(QString cla);
 	void onInsChanged(QString ins);
 	void onP1p2Changed(QString p1p2);
@@ -89,13 +105,13 @@ public slots:
 	void onLeChanged(QString le);
 	void backFromEventLog();
 
-private slots:
-	void onDialogAccepted();
-
 signals:
 
 	void back();
 	void detectAidChanged();
+	void detectSelectOnlyChanged();
+	void detectPpseChanged();
+	void detectTargetInxChanged();
 	void detectClaChanged();
 	void detectInsChanged();
 	void detectP1p2Changed();

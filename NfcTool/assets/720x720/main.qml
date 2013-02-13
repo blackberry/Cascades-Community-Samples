@@ -29,7 +29,7 @@ NavigationPane {
         
         content: Container {
             background: Color.create ("#262626")
-            preferredWidth: 768
+            preferredWidth: 720
             layout: DockLayout {
             }
 

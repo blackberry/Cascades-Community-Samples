@@ -46,6 +46,23 @@ public:
 	static const char* HEX_COMMAND;
 	static const char* HEX_LE;
 	static const char* AID;
+	static const char* DEFAULT_TARGET;
+	static const char* SIM_TARGET;
+	static const char* CARD_TARGET;
+
+	// key values for QSettings
+
+	static const char* KEY_HEX_CLA;
+	static const char* KEY_HEX_INS;
+	static const char* KEY_HEX_P1P2;
+	static const char* KEY_HEX_LC;
+	static const char* KEY_HEX_COMMAND;
+	static const char* KEY_HEX_LE;
+	static const char* KEY_AID;
+	static const char* KEY_TARGET;
+	static const char* KEY_SELECT_ONLY;
+	static const char* KEY_PPSE;
+
 
 	// NFC RTD useful constants
 

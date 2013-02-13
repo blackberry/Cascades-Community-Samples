@@ -34,15 +34,15 @@ void AlternatingListItem::setup(const QString& qmlFile) {
 	setRoot(document->createRootObject<Control>(derivedContext));
 }
 
-void AlternatingListItem::setTitle(const QString& title) {
-	if (title != m_title) {
-		m_title = title;
-		emit titleChanged();
+void AlternatingListItem::setColourCode(const QString& colour_code) {
+	if (colour_code != m_colour_code) {
+		m_colour_code = colour_code;
+		emit colourChanged();
 	}
 }
 
-QString AlternatingListItem::title() const {
-	return m_title;
+QString AlternatingListItem::colour_code() const {
+	return m_colour_code;
 }
 
 void AlternatingListItem::setDescription(const QString& desc) {

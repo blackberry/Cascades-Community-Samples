@@ -15,7 +15,16 @@
 #ifndef NFCWORKER_HPP_
 #define NFCWORKER_HPP_
 
-#define CHECK(rc) NfcWorker::checkReturnCode((rc), __LINE__, __FILE__, __PRETTY_FUNCTION__)
+#define CHECK(rc) checkReturnCode((rc), __LINE__, __FILE__, __PRETTY_FUNCTION__)
+
+/*
+ * Macros for bit manipulation of Amsterdam Travel Pass Card
+ */
+#define EXTRACT_CNTR(__x) (((__x) >> 12 ) & 0x7fff)
+#define EXTRACT_LOCN(__x) (((__x) >>  0 ) & 0x0fff)
+#define EXTRACT_TYPE(__x) (((__x) >> 29 ) & 0x0007)
+#define EXTRACT_DAYS(__x) (((__x) >> 15 ) & 0x3fff)
+#define EXTRACT_MINS(__x) (((__x) >>  4 ) & 0x03ff)
 
 #include <QtCore/QObject>
 #include <QMutex>
@@ -44,8 +53,14 @@ public:
 		WRITE_TEXT_TAG,
 		WRITE_SP_TAG,
 		WRITE_CUSTOM_TAG,
+		READ_ISO15693,
+		WRITE_ISO15693,
 		SEND_VCARD,
-		EMULATE_TAG
+		EMULATE_TAG,
+		EMULATE_ECHO,
+		CARD_APDU_EXCHANGE,
+		READ_GVB,
+		READ_TAG_DETAILS
 	};
 
 signals:
@@ -53,11 +68,12 @@ signals:
 	void clearMessages();
 	void stopped(const QVariant &message);
 	void started(const QVariant &message);
-	void read_selected();
+	void event_log_needed();
 
 public slots:
 	void startEventLoop();
 	void initialize();
+	void reset();
 	void listen();
 	void interruptBpsWaitLoop(unsigned int code);
 	void prepareToReadNdefTagViaInvoke();
@@ -71,6 +87,7 @@ public slots:
 			const QVariant &last_name, const QVariant &address,
 			const QVariant &email, const QVariant &mobile);
 	void prepareToEmulateTag(const QVariant &the_uri, const QVariant &the_text);
+	void prepareToEmulateEcho();
 	void prepareToStopEmulation();
 	void writeUriTag(const QVariant &uri);
 	void writeSpTag(const QVariant &sp_uri, const QVariant &sp_text);
@@ -81,9 +98,21 @@ public slots:
 			const QVariant &address, const QVariant &email,
 			const QVariant &mobile);
 	void emulateTag(const QVariant &uri, const QVariant &text);
-	void doIso7816Test(const QVariant &aid, const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hexp1p2, const QVariant &hex_lc,
+	void emulateEcho();
+	void doIso7816Test(const QVariant &aid, bool select_only,  const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hexp1p2, const QVariant &hex_lc,
 			const QVariant &hex_command, const QVariant &hex_le);
+	void exchangeApduWithCard(bps_event_t *event);
+	void prepIso7816CardTest(const QVariant &aid, bool select_only,  const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hexp1p2, const QVariant &hex_lc,
+			const QVariant &hex_command, const QVariant &hex_le);
+	void prepareToDoIso15693Read();
+	void prepareToDoIso15693Write(const QVariant &data);
+	void readIso15693();
+	void writeIso15693(const QVariant &data);
 	void stopEmulatingTag();
+	void readGvb();
+	void prepareToDoGvbRead();
+	void readTagDetails();
+	void prepareToReadTagDetails();
 
 public:
 	static NfcWorker* getInstance();
@@ -99,9 +128,17 @@ private:
 	void handleNfcWriteSpTagEvent(bps_event_t *event);
 	void handleNfcWriteTextTagEvent(bps_event_t *event);
 	void handleNfcWriteUriTagEvent(bps_event_t *event);
+	void handleIso15693TagEvent(bps_event_t *event);
+	void handleGvbEvent(bps_event_t *event);
+	void handleReadTagDetailsEvent(bps_event_t *event);
 	void handleSendVcardEvent(bps_event_t *event);
 	void handleEmulateNfcEvent(bps_event_t *event);
+	void handleEmulateEchoEvent(bps_event_t *event);
+	void processIso144434EchoCommandEvent(nfc_target_t *target);
 	void parseNdefMessage(nfc_ndef_message_t *ndefMessage);
+	int exchangeApdu(uchar_t* the_apdu, int apdu_size, nfc_target_t* target);
+	int selectByAID(uchar_t* the_aid, int aid_size, nfc_target_t* target);
+	int miscCommand(uchar_t* the_command, int cmd_size, nfc_target_t* target);
 	nfc_ndef_record_t* makeUriRecord(uchar_t prefix, QString uri);
 	nfc_ndef_record_t* makeTextRecord(QString language, QString text);
 	nfc_ndef_record_t* makeSpRecord();
@@ -110,9 +147,10 @@ private:
 	nfc_ndef_record_t* makeVcardMessage(QString name, QString address,
 			QString email, QString mobile);
 	nfc_ndef_record_t* makeMediaRecord(QString type, QString text);
-	static void checkReturnCode(int rc, int line, const char *file,
+	void checkReturnCode(int rc, int line, const char *file,
 			const char *func);
 	unsigned long getSysTimeMs();
+	void displayTagInformation(nfc_target_t* target);
 
 	static NfcWorker* _instance;
 	const int BPS_EVENT_TIMEOUT;
@@ -138,13 +176,17 @@ private:
 	QString _email;
 	QString _mobile;
 	QString _aid;
+	bool _select_only;
+	QString _target;
 	QString _hex_cla;
 	QString _hex_ins;
 	QString _hexp1p2;
 	QString _hex_lc;
 	QString _hex_command;
 	QString _hex_le;
+	QString _data;
 	EventLog* _eventLog;
+
 };
 
 #endif /* NFCWORKER_HPP_ */

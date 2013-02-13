@@ -11,7 +11,8 @@
 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 * See the License for the specific language governing permissions and
 * limitations under the License.
-*/import bb.cascades 1.0
+*/
+import bb.cascades 1.0
 import "common"
 
 Page {
@@ -22,14 +23,14 @@ Page {
         Container {
             layout: StackLayout {
             }
-            topPadding: 50
+            topPadding: 5
             leftPadding: 30
             rightPadding: 30
 
             Label {
                 text: (_el.message == "" || _el.message == undefined) ? "Event log" : "Event log\n" + _el.message
                 textStyle {
-                    base: SystemDefaults.TextStyles.BigText
+                    base: SystemDefaults.TextStyles.TitleText
                     color: Color.LightGray
                     fontWeight: FontWeight.Bold
                 }

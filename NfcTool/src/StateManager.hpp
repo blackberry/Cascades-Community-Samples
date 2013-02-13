@@ -26,6 +26,7 @@ class StateManager: public QObject {
 	Q_PROPERTY(bool inNdefPushState READ inNdefPushState WRITE setNdefPushState NOTIFY inNdefPushStateChanged)
 	Q_PROPERTY(bool inEventLogShowingState READ isEventLogShowing WRITE setEventLogShowing NOTIFY inEventLogShowingStateChanged)
 	Q_PROPERTY(bool inTagEmulationState READ inTagEmulationState WRITE setTagEmulationState NOTIFY inTagEmulationStateChanged)
+	Q_PROPERTY(bool inIso14443_4_EmulationState READ inIso14443_4_EmulationState WRITE setIso14443_4_EmulationState NOTIFY inIso14443_4_EmulationStateChanged)
 
 public:
 	static StateManager* getInstance();
@@ -43,12 +44,15 @@ public:
 	void setEventLogShowing(bool event_log_showing);
 	bool inTagEmulationState() const;
 	void setTagEmulationState(bool tag_emulation_state);
+	bool inIso14443_4_EmulationState() const;
+	void setIso14443_4_EmulationState(bool iso14443_4_emulation_state);
 
 signals:
 	void inReadStateChanged();
 	void inDetectAndWriteStateChanged();
 	void inNdefPushStateChanged();
 	void inTagEmulationStateChanged();
+	void inIso14443_4_EmulationStateChanged();
 	void inEventLogShowingStateChanged();
 
 private:
@@ -59,6 +63,7 @@ private:
 	bool m_inNdefPushState;
 	bool m_event_log_is_showing;
 	bool m_inTagEmulationState;
+	bool m_inIso14443_4_EmulationState;
 };
 
 #endif /* STATEMANAGER_HPP_ */

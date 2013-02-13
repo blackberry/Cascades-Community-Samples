@@ -15,12 +15,13 @@
 #include <bb/cascades/Application>
 #include <QtCore/QLocale>
 #include <QtCore/QTranslator>
+#include <Qt/qdeclarativedebug.h>
 
 #include "MainMenu.hpp"
 
 using ::bb::cascades::Application;
 
-int main(int argc, char **argv) {
+Q_DECL_EXPORT int main(int argc, char **argv) {
 	Application app(argc, argv);
 
 	QTranslator translator;

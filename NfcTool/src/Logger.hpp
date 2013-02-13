@@ -17,6 +17,7 @@
 
 #include <QtCore/QString>
 #include <QtCore/QDebug>
+#include <QtCore/QList>
 #include "alternatinglistdatamodel.hpp"
 
 class Logger {
@@ -26,11 +27,12 @@ private:
 	virtual ~Logger();
 	static Logger* _instance;
 	AlternatingListDataModel* _data_model;
+	QList<QString> colour_codes;
+	int current_colour;
 
 public:
 	static Logger* getInstance();
-	void log(const QString& title, const QString& itemLabel,
-			const QString& desc);
+	void log(const QString& itemLabel, const QString& desc);
 	void clearLog();
 	AlternatingListDataModel* getDataModel();
 

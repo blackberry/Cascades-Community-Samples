@@ -80,26 +80,36 @@ private:
 signals:
     void detectAppVersionChanged();
     void read_selected();
+    void tag_details_selected();
     void write_uri();
     void write_sp();
     void write_text();
     void write_custom();
     void send_vcard_selected();
     void emulate_tag_selected();
+    void emulate_echo_selected();
     void iso7816_selected();
+    void readIso15693_selected();
+    void writeIso15693_selected();
     void about_selected();
 	void launchEventLog();
+
+	void readGvb_selected();
 
 public slots:
 	void onMainMenuTriggered();
 	void onListSelectionChanged(const QVariantList indexPath);
-	void backFromEventLog();
+	void menuShowing();
 	void cleanUpOnExit();
 	void receivedInvokeRequest(const bb::system::InvokeRequest& request);
 
 private slots:
-	void onDialogAccepted();
-
+//	void onDialogAccepted();
+	void readIso15693();
+	void writeIso15693();
+	void emulateEcho();
+    void readGvb();
+    void tagDetails();
 };
 
 #endif // ifndef MainMenu_H

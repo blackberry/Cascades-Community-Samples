@@ -16,7 +16,7 @@
 
 // General constants
 
-const char* Settings::AppVersion = "4.01";
+const char* Settings::AppVersion = "5.0.0";
 const char* Settings::DOMAIN = "my.domain.com";
 const char* Settings::TYPE = "myrecordtype";
 const char* Settings::CONTENT = "content";
@@ -32,13 +32,27 @@ const char* Settings::MOBILE = "+11231231234";
 const char* Settings::EMULATE_URI = "http://developer.blackberry.com";
 const char* Settings::EMULATE_TEXT = "BlackBerry Developer Zone";
 const char* Settings::AID = "A000000018308005006563686F00";
-//0x10, 0x41, 0x11, 0x22, 0x00
+const char* Settings::DEFAULT_TARGET = "SIM";
+const char* Settings::SIM_TARGET = "SIM";
+const char* Settings::CARD_TARGET = "CARD";
 const char* Settings::HEX_CLA = "80";
 const char* Settings::HEX_INS = "41";
 const char* Settings::HEX_P1P2 = "1122";
 const char* Settings::HEX_LC = "";
 const char* Settings::HEX_COMMAND = "";
 const char* Settings::HEX_LE = "";
+
+const char* Settings::KEY_HEX_CLA="HEX_CLA";
+const char* Settings::KEY_HEX_INS="HEX_INS";
+const char* Settings::KEY_HEX_P1P2="HEX_P1P2";
+const char* Settings::KEY_HEX_LC="HEX_LC";
+const char* Settings::KEY_HEX_COMMAND="HEX_COMMAND";
+const char* Settings::KEY_HEX_LE="HEX_LE";
+const char* Settings::KEY_AID="AID";
+const char* Settings::KEY_TARGET="TARGET";
+const char* Settings::KEY_SELECT_ONLY="SELECT_ONLY";
+const char* Settings::KEY_PPSE="PPSE";
+
 
 // NFC RTD useful constants
 

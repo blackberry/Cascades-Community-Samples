@@ -53,24 +53,20 @@ void EmulateSp::createModules() {
 }
 
 void EmulateSp::connectNavigationSignals() {
-	QObject::connect(_eventLog, SIGNAL(back()), this, SLOT(backFromEventLog()));
 }
 
 void EmulateSp::findAndConnectControls() {
 	qDebug() << "XXXX finding all EmulateSp controls signals and slots...";
 
 	QObject* obj = _root->findChild<QObject*>((const QString) "emulateSp");
-	QObject::connect(obj, SIGNAL(emulateSpRequested()), this,
-			SLOT(startEmulationProcess()));
+	QObject::connect(obj, SIGNAL(emulateSpRequested()), this, SLOT(startEmulationProcess()));
 
 	TextArea* txf_uri = _root->findChild<TextArea*>("txf_uri");
 	TextArea* txf_text = _root->findChild<TextArea*>("txf_text");
 	qDebug() << "XXXX found EmulateSp text fields";
 	qDebug() << "XXXX connecting all TextArea signals and slots...";
-	QObject::connect(txf_uri, SIGNAL(textChanged(QString)), this,
-			SLOT(onUriChanged(QString)));
-	QObject::connect(txf_text, SIGNAL(textChanged(QString)), this,
-			SLOT(onTextChanged(QString)));
+	QObject::connect(txf_uri, SIGNAL(textChanged(QString)), this, SLOT(onUriChanged(QString)));
+	QObject::connect(txf_text, SIGNAL(textChanged(QString)), this, SLOT(onTextChanged(QString)));
 
 	_root = _qml->createRootObject<Page>();
 
@@ -95,9 +91,12 @@ void EmulateSp::startEmulationProcess() {
 
 void EmulateSp::backFromEventLog() {
 	StateManager* state_mgr = StateManager::getInstance();
-	NfcManager* nfc = NfcManager::getInstance();
-	nfc->stopTagEmulation();
-	state_mgr->setDefaultState();
+	if (state_mgr->inTagEmulationState()) {
+		NfcManager* nfc = NfcManager::getInstance();
+		nfc->stopTagEmulation();
+		state_mgr->setDefaultState();
+	}
+	QObject::disconnect(this, SIGNAL(back()), 0,0);
 }
 
 void EmulateSp::show() {

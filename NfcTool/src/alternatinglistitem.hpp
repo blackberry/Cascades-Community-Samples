@@ -22,7 +22,7 @@
 class AlternatingListItem: public bb::cascades::CustomControl {
 
 	Q_OBJECT
-	Q_PROPERTY( QString title READ title NOTIFY titleChanged )
+	Q_PROPERTY( QString colour_code READ colour_code NOTIFY colourChanged )
 	Q_PROPERTY( QString description READ description NOTIFY descriptionChanged )
 	Q_PROPERTY( QString itemLabel READ itemLabel NOTIFY itemLabelChanged )
 	Q_PROPERTY( int ordinal READ ordinal NOTIFY ordinalChanged )
@@ -31,8 +31,8 @@ public:
 	AlternatingListItem(const QString& qmlFile);
 	virtual ~AlternatingListItem();
 
-	void setTitle(const QString& title);
-	QString title() const;
+	void setColourCode(const QString& colour_code);
+	QString colour_code() const;
 
 	void setDescription(const QString& desc);
 	QString description() const;
@@ -45,7 +45,7 @@ public:
 
 signals:
 	void ordinalChanged();
-	void titleChanged();
+	void colourChanged();
 	void descriptionChanged();
 	void itemLabelChanged();
 
@@ -54,7 +54,7 @@ private:
 
 private:
 	int m_nextOrdinal;
-	QString m_title;
+	QString m_colour_code;
 	QString m_description;
 	QString m_itemLabel;
 };

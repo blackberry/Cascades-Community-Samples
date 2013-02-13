@@ -109,7 +109,7 @@ void EventLog::show() {
 }
 
 void EventLog::onBackNavigationTriggered() {
-	qDebug() << "XXXX finding NavigationPane object from cache";
+	qDebug() << "XXXX EventLog::onBackNavigationTriggered(): finding NavigationPane object from cache";
 	Navigator* nav = Navigator::getInstance();
 	NavigationPane* navpane = nav->getNavigationPane();
 	_root = _qml->createRootObject<Page>();
