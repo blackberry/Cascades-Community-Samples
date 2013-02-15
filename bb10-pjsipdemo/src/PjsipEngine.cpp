@@ -44,6 +44,32 @@ static void handleError(const char *title, pj_status_t status) {
 	pjsua_destroy();
 }
 
+/**
+ * Handler when there is incoming call.
+ */
+void PjsipEngine::on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,
+			     pjsip_rx_data *rdata)
+{
+    pjsua_call_info call_info;
+
+    PJ_UNUSED_ARG(acc_id);
+    PJ_UNUSED_ARG(rdata);
+
+    pjsua_call_get_info(call_id, &call_info);
+
+    if (true) {
+	pjsua_call_setting call_opt;
+
+	pjsua_call_setting_default(&call_opt);
+	call_opt.aud_cnt = 1;
+	call_opt.vid_cnt = 0;
+
+	pjsua_call_answer2(call_id, &call_opt, 1, NULL, NULL);
+    }
+
+}
+
+
 int PjsipEngine::start() {
 	pjsua_acc_id acc_id;
 	pj_status_t status;
@@ -65,7 +91,9 @@ int PjsipEngine::start() {
 		// session up
 		cfg.cb.on_reg_started = &on_reg_started;
 		// traps session down
-		cfg.cb.on_transport_state = &on_tp_state_changed;
+		cfg.cb.on_transport_state = &on_tp_state_changed;		
+		// accept incomming call
+		cfg.cb.on_incoming_call = &on_incoming_call;
 
 		pjsua_logging_config_default(&log_cfg);
 		log_cfg.console_level = 4;
