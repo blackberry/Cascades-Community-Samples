@@ -27,6 +27,8 @@ public:
 	void onRegStarted(pjsua_acc_id acc_id, pj_bool_t renew);
 	void onTpStateChanged(pjsip_transport *tp, pjsip_transport_state state, const pjsip_transport_state_info *info);
 private:
+	static void on_incoming_call(pjsua_acc_id acc_id, pjsua_call_id call_id,
+		     pjsip_rx_data *rdata);
 	static void on_reg_started(pjsua_acc_id acc_id, pj_bool_t renew);
 	static void on_tp_state_changed(pjsip_transport *tp, pjsip_transport_state state, const pjsip_transport_state_info *info);
 private:
