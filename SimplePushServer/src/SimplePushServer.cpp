@@ -175,6 +175,7 @@ void SimplePushServer::populateAddresses(QString& papFormattedAddresses) {
 		QVariantList addressList = temp.toList();
 		foreach(QVariant address, addressList){
 		tempAddr = QString(address.toString());
+		papFormatAddress(tempAddr);
 		papFormattedAddresses.append(tempAddr);
 	}
 }
