@@ -31,7 +31,7 @@ Page {
             horizontalAlignment: HorizontalAlignment.Center
             
             Label {
-                text: "Demonstrating this Settings Page from ApplicationMenu, using NavigationPane.\n More NavigationPane Page objects can be pushed on top of this Page to allow more drill down navigation."
+                text: "Demonstrating this Settings Page from application Menu, using NavigationPane.\n More NavigationPane Page objects can be pushed on top of this Page to allow more drill down navigation."
                 multiline: true
                 horizontalAlignment: HorizontalAlignment.Center
                 textStyle.fontSize: FontSize.Medium

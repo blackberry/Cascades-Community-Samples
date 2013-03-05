@@ -42,13 +42,13 @@ Page {
             verticalAlignment: VerticalAlignment.Center
             horizontalAlignment: HorizontalAlignment.Center
             Label {
-                text: "<html><a href=\"https://github.com/blackberry/Cascades-Community-Samples/TabAppMenu\">Github Source Code In This Link</a></html>"
+                text: "<html><a href=\"https://github.com/blackberry/Cascades-Community-Samples/tree/master/TabAppMenu\">Github Source Code In This Link</a></html>"
                 horizontalAlignment: HorizontalAlignment.Center
                 textStyle.fontSize: FontSize.XXSmall
             }
             TextArea {
                 text: "This is a simple Cascades sample app for developers only.\n\n" + "The purpose of this app is to demonstrate how to correctly use the following Cascades components together in an app:\n\n" +
-                 "TabbedPane, Tab, ApplicationMenu, Sheet, NavigationPane\n\n" + 
+                 "TabbedPane, Tab, application Menu, Sheet, NavigationPane\n\n" + 
                 "  Author:\n\n" + 
                 "  Shadab Rashid\n" + 
                 "  Application Development Consultant, Developer Relations\n" + 
