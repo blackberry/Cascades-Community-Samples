@@ -22,6 +22,10 @@ DeviceListing::DeviceListing(QObject *parent)
 {
     _model->setSortingKeys(QStringList() << "deviceType");
     _model->setGrouping(bb::cascades::ItemGrouping::ByFullValue);
+
+	if (!Utilities::getOSVersion().startsWith("10.0")) {
+		IMMEDIATE_ALERT_SERVICE_UUID.prepend("0x");
+	}
 }
 
 void DeviceListing::update()

@@ -12,36 +12,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef BtLeFindMe_HPP_
-#define BtLeFindMe_HPP_
+#ifndef Utilities_h
+#define Utilities_h
 
-#include <QObject>
+#include "stdint.h"
+#include <QChar>
+#include "huctx.h"
+#include "sbdef.h"
+#include <bb/platform/PlatformInfo>
 
-#include <bb/cascades/Application>
-#include <bb/cascades/QmlDocument>
-#include <bb/cascades/AbstractPane>
-
-#include <BluetoothLe.hpp>
-#include "Timer.hpp"
-#include "Utilities.hpp"
-
-using namespace bb::cascades;
-
-namespace bb { namespace cascades { class Application; }}
-
-class BtLeFindMe : public QObject
-{
-    Q_OBJECT
+class Utilities {
 
 public:
-    BtLeFindMe(bb::cascades::Application *app);
-    virtual ~BtLeFindMe() {}
+	static uint8_t hexToInt(QChar c1, QChar c2);
+	static void hexToIntArray(QString hex_string,uint8_t* output);
+	static QString intToHex(int decimal);
+	static void alert(QString msg);
+	static uint getSysTimeSeconds();
+	static QString getOSVersion();
 
 private:
-    QmlDocument *_qml;
-    AbstractPane *_root;
-    BluetoothLe *_bluetoothLe;
-//  QObject *_mainPage;
+	static const QString HEX_CHARS;
 };
 
-#endif /* BtLeFindMe_HPP_ */
+#endif // ifndef Utilities_h
