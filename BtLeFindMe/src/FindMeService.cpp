@@ -74,7 +74,12 @@ FindMeService::FindMeService(QObject *parent)
 {
 	qDebug() << "XXXX FindMeService::FindMeService(QObject *parent)";
 	findMeServiceInstance = this;
-    qRegisterMetaType<uint16_t>("uint16_t");
+
+	if (!Utilities::getOSVersion().startsWith("10.0")) {
+		IMMEDIATE_ALERT_SERVICE_UUID.prepend("0x");
+	}
+
+	qRegisterMetaType<uint16_t>("uint16_t");
 
 	QObject::connect(this, SIGNAL(gattServiceConnected(QString, QString, int, int, uint16_t, uint16_t, uint16_t, void *)),
                      this,   SLOT(handleGattServiceConnected(QString, QString, int, int, uint16_t, uint16_t, uint16_t, void *)));

@@ -21,7 +21,8 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 **Release History**
 
-* **V1.0** - Initial release
+* **V1.0.0** - Initial release
+* **V1.0.1** - Compatibility with Device Software **10.1.***
 
 **Dependencies**
 
@@ -48,6 +49,7 @@ Our use of these these devices for testing shouldn't be regarded as an endorseme
 
 If you don't want to build this sample application yourself we've included a pre-built and signed BAR file. You can find it in the folder "**installable-bar-files**" as follows:
 
+* **BtLeFindMe-1\_0\_1\_445.bar** -- Signed BAR file for Version 1.0.1 (V1.0.1) of the application (requires BlackBerry 10 Software 10.0.9 or later).
 * **BtLeFindMe-1\_0\_0\_442.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application (requires BlackBerry 10 Software 10.0.9 or later).
 
 **To contribute code to this repository you must be [signed up as an official contributor](http://blackberry.github.com/howToContribute.html).**

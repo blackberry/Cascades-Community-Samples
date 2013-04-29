@@ -15,6 +15,7 @@
 
 #include "BluetoothHandler.hpp"
 #include "HrDataContainer.hpp"
+#include "Utilities.hpp"
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
@@ -302,6 +303,11 @@ BluetoothHandler::BluetoothHandler(QObject *obj)
 {
 	_scanner = this;
 
+	if (Utilities::getOSVersion().startsWith("10.0")) {
+		HR_SERVICE_UUID = "180D";
+	} else {
+		HR_SERVICE_UUID = "0x180D";
+	}
 	if (!bt_initialised) {
 
 		// Initialize the Bluetooth device and allocate the required resources for the library

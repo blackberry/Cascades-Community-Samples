@@ -1,5 +1,5 @@
 1
-29
+28
 common/DeviceItem.qml
 common/SessionItem.qml
 cover.qml
@@ -18,7 +18,6 @@ images/dg9.PNG
 images/dgblank.PNG
 images/dgc.PNG
 images/dgh.PNG
-images/heart.png
 images/history.png
 images/monitor.png
 images/scan.png

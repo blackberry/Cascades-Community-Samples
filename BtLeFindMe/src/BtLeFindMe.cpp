@@ -32,4 +32,6 @@ BtLeFindMe::BtLeFindMe(bb::cascades::Application *app)
     AbstractPane *_root = _qml->createRootObject<AbstractPane>();
 
     app->setScene(_root);
+
+	qDebug() << "XXXX running on OS version " << Utilities::getOSVersion();
 }

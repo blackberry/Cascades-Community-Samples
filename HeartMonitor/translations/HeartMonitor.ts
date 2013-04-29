@@ -4,22 +4,22 @@
 <context>
     <name>DeviceListing</name>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="59"/>
+        <location filename="../src/DeviceListing.cpp" line="65"/>
         <source>Paired Bluetooth Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="76"/>
+        <location filename="../src/DeviceListing.cpp" line="82"/>
         <source>Searching for Bluetooth Heart Rate Monitors ... please wait until search has completed ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="84"/>
+        <location filename="../src/DeviceListing.cpp" line="90"/>
         <source>Search completed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="115"/>
+        <location filename="../src/DeviceListing.cpp" line="121"/>
         <source>Bluetooth Devices Nearby</source>
         <translation type="unfinished"></translation>
     </message>
@@ -290,37 +290,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="294"/>
+        <location filename="../assets/main.qml" line="295"/>
         <source>Available Monitors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="448"/>
+        <location filename="../assets/main.qml" line="449"/>
         <source>About HeartMonitor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="458"/>
-        <source>V1.0.0</source>
+        <location filename="../assets/main.qml" line="459"/>
+        <source>V1.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="464"/>
+        <location filename="../assets/main.qml" line="465"/>
         <source>The HeartMonitor application demonstrates how to acquire and use data transmitted by a Bluetooth 4.0 LE heart monitor device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="475"/>
+        <location filename="../assets/main.qml" line="476"/>
         <source>Authors:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="486"/>
+        <location filename="../assets/main.qml" line="487"/>
         <source>Martin Woolley (@mdwrim)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="497"/>
+        <location filename="../assets/main.qml" line="498"/>
         <source>John Murray (@jcmrim)</source>
         <translation type="unfinished"></translation>
     </message>

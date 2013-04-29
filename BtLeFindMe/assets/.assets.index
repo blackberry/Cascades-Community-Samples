@@ -1,5 +1,5 @@
 1
-16
+15
 AboutSheet.qml
 ImageLabel.qml
 images/about.png
@@ -11,8 +11,7 @@ images/picture1.png
 images/picture1br.png
 images/picture1thumb.png
 images/preferences_system_bluetooth.png
+images/scan.png
 images/thumbDown.png
 images/thumbUp.png
 main.qml
-RemoteDeviceInfoSheet.qml
-TwoPartLabel.qml

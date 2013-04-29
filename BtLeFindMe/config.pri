@@ -10,6 +10,7 @@ device {
                  $$quote($$BASEDIR/src/LocalDeviceInfo.cpp) \
                  $$quote($$BASEDIR/src/RemoteDeviceInfo.cpp) \
                  $$quote($$BASEDIR/src/Timer.cpp) \
+                 $$quote($$BASEDIR/src/Utilities.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/BluetoothLe.hpp) \
@@ -18,7 +19,8 @@ device {
                  $$quote($$BASEDIR/src/FindMeService.hpp) \
                  $$quote($$BASEDIR/src/LocalDeviceInfo.hpp) \
                  $$quote($$BASEDIR/src/RemoteDeviceInfo.hpp) \
-                 $$quote($$BASEDIR/src/Timer.hpp)
+                 $$quote($$BASEDIR/src/Timer.hpp) \
+                 $$quote($$BASEDIR/src/Utilities.hpp)
     }
 
     CONFIG(release, debug|release) {
@@ -29,6 +31,7 @@ device {
                  $$quote($$BASEDIR/src/LocalDeviceInfo.cpp) \
                  $$quote($$BASEDIR/src/RemoteDeviceInfo.cpp) \
                  $$quote($$BASEDIR/src/Timer.cpp) \
+                 $$quote($$BASEDIR/src/Utilities.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/BluetoothLe.hpp) \
@@ -37,7 +40,8 @@ device {
                  $$quote($$BASEDIR/src/FindMeService.hpp) \
                  $$quote($$BASEDIR/src/LocalDeviceInfo.hpp) \
                  $$quote($$BASEDIR/src/RemoteDeviceInfo.hpp) \
-                 $$quote($$BASEDIR/src/Timer.hpp)
+                 $$quote($$BASEDIR/src/Timer.hpp) \
+                 $$quote($$BASEDIR/src/Utilities.hpp)
     }
 }
 
@@ -50,6 +54,7 @@ simulator {
                  $$quote($$BASEDIR/src/LocalDeviceInfo.cpp) \
                  $$quote($$BASEDIR/src/RemoteDeviceInfo.cpp) \
                  $$quote($$BASEDIR/src/Timer.cpp) \
+                 $$quote($$BASEDIR/src/Utilities.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/BluetoothLe.hpp) \
@@ -58,7 +63,8 @@ simulator {
                  $$quote($$BASEDIR/src/FindMeService.hpp) \
                  $$quote($$BASEDIR/src/LocalDeviceInfo.hpp) \
                  $$quote($$BASEDIR/src/RemoteDeviceInfo.hpp) \
-                 $$quote($$BASEDIR/src/Timer.hpp)
+                 $$quote($$BASEDIR/src/Timer.hpp) \
+                 $$quote($$BASEDIR/src/Utilities.hpp)
     }
 }
 
