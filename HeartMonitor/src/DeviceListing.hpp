@@ -42,7 +42,7 @@ private:
     bb::cascades::DataModel* model() const;
     bb::cascades::GroupDataModel* _model;
     bool isAHeartRateMonitor(bt_remote_device_t * remoteDevice);
-    const QString HR_SERVICE_UUID;
+    QString HR_SERVICE_UUID;
 };
 
 #endif

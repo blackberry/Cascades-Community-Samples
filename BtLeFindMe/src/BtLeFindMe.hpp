@@ -23,6 +23,7 @@
 
 #include <BluetoothLe.hpp>
 #include "Timer.hpp"
+#include "Utilities.hpp"
 
 using namespace bb::cascades;
 

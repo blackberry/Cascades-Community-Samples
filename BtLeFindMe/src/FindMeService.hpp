@@ -26,6 +26,7 @@
 #include <btapi/btspp.h>
 
 #include <errno.h>
+#include "Utilities.hpp"
 
 typedef struct {
 	int uuid;
@@ -63,7 +64,7 @@ public:
 private:
     bool _serviceIsInitialised;
     QString _remoteDeviceAddress;
-    const QString IMMEDIATE_ALERT_SERVICE_UUID;
+    QString IMMEDIATE_ALERT_SERVICE_UUID;
     const QString IMMEDIATE_ALERT_LEVEL_UUID;
     AlertLevel _alertLevel;
     int _serviceInstance;

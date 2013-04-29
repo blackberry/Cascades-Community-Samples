@@ -26,6 +26,8 @@
 #include <btapi/btdevice.h>
 #include <btapi/btspp.h>
 
+#include "Utilities.hpp"
+
 class DeviceListing : public QObject
 {
     Q_OBJECT
@@ -42,7 +44,7 @@ private:
     bb::cascades::DataModel* model() const;
     bb::cascades::GroupDataModel* _model;
     bool isAnImmediateAlertDevice(bt_remote_device_t *remoteDevice);
-    const QString IMMEDIATE_ALERT_SERVICE_UUID;
+    QString IMMEDIATE_ALERT_SERVICE_UUID;
 };
 
 #endif

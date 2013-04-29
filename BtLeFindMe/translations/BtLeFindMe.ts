@@ -9,11 +9,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="37"/>
-        <source>V1.0.0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../assets/AboutSheet.qml" line="43"/>
         <source>The BtLeFindMe application demonstrates how to cause a device that supports the Bluetooth 4.0 LE Find Me Profile to issue alerts</source>
         <translation type="unfinished"></translation>
@@ -34,6 +29,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../assets/AboutSheet.qml" line="37"/>
+        <source>V1.0.1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../assets/AboutSheet.qml" line="87"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
@@ -42,22 +42,22 @@
 <context>
     <name>DeviceListing</name>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="48"/>
+        <location filename="../src/DeviceListing.cpp" line="52"/>
         <source>Paired Bluetooth Devices Capable of Immediate Alert</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="62"/>
+        <location filename="../src/DeviceListing.cpp" line="66"/>
         <source>Searching for Bluetooth devices ... please wait until search completed ...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="71"/>
+        <location filename="../src/DeviceListing.cpp" line="75"/>
         <source>Search completed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="91"/>
+        <location filename="../src/DeviceListing.cpp" line="95"/>
         <source>Bluetooth Devices Nearby Capable of Immediate Alert</source>
         <translation type="unfinished"></translation>
     </message>
@@ -65,7 +65,7 @@
 <context>
     <name>FindMeService</name>
     <message>
-        <location filename="../src/FindMeService.cpp" line="143"/>
+        <location filename="../src/FindMeService.cpp" line="148"/>
         <source>Connected to Find Me Service on Device</source>
         <translation type="unfinished"></translation>
     </message>

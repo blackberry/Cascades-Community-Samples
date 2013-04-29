@@ -14,6 +14,7 @@
  */
 
 #include "DeviceListing.hpp"
+#include "Utilities.hpp"
 
 DeviceListing::DeviceListing(QObject *parent)
     : QObject(parent)
@@ -22,6 +23,11 @@ DeviceListing::DeviceListing(QObject *parent)
 {
     _model->setSortingKeys(QStringList() << "deviceType");
     _model->setGrouping(bb::cascades::ItemGrouping::ByFullValue);
+
+	if (!Utilities::getOSVersion().startsWith("10.0")) {
+		HR_SERVICE_UUID.prepend("0x");
+	}
+
 }
 
 void DeviceListing::update()

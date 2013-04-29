@@ -276,7 +276,8 @@ TabbedPane {
         onTriggered: {
             _scan.deviceListing.discover();
             beat_timer.stop();
-            scan_timer.start();
+//            scan_timer.start();
+            _scan.deviceListing.update();
             p_prev_tab = p_scan_tab;
         }
         Page {
@@ -335,13 +336,13 @@ TabbedPane {
                         }
                     }
                 }
-                Timer {
-                    id: scan_timer
-                    time_limit: 10000
-                    onTimeout: {
-                        _scan.deviceListing.update();
-                    }
-                }
+//                Timer {
+//                    id: scan_timer
+//                    time_limit: 10000
+//                    onTimeout: {
+//                        _scan.deviceListing.update();
+//                    }
+//                }
             }
         }
     }
@@ -455,7 +456,7 @@ TabbedPane {
                 }
                 Label {
                     id: lblHeading_version
-                    text: qsTr("V1.0.0")
+                    text: qsTr("V1.0.1")
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }
