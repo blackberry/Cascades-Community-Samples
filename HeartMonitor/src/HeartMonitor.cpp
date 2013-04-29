@@ -18,6 +18,7 @@
 #include "HrDatabase.hpp"
 #include "HrDataContainer.hpp"
 #include "Timer.hpp"
+#include "Utilities.hpp"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
@@ -65,6 +66,10 @@ HeartMonitor::HeartMonitor(bb::cascades::Application *app)
 
 	// set created root object as a scene
 	app->setScene(_root);
+
+	QString os_version = Utilities::getOSVersion();
+
+	qDebug() << "XXXX running on OS version " << os_version;
 
 	if (hrdc->getCurrentDeviceAddr() != NULL) {
 		monitorHeartRate(hrdc->getCurrentDeviceAddr(),hrdc->getCurrentDeviceName());

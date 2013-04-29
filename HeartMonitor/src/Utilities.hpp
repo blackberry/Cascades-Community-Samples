@@ -19,6 +19,7 @@
 #include <QChar>
 #include "huctx.h"
 #include "sbdef.h"
+#include <bb/platform/PlatformInfo>
 
 class Utilities {
 
@@ -28,6 +29,7 @@ public:
 	static QString intToHex(int decimal);
 	static void alert(QString msg);
 	static uint getSysTimeSeconds();
+	static QString getOSVersion();
 
 private:
 	static const QString HEX_CHARS;

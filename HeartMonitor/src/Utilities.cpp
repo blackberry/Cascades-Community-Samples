@@ -20,8 +20,12 @@
 #include <QDebug>
 #include <bb/system/SystemDialog>
 #include <sys/time.h>
+#include <bb/platform/PlatformInfo>
+
+using namespace bb::platform;
 
 const QString Utilities::HEX_CHARS = QString("0123456789ABCDEF");
+const  PlatformInfo* m_platformInfo = new bb::platform::PlatformInfo();
 
 uint8_t Utilities::hexToInt(QChar c1, QChar c2) {
 	c1 = c1.toUpper();
@@ -57,4 +61,11 @@ void Utilities::alert(QString msg) {
 uint Utilities::getSysTimeSeconds() {
 	QDateTime now = QDateTime::currentDateTime();
 	return now.toTime_t();
+}
+
+QString Utilities::getOSVersion() {
+	if(m_platformInfo)
+		return m_platformInfo->osVersion();
+	else
+		return QString::null;
 }
