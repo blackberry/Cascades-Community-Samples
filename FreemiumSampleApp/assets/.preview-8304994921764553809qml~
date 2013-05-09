@@ -1,0 +1,24 @@
+import bb.cascades 1.0
+import bb.cascades.advertisement 1.0
+
+Container {
+    property bool hideAd: false
+    id: bannerContainer
+
+    onHideAdChanged: {
+        if (hideAd) {
+            //ad.destroy();
+            //parent.remove(bannerContainer);
+        }
+    }
+    attachedObjects: [
+            Banner {
+                id: ad
+                zoneId: 117145
+                refreshRate: 60
+                preferredWidth: 320
+                preferredHeight: 50
+                transitionsEnabled: true
+            }
+    ]
+}

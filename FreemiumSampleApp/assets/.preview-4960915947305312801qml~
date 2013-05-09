@@ -1,0 +1,96 @@
+import bb.cascades 1.0
+
+Page {
+    Container {
+        layout: DockLayout {
+        }
+        FreemiumBanner {
+            scaleX: 2.0
+            scaleY: 2.0
+            hideAd: removeAdsPurchased
+            horizontalAlignment: HorizontalAlignment.Center
+        }
+        ImageView {
+            scalingMethod: ScalingMethod.AspectFill
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+            imageSource: "asset:///images/backgroundLandscape.png"
+        }
+        Container {
+            verticalAlignment: VerticalAlignment.Center
+            ScrollView {
+                scrollViewProperties {
+                    scrollMode: ScrollMode.Horizontal
+                }
+                Container {
+                    layout: StackLayout {
+                        orientation: LayoutOrientation.LeftToRight
+                    }
+                    leftPadding: 50
+                    rightPadding: 50
+                    DigitalGood {
+                        id: ufo
+                        imageSource: "asset:///images/ufoThumb.png"
+                        sku: "1"
+                        name: "UFO"
+                        onClicked: {
+                            if (ufo.owned) {
+                                //do something
+                            } else {
+                                ufo.enabled = ! paymentServiceControl.isPaymentSystemBusy;
+                                paymentServiceControl.purchase(ufo.sku, "UFO");
+                            }
+                        }
+                    }
+                    DigitalGood {
+                        id: tbeam
+                        imageSource: "asset:///images/tbeamThumb.png"
+                        sku: "2"
+                        name: "T-Beam"
+                        onClicked: {
+                            if (tbeam.owned) {
+                                //do something
+                            } else {
+                                paymentServiceControl.purchase(tbeam.sku, "Tractor Beam");
+                            }
+                        }
+                    }
+                    DigitalGood {
+                        id: freakinLaserBeam
+                        imageSource: "asset:///images/ptbeamThumb.png"
+                        sku: "3"
+                        name: "P-T-Beam"
+                        onClicked: {
+                            if (ptbeam.owned) {
+                                //do something
+                            } else {
+                                paymentServiceControl.purchase(ptbeam.sku, "Psychedelic Tractor Beam");
+                            }
+                        }
+                    }
+                    DigitalGood {
+                        id: noAds
+                        imageSource: "asset:///images/noAds.png"
+                        sku: "4"
+                        name: "Remove Ads"
+                        onClicked: {
+                            if (noAds.owned) {
+                                //do something
+                            } else {
+                                paymentServiceControl.purchase(noAds.sku, "Remove Advertisements");
+                            }
+                        }
+                        onOwnedChanged: removeAdsPurchased = owned
+                    }
+                }
+            }
+        }
+        Button {
+            verticalAlignment: VerticalAlignment.Bottom
+            horizontalAlignment: HorizontalAlignment.Center
+            text: "Restore past purchases"
+            enabled: ! paymentServiceControl.isPaymentSystemBusy
+            onClicked: paymentServiceControl.getExisting(true)
+        }
+    }
+}

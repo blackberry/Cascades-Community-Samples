@@ -3,16 +3,10 @@ SimplePushClient
 ========================================================================
 Sample Description.
 
-This sample provides 2 basic functions of a BlackBerry Push Initiator. Namely it 
-will support:
-1) Send a message to one or more recipients
-2) Request a list of currently active push subscribers
-
-This sample makes use of pre-defined template files which follow the conventions 
-expected by the push service. As a developer you should be able to add extra 
-functionality by adding additional templates then following the same flow used 
-by the app to swap out information to make the request relevant to the desired 
-call.
+This sample allows for receiving push messages at various priority levels;
+the level will determine how intrusive the notification to the end user will
+be. The app also integrates with the SceneCover to provide details on app
+activity to the end user even when the application is thumbnailed.
 
 Note: This sample was designed to work in tandem with the SimplePushServer app 
       though it could easily be modified to push to any client.

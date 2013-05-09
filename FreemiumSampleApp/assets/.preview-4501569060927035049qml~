@@ -1,0 +1,83 @@
+// Default empty project template
+import bb.cascades 1.0
+import bb.cascades.advertisement 1.0
+import com.sample.payment 1.0
+
+// creates one page with a label
+
+TabbedPane {
+    property bool hasRemoveAdsBeenPurchased: false
+    property int goodsPurchased
+    attachedObjects: [
+        PaymentServiceControl {
+            id: paymentServiceControl
+            onInfoResponseError: {
+                log.text = "Error: " + errorCode + "\nDetails: " + errorText;
+            }
+        }
+    ]
+    Tab {
+        Page {
+            Container {
+                horizontalAlignment: HorizontalAlignment.Fill
+                FreemiumBanner {
+                    scaleX: 2.0
+                    scaleY: 2.0
+                    hideAd: getRidOfAds.owned
+                    horizontalAlignment: HorizontalAlignment.Center
+                    onHideAdChanged: console.log("Hide ad: " + hideAd);
+                }
+                DigitalGood {
+                    id: dog
+                    imageSource: "asset:///images/page1.png"
+                    sku: "1"
+                    enabled: ! paymentServiceControl.isPaymentSystemBusy
+                    onClicked: {
+                        if (dog.owned) {
+                            //do something
+                        } else {
+                            dog.enabled = ! paymentServiceControl.isPaymentSystemBusy;
+                            paymentServiceControl.purchase(dog.sku, "Dog");
+                        }
+                    }
+                    onCreationCompleted: {
+                        paymentServiceControl.skuOwned.connect(purchaseMade);
+                    }
+                }
+                DigitalGood {
+                    id: getRidOfAds
+                    imageSource: "asset:///images/page2.png"
+                    sku: "2"
+                    enabled: ! paymentServiceControl.isPaymentSystemBusy
+                    onClicked: {
+                        if (getRidOfAds.owned) {
+                            //do something
+                        } else {
+                            paymentServiceControl.purchase(getRidOfAds.sku, "Ad-B-Gone");
+                        }
+                    }
+                    onCreationCompleted: {
+                        paymentServiceControl.skuOwned.connect(purchaseMade);
+                    }
+                    onOwnedChanged: hasRemoveAdsBeenPurchased = owned;
+                }
+                Button {
+                    text: "Check dog price"
+                    enabled: ! paymentServiceControl.isPaymentSystemBusy
+                    onClicked: paymentServiceControl.getPrice("1")
+                }
+                Button {
+                    text: "Check past purchased dogs"
+                    enabled: ! paymentServiceControl.isPaymentSystemBusy
+                    onClicked: paymentServiceControl.getExisting(false)
+                }
+                TextArea {
+                    id: log
+                }
+            }
+        }
+    }
+    onCreationCompleted: {
+        paymentServiceControl.getExisting(false);
+    }
+}
