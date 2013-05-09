@@ -1,0 +1,39 @@
+import bb.cascades 1.0
+
+Container {
+    id: digitalGood
+    property bool owned: false
+    property string sku
+    property alias imageSource: goodImage.imageSource
+    signal clicked()
+    signal purchaseMade(string purchaseSku)
+    layout: DockLayout {
+    }
+    ImageView {
+        id: goodImage
+        preferredHeight: 200
+        preferredWidth: 200
+        horizontalAlignment: HorizontalAlignment.Center
+        verticalAlignment: VerticalAlignment.Center
+    }
+    Container {
+        layout: DockLayout {
+        }
+        visible: ! owned
+        background: Color.LightGray
+        opacity: 0.3
+        horizontalAlignment: HorizontalAlignment.Fill
+        verticalAlignment: VerticalAlignment.Fill
+        ImageView {
+            imageSource: "asset:///images/lock.png"
+            horizontalAlignment: HorizontalAlignment.Center
+            verticalAlignment: VerticalAlignment.Center
+        }
+    }
+    gestureHandlers: TapHandler {
+        onTapped: clicked()
+    }
+    onPurchaseMade: {
+        digitalGood.owned |= (purchaseSku == digitalGood.sku);
+    }
+}

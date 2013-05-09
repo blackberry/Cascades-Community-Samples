@@ -1,0 +1,92 @@
+// Default empty project template
+import bb.cascades 1.0
+//import com.sample.payment 1.0
+// creates one page with a label
+
+NavigationPane {
+    id: navigationPane
+    property bool removeAdsPurchased: false
+        property bool tBeamPurchased: false
+            property bool freakinLaserBeamPurchased: false
+    attachedObjects: [
+    /*PaymentServiceControl {
+     * id: paymentServiceControl
+     * onInfoResponseError: {
+     * log.text = "Error: " + errorCode + "\nDetails: " + errorText;
+     * }
+     * },
+     * StorePage {
+     * id: store
+     * }*/
+    ]
+    Page {
+        id: main
+        property double scale: 2.0
+        Container {
+            layout: DockLayout {
+            }
+            ImageView {
+                scalingMethod: ScalingMethod.AspectFill
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+                imageSource: "asset:///images/backgroundLandscape.png"
+            }
+            /*FreemiumBanner {
+             * hideAd: removeAdsPurchased
+             * horizontalAlignment: HorizontalAlignment.Center
+             * }*/
+            ImageView {
+                imageSource: "asset:///images/tbeam.png"
+                scaleX: main.scale
+                scaleY: main.scale
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Center
+                translationY: 130
+            }
+            ImageView {
+                imageSource: "asset:///images/freakinLaserBeam.png"
+                scaleX: main.scale
+                scaleY: main.scale
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Center
+                translationY: 110
+                translationX: -2
+            }
+            ImageView {
+                imageSource: "asset:///images/ufo.png"
+                scaleX: main.scale
+                scaleY: main.scale
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Center
+                translationY: -140
+            }
+            Container {
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Bottom
+                bottomPadding: 100
+                layout: StackLayout {
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                ImageButton {
+                    defaultImageSource: "asset:///images/play.png"
+                }
+                ImageButton {
+                    defaultImageSource: "asset:///images/shop.png"
+                    onClicked: navigationPane.push(store)
+                }
+            }
+            Container {
+                horizontalAlignment: HorizontalAlignment.Right
+                verticalAlignment: VerticalAlignment.Bottom
+                rightPadding: 25
+                bottomPadding: 25
+                ImageButton {
+                    defaultImageSource: "asset:///images/ic_bbm.png"
+                }
+            }
+        }
+    }
+    onCreationCompleted: {
+        paymentServiceControl.getExisting(false);
+    }
+}
