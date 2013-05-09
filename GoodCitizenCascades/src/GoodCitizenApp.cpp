@@ -16,13 +16,18 @@
 #include <bb/cascades/AbsoluteLayout>
 #include <bb/cascades/StackLayoutProperties>
 #include <bb/cascades/Application>
+#include <bb/cascades/Window>
 #include <bb/cascades/Button>
 #include <bb/cascades/Container>
 #include <bb/cascades/Color>
-#include <bb/cascades/ForeignWindow>
+#include <bb/cascades/ForeignWindowControl>
 #include <bb/cascades/ImplicitAnimationController>
 #include <bb/cascades/Page>
+#include <bb/cascades/LayoutUpdateHandler>
+#include <bb/cascades/NavigationPane>
 #include <bb/cascades/QmlDocument>
+#include <bb/cascades/SceneCover>
+
 #include <QtCore/QTimer>
 #include <QDebug>
 
@@ -40,78 +45,75 @@ using namespace bb::cascades;
 
 GoodCitizenApp::GoodCitizenApp()
 {
-    QmlDocument *qml = QmlDocument::create("main.qml");
+
+	Application::instance()->setAutoExit(false);
+
+	QObject::connect(
+			Application::instance(),
+			SIGNAL(manualExit()),
+			this,
+			SLOT(shutdown()));
+
+
+    QmlDocument *qml = QmlDocument::create("asset:///main.qml");
 
     if (!qml->hasErrors()) {
+       	OpenGLView::setRenderingAPI(GL_ES_1);
+
+		m_pGoodCitizen = new GoodCitizen(DISPLAY_DEVICE);
+
+        qml->setContextProperty("_goodCitizen", m_pGoodCitizen);
 
         // The application NavigationPane is created from QML.
-    	m_navPane = qml->createRootNode<NavigationPane>();
+    	m_navPane = qml->createRootObject<NavigationPane>();
         if (m_navPane) {
+        	m_fwBound = false;
+         	m_pForeignWindowControl = m_navPane->findChild<ForeignWindowControl*>("goodCitizenCascadesFW");
 
-        	m_pOpenGLThread = new OpenGLThread();
+         	LayoutUpdateHandler *handler = LayoutUpdateHandler::create(m_pForeignWindowControl)
+        	    .onLayoutFrameChanged(this, SLOT(onLayoutFrameChanged(const QRectF &)));
 
-        	m_pGoodCitizen = new GoodCitizen();
 
-        	//m_pGoodCitizen->moveToThread(m_pOpenGLThread);
-        	m_pOpenGLThread->addView(m_pGoodCitizen);
-
-            qml->setContextProperty("_navPane", m_navPane);
-            qml->setContextProperty("_goodCitizen", m_pGoodCitizen);
-            qml->setContextProperty("_openGLThread", m_pOpenGLThread);
+    		// connect ForeignWindowControl signals to slots
+    		QObject::connect(m_pForeignWindowControl, SIGNAL(touch(bb::cascades::TouchEvent *)),
+    						 m_pGoodCitizen,   SLOT(onTouch(bb::cascades::TouchEvent *)) );
 
             // Finally the main scene for the application is set the Page.
-            Application::setScene(m_navPane);
-
-            // use a timer to startup OpenGL code
-            QTimer* timer = new QTimer(this);
-            timer->setSingleShot(true);
-
-        	QObject::connect(timer,
-        			SIGNAL(timeout()),
-        			this,
-        			SLOT(onTimeout()));
-
-        	timer->start(1000);
+            Application::instance()->setScene(m_navPane);
         }
     }
 }
 
-void GoodCitizenApp::onAttachedChanged(bool changed) {
-	qDebug()  << "GoodCitizenApp::onAttachedChanged: " << changed;
+void GoodCitizenApp::shutdown() {
+	qDebug()  << "GoodCitizenApp::shutdown";
+
+	OpenGLView::shutdown();
+
+	Application::instance()->quit();
 }
 
-void GoodCitizenApp::onWindowAttached(unsigned long handle, const QString &group, const QString &id) {
+void GoodCitizenApp::onLayoutFrameChanged(const QRectF &layoutFrame) {
+	qDebug()  << "GoodCitizenApp::onLayoutFrameChanged: " << m_pForeignWindowControl;
 
-	qDebug()  << "GoodCitizenApp::onWindowAttached: " << handle << ":" << group << ":" << id;
-}
+	fprintf(stderr, "fw size: %f,%f %fx%f\n", layoutFrame.x(), layoutFrame.y(), layoutFrame.width(), layoutFrame.height());
 
-void GoodCitizenApp::onTimeout() {
+	if (m_fwBound == false) {
+		m_fwBound = true;
 
-	qDebug()  << "GoodCitizenApp::onCreationCompleted: ";
+		QString mainWindowGroupId = Application::instance()->mainWindow()->groupId();
 
-    // Get the foreign window Control specified in QML and attach to the window attached signal.
-	//Page *page = m_navPane->findChild<Page*>("nav");
-    //Container *container = page->findChild<Container*>("back");
-	m_pForeignWindow = m_navPane->findChild<ForeignWindow*>("goodCitizenCascadesFW");
+		m_pGoodCitizen->setWindowGroup(mainWindowGroupId);
+		m_pGoodCitizen->setWindowID("goodCitizenCascadesAppID1");
+		m_pGoodCitizen->setPosition(layoutFrame.x(), layoutFrame.y());
+		m_pGoodCitizen->setSize(layoutFrame.width(), layoutFrame.height());
+		m_pGoodCitizen->add();
+		m_pGoodCitizen->setEnabled(true);
 
-	qDebug()  << "GoodCitizenApp::onCreationCompleted: " << m_pForeignWindow;
-
-	QObject::connect(m_pForeignWindow,
-			SIGNAL(windowAttached(unsigned long,const QString&,const QString&)),
-			this,
-			SLOT(onWindowAttached(unsigned long,const QString&,const QString&)));
-
-	// connect ForeignWindow signals to slots
-	QObject::connect(m_pForeignWindow, SIGNAL(touch(bb::cascades::TouchEvent *)),
-					 m_pGoodCitizen,   SLOT(onTouch(bb::cascades::TouchEvent *)) );
-
-	StackLayoutProperties *layoutProperties =
-            dynamic_cast<StackLayoutProperties*>(m_pForeignWindow->layoutProperties());
-
-	m_pGoodCitizen->bind(ForeignWindow::mainWindowGroupId(), "goodCitizenCascadesAppID",
-			(int) m_pForeignWindow->translationX(), (int) m_pForeignWindow->translationY(), m_pForeignWindow->preferredWidth(), m_pForeignWindow->preferredHeight());
-
-	m_pOpenGLThread->start();
-
-	m_pForeignWindow->setVisible(true);
+		m_pForeignWindowControl->setVisible(true);
+	} else {
+		m_pGoodCitizen->setAngle(OrientationSupport::instance()->displayDirection());
+		m_pGoodCitizen->setPosition(layoutFrame.x(), layoutFrame.y());
+		m_pGoodCitizen->setSize(layoutFrame.width(), layoutFrame.height());
+		m_pGoodCitizen->setAltered(true);
+	}
 }

@@ -20,6 +20,7 @@
 
 #include <bb/cascades/ForeignWindowControl>
 #include <bb/cascades/Button>
+#include <bb/cascades/Application>
 
 #include <camera/camera_api.h>
 
@@ -39,7 +40,7 @@ public slots:
 	void onTakePicture();
 
 public:
-    HelloCameraApp();
+    HelloCameraApp(bb::cascades::Application *app);
     ~HelloCameraApp();
 
 signals:

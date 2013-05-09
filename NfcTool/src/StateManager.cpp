@@ -86,6 +86,8 @@ void StateManager::setDefaultState() {
 	m_inDetectAndWriteState = false;
 	m_inNdefPushState = false;
 	m_inTagEmulationState = false;
+	m_inIso14443_4_EmulationState = false;
+	m_event_log_is_showing = false;
 	emit inDetectAndWriteStateChanged();
 	emit inNdefPushStateChanged();
 }
@@ -122,4 +124,15 @@ void StateManager::setTagEmulationState(bool tag_emulation_state) {
 	qDebug() << "XXXX StateManager::setTagEmulationState=" << tag_emulation_state;
 	m_inTagEmulationState = tag_emulation_state;
 	emit inTagEmulationStateChanged();
+}
+
+bool StateManager::inIso14443_4_EmulationState() const {
+	qDebug() << "XXXX StateManager::inIso14443_4_EmulationState=" << m_inIso14443_4_EmulationState;
+	return m_inIso14443_4_EmulationState;
+}
+
+void StateManager::setIso14443_4_EmulationState(bool emulation_state) {
+	qDebug() << "XXXX StateManager::setIso14443_4_EmulationState=" << emulation_state;
+	m_inIso14443_4_EmulationState = emulation_state;
+	emit inIso14443_4_EmulationStateChanged();
 }

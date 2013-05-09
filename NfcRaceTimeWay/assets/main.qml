@@ -371,10 +371,13 @@ NavigationPane {
 	            }
 
                 TextArea {
-                    text: qsTr("NFC Race Time Waypoint V1.1 written by:\n John Murray (@jcmrim) & Martin Woolley (@mdwrim)\n© 2012 Research In Motion Limited.")
+                    text: qsTr("NFC Race Time Waypoint V1.1.1 written by:\n John Murray (@jcmrim) & Martin Woolley (@mdwrim)\n© 2012 Research In Motion Limited.")
                     editable: false
                     verticalAlignment: VerticalAlignment.Bottom
                     horizontalAlignment: HorizontalAlignment.Center
+                    inputMode: TextAreaInputMode.Text
+                    input.flags: TextInputFlag.SpellCheckOff
+                    content.flags: TextContentFlag.ActiveTextOff | TextContentFlag.EmoticonsOff 
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
                         fontWeight: FontWeight.W100

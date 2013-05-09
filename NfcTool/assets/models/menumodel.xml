@@ -1,11 +1,15 @@
 <root>
-    <menuitem title="Read"                   image="asset:///images/read.png" file="reader.qml" itemName="item_read"/>
-    <menuitem title="Write URI"              image="asset:///images/uri.png" file="write_uri.qml" itemName="item_uri"/>
-    <menuitem title="Write Smart Poster"     image="asset:///images/sp.png" file="write_sp.qml" itemName="item_sp"/>
-    <menuitem title="Write Text"             image="asset:///images/text.png" file="write_text.qml" itemName="item_text"/>
-    <menuitem title="Write Custom"           image="asset:///images/custom.png" file="write_custom.qml" itemName="item_custom"/>
-    <menuitem title="Send vCard (SNEP)"      image="asset:///images/snep.png" file="snep_vcard.qml" itemName="item_snep_vcard"/>
-    <menuitem title="Emulate Tag"            image="asset:///images/tag.png" file="emulate_sp.qml" itemName="item_emulate_tag"/>
-    <menuitem title="ISO7816 APDU"           image="asset:///images/iso7816.png" file="" itemName="item_iso7816"/>
-    <menuitem title="About"                  image="asset:///images/about.png" file="about.qml" itemName="item_about"/>
+    <menuitem title="Read NDEF"                image="asset:///images/read.png" file="" itemName="item_read"/>
+    <menuitem title="Tag Details"              image="asset:///images/id.png" file="" itemName="item_tag_details"/>
+    <menuitem title="Write URI"                image="asset:///images/uri.png" file="write_uri.qml" itemName="item_uri"/>
+    <menuitem title="Write Smart Poster"       image="asset:///images/sp.png" file="write_sp.qml" itemName="item_sp"/>
+    <menuitem title="Write Text"               image="asset:///images/text.png" file="write_text.qml" itemName="item_text"/>
+    <menuitem title="Write Custom"             image="asset:///images/custom.png" file="write_custom.qml" itemName="item_custom"/>
+    <menuitem title="Send vCard (SNEP)"        image="asset:///images/snep.png" file="snep_vcard.qml" itemName="item_snep_vcard"/>
+    <menuitem title="Emulate Tag"              image="asset:///images/tag.png" file="emulate_sp.qml" itemName="item_emulate_tag"/>
+    <menuitem title="Emulate Echo Applet"    image="asset:///images/echo.png" file="l" itemName="item_emulate_echo"/>
+    <menuitem title="ISO7816 APDU"             image="asset:///images/iso7816.png" file="" itemName="item_iso7816"/>
+    <menuitem title="Read ISO15693"            image="asset:///images/tag.png" file="" itemName="item_read_iso15693"/>
+    <menuitem title="Amsterdam Transport Pass" image="asset:///images/GVB.png" file="" itemName="item_read_gvb"/>
+    <menuitem title="About"                    image="asset:///images/about.png" file="about.qml" itemName="item_about"/>
 </root>

@@ -26,8 +26,8 @@ int main(int argc, char **argv)
     Application app(argc, argv);
 
     // initialize camera app
-    HelloVideoCameraApp mainApp;
+    new HelloVideoCameraApp(&app);
 
-    return Application::exec();
+    return app.exec();
 }
 

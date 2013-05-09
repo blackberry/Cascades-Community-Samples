@@ -12,231 +12,120 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ */import bb.cascades 1.0
 
-import bb.cascades 1.0
+// panel for changing tool axis
 
-// Color sliders for changing object color
 Page {
     content: Container {
-        background: Color.create ("#262626")
-        preferredWidth: 768
+        background: Color.create("#262626")
         
         layout: StackLayout {
         }
         
         Container {
-            layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
-                leftPadding: 20
-                rightPadding: leftPadding
-                topPadding: 10
-                bottomPadding: topPadding
+	        background: Color.create("#262626")
+	        horizontalAlignment: HorizontalAlignment.Fill
+	        layout: StackLayout {
             }
-
-	        layoutProperties: StackLayoutProperties {
+        
+	        ForeignWindowControl {
+	            id: viewWindow
+	            visible: true // becomes visible once attached
+	            horizontalAlignment: HorizontalAlignment.Fill
+	            verticalAlignment: VerticalAlignment.Fill
+	        }
+	        
+	        Container {
+	            leftPadding: 10
+	            rightPadding: leftPadding
+	            topPadding: 10
+	            bottomPadding: topPadding
 	            horizontalAlignment: HorizontalAlignment.Center
-	        }
-
-
-	        Container {
-	            layout: DockLayout {
-	                leftPadding: 20
-	                rightPadding: leftPadding
+	            layout: StackLayout {
+	                orientation: LayoutOrientation.LeftToRight
 	            }
 	
-		        layoutProperties: StackLayoutProperties {
-		            horizontalAlignment: HorizontalAlignment.Center
-		        }
-		        
-		        ImageView {
-		            id: xAxisSelected
-		            imageSource: "asset:///images/axes/xAxisSelected.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		            opacity: 0.0
-		            
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-		        }
-	
-		        ImageView {
-		            id: xAxis
-		            imageSource: "asset:///images/axes/xAxis.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-
-	                onTouch: {
-	                    xAxis.opacity = 0.0;
-	                    xAxisSelected.opacity = 1.0;
-	                    yAxis.opacity = 1.0;
-	                    yAxisSelected.opacity = 0.0;
-	                    zAxis.opacity = 1.0;
-	                    zAxisSelected.opacity = 0.0;
-	                    
-	                    _goodCitizen.setToolAxis("X");                    
+	            ImageToggleButton {
+	                id: xAxis
+	                imageSourceDefault: "asset:///images/axes/xAxis.png"
+	                imageSourceChecked: "asset:///images/axes/xAxisSelected.png"
+	                imageSourceDisabledUnchecked: "asset:///images/axes/xAxis.png"
+	                imageSourceDisabledChecked: "asset:///images/axes/xAxisSelected.png"
+	                imageSourcePressedUnchecked: "asset:///images/axes/xAxis.png"
+	                imageSourcePressedChecked: "asset:///images/axes/xAxisSelected.png"
+	                checked: false
+	                onCheckedChanged: {
+	                    if (checked == true) {
+	                        yAxis.checked = false;
+	                        zAxis.checked = false;
+	                        _goodCitizen.setToolAxis("X");
+	                   }
 	                }
-		        }
-		        
-	        }
-
-
-
-	        Container {
-	            layout: DockLayout {
-	                leftPadding: 20
-	                rightPadding: leftPadding
 	            }
-	
-		        layoutProperties: StackLayoutProperties {
-		            horizontalAlignment: HorizontalAlignment.Center
-		        }
-		        
-		        ImageView {
-		            id: yAxisSelected
-		            imageSource: "asset:///images/axes/yAxisSelected.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		            opacity: 0.0
-		            
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-		        }
-	
-		        ImageView {
-		            id: yAxis
-		            imageSource: "asset:///images/axes/yAxis.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-
-	                onTouch: {
-	                    xAxis.opacity = 1.0;
-	                    xAxisSelected.opacity = 0.0;
-	                    yAxis.opacity = 0.0;
-	                    yAxisSelected.opacity = 1.0;
-	                    zAxis.opacity = 1.0;
-	                    zAxisSelected.opacity = 0.0;
-	                    
-	                    _goodCitizen.setToolAxis("Y");                    
+	            ImageToggleButton {
+	                id: yAxis
+	                imageSourceDefault: "asset:///images/axes/yAxis.png"
+	                imageSourceChecked: "asset:///images/axes/yAxisSelected.png"
+	                imageSourceDisabledUnchecked: "asset:///images/axes/yAxis.png"
+	                imageSourceDisabledChecked: "asset:///images/axes/yAxisSelected.png"
+	                imageSourcePressedUnchecked: "asset:///images/axes/yAxis.png"
+	                imageSourcePressedChecked: "asset:///images/axes/yAxisSelected.png"
+	                checked: false
+	                onCheckedChanged: {
+	                    if (checked == true) {
+	                        xAxis.checked = false;
+	                        zAxis.checked = false;
+	                        _goodCitizen.setToolAxis("Y");
+	                    }
 	                }
-		        }
-		        
-	        }
-
-
-
-	        Container {
-	            layout: DockLayout {
-	                leftPadding: 20
-	                rightPadding: leftPadding
 	            }
-	
-		        layoutProperties: StackLayoutProperties {
-		            horizontalAlignment: HorizontalAlignment.Center
-		        }
-		        
-		        ImageView {
-		            id: zAxisSelected
-		            imageSource: "asset:///images/axes/zAxisSelected.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		            opacity: 0.0
-		            
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-		        }		        
-	
-		        ImageView {
-		            id: zAxis
-		            imageSource: "asset:///images/axes/zAxis.png"
-		            preferredWidth: 200
-		            preferredHeight: 200
-		
-		            layoutProperties: DockLayoutProperties {
-		                horizontalAlignment: HorizontalAlignment.Center
-		                verticalAlignment: VerticalAlignment.Center
-		            }
-
-	                onTouch: {
-	                    xAxis.opacity = 1.0;
-	                    xAxisSelected.opacity = 0.0;
-	                    yAxis.opacity = 1.0;
-	                    yAxisSelected.opacity = 0.0;
-	                    zAxis.opacity = 0.0;
-	                    zAxisSelected.opacity = 1.0;
-	                    
-	                    _goodCitizen.setToolAxis("Z");                    
+	            ImageToggleButton {
+	                id: zAxis
+	                imageSourceDefault: "asset:///images/axes/zAxis.png"
+	                imageSourceChecked: "asset:///images/axes/zAxisSelected.png"
+	                imageSourceDisabledUnchecked: "asset:///images/axes/zAxis.png"
+	                imageSourceDisabledChecked: "asset:///images/axes/zAxisSelected.png"
+	                imageSourcePressedUnchecked: "asset:///images/axes/zAxis.png"
+	                imageSourcePressedChecked: "asset:///images/axes/zAxisSelected.png"
+	                checked: false
+	                onCheckedChanged: {
+	                    if (checked == true) {
+	                        xAxis.checked = false;
+	                        yAxis.checked = false;
+	                        _goodCitizen.setToolAxis("Z");
+	                    }
 	                }
-		        }
+	            }
 	        }
-
-        }
-       
-        ForeignWindow {
-             id: viewWindow
-             preferredWidth: 768
-             preferredHeight: 950
-             visible: true // becomes visible once attached
-
-	         layoutProperties: DockLayoutProperties {
-	              horizontalAlignment: HorizontalAlignment.Center
-	              verticalAlignment: VerticalAlignment.Top
-	         }
-        }
-          
-	    onCreationCompleted : {
-            var loadAxis = _goodCitizen.toolAxis;
-            console.log(loadAxis);
-
-            xAxis.opacity = 1.0;
-            yAxis.opacity = 1.0;
-            zAxis.opacity = 1.0;
-            xAxisSelected.opacity = 0.0;
-            yAxisSelected.opacity = 0.0;
-            zAxisSelected.opacity = 0.0;
-            
-            if (loadAxis == "X") {
-	            xAxis.opacity = 0.0;
-	            xAxisSelected.opacity = 1.0;
-            } else
-            if (loadAxis == "Y") {
-	            yAxisSelected.opacity = 1.0;
-	            yAxis.opacity = 0.0;
-            } else
-            if (loadAxis == "Z") {
-	            zAxisSelected.opacity = 1.0;
-	            zAxis.opacity = 0.0;
-            }
         }
         
-    }
-/*        
-    actions: [
-        ActionItem {
-            title: "Back"
-            imageSource: "asset:///images/actions/back.png"
-            
-            onTriggered: {
-                // _navPane is set in code to make it available for all recipe pages.
-                _navPane.pop ();
+        onCreationCompleted: {
+            var loadAxis = _goodCitizen.toolAxis;
+            console.log(loadAxis);
+            if (loadAxis == "X") {
+                xAxis.checked = true;
+                yAxis.checked = false;
+                zAxis.checked = false;
+            } else if (loadAxis == "Y") {
+                xAxis.checked = false;
+                yAxis.checked = true;
+                zAxis.checked = false;
+            } else if (loadAxis == "Z") {
+                xAxis.checked = false;
+                yAxis.checked = false;
+                zAxis.checked = true;
             }
         }
-    ]
-*/  
+    }
+/*    
+    paneProperties: NavigationPaneProperties {
+        backButton: ActionItem {
+            title: "Previous page"
+            //imageSource: "asset:///back.png"
+            onTriggered: { nav.pop(); }
+        }
+    }
+*/    
+    actionBarVisibility: ChromeVisibility.Visible    
 }

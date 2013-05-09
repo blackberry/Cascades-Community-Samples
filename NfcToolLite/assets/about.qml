@@ -50,6 +50,9 @@ Page {
                     enabled: false
                     editable: false
                     preferredWidth: 650
+                    inputMode: TextAreaInputMode.Text
+                    input.flags: TextInputFlag.SpellCheckOff
+                    content.flags: TextContentFlag.ActiveTextOff | TextContentFlag.EmoticonsOff 
                     textStyle {
                         base: SystemDefaults.TextStyles.BodyText
                         fontWeight: FontWeight.W100
@@ -107,6 +110,9 @@ Page {
                     enabled: false
                     editable: false
                     preferredWidth: 650
+                    inputMode: TextAreaInputMode.Text
+                    input.flags: TextInputFlag.SpellCheckOff
+                    content.flags: TextContentFlag.ActiveTextOff | TextContentFlag.EmoticonsOff 
                     textStyle {
                         base: SystemDefaults.TextStyles.BodyText
                         fontWeight: FontWeight.W100
@@ -130,6 +136,9 @@ Page {
                     enabled: false
                     editable: false
                     preferredWidth: 650
+                    inputMode: TextAreaInputMode.Text
+                    input.flags: TextInputFlag.SpellCheckOff
+                    content.flags: TextContentFlag.ActiveTextOff | TextContentFlag.EmoticonsOff 
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
                         fontWeight: FontWeight.W100

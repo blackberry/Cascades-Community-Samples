@@ -19,6 +19,8 @@ NavigationPane {
     id: nav
     objectName: "navPane"
     
+    signal menuShowing()
+                
     function updateData() {
     }
     
@@ -61,6 +63,7 @@ NavigationPane {
         if (page == menuListPage) {
             // Clear selection when returning to the menu list page.
             menuList.clearSelection ();
+            nav.menuShowing();
         }
     }
 }

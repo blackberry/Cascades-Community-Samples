@@ -22,12 +22,12 @@ using namespace bb::cascades;
 HelloOggVorbis::HelloOggVorbis()
 {
     // Here we create a QMLDocument and load it, we are using build patterns.
-    QmlDocument *qml = QmlDocument::create().load("cowbell.qml");
+    QmlDocument *qml = QmlDocument::create("asset:///cowbell.qml");
 
     if (!qml->hasErrors()) {
 
         // The application Page is created from QML.
-        Page *appPage = qml->createRootNode<Page>();
+        Page *appPage = qml->createRootObject<Page>();
 
         if (appPage) {
 
@@ -40,7 +40,7 @@ HelloOggVorbis::HelloOggVorbis()
             mSoundManager = new SoundManager("sounds/");
 
             // Finally the main scene for the application is set the Page.
-            Application::setScene(appPage);
+            Application::instance()->setScene(appPage);
         }
 
     }

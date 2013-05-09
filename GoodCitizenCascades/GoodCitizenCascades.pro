@@ -17,9 +17,8 @@
 TEMPLATE = app
 TARGET = GoodCitizenCascades
 
-CONFIG += qt warn_on debug_and_release cascades
+CONFIG += qt warn_on debug_and_release cascades10
 LIBS   += -lpps -lscreen -lEGL -lGLESv1_CM -lfreetype -lpng  -lbb
-#LIBS   += -lpps -lscreen -lEGL -lGLESv1_CM -lfreetype -lpng  -lbb -lQtCascades -lheimdall ${QNX_TARGET}/../target-override/armle-v7/usr/lib/libQtCascades_main.a
 
 INCLUDEPATH += ../src
 SOURCES += ../src/*.cpp 
@@ -28,6 +27,8 @@ HEADERS += ../src/*.hpp ../src/*.h
 device {
 	CONFIG(release, debug|release) {		
 		DESTDIR = o.le-v7		
+		TEMPLATE=lib
+		QMAKE_CXXFLAGS += -fvisibility=hidden
 	} 
 	CONFIG(debug, debug|release) {
 		DESTDIR = o.le-v7-g

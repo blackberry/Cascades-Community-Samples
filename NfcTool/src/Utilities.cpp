@@ -17,6 +17,7 @@
 #include <QChar>
 #include <QString>
 #include <QDebug>
+#include <nfc/nfc_types.h>
 
 const QString Utilities::HEX_CHARS = QString("0123456789ABCDEF");
 
@@ -29,7 +30,7 @@ uint8_t Utilities::hexToInt(QChar c1, QChar c2) {
 	return result;
 }
 
-void Utilities::hexToIntArray(QString hex_string,uint8_t* output) {
+void Utilities::hexToIntArray(QString hex_string, uint8_t* output) {
 	const size_t numdigits = hex_string.length() / 2;
 	for (size_t i = 0; i != numdigits; ++i) {
 		output[i] = hexToInt(hex_string.at(2 * i), hex_string.at(2 * i + 1));
@@ -52,5 +53,85 @@ bool Utilities::isValidHex(QString hex_string) {
 		}
 	}
 	return true;
+}
+
+bool Utilities::isSameCharArray(unsigned char* array1, unsigned char* array2, int array_length) {
+	for (int i = 0; i < array_length; i++) {
+		if (array1[i] != array2[i]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+QString Utilities::getOperationResultName(int rc) {
+
+	switch (rc) {
+	case NFC_RESULT_SUCCESS:
+		return QString("NFC_RESULT_SUCCESS");
+	case NFC_RESULT_INVALID_PARAMETER:
+		return QString("NFC_RESULT_INVALID_PARAMETER");
+	case NFC_RESULT_FEATURE_NOT_IMPLEMENTED:
+		return QString("NFC_RESULT_FEATURE_NOT_IMPLEMENTED");
+	case NFC_RESULT_UNSUPPORTED_API:
+		return QString("NFC_RESULT_UNSUPPORTED_API");
+	case NFC_RESULT_LOCKED:
+		return QString("NFC_RESULT_LOCKED");
+	case NFC_RESULT_LIMITATION_EXCEEDED:
+		return QString("NFC_RESULT_LIMITATION_EXCEEDED");
+	case NFC_RESULT_OPERATION_NOT_SUPPORTED:
+		return QString("NFC_RESULT_OPERATION_NOT_SUPPORTED");
+	case NFC_RESULT_OPERATION_REJECTED:
+		return QString("NFC_RESULT_OPERATION_REJECTED");
+	case NFC_RESULT_SERVICE_CONNECTION_ERROR:
+		return QString("NFC_RESULT_SERVICE_CONNECTION_ERROR");
+	case NFC_RESULT_P2P_REJECTED:
+		return QString("NFC_RESULT_P2P_REJECTED");
+	case NFC_RESULT_TIMEOUT:
+		return QString("NFC_RESULT_TIMEOUT");
+	case NFC_RESULT_RESOURCE_BUSY:
+		return QString("NFC_RESULT_RESOURCE_BUSY");
+	case NFC_RESULT_NOT_ENOUGH_SPACE:
+		return QString("NFC_RESULT_NOT_ENOUGH_SPACE");
+	case NFC_RESULT_OUT_OF_MEMORY:
+		return QString("NFC_RESULT_OUT_OF_MEMORY");
+	case NFC_RESULT_FD_ACCESS_ERROR:
+		return QString("NFC_RESULT_FD_ACCESS_ERROR");
+	case NFC_RESULT_LOCK_FAILED:
+		return QString("NFC_RESULT_LOCK_FAILED");
+	case NFC_RESULT_WRITE_FAILED:
+		return QString("NFC_RESULT_WRITE_FAILED");
+	case NFC_RESULT_READ_FAILED:
+		return QString("NFC_RESULT_READ_FAILED");
+	case NFC_RESULT_NOT_NFC_TAG_BUT_CAPABLE:
+		return QString("NFC_RESULT_NOT_NFC_TAG_BUT_CAPABLE");
+	case NFC_RESULT_TAG_NOT_SUPPORTED:
+		return QString("NFC_RESULT_TAG_NOT_SUPPORTED");
+	case NFC_RESULT_BAD_NDEF_FORMAT:
+		return QString("NFC_RESULT_BAD_NDEF_FORMAT");
+	case NFC_RESULT_SE_INPUT_TOO_SHORT:
+		return QString("NFC_RESULT_SE_INPUT_TOO_SHORT");
+	case NFC_RESULT_SE_INVALID_HANDLE:
+		return QString("NFC_RESULT_SE_INVALID_HANDLE");
+	case NFC_RESULT_SE_SERVICE_NOT_READY:
+		return QString("NFC_RESULT_SE_SERVICE_NOT_READY");
+	case NFC_RESULT_SE_OUT_OF_LOGICAL_CHANNELS:
+		return QString("NFC_RESULT_SE_OUT_OF_LOGICAL_CHANNELS");
+	case NFC_RESULT_SE_AID_NOT_FOUND:
+		return QString("NFC_RESULT_SE_AID_NOT_FOUND");
+	case NFC_RESULT_SE_INVALID_APDU:
+		return QString("NFC_RESULT_SE_INVALID_APDU");
+	case NFC_RESULT_SE_NOT_PRESENT:
+		return QString("NFC_RESULT_SE_NOT_PRESENT");
+	case NFC_RESULT_SE_REQUEST_REJECTED:
+		return QString("NFC_RESULT_SE_REQUEST_REJECTED");
+	case NFC_RESULT_UNHANDLED_ERROR:
+		return QString("NFC_RESULT_UNHANDLED_ERROR");
+	case NFC_RESULT_ERROR:
+		return QString("NFC_RESULT_ERROR");
+	default:
+		return QString("UNKNOWN RESULT CODE");
+	};
+
 }
 

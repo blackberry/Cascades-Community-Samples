@@ -12,30 +12,42 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
+/* Copyright (c) 2012 Research In Motion Limited.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import bb.cascades 1.0
 
-// The application page with a Container as content, all UI components are children to that Container.
+// This is the application Page with a Container as content, all UI components are children to that Container.
+
 Page {
-    property bool trigLeft: false
-    property bool trigRight: false
-    
-    content: Container {
+    Container {
         layout: AbsoluteLayout {
         }
-    
-        // Background ImageView.
+
+        // Background ImageView
         ImageView {
             imageSource: "asset:///images/background.png"
-        
-            // If we touch the background we want a moo to sound.
+
+            // If we touch the background, we want to play a "moo" sound.
             onTouch: {
-                if (event.isDown ()) {
-                    cowbellApp.playSound ("moo.ogg");
+                if (event.isDown()) {
+                    cowbellApp.playSound("moo.ogg");
                 }
             }
         }
-    
-        // The bell.
+
+        // The bell
         ImageView {
             id: bell
             imageSource: "asset:///images/bell.png"
@@ -47,16 +59,20 @@ Page {
             }
 
             // The bell should rotate around a point located in the middle of
-            // the image in x-direction and located somewhere above the screen
-            // in y (it hangs around the neck of the cow which is not visible).
+            // the image in X-direction and located somewhere above the screen
+            // in Y-direction (it hangs around the neck of the cow which is not visible).
             // If the center is not altered all rotation animations will be around
             // the middle of the image.
             pivotY: -600
-        
-            // We need two animations, one to swing to the left and one to swing to the right.
+            
+            // The bell is initially hidden.
+            rotationZ: -90 
+            
+            // We need two animations: one to swing to the left and one to swing to the right.
             animations: [
+                // Left
                 SequentialAnimation {
-                    id: "animLeft"
+                    id: animLeft
                     animations: [
                         RotateTransition {
                             toAngleZ: -1.5
@@ -67,13 +83,10 @@ Page {
                             duration: 200
                         }
                     ]
-                    onStopped: {
-                        // Play stopped animations if any.
-                        playStoppedAnimations ()
-                    }
                 },
+                // Right
                 SequentialAnimation {
-                    id: "animRight"
+                    id: animRight
                     animations: [
                         RotateTransition {
                             toAngleZ: 1.5
@@ -84,73 +97,75 @@ Page {
                             duration: 200
                         }
                     ]
-                    onStopped: {
-                        playStoppedAnimations ();
-                    }
+                },
+                // An animation that is run when the application starts, triggered in the 
+                // onCreationCompleted signal handler below.
+                SequentialAnimation {
+                    id: animIntro
+                    animations: [
+                        RotateTransition {
+                            fromAngleZ: -90
+                            toAngleZ: 30
+                            duration: 300
+                            delay: 400
+                            easingCurve: StockCurve.QuadraticInOut
+                        },
+                        RotateTransition {
+                            toAngleZ: -15
+                            duration: 300
+                            easingCurve: StockCurve.QuadraticInOut
+                        },
+                        RotateTransition {
+                            toAngleZ: 5
+                            duration: 300
+                            easingCurve: StockCurve.QuadraticInOut
+                        },
+                        RotateTransition {
+                            toAngleZ: -1.5
+                            duration: 300
+                            easingCurve: StockCurve.QuadraticInOut
+                        },
+                        RotateTransition {
+                            toAngleZ: 0
+                            duration: 300
+                            easingCurve: StockCurve.QuadraticInOut
+                        }
+                    ]
                 }
             ]
-        
-            // Touch handler for the bell image.
+
+            // Touch handler for the bell image
             onTouch: {
-                if (event.isDown ()) {
-                
-                    // Do not trigger the bell sound if touches occurred on the image, but outside the 
+                if (event.isDown()) {
+
+                    // Do not trigger the bell sound if the touch occurred on the image, but outside the
                     // actual bell (above or below).
-                    if (event.screenY > 140 && event.screenY < (preferredHeight - 60)) {
-                    
+                    if (event.windowY > 140 && event.windowY < (preferredHeight - 60)) {
+
                         // Play the sound.
-                        cowbellApp.playSound ("cowbell.wav");
-                    
-                        // If the image is hit on the left side swing it to the right.
-                        if (event.screenX < bell.layoutProperties.positionX + preferredWidth / 2) {                        
-                        
-                            // First check if another animation is already running on the bell.
-                            trigLeft = checkPlayingAnimations ();
-                        
-                            // If no animation was running, play it. Otherwise we have to wait until
-                            // onStopped to avoid conflicting animations. 
-                            if (trigLeft == false) {
-                                animLeft.play ();
-                            }
+                        cowbellApp.playSound("cowbell.wav");
+
+                        // If the image is hit on the left side, swing it to the right.
+                        if (event.windowX < bell.layoutProperties.positionX + preferredWidth / 2) {
+
+                            // Stop the animation before playing it to stop the moving bell and
+                            // run the animation from that position
+                            animLeft.stop ();
+                            animLeft.play ();
+
                         } else {
-                            // And vice versa for the right side.
-                            trigRight = checkPlayingAnimations ();
-                            if (trigRight == false) {
-                                animRight.play ();
-                            }
+                            // And vice-versa for the right side.
+                            animRight.stop ();
+                            animRight.play ();
                         }
                     }
                 }
-            }
-        }
-    }
-    
-    // This function checks if any of the animations are running on the bell. If that 
-    // is the case the animation is stopped and true is returned to notify the caller.
-    function checkPlayingAnimations () {
-        var animationWasStopped = false;
-        if (animLeft.isPlaying ()) {
-            animLeft.stop ();
-            animationWasStopped = true;
-        }
-        if (animRight.isPlaying ()) {
-            animRight.stop ();
-            animationWasStopped = true;
-        }
-        return animationWasStopped;
-    }
-
-    // This function is called from the animations onStopped function. If an animation  
-    // was stopped we can not start it immediately. trigRight/trigLeft is true if the animation
-    // was stopped and has to be started in onStopped.     
-    function playStoppedAnimations () {
-        if (trigRight) {
-            animRight.play ();
-        } else if (trigLeft) {
-            animLeft.play ();
-        }
-        
-        trigRight = false;
-        trigLeft = false;
-    }
-}
+            }// Touch handler for bell image
+            
+            onCreationCompleted: {
+                // When the Control has been created run the intro animation.
+                animIntro.play();
+            }// Creation complete handler
+        }// ImageView 
+    }// Content Container
+}// Page

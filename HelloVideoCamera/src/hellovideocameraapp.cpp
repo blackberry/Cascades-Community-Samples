@@ -31,11 +31,9 @@
 
 using namespace bb::cascades;
 
-// workaround a ForeignWindowControl race condition
-#define WORKAROUND_FWC
 
-
-HelloVideoCameraApp::HelloVideoCameraApp() :
+HelloVideoCameraApp::HelloVideoCameraApp(bb::cascades::Application *app) :
+        QObject(app),
         mCameraHandle(CAMERA_HANDLE_INVALID),
         mVideoFileDescriptor(-1)
 {
@@ -93,13 +91,12 @@ HelloVideoCameraApp::HelloVideoCameraApp() :
 			.add(mStopButton));
 
 
-    Application::instance()->setScene(Page::create().content(container));
+    app->setScene(Page::create().content(container));
 }
 
 
 HelloVideoCameraApp::~HelloVideoCameraApp()
 {
-    delete mViewfinderWindow;
 }
 
 
@@ -114,13 +111,9 @@ void HelloVideoCameraApp::onWindowAttached(screen_window_t win,
     // put the viewfinder window behind the cascades window
     i = -1;
     screen_set_window_property_iv(win, SCREEN_PROPERTY_ZORDER, &i);
-#ifdef WORKAROUND_FWC
-    // seems we still need a workaround in R9 for a potential race due to
-    // ForeignWindowControl updating/flushing the window's properties in
-    // parallel with the execution of the onWindowAttached() handler.
-    mViewfinderWindow->setVisible(false);
-    mViewfinderWindow->setVisible(true);
-#endif
+    screen_context_t screen_ctx;
+    screen_get_window_property_pv(win, SCREEN_PROPERTY_CONTEXT, (void **)&screen_ctx);
+    screen_flush_context(screen_ctx, 0);
 }
 
 
@@ -229,7 +222,11 @@ void HelloVideoCameraApp::onStartStopRecording()
             //   RIM will be providing clarification of this policy as part of the
             //   NDK developer agreement and App World guidelines.  A link will
             //   be provided when the policy is publicly available.
-            soundplayer_play_sound("event_recording_start");
+
+            // NOTE: we use the _blocking variant here so that the sound doesn't bleed over
+            // into our recording.  An alternate solution may involve muting the mic temporarily,
+            // in order to allow video recording to start slightly sooner.
+            soundplayer_play_sound_blocking("event_recording_start");
 
             char filename[CAMERA_ROLL_NAMELEN];
             if (camera_roll_open_video(mCameraHandle,
@@ -245,7 +242,6 @@ void HelloVideoCameraApp::onStartStopRecording()
                                        NULL) == CAMERA_EOK) {
                     qDebug() << "started recording";
                     mStartStopButton->setText("Stop Recording");
-                    mVideoFileDescriptor = 0;
                     mStopButton->setEnabled(false);
                     mStatusLabel->setText(basename(filename));
                     mStatusLabel->setVisible(true);

@@ -44,7 +44,7 @@ Page {
             }
             ScrollView {
                 scrollViewProperties {
-                    scrollMode: ScrollMode.Vertical
+                    scrollMode: ScrollMode.Both
                 }
                 Container {
                     ListView {

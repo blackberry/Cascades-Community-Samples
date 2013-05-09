@@ -15,9 +15,13 @@
 import "common"
 
 Page {
+    resizeBehavior: PageResizeBehavior.None
     content: MenuContainer {
         id: apdu
         objectName: "apdu_details"
+        onCreationCompleted: {
+            console.log("XXXX apdu.qml created: _apdu._target_inx=" + _apdu._target_inx);
+        }
         signal apduRequested()
         Container {
             layout: StackLayout {
@@ -38,6 +42,75 @@ Page {
                     color: Color.White
                 }
             }
+            DropDown {
+                id: ddn_target
+                objectName: "ddn_target"
+                title: "Target"
+                enabled: true
+                selectedIndex: _apdu._target_inx
+                Option {
+                    text: "SIM SE"
+                    description: "SIM Secure Element"
+                    value: "SIM"
+                    selected: true
+                    onSelectedChanged: {
+                    }
+                }
+                Option {
+                    text: "Contactless Card"
+                    description: "Physical, contactless card"
+                    value: "CARD"
+                }
+            }
+            Container {
+                layout: StackLayout {
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                Label {
+                    id: cbx_label1
+                    text: "SELECT only"
+                    textStyle {
+                        base: SystemDefaults.TextStyles.BodyText
+                        color: Color.LightGray
+                    }
+                }
+                CheckBox {
+                    id: cbx_select_only
+                    objectName: "cbx_select_only"
+                    verticalAlignment: VerticalAlignment.Center
+                    checked: _apdu._select_only
+                    onCheckedChanged: {
+                        txf_cla.enabled = ! checked;
+                        txf_ins.enabled = ! checked;
+                        txf_p1p2.enabled = ! checked;
+                        txf_lc.enabled = ! checked;
+                        txf_command.enabled = ! checked;
+                        txf_le.enabled = ! checked;
+                    }
+                }
+                Label {
+                    id: cbx_label2
+                    text: "PPSE"
+                    textStyle {
+                        base: SystemDefaults.TextStyles.BodyText
+                        color: Color.LightGray
+                    }
+                }
+                CheckBox {
+                    id: cbx_ppse
+                    objectName: "cbx_ppse"
+                    verticalAlignment: VerticalAlignment.Center
+                    checked: _apdu._ppse
+                    onCheckedChanged: {
+                        if (checked) {
+                            txf_aid.text = "325041592E5359532E444446303100"
+                        } else {
+                            txf_aid.text = ""
+                        }
+                        txf_aid.enabled = ! checked;
+                    }
+                }
+            }
             Label {
                 text: "AID:"
                 textStyle {
@@ -50,6 +123,7 @@ Page {
                 objectName: "txf_aid"
                 hintText: "Enter AID value"
                 text: _apdu._aid
+                enabled: ! cbx_ppse
                 textStyle {
                     base: SystemDefaults.TextStyles.SmallText
                 }
@@ -78,6 +152,7 @@ Page {
                     objectName: "txf_cla"
                     hintText: "Enter CLA value"
                     text: _apdu._cla
+                    enabled: ! cbx_select_only
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
                     }
@@ -98,6 +173,7 @@ Page {
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
                     }
+                    enabled: ! cbx_select_only.checked
                 }
                 Label {
                     verticalAlignment: VerticalAlignment.Center
@@ -115,22 +191,51 @@ Page {
                     textStyle {
                         base: SystemDefaults.TextStyles.SmallText
                     }
+                    enabled: ! cbx_select_only.checked
                 }
             }
-            Label {
-                text: "Lc:"
-                textStyle {
-                    base: SystemDefaults.TextStyles.BodyText
-                    color: Color.LightGray
+            Container {
+                layout: StackLayout {
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                Label {
+                    text: "Lc:"
+                    textStyle {
+                        base: SystemDefaults.TextStyles.BodyText
+                        color: Color.LightGray
+                    }
+                }
+                TextArea {
+                    id: txf_lc
+                    objectName: "txf_lc"
+                    hintText: "Enter Lc value or leave blank"
+                    text: _apdu._lc
+                    textStyle {
+                        base: SystemDefaults.TextStyles.SmallText
+                    }
+                    enabled: ! cbx_select_only.checked
                 }
             }
-            TextArea {
-                id: txf_lc
-                objectName: "txf_lc"
-                hintText: "Enter Lc value or leave blank"
-                text: _apdu._lc
-                textStyle {
-                    base: SystemDefaults.TextStyles.SmallText
+            Container {
+                layout: StackLayout {
+                    orientation: LayoutOrientation.LeftToRight
+                }
+                Label {
+                    text: "Le:"
+                    textStyle {
+                        base: SystemDefaults.TextStyles.BodyText
+                        color: Color.LightGray
+                    }
+                }
+                TextArea {
+                    id: txf_le
+                    objectName: "txf_le"
+                    hintText: "Enter Le value or leave blank"
+                    text: _apdu._le
+                    textStyle {
+                        base: SystemDefaults.TextStyles.SmallText
+                    }
+                    enabled: ! cbx_select_only.checked
                 }
             }
             Label {
@@ -148,22 +253,7 @@ Page {
                 textStyle {
                     base: SystemDefaults.TextStyles.SmallText
                 }
-            }
-            Label {
-                text: "Le:"
-                textStyle {
-                    base: SystemDefaults.TextStyles.BodyText
-                    color: Color.LightGray
-                }
-            }
-            TextArea {
-                id: txf_le
-                objectName: "txf_le"
-                hintText: "Enter Le value or leave blank"
-                text: _apdu._le
-                textStyle {
-                    base: SystemDefaults.TextStyles.SmallText
-                }
+                enabled: ! cbx_select_only.checked
             }
         }
     }

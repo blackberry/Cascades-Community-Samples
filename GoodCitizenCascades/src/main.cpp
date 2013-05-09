@@ -20,12 +20,19 @@
 
 using ::bb::cascades::Application;
 
-int main(int argc, char **argv)
+// workarond for slog2 output not showing up in IDE console
+void myMessageOutput(QtMsgType type, const char* msg){
+   fprintf(stderr, "%s\n", msg);
+}
+
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
     // This is where the server is started etc.
 	Application app(argc, argv);
 
-    // Our app is initialized.
+    qInstallMsgHandler(myMessageOutput);
+
+     // Our app is initialized.
     GoodCitizenApp mainApp;
 
     // We complete the transaction started in the app constructor and start the client event loop here

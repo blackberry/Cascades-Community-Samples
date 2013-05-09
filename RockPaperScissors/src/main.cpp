@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2012 Brian Scheirer
+* Copyright (c) 2012, 2013 Brian Scheirer
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -14,31 +14,36 @@
 * limitations under the License.
 */
 
-#include "app.hpp"
-
+// Default empty project template
 #include <bb/cascades/Application>
+#include <bb/cascades/QmlDocument>
+#include <bb/cascades/AbstractPane>
+#include <bb/cascades/advertisement/Banner>
 
 #include <QLocale>
 #include <QTranslator>
+#include <Qt/qdeclarativedebug.h>
+#include "RPSLite.hpp"
 
-using ::bb::cascades::Application;
+using namespace bb::cascades;
 
-int main(int argc, char **argv)
+Q_DECL_EXPORT int main(int argc, char **argv)
 {
-    //-- this is where the server is started etc
+    // this is where the server is started etc
+	qmlRegisterType<bb::cascades::advertisement::Banner>("bb.cascades.advertisement", 1, 0, "Banner");
     Application app(argc, argv);
-    
-    //-- localization support
+
+    // localization support
     QTranslator translator;
     QString locale_string = QLocale().name();
-    QString filename = QString( "RockPaperScissors_%1" ).arg( locale_string );
+    QString filename = QString( "RPSLite_%1" ).arg( locale_string );
     if (translator.load(filename, "app/native/qm")) {
         app.installTranslator( &translator );
     }
-    
-    App mainApp;
-    
-    //-- we complete the transaction started in the app constructor and start the client event loop here
+
+    new RPSLite(&app);
+
+    // we complete the transaction started in the app constructor and start the client event loop here
     return Application::exec();
-    //-- when loop is exited the Application deletes the scene which deletes all its children (per qt rules for children)
+    // when loop is exited the Application deletes the scene which deletes all its children (per qt rules for children)
 }

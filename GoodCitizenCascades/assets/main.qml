@@ -14,84 +14,140 @@
  * limitations under the License.
  */
  
- import bb.cascades 1.0
+import bb.cascades 1.0
 
 NavigationPane {
+    id: nav
+    
     Page {
-        id: nav
+        id: page
+            
         content: Container {
             id: back
+            
             objectName: "back"           
-            layout: StackLayout {
-            }
             background: Color.create("#262626")
-            layoutProperties: StackLayoutProperties {
-                horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Center
+            horizontalAlignment: HorizontalAlignment.Fill
+            verticalAlignment: VerticalAlignment.Fill
+            
+            layout: StackLayout {
+                orientation: LayoutOrientation.TopToBottom
             }
-            ForeignWindow {
-                id: goodCitizenCascadesFW
+            
+            ForeignWindowControl {
+                id: foreignWindow
                 objectName: "goodCitizenCascadesFW"
-                preferredWidth: 768
-                preferredHeight: 1140
-                visible: false
-                layoutProperties: DockLayoutProperties {
-                    horizontalAlignment: HorizontalAlignment.Center
-                    verticalAlignment: VerticalAlignment.Top
-                }
-            }           
+                visible: true
+	            horizontalAlignment: HorizontalAlignment.Fill
+	            verticalAlignment: VerticalAlignment.Fill
+            }       
         }
 
         actions: [
             ActionItem {
                 title: "Translate"
-                imageSource: "asset:///images/actions/translate.png"
                 ActionBar.placement: ActionBarPlacement.OnBar
+                imageSource: "asset:///images/actions/translateAction.png"
                 onTriggered: {
-                    _goodCitizen.setTouchMode("translate");
-                    _navPane.deprecatedPushQmlByString("ToolAxis.qml");
-                }
+		             _goodCitizen.setTouchMode("translate");
+		             var page = translatePageDef.createObject();
+		             nav.push(page);
+	            }
             },
             ActionItem {
                 title: "Rotation"
-                imageSource: "asset:///images/actions/rotate.png"
                 ActionBar.placement: ActionBarPlacement.OnBar
+                imageSource: "asset:///images/actions/rotateAction.png"
                 onTriggered: {
                     _goodCitizen.setTouchMode("rotate");
-                    _navPane.deprecatedPushQmlByString("ToolAxis.qml");
+                     var page = rotatePageDef.createObject();
+                     nav.push(page);
                 }
             },
             ActionItem {
                 title: "Scale"
-                imageSource: "asset:///images/actions/scale.png"
+                imageSource: "asset:///images/actions/scaleAction.png"
                 ActionBar.placement: ActionBarPlacement.OnBar
                 onTriggered: {
                     _goodCitizen.setTouchMode("scale");
-                    _navPane.deprecatedPushQmlByString("ToolAxis.qml");
+                     var page = scalePageDef.createObject();
+                     nav.push(page);
                 }
             },
             ActionItem {
                 title: "Color"
-                imageSource: "asset:///images/actions/colour.png"
+                imageSource: "asset:///images/actions/colourAction.png"
+                ActionBar.placement: ActionBarPlacement.InOverflow
                 onTriggered: {
-                    _navPane.deprecatedPushQmlByString("Color.qml");
+                     var page = colourPageDef.createObject();
+                     nav.push(page);
                 }
             },
             ActionItem {
                 title: "Objects"
-                imageSource: "asset:///images/actions/objects.png"
+                imageSource: "asset:///images/actions/objectsAction.png"
+                ActionBar.placement: ActionBarPlacement.InOverflow
                 onTriggered: {
-                    _navPane.deprecatedPushQmlByString("Objects.qml");
+                     var page = objectsPageDef.createObject();
+                     nav.push(page);
                 }
-            },
+             },
             ActionItem {
                 title: "Reset"
-                imageSource: "asset:///images/actions/reset.png"
+                imageSource: "asset:///images/actions/resetAction.png"
+                ActionBar.placement: ActionBarPlacement.InOverflow
                 onTriggered: {
                     _goodCitizen.reset();
                 }
             }
         ]
-        actionBarVisibility: ChromeVisibility.Visible
+        
+	     attachedObjects: [ 
+             ComponentDefinition {
+		         id: translatePageDef;
+		         source: "ToolAxis.qml"
+             },            
+		     ComponentDefinition {
+                 id: rotatePageDef;
+                 source: "ToolAxis.qml"
+             },
+             ComponentDefinition {
+                 id: scalePageDef;
+                 source: "ToolAxis.qml"
+             },
+             ComponentDefinition {
+                 id: colourPageDef;
+                 source: "Color.qml"
+             },
+             ComponentDefinition {
+                 id: objectsPageDef;
+                 source: "Objects.qml"
+             },
+	        // The orientation handler takes care of orientation change events. All we really want to do is to
+	        // switch image when we get a signal to these functions.
+	        OrientationHandler {
+	            id: handler
+	            onOrientationAboutToChange: {
+	                console.log ("Orientation Changing to: " + orientation)
+	            }
+	            onOrientationChanged: {
+	                if (orientation == UIOrientation.Landscape) {
+		                console.log ("Orientation Changed to: " + orientation)
+		                
+	                } else {
+		                console.log ("Orientation Changed to: " + orientation)
+	                }
+	            }
+	        } // OrientationHandler
+         ]
+         
+        onCreationCompleted: {
+            // the app supports rotation
+            OrientationSupport.supportedDisplayOrientation = SupportedDisplayOrientation.All;
+            page.actionBarVisibility = ChromeVisibility.Visible;
+        }
+        
+        actionBarVisibility: ChromeVisibility.Hidden
     }
+    //onPopTransitionEnded: { page.destroy(); }
 }

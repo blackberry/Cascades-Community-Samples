@@ -21,6 +21,7 @@
 #include <bb/cascades/ForeignWindowControl>
 #include <bb/cascades/Button>
 #include <bb/cascades/Label>
+#include <bb/cascades/Application>
 
 #include <camera/camera_api.h>
 
@@ -40,7 +41,7 @@ public slots:
     void onStartStopRecording();
 
 public:
-    HelloVideoCameraApp();
+    HelloVideoCameraApp(bb::cascades::Application *app);
     ~HelloVideoCameraApp();
 
 private:
