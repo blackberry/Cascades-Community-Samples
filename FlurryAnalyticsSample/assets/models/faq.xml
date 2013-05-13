@@ -1,0 +1,10 @@
+<root>
+	<faq objectName="faqWhatsThePoint" question="What is the point of this app?" answer="This app is used to test the Flurry Analytics SDK for BlackBerry 10!" answerButton="Answered" />
+	<faq objectName="faqSetAge" question="How do I set the user's age?" answer="In this app the age is set in the 'Settings' sheet which can be brought up by exiting to the main screen of the app then swiping down from the top bezel." answerButton="Ok, I got it now" />
+	<faq objectName="faqSetGender" question="How do I set the user's gender?" answer="See @'How do I set the user's age?'" answerButton="Crystal clear" />
+	<faq objectName="faqSetUserId" question="How do I set the user's ID/username?" answer="See @'How do I set the user's gender?'" answerButton="I see where this is going..." />
+	<faq objectName="faqSetLocation" question="How do I set the user's location?" answer="Take a look at applicationui.cpp; the code beginning with QGeoPositionInfoSource handles the location retrieval. After this is retrieved the lat, long and accuracy is passed off to the Flurry service." answerButton="Uh huh" />
+	<faq objectName="faqBuiltForBlackBerry" question="Will this app help me qualify for 'Built for BlackBerry'?" answer="YES! This app shows the basics for implementing analytics into your application. Analytics is definitely one of the services recommended to help your app qualify for 'Built for BlackBerry'." answerButton="Sure, that makes sense" />
+	<faq objectName="faqAwesome" question="How can I let you know how awesome this sample is?" answer="Easy, fire me a tweet: @garettBeuk I'm happy to receive any feedback or questions you may have." answerButton="Now I know" />
+	<faq objectName="faqPage2" question="How do I get to page 2 already?" answer="Page 2 can be accessed by holding down your finger on the 'Page 2' image of the main page. After holding for a moment a context menu will appear with an ActionItem that will bring you to Page 2 once triggered." answerButton="Wooohooo!" />
+</root>	
