@@ -2,7 +2,7 @@
 
 The purpose of this application is to demonstrate how to use selected BlackBerry 10 Bluetooth Low Energy APIs in the context of a practical real-world use case. The Release History section gives details of those APIs which are covered and any changes as the sample evolves over time.
 
-The use case examines how to interface to a Bluetooth Low Energy device that supports the Cycling Speed and Cadence Profile ([overview available here](http://developer.bluetooth.org/TechnologyOverview/Pages/CSCP.aspx)) as defined by the BluetoothSIG. This is the type of device that cyclists typically attach to their cycles to allow them to monitor information such as wheel and peddle revolutions and timings.
+The use case examines how to interface to a Bluetooth Low Energy device that supports the Cycling Speed and Cadence Profile ([overview available here](http://developer.bluetooth.org/TechnologyOverview/Pages/CSCP.aspx)) as defined by the Bluetooth SIG. This is the type of device that cyclists typically attach to their cycles to allow them to monitor information such as wheel and peddle revolutions and timings.
 
 The sample code for this application is Open Source under the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
@@ -28,7 +28,7 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 **How to Build CscMonitor**
 
-Simply import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in attributes, such as the **&lt;author&gt;** and **&lt;authorId&gt;** elements, that are appropriate for you.
+Simply import the project into a workspace in your NDK. Of course you should review the project after it's been imported; for example, paying attention to the settings in the **bar-descriptor.xml** file.
 
 **What else will I need?**
 
@@ -36,7 +36,7 @@ You will need a Bluetooth Smart (Low Energy) device that supports the standard [
 
 This application was tested successfully against the following device:
 
-* [Wahoo Blue SC](http://http://www.wahoofitness.com/Products/Wahoo-Fitness-Wahoo-Blue-SC-Speed-and-Cadence-Sensor.asp).
+* [Wahoo Blue SC](http://www.wahoofitness.com/Products/Wahoo-Fitness-Wahoo-Blue-SC-Speed-and-Cadence-Sensor.asp).
 
 Our use of this device for testing shouldn't be regarded as an endorsement, explicit or implied, of it by BlackBerry.
 
@@ -50,7 +50,7 @@ If you don't want to build this sample application yourself we've included a pre
 
 **Known Issues**
 
-* You should ensure that the Bluetooth LE device that you use has been paired with the BlackBerry 10 device before using the application. Dynamic pairing will be added in a later release of this application.
+* You should ensure that the Bluetooth LE device that you use has been paired with the BlackBerry 10 device before using the application. Dynamic pairing may be added in a later release of this application.
 
 ## Contributing Changes
 

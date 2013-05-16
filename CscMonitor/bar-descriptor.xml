@@ -37,8 +37,6 @@
          An updated version of application must have a versionNumber value higher than the previous version. Required. -->
     <versionNumber>1.0.0</versionNumber>
     <buildIdFile>buildnum</buildIdFile>
-    <author>John Murray</author>
-    <authorId>gYAAgFPCViUqswOvaRvSwB1Mf2w</authorId>
 
     <!-- Fourth digit segment of the package version. First three segments are taken from the 
          <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
