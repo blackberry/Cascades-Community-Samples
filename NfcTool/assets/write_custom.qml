@@ -33,14 +33,14 @@ Page {
             Label {
                 text: "Write a Custom Tag"
                 textStyle {
-                    base: SystemDefaults.TextStyles.BigText
+                    base: SystemDefaults.TextStyles.TitleText
                     color: Color.LightGray
                     fontWeight: FontWeight.Bold
                 }
             }
 
 		    Label {
-		        text: "Enter the domain for your EXTERNAL type"
+		        text: "Domain"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
@@ -51,7 +51,10 @@ Page {
 		    TextArea {
 		        id: txf_domain
 		        objectName: "txf_domain"
-		        hintText: "Enter the domain for your EXTERNAL type"
+		        hintText: "Enter the domain"
+		        inputMode: TextAreaInputMode.Text
+		        content.flags: TextContentFlag.ActiveTextOff
+		        input.flags: TextInputFlag.SpellCheckOff | TextInputFlag.PredictionOff | TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff | TextInputFlag.AutoPeriodOff | TextInputFlag.WordSubstitutionOff   
 		        text: _writeCustMenu._domain
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
@@ -59,7 +62,7 @@ Page {
 		    }
 		    
 		    Label {
-		        text: "Enter your chosen Type Name"
+		        text: "Type Name"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
@@ -71,6 +74,7 @@ Page {
 		        id: txf_type
 		        objectName: "txf_type"
 		        hintText: "Enter your chosen type name"
+		        input.flags: TextInputFlag.SpellCheckOff | TextInputFlag.PredictionOff | TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff | TextInputFlag.AutoPeriodOff | TextInputFlag.WordSubstitutionOff		        
 		        text: _writeCustMenu._type
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
@@ -78,7 +82,7 @@ Page {
 		    }
 		    
 		    Label {
-		        text: "Enter your tag Content"
+		        text: "Content"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
@@ -91,15 +95,16 @@ Page {
 		        objectName: "txf_content"
 		        hintText: "Enter your tag content"
 		        text: _writeCustMenu._content
+		        input.flags: TextInputFlag.SpellCheckOff | TextInputFlag.PredictionOff | TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff | TextInputFlag.AutoPeriodOff | TextInputFlag.WordSubstitutionOff		        
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		        }
 		    }   
 
             Label {
-                text: "Once you are happy with the values you have specified in the fields above press the Write button in the Action Bar below.\n\nYou will then be presented with an Event Log screen where you will be able to present a tag to the handset to have your data written to it."
+                text: "Touch the Write button when ready..."
                 textStyle {
-                    base: SystemDefaults.TextStyles.BodyText
+                    base: SystemDefaults.TextStyles.SmallText
                     color: Color.LightGray
                     lineHeight: 1.1
                 }

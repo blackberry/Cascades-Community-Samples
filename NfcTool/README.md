@@ -20,6 +20,11 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
+* **V5.0.1** 
+	* NDEF data included in Tag Details screens
+	* UI text simplified
+	* removed URI recognition and automatic capitalisation from input fields
+
 * **V5** 
 
  Added new functions:
@@ -100,18 +105,20 @@ None.
 
 **Dependencies**
 
-1. BlackBerry 10 Device Software **10.0.9**
-1. BlackBerry 10 Native SDK **10.0.9** (Gold)
+1. Minimal requirement BlackBerry 10 Device Software **10.0.9**
+1. Minimal requirement BlackBerry 10 Native SDK **10.0.9**
 
 **How to Build NfcTool**
 
-Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file. It should be changed to reflect values in the **&lt;author&gt;** and **&lt;authorId&gt;** elements that are appropriate for you.
+Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file.
  
 **But I don't want to build it myself**
 
 If you don't want to build this sample application yourself we've included a 
 pre-build and signed BAR files for each version. You can find them in the 
 folder **"/installable-bar-files"** as follows:
+
+* **NfcTool-5\_0\_1\_248.bar** -- Signed BAR file for Version 5.0.1 (V5.0.1) of the application ( requires BlackBerry 10 Software 10.1 )
 
 * **NfcTool-5\_0\_0\_245.bar** -- Signed BAR file for Version 5.0 (V5.0) of the application ( requires BlackBerry 10 Software 10.0.9 )
 
