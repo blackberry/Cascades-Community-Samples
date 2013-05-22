@@ -506,7 +506,7 @@ void NfcWorker::prepareToWriteNdefUriTag(const QVariant &the_uri) {
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setDetectAndWriteState(true);
 
-	emit message(QString("Preparing to write URI: %1").arg(uri));
+	emit message(QString("Writing URI: %1").arg(uri));
 
 	_ndefUri = uri;
 	_taskToPerform = WRITE_URI_TAG;
@@ -530,7 +530,7 @@ void NfcWorker::prepareToWriteNdefTextTag(const QVariant &the_text) {
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setDetectAndWriteState(true);
 
-	emit message(QString("Preparing to write Text: '%1'").arg(text));
+	emit message(QString("Writing Text: '%1'").arg(text));
 
 	_ndefText = text;
 	_taskToPerform = WRITE_TEXT_TAG;
@@ -554,7 +554,7 @@ void NfcWorker::prepareToWriteNdefSpTag(const QVariant &the_sp_uri, const QVaria
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setDetectAndWriteState(true);
 
-	emit message(QString("Preparing to write SP URI: '%1' Text: '%2'").arg(sp_uri).arg(sp_text));
+	emit message(QString("Writing SP URI: '%1' Text: '%2'").arg(sp_uri).arg(sp_text));
 
 	_ndefSpUri = sp_uri;
 	_ndefSpText = sp_text;
@@ -583,7 +583,7 @@ void NfcWorker::prepareToWriteNdefCustomTag(const QVariant &the_domain, const QV
 	StateManager* state_mgr = StateManager::getInstance();
 	state_mgr->setDetectAndWriteState(true);
 
-	emit message(QString("Preparing to write Custom Tag Domain: '%1' Type: '%2' Payload: '%3'").arg(domain).arg(type).arg(payload));
+	emit message(QString("Writing Domain: '%1' Type: '%2' Payload: '%3'").arg(domain).arg(type).arg(payload));
 
 	_ndefDomain = domain;
 	_ndefType = type;
@@ -1245,7 +1245,7 @@ void NfcWorker::handleNfcWriteCustomTagEvent(bps_event_t *event) {
 		qDebug() << "XXXX NfcWorker::handleNfcWriteCustomTagEvent - Target Read Write Event";
 		CHECK(nfc_get_nfc_event(event, &nfcEvent));
 		CHECK(nfc_get_target(nfcEvent, &target));
-		displayTagInformation(target);
+		displayTagInformation(target, false);
 		qDebug() << "XXXX NfcWorker::handleWriteCustomTagEvent - Preparing to write Custom: DOMAIN=" << _ndefDomain << ", TYPE=" << _ndefType;
 		myNdefRecord = makeCustomRecord(_ndefDomain, _ndefType, _ndefPayload);
 		CHECK(nfc_create_ndef_message(&myNdefMessage));
@@ -1279,7 +1279,7 @@ void NfcWorker::handleNfcWriteSpTagEvent(bps_event_t *event) {
 		qDebug() << "XXXX NfcWorker::handleNfcWriteSpTagEvent - Target Read Write Event";
 		CHECK(nfc_get_nfc_event(event, &nfcEvent));
 		CHECK(nfc_get_target(nfcEvent, &target));
-		displayTagInformation(target);
+		displayTagInformation(target, false);
 		qDebug() << "XXXX NfcWorker::handleWriteSpTagEvent - Preparing to write Sp: URI=" << _ndefSpUri << ", Text=" << _ndefSpText;
 		spNdefRecord = makeSpRecord();
 		CHECK(nfc_create_ndef_message(&myNdefMessage));
@@ -1317,7 +1317,7 @@ void NfcWorker::handleNfcWriteTextTagEvent(bps_event_t *event) {
 
 		CHECK(nfc_get_nfc_event(event, &nfcEvent));
 		CHECK(nfc_get_target(nfcEvent, &target));
-		displayTagInformation(target);
+		displayTagInformation(target, false);
 		qDebug() << "XXXX NfcWorker::handleWriteTextTagEvent - Preparing to write Text: " << _ndefText;
 		myNdefRecord = makeTextRecord(Settings::LANG_EN, _ndefText);
 
@@ -1351,7 +1351,7 @@ void NfcWorker::handleNfcWriteUriTagEvent(bps_event_t *event) {
 		CHECK(nfc_get_nfc_event(event, &nfcEvent));
 		CHECK(nfc_get_target(nfcEvent, &target));
 		qDebug() << "XXXX displaying tag info";
-		displayTagInformation(target);
+		displayTagInformation(target, false);
 		qDebug() << "XXXX done displaying tag info";
 		qDebug() << "XXXX NfcWorker::handleWriteUriTagEvent - Preparing to write URI: " << _ndefUri;
 		myNdefRecord = makeUriRecord(Settings::NfcRtdUriPrefixNone, _ndefUri);
@@ -1380,7 +1380,7 @@ void NfcWorker::handleIso15693TagEvent(bps_event_t *event) {
 
 		CHECK(nfc_get_nfc_event(event, &nfcEvent));
 		CHECK(nfc_get_target(nfcEvent, &target));
-		displayTagInformation(target);
+		displayTagInformation(target, false);
 
 		if (_taskToPerform == WRITE_ISO15693) {
 
@@ -1493,9 +1493,8 @@ void NfcWorker::handleGvbEvent(bps_event_t *event) {
 	nfc_target_t* target;
 	int rc;
 
-	uint8_t commands[TRANSACTION_NUMBER][2] = {
-		{ 0x30, 0x04 }, // read block of 16 bytes from page  0x04
-		{ 0x30, 0x08 }  // read block of 16 bytes from page  0x08
+	uint8_t commands[TRANSACTION_NUMBER][2] = { { 0x30, 0x04 }, // read block of 16 bytes from page  0x04
+			{ 0x30, 0x08 } // read block of 16 bytes from page  0x08
 	};
 
 	size_t rlength;
@@ -1515,8 +1514,7 @@ void NfcWorker::handleGvbEvent(bps_event_t *event) {
 			if ((rc == NFC_RESULT_SUCCESS) && (variant == TAGVARIANT_MIFARE_UL)) {
 
 				for (int i = 0; i < TRANSACTION_NUMBER; i++) {
-					rc = nfc_tag_transceive(target, TAG_TYPE_ISO_14443_3, commands[i], sizeof(commands[i]),
-							transactions[i].pages, sizeof(transactions[i].pages), &rlength);
+					rc = nfc_tag_transceive(target, TAG_TYPE_ISO_14443_3, commands[i], sizeof(commands[i]), transactions[i].pages, sizeof(transactions[i].pages), &rlength);
 
 					if (rc == NFC_RESULT_SUCCESS) {
 
@@ -1527,11 +1525,11 @@ void NfcWorker::handleGvbEvent(bps_event_t *event) {
 
 						/// painful since ints are different endian :-(
 
-						unsigned int counter  = EXTRACT_CNTR(ENDIAN_RET32(transactions[i].transdata0));
+						unsigned int counter = EXTRACT_CNTR(ENDIAN_RET32(transactions[i].transdata0));
 						unsigned int location = EXTRACT_LOCN(ENDIAN_RET32(transactions[i].transdata0));
-						unsigned int type     = EXTRACT_TYPE(ENDIAN_RET32(transactions[i].transdata1));
-						unsigned int days     = EXTRACT_DAYS(ENDIAN_RET32(transactions[i].transdata1));
-						unsigned int minutes  = EXTRACT_MINS(ENDIAN_RET32(transactions[i].transdata1));
+						unsigned int type = EXTRACT_TYPE(ENDIAN_RET32(transactions[i].transdata1));
+						unsigned int days = EXTRACT_DAYS(ENDIAN_RET32(transactions[i].transdata1));
+						unsigned int minutes = EXTRACT_MINS(ENDIAN_RET32(transactions[i].transdata1));
 
 						QDate epochDate(1997, 1, 1);
 
@@ -1540,23 +1538,20 @@ void NfcWorker::handleGvbEvent(bps_event_t *event) {
 							unsigned int mins = minutes % 60;
 
 							emit message(QString("Transaction number: %1").arg(counter));
-							emit message(QString("Date and time: %1 %2:%3")
-									.arg(epochDate.addDays(days).toString("d MMM yyyy"))
-									.arg(hour, 2, 10, QChar('0'))
-									.arg(mins, 2, 10, QChar('0')));
+							emit message(QString("Date and time: %1 %2:%3").arg(epochDate.addDays(days).toString("d MMM yyyy")).arg(hour, 2, 10, QChar('0')).arg(mins, 2, 10, QChar('0')));
 
 							QString locText;
 
 							switch (location) {
-								case 2:
-									locText = "Amsterdam (GVB)";
-									break;
-								case 5:
-									locText = "Rotterdam (RET)";
-									break;
-								default:
-									locText = "*UNKNOWN*";
-									break;
+							case 2:
+								locText = "Amsterdam (GVB)";
+								break;
+							case 5:
+								locText = "Rotterdam (RET)";
+								break;
+							default:
+								locText = "*UNKNOWN*";
+								break;
 							}
 
 							emit message(QString("Transport Network: %1").arg(locText));
@@ -1564,21 +1559,21 @@ void NfcWorker::handleGvbEvent(bps_event_t *event) {
 							QString typeText;
 
 							switch (type) {
-								case 0:
-									typeText = "Purchase";
-									break;
-								case 1:
-									typeText = "Check-in";
-									break;
-								case 2:
-									typeText = "Check-out";
-									break;
-								case 3:
-									typeText = "Transfer";
-									break;
-								default:
-									typeText = "*UNKNOWN*";
-									break;
+							case 0:
+								typeText = "Purchase";
+								break;
+							case 1:
+								typeText = "Check-in";
+								break;
+							case 2:
+								typeText = "Check-out";
+								break;
+							case 3:
+								typeText = "Transfer";
+								break;
+							default:
+								typeText = "*UNKNOWN*";
+								break;
 							}
 							emit message(QString("Transaction type: %1").arg(typeText));
 						}
@@ -1609,11 +1604,11 @@ void NfcWorker::handleReadTagDetailsEvent(bps_event_t *event) {
 	nfc_target_t* target;
 
 	if (NFC_TAG_READWRITE_EVENT == code) {
-		qDebug() << "XXXX NfcWorker::handleNfcWriteCustomTagEvent - Target Read Write Event";
+		qDebug() << "XXXX NfcWorker::handleReadTagDetailsEvent - Target Read Write Event";
 		CHECK(nfc_get_nfc_event(event, &nfcEvent));
 		CHECK(nfc_get_target(nfcEvent, &target));
 		qDebug() << "XXXX displaying tag info";
-		displayTagInformation(target);
+		displayTagInformation(target, true);
 		qDebug() << "XXXX done displaying tag info";
 	}
 
@@ -2020,7 +2015,7 @@ unsigned long NfcWorker::getSysTimeMs() {
 	return (theTime.tv_sec * 1000) + (theTime.tv_usec / 1000);
 }
 
-void NfcWorker::displayTagInformation(nfc_target_t* target) {
+void NfcWorker::displayTagInformation(nfc_target_t* target, bool display_ndef_details) {
 
 	struct TagPropertyMap {
 		target_property_type_t property;
@@ -2048,11 +2043,17 @@ void NfcWorker::displayTagInformation(nfc_target_t* target) {
 	tag_variant_type_t variant;
 
 	for (uint_t i = 0; i < (sizeof(tagPropertyMap) / sizeof(struct TagPropertyMap)); i++) {
+		qDebug() << "XXXX nfc_get_tag_property:" << tagPropertyMap[i].name;
 		nfc_result_t rc = nfc_get_tag_property(target, tagPropertyMap[i].property, &buffer[0], sizeof buffer);
 		if (rc == NFC_RESULT_SUCCESS) {
 			if (strlen(&buffer[0]) > 0) {
-				qDebug() << "XXXX" << tagPropertyMap[i].name << buffer << endl;
-				emit message(QString("%1: %2").arg(tagPropertyMap[i].name).arg(&buffer[0]));
+				if (strcmp(tagPropertyMap[i].name, "NDEF TYPE") != 0) {
+					qDebug() << "XXXX" << tagPropertyMap[i].name << buffer << endl;
+					emit message(QString("%1: %2").arg(tagPropertyMap[i].name).arg(&buffer[0]));
+				} else {
+					qDebug() << "XXXX NFC FORUM TYPE" << buffer << endl;
+					emit message(QString("%1: %2").arg("NFC FORUM TYPE").arg(&buffer[0]));
+				}
 			}
 		} else {
 			qDebug() << "XXXX nfc_get_tag_property() for" << tagPropertyMap[i].name << "returned" << rc << endl;
@@ -2090,4 +2091,24 @@ void NfcWorker::displayTagInformation(nfc_target_t* target) {
 	} else {
 		qDebug() << "XXXX nfc_get_tag_variant() returned" << rc << endl;
 	}
+
+	// try to establish the NDEF content
+
+	if (display_ndef_details) {
+		unsigned int ndefMsgCount = 0;
+		CHECK(nfc_get_ndef_message_count(target, &ndefMsgCount));
+		qDebug() << "XXXX NfcWorker::handleNfcReadNdefTagEvent - target message count=" << ndefMsgCount;
+
+		for (unsigned int ndefMsgIndex = 0; ndefMsgIndex < ndefMsgCount; ++ndefMsgIndex) {
+
+			qDebug() << "XXXX Processing NDEF Message index: " << ndefMsgIndex;
+
+			nfc_ndef_message_t *ndefMessage;
+			CHECK(nfc_get_ndef_message(target, ndefMsgIndex, &ndefMessage));
+
+			parseNdefMessage(ndefMessage);
+			CHECK(nfc_destroy_target(target));
+		}
+	}
+
 }

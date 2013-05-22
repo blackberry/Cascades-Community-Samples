@@ -50,8 +50,7 @@ Page {
                     enabled: false
                     preferredWidth: 650
                     textStyle {
-                        base: SystemDefaults.TextStyles.BodyText
-                        fontWeight: FontWeight.W100
+                        base: SystemDefaults.TextStyles.SmallText
                         fontStyle: FontStyle.Italic
                         color: Color.White
                         lineHeight: 1.1
@@ -156,7 +155,7 @@ Page {
                     }
                 }
                 Label {
-                    text: "© 2012 Research In Motion Limited."
+                    text: "© 2013 Research In Motion Limited."
                     enabled: false
                     preferredWidth: 650
                     textStyle {

@@ -33,14 +33,14 @@ Page {
             Label {
                 text: "Write a Text Tag"
                 textStyle {
-                    base: SystemDefaults.TextStyles.BigText
+                    base: SystemDefaults.TextStyles.TitleText
                     color: Color.LightGray
                     fontWeight: FontWeight.Bold
                 }
             }
 
 		    Label {
-		        text: "Enter the text you wish to write to the tag"
+		        text: "Text"
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
 		            color: Color.LightGray
@@ -52,6 +52,7 @@ Page {
 		        id: txf_text
 		        objectName: "txf_text"
 		        hintText: "Enter the text you wish to write to the tag"
+		        input.flags: TextInputFlag.SpellCheckOff | TextInputFlag.PredictionOff | TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff | TextInputFlag.AutoPeriodOff | TextInputFlag.WordSubstitutionOff		        
 		        text: _writeTextMenu._text
 		        textStyle {
 		            base: SystemDefaults.TextStyles.BodyText
@@ -59,9 +60,9 @@ Page {
 			}
 
             Label {
-                text: "Once you are happy with the values you have specified in the fields above press the Write button in the Action Bar below.\n\nYou will then be presented with an Event Log screen where you will be able to present a tag to the handset to have your data written to it."
+                text: "Touch the Write button when ready..."
                 textStyle {
-                    base: SystemDefaults.TextStyles.BodyText
+                    base: SystemDefaults.TextStyles.SmallText
                     color: Color.LightGray
                     lineHeight: 1.1
                 }
