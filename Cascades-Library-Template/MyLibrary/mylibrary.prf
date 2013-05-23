@@ -1,0 +1,39 @@
+
+mylibrary {
+	MYLIBRARY_BASEDIR = $${PWD}$$dirname($${_FILE_})
+
+	INCLUDEPATH *=  $$quote($${MYLIBRARY_BASEDIR}/include)
+	DEPENDPATH *=  $$quote($${MYLIBRARY_BASEDIR}/include)
+	
+	MYLIBRARY_LIBS = -lMyLibrary -lcpp
+	device {
+		profile {
+		    LIBS += -L$${MYLIBRARY_BASEDIR}/arm/so.le-v7-g $${MYLIBRARY_LIBS}
+		    PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/arm/so.le-v7-g/libMyLibrary.so)		
+		}
+		else {
+		    CONFIG(debug, debug|release) {
+		        # Device-Debug custom configuration
+		        LIBS += -L$${MYLIBRARY_BASEDIR}/arm/so.le-v7-g $${MYLIBRARY_LIBS}
+		        PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/arm/so.le-v7-g/libMyLibrary.so)
+		    }
+		
+		    CONFIG(release, debug|release) {
+		        # Device-Release custom configuration
+		        LIBS += -L$${MYLIBRARY_BASEDIR}/arm/so.le-v7 $${MYLIBRARY_LIBS}
+		        PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/arm/so.le-v7/libMyLibrary.so)
+		    }
+	    }
+	}
+	
+	simulator {
+	    CONFIG(debug, debug|release) {
+	        # Simulator-Debug custom configuration
+	        LIBS += -L$${MYLIBRARY_BASEDIR}/x86/so-g $${MYLIBRARY_LIBS}
+	        PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/x86/so-g/libMyLibrary.so)
+	    }
+	}
+	
+	INCLUDEPATH += $${MYLIBRARY_INCLUDES}
+	DEPENDPATH += $${MYLIBRARY_INCLUDES}
+}
