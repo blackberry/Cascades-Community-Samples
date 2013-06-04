@@ -38,7 +38,11 @@ void CameraRollManager::setCamera(Camera *camera) {
 	_camera = camera;
 
 	qDebug() << "+++++++ Camera set " << endl;
-	_email = _settings.value("email").toString();
+	_cameraRollPath = _settings.value(CAMERA_ROLL_PATH).toString();
+	if (_cameraRollPath != NULL) {
+		qDebug() << "+++++++ Saved path: " << _cameraRollPath;
+		setCameraRoll(_cameraRollPath);
+	}
 
 	//Connect to signals
 	//QObject::connect(_camera, onPhotoSaved(const QString, quint64 length), this, sendPhoto(const QString, quint64 length))
@@ -48,6 +52,7 @@ void CameraRollManager::setCamera(Camera *camera) {
 	}
 
 	//Set camera roll path to path in settings data, if available
+
 
 
 }
@@ -68,11 +73,11 @@ void CameraRollManager::createCameraDialog() {
 	if (jda.hasError()) {
 		qDebug() << "+++++++ JSON Error: " << jda.error();
 	}
-
+	qDebug() << "+++++++ Camera roll path: " << _cameraRollPath << endl;
 	qDebug() << "+++++++ JSON Path: " << jsonPath << endl;
 	for (int i = 0; i < _cameraRollList.length(); i++) {
 		QVariantMap cameraRollItem = _cameraRollList[i].toMap();
-		qDebug() << "+++++++ JSON Data: " << cameraRollItem["description"]
+		qDebug() << "+++++++ JSON Data: " << cameraRollItem["path"]
 				<< endl;
 		/*
 		 if (QFile::exists(
@@ -86,7 +91,7 @@ void CameraRollManager::createCameraDialog() {
 						getAppDirectory() + "/"));
 		_cameraRollListDialog->appendItem(
 				cameraRollItem["description"].toString(),
-				pathExists);
+				pathExists);//_cameraRollPath == cameraRollItem["path"].toString().replace("~/", getAppDirectory()));
 		/*		} else {
 		 qDebug() << "+++++++ Cannot find: " <<cameraRollItem["required path"].toString().replace("~/",
 		 getAppDirectory() + "/") << endl;
@@ -115,6 +120,7 @@ void CameraRollManager::promptCameraRollPath() {
 	// The "cancelLabel" (CANCEL button) is set to "I don't watch movies."
 	// This dialog box doesn't have a custom button.
 
+	//_cameraRollListDialog->
 	SystemUiResult::Type result = _cameraRollListDialog->exec();
 	if (result == SystemUiResult::ConfirmButtonSelection) {
 
@@ -130,20 +136,33 @@ void CameraRollManager::promptCameraRollPath() {
 		if (!QFile::exists(cameraPath)) {
 			dir.mkpath(cameraPath);
 		}
-		qDebug() << "+++++++ Setting camera roll to: " << cameraPath << endl;
 
-		qDebug() << "+++++++ Camera: " << _camera << endl;
-		_camera->getSettings(_cameraSettings);
-		qDebug() << "+++++++ Settings got" << endl;
-		_cameraSettings->setCameraRollPath(cameraPath);
-		qDebug() << "+++++++ Setting path" << endl;
-		_camera->applySettings(_cameraSettings);
-		qDebug() << "+++++++ Settings applied" << endl;
-
+		setCameraRoll(cameraPath);
 	}
-	//_cameraRollListDialog->deleteLater();
+}
+
+bool CameraRollManager::setCameraRoll(QString path) {
+
+	qDebug() << "+++++++ Setting camera roll to: " << path << endl;
+
+	qDebug() << "+++++++ Camera: " << _camera << endl;
+	_camera->getSettings(_cameraSettings);
+	qDebug() << "+++++++ Settings got" << endl;
+	_cameraSettings->setCameraRollPath(path);
+	qDebug() << "+++++++ Setting path" << endl;
+	if (_camera->applySettings(_cameraSettings)) {
+		_cameraRollPath = path;
+		_settings.setValue(CAMERA_ROLL_PATH, _cameraRollPath);
+		qDebug() << "+++++++ Camera roll set" << endl;
+		return true;
+	} else {
+		qDebug() << "+++++++ Error setting camera roll to " << path << endl;
+		emit cameraRollError("Unable to set camera roll to " + path);
+		return false;
+	}
 
 }
+
 
 QString CameraRollManager::getAppDirectory() {
 

@@ -8,11 +8,14 @@
 #ifndef CAMERAROLLMANAGER_H_
 #define CAMERAROLLMANAGER_H_
 
+#define CAMERA_ROLL_PATH "cameraRollPath"
+
 #include <QObject>
 #include <QSettings>
 #include <bb/system/SystemListDialog>
 #include <bb/cascades/multimedia/camera>
 #include <bb/cascades/multimedia/CameraSettings>
+#include <qsettings.h>;
 
 
 namespace bb {
@@ -36,12 +39,14 @@ public:
 	Q_INVOKABLE void setCamera(bb::cascades::multimedia::Camera *camera);
 	Q_INVOKABLE Camera* getCamera();
 	Q_INVOKABLE QString getAppDirectory();
+	Q_INVOKABLE bool setCameraRoll(QString path);
 
 public slots:
 	void promptCameraRollPath();
 
 signals:
 	void cameraChanged();
+	void cameraRollError(QString error);
 
 private:
 
@@ -53,6 +58,9 @@ private:
 	QString _email;
 	SystemListDialog *_cameraRollListDialog;
 	QVariantList _cameraRollList;
+	QString _cameraRollPath;
+
+	//const QString CAMERA_ROLL_PATH = "cameraRollPath";
 
 
 };
