@@ -74,11 +74,13 @@ NavigationPane {
                 }
                 onPhotoSaveFailed: {
                     console.debug("Photo save FAILED: " + error);
+                    photoSavedLabel.text = "Error: " + error;
                     photoBeingTaken = false;
                 }
                 onPhotoSaved: {
                     console.debug("+++++++ Photo URI: " + fileName);
                     photoBeingTaken = false;
+                    photoSavedLabel.text = "Saved: " + fileName;
                 }
 
             }
@@ -93,24 +95,24 @@ NavigationPane {
                     id: cameraRollLabel
 
                 }*/
-                Button {
-                    id: setCameraRollButton
-                    text: "Set Camera Roll"
-                    visible: false
-                    onClicked: {
- /*                       camera.getSettings(cameraSettings);
-                        console.debug("+++++++ Settings got");
-                        console.debug("+++++++ Camera roll path: " + cameraSettings.cameraRollPath);
-                        cameraSettings.cameraRollPath = cameraRollText.text;
-
-                        camera.applySettings(cameraSettings);
-                        console.debug("+++++++ Settings applied");
-                        camera.getSettings(cameraSettings);
-                        cameraRollLabel.text = cameraSettings.cameraRollPath
-                        console.debug("+++++++ Camera roll path: " + cameraSettings.cameraRollPath);*/
-                        cameraRollManager.promptCameraRollPath();
-                    }
+            }
+            Label {
+                id: photoSavedLabel
+                multiline: true;
+                visible: false
+                text: "Debug mode enabled"
+                textStyle.color: Color.White
+                textStyle.textAlign: TextAlign.Center
+                horizontalAlignment: HorizontalAlignment.Center
+                verticalAlignment: VerticalAlignment.Bottom
+            }
+            Button {
+                opacity: .001
+                onClicked: {
+                    photoSavedLabel.visible = ! photoSavedLabel.visible
                 }
+                horizontalAlignment: HorizontalAlignment.Left
+                verticalAlignment: VerticalAlignment.Top
             }
             attachedObjects: [
 

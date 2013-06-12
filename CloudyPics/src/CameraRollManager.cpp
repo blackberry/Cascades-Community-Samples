@@ -94,7 +94,8 @@ void CameraRollManager::createCameraDialog() {
 		_cameraRollListDialog->appendItem(cameraRollItem["name"].toString(),
 				pathExists, i == _cameraRollIndex); //_cameraRollPath == cameraRollItem["path"].toString().replace("~/", getAppDirectory()));
 		/*		} else {
-		 qDebug() << "+++++++ Cannot find: " <<cameraRollItem["required path"].toString().replace("~/",
+		 qDebug() << "+++++++ Ca
+		 nnot find: " <<cameraRollItem["required path"].toString().replace("~/",
 		 getAppDirectory() + "/") << endl;
 		 }*/
 
@@ -125,8 +126,8 @@ void CameraRollManager::promptCameraRollPath() {
 	//_cameraRollListDialog->
 	SystemUiResult::Type result = _cameraRollListDialog->exec();
 	if (result == SystemUiResult::ConfirmButtonSelection) {
-
-		qDebug() << "+++++++ ID selected: "
+		qDebug() << "+++++ Confirmed" << endl;
+		qDebug() << "+++++ ID selected: "
 				<< _cameraRollListDialog->selectedIndices()[0] << endl;
 
 		QVariantMap cameraRollItem =
@@ -143,6 +144,7 @@ void CameraRollManager::promptCameraRollPath() {
 		if (setCameraRoll(cameraPath)) {
 			_cameraRollIndex = _cameraRollListDialog->selectedIndices()[0];
 			_settings.setValue(CAMERA_ROLL_INDEX, _cameraRollIndex);
+			createCameraDialog();
 		}
 	}
 }
@@ -160,7 +162,6 @@ bool CameraRollManager::setCameraRoll(QString path) {
 		_cameraRollPath = path;
 		_settings.setValue(CAMERA_ROLL_PATH, _cameraRollPath);
 		qDebug() << "+++++++ Camera roll set" << endl;
-		createCameraDialog();
 		return true;
 	} else {
 		qDebug() << "+++++++ Error setting camera roll to " << path << endl;
