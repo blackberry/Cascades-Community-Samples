@@ -81,7 +81,7 @@
     <!--  The category where the application appears. Either core.games or core.media. -->
     <category>core.games</category>
     <icon>
-       <image>sun-cloud icon.png</image>
+       <image>icon.png</image>
     </icon>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>

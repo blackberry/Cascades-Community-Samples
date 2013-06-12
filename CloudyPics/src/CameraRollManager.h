@@ -9,6 +9,7 @@
 #define CAMERAROLLMANAGER_H_
 
 #define CAMERA_ROLL_PATH "cameraRollPath"
+#define CAMERA_ROLL_INDEX "cameraRollIndex"
 
 #include <QObject>
 #include <QSettings>
@@ -59,6 +60,7 @@ private:
 	SystemListDialog *_cameraRollListDialog;
 	QVariantList _cameraRollList;
 	QString _cameraRollPath;
+	int _cameraRollIndex;
 
 	//const QString CAMERA_ROLL_PATH = "cameraRollPath";
 

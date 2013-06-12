@@ -44,7 +44,8 @@ NavigationPane {
 /*                    camera.getSettings(cameraSettings);
                     console.debug("+++++++ Settings got");
                     console.debug("+++++++ Camera roll path: " + cameraSettings.cameraRollPath);
-                    cameraSettings.cameraRollPath = cameraRollManager.getAppDirectory() + "/shared/Dropbox/Photos/";
+                    cameraSettings.cameraRollPath ="/accounts/1000/removable/sdcard/camera/";
+
 
                     camera.applySettings(cameraSettings);
                     console.debug("+++++++ Settings applied");*/
@@ -95,6 +96,7 @@ NavigationPane {
                 Button {
                     id: setCameraRollButton
                     text: "Set Camera Roll"
+                    visible: false
                     onClicked: {
  /*                       camera.getSettings(cameraSettings);
                         console.debug("+++++++ Settings got");
@@ -128,8 +130,16 @@ NavigationPane {
             ]
         }
 
+
     }
     onCreationCompleted: {
         cameraRollManager.setCamera(camera);
+    }
+    Menu.definition: MenuDefinition {
+        settingsAction: SettingsActionItem {
+            onTriggered: {
+              cameraRollManager.promptCameraRollPath();
+              }
+        }
     }
 }

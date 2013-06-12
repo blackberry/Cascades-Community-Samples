@@ -16,15 +16,15 @@ If you want to do that, you would have to move it yourself once the photo is cap
 
 */
     {
-        "name": "Device Storage",
+        "name": "Default Device Storage",
         "path": "~/shared/camera/",
         "required path": "~/shared/",
         "description": "Default camera path"
     },
     {
         "name": "SD Card",
-        "path": "/accounts/1000/removable/sdcard/camera/",
-        "required path": "/accounts/1000/removable/sdcard/",
+        "path": "~/../../removable/sdcard/camera/",
+        "required path": "~/../../removable/sdcard/",
         "description": "Save to SD Card"
     },
     {

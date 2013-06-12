@@ -44,6 +44,8 @@ void CameraRollManager::setCamera(Camera *camera) {
 		setCameraRoll(_cameraRollPath);
 	}
 
+	_cameraRollIndex = _settings.value(CAMERA_ROLL_INDEX).toInt();
+
 	//Connect to signals
 	//QObject::connect(_camera, onPhotoSaved(const QString, quint64 length), this, sendPhoto(const QString, quint64 length))
 
@@ -52,8 +54,6 @@ void CameraRollManager::setCamera(Camera *camera) {
 	}
 
 	//Set camera roll path to path in settings data, if available
-
-
 
 }
 
@@ -64,34 +64,34 @@ Camera* CameraRollManager::getCamera() {
 void CameraRollManager::createCameraDialog() {
 	_cameraRollListDialog = new SystemListDialog("Save", "Cancel");
 
-	JsonDataAccess jda;
+	if (_cameraRollList.length() == 0) {
+		JsonDataAccess jda;
 
-	QString jsonPath = getAppDirectory() + "/app/native/assets/cameraroll.json";
-	_cameraRollList = jda.load(jsonPath).toList();
+		QString jsonPath = getAppDirectory()
+				+ "/app/native/assets/cameraroll.json";
+		_cameraRollList = jda.load(jsonPath).toList();
 
-	_cameraRollListDialog->setTitle("Choose camera roll path");
-	if (jda.hasError()) {
-		qDebug() << "+++++++ JSON Error: " << jda.error();
+		_cameraRollListDialog->setTitle("Choose camera roll path");
+		if (jda.hasError()) {
+			qDebug() << "+++++++ JSON Error: " << jda.error();
+		}
 	}
 	qDebug() << "+++++++ Camera roll path: " << _cameraRollPath << endl;
-	qDebug() << "+++++++ JSON Path: " << jsonPath << endl;
+
 	for (int i = 0; i < _cameraRollList.length(); i++) {
 		QVariantMap cameraRollItem = _cameraRollList[i].toMap();
-		qDebug() << "+++++++ JSON Data: " << cameraRollItem["path"]
-				<< endl;
+		qDebug() << "+++++++ JSON Data: " << cameraRollItem["path"] << endl;
 		/*
 		 if (QFile::exists(
 		 cameraRollItem["required path"].toString().replace("~/",
 		 getAppDirectory() + "/"))) {*/
 		//listDialog->appendHeader(cameraRollItem["name"].toString());
-		_cameraRollListDialog->appendSeparator(
-				cameraRollItem["name"].toString());
+		//_cameraRollListDialog->appendSeparator(cameraRollItem["name"].toString());
 		bool pathExists = QFile::exists(
 				cameraRollItem["required path"].toString().replace("~/",
 						getAppDirectory() + "/"));
-		_cameraRollListDialog->appendItem(
-				cameraRollItem["description"].toString(),
-				pathExists);//_cameraRollPath == cameraRollItem["path"].toString().replace("~/", getAppDirectory()));
+		_cameraRollListDialog->appendItem(cameraRollItem["name"].toString(),
+				pathExists, i == _cameraRollIndex); //_cameraRollPath == cameraRollItem["path"].toString().replace("~/", getAppDirectory()));
 		/*		} else {
 		 qDebug() << "+++++++ Cannot find: " <<cameraRollItem["required path"].toString().replace("~/",
 		 getAppDirectory() + "/") << endl;
@@ -125,9 +125,10 @@ void CameraRollManager::promptCameraRollPath() {
 	if (result == SystemUiResult::ConfirmButtonSelection) {
 
 		qDebug() << "+++++++ ID selected: "
-				<< _cameraRollListDialog->selectedIndices()[0] / 2 << endl;
+				<< _cameraRollListDialog->selectedIndices()[0] << endl;
+
 		QVariantMap cameraRollItem =
-				_cameraRollList[_cameraRollListDialog->selectedIndices()[0] / 2].toMap();
+				_cameraRollList[_cameraRollListDialog->selectedIndices()[0]].toMap();
 		QString cameraPath = cameraRollItem["path"].toString().replace("~/",
 				getAppDirectory() + "/");
 
@@ -137,7 +138,10 @@ void CameraRollManager::promptCameraRollPath() {
 			dir.mkpath(cameraPath);
 		}
 
-		setCameraRoll(cameraPath);
+		if (setCameraRoll(cameraPath)) {
+			_cameraRollIndex = _cameraRollListDialog->selectedIndices()[0];
+			_settings.setValue(CAMERA_ROLL_INDEX, _cameraRollIndex);
+		}
 	}
 }
 
@@ -154,6 +158,7 @@ bool CameraRollManager::setCameraRoll(QString path) {
 		_cameraRollPath = path;
 		_settings.setValue(CAMERA_ROLL_PATH, _cameraRollPath);
 		qDebug() << "+++++++ Camera roll set" << endl;
+		createCameraDialog();
 		return true;
 	} else {
 		qDebug() << "+++++++ Error setting camera roll to " << path << endl;
@@ -162,7 +167,6 @@ bool CameraRollManager::setCameraRoll(QString path) {
 	}
 
 }
-
 
 QString CameraRollManager::getAppDirectory() {
 
