@@ -62,6 +62,7 @@ Camera* CameraRollManager::getCamera() {
 }
 
 void CameraRollManager::createCameraDialog() {
+	delete _cameraRollListDialog;
 	_cameraRollListDialog = new SystemListDialog("Save", "Cancel");
 
 	if (_cameraRollList.length() == 0) {
@@ -98,6 +99,7 @@ void CameraRollManager::createCameraDialog() {
 		 }*/
 
 	}
+	qDebug() << "+++++++ _cameraRollListDialog created. " << endl;
 }
 
 void CameraRollManager::promptCameraRollPath() {
