@@ -49,9 +49,15 @@ folder "installable-bar-files" as follows:
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
 
+**Devices we've tested with**
+
+* Wahoo Blue HR
+* Polar H7
+* Zephyr HxM Smart
+
 **Known Issues**
 
-* You should ensure that the heart rate monitor that you use has been paired with the BlackBerry 10 device before using the application. Dynamic pairing will be added is a later release of this application.
+* You should ensure that the heart rate monitor that you use has been paired with the BlackBerry 10 device before using the application. Dynamic pairing will be added as a later release of this application.
 
 ## Contributing Changes
 
