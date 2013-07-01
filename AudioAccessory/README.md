@@ -34,7 +34,7 @@ Simply Import the project into a workspace in your NDK. Of course you should rev
 
 **What else will I need?**
 
-You will need two BlackBerry 10 devices and suitable audio cables to run the actual demonstration. For this configuration a BlackBerry 10 device needs to be able to believe it has an external microphone plugged in via the audio jack just like an external headset. The audio jack is a 3.5mm 4-pin (TRRS) variant and in order for a BlackBerry 10 devcie to interpret a device inserted into the socket as a "headset" there should be a specific set of impedances across the various pins.
+You will need two BlackBerry 10 devices and suitable audio cables to run the actual demonstration. For this configuration a BlackBerry 10 device needs to be able to believe it has an external microphone plugged in via the audio jack just like an external headset. The audio jack is a 3.5mm 4-pin (TRRS) variant and in order for a BlackBerry 10 device to interpret a device inserted into the socket as a "headset" there should be a specific set of impedances across the various pins.
 
 Using the standard TRRS notation with RING2 as GROUND these should be of the order:
 
