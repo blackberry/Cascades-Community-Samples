@@ -156,7 +156,7 @@ Page {
                     }
                 }
                 Label {
-                    text: "© 2012 Research In Motion Limited."
+                    text: "© 2013 Research In Motion Limited."
                     enabled: false
                     preferredWidth: 650
                     textStyle {

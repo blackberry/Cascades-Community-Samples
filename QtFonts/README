@@ -1,0 +1,45 @@
+QtFonts - browsing Fonts Database currently available on your device. 
+
+========================================================================
+Sample Description:
+
+ This simple Qt application just shows you all available to Qt fonts
+ in the system. It's nice to have it when you develop your application
+ that uses many fonts as it gives you exact fontFamily and fontStyle
+ names, also it lists all available sizesi showing how it looks on the
+ screen.
+ 
+ Feature summary
+ - Basic Qt application initialization
+ - Retrieving information about fonts database
+ - Handling events of changing selection in QTreeWidget component 
+
+========================================================================
+Requirements:
+
+ - BlackBerry Native SDK for BlackBerry 10 version 10.0.9 or later
+ - BlackBerry BB10 Alpha device running BB10.0.9 or later
+
+========================================================================
+Importing a project into the Native SDK:
+
+ 1. File->New->Blackberry Tablet OS C/C++ Project
+ 2. In 'Project name' field type in 'QtFonts'. Press Next.
+ 3. Select 'Language:' C, 'Build Style:' Managed, 'Project Type:' Empty Application.
+    Press 'Finish'.
+ 4. Right click on this Project's src folder in Project Explorer and choose Import...
+ 5. Choose 'File system' and navigate to files from this repository, select all of them. Hit Finish.
+ 6. Right click on this Project in Project Explorer and choose Properties.
+ 7. In 'Configuration:' choose preferable configuration Device-Release.
+ 8. Under C/C++ Build->Settings->QCC Compiler->Preprocessro add following folders in
+    'Include Directories (-I)':
+     ${QNX_TARGET}/usr/include/qt4
+     ${QNX_TARGET}/usr/include/qt4/Qt
+     ${QNX_TARGET}/usr/include/qt4/QtCore
+     ${QNX_TARGET}/usr/include/qt4/QtGui
+ 9. Under C/C++ Build->Settings->QCC Linker->Libraries add following folders in
+    'Library Paths (-L)' section: ${QNX_TARGET}/${CPUVARDIR}/usr/lib/qt4/lib. 
+ 10. Under C/C++ Build->Settings->QCC Linker->Libraries add following libraries in
+    'Libraries (-l)' section: cpp, QtCore, QtGui. Click OK.
+ 11. Build and deploy.
+

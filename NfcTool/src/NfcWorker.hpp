@@ -150,7 +150,7 @@ private:
 	void checkReturnCode(int rc, int line, const char *file,
 			const char *func);
 	unsigned long getSysTimeMs();
-	void displayTagInformation(nfc_target_t* target);
+	void displayTagInformation(nfc_target_t* target, bool display_ndef_details);
 
 	static NfcWorker* _instance;
 	const int BPS_EVENT_TIMEOUT;
