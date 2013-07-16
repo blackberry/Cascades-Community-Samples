@@ -1,22 +1,33 @@
-/*
- * SBError.cpp
- *
- *  Created on: 2013-07-15
- *      Author: robwilliams
- */
+/**
+   Copyright (c) 2013 BlackBerry Limited.
 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+**/
 #include "SBError.hpp"
 
-static QMap<int, QString> errors;
+QMap<int,QString> SBError::errors;
 
 QString SBError::getErrorText(int error) {
+	if (errors.size()==0) {
+		buildErrors();
+	}
 	if (errors.contains(error)) {
 		return QString("%1 (%2)").arg(errors[error]).arg(error);
 	}
 	return QString("[Unknown error: %1]").arg(error);
 }
 
-int buildErrorTable() {
+void SBError::buildErrors() {
 	QMap<int, QString> & map(errors);
 	map[0x0000] = "SB_SUCCESS";
 	map[-1] = "Crypto objects are invalid";
@@ -304,7 +315,4 @@ int buildErrorTable() {
 	map[0x3C00] = "SB_ERR_PQ_BASE";
 	map[0x3D00] = "SB_ERR_ES_BASE";
 };
-
-static const int errorsBuilt = buildErrorTable();
-
 
