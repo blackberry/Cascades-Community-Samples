@@ -5,7 +5,7 @@
  *      Author: pbernhardt
  */
 
-#include "CameraRollManager.h"
+#include "CameraSettingsManager.h"
 
 #include <bb/system/SystemListDialog>
 #include <bb/system/SystemUiResult.hpp>
@@ -21,18 +21,18 @@ namespace camera {
 using namespace bb::system;
 using namespace bb::data;
 
-CameraRollManager::CameraRollManager(QObject *parent) {
+CameraSettingsManager::CameraSettingsManager(QObject *parent) {
 	// Get settings data (last used path, last used email)
 	// Load camera path list from JSON
 	// Wait for camera attachment
 	_cameraSettings = new CameraSettings(this);
 }
 
-CameraRollManager::~CameraRollManager() {
+CameraSettingsManager::~CameraSettingsManager() {
 	// TODO Auto-generated destructor stub
 }
 
-void CameraRollManager::setCamera(Camera *camera) {
+void CameraSettingsManager::setCamera(Camera *camera) {
 	//Clear old signals?
 
 	_camera = camera;
@@ -41,7 +41,7 @@ void CameraRollManager::setCamera(Camera *camera) {
 	_cameraRollPath = _settings.value(CAMERA_ROLL_PATH).toString();
 	if (_cameraRollPath != NULL) {
 		qDebug() << "+++++++ Saved path: " << _cameraRollPath;
-		setCameraRoll(_cameraRollPath);
+		setCameraRollPath(_cameraRollPath);
 	}
 
 	_cameraRollIndex = _settings.value(CAMERA_ROLL_INDEX).toInt();
@@ -50,18 +50,18 @@ void CameraRollManager::setCamera(Camera *camera) {
 	//QObject::connect(_camera, onPhotoSaved(const QString, quint64 length), this, sendPhoto(const QString, quint64 length))
 
 	if (_cameraRollListDialog == NULL) {
-		createCameraDialog();
+		createCameraRollDialog();
 	}
 
 	//Set camera roll path to path in settings data, if available
 
 }
 
-Camera* CameraRollManager::getCamera() {
+Camera* CameraSettingsManager::getCamera() {
 	return _camera;
 }
 
-void CameraRollManager::createCameraDialog() {
+void CameraSettingsManager::createCameraRollDialog() {
 	delete _cameraRollListDialog;
 	_cameraRollListDialog = new SystemListDialog("Save", "Cancel");
 
@@ -103,7 +103,7 @@ void CameraRollManager::createCameraDialog() {
 	qDebug() << "+++++++ _cameraRollListDialog created. " << endl;
 }
 
-void CameraRollManager::promptCameraRollPath() {
+void CameraSettingsManager::promptCameraRollPath(bool alsoSetCameraRollPath) {
 	// Create dialog
 
 	// Populate with radio buttons from path list
@@ -124,6 +124,7 @@ void CameraRollManager::promptCameraRollPath() {
 	// This dialog box doesn't have a custom button.
 
 	//_cameraRollListDialog->
+
 	SystemUiResult::Type result = _cameraRollListDialog->exec();
 	if (result == SystemUiResult::ConfirmButtonSelection) {
 		qDebug() << "+++++ Confirmed" << endl;
@@ -141,15 +142,20 @@ void CameraRollManager::promptCameraRollPath() {
 			dir.mkpath(cameraPath);
 		}
 
-		if (setCameraRoll(cameraPath)) {
-			_cameraRollIndex = _cameraRollListDialog->selectedIndices()[0];
-			_settings.setValue(CAMERA_ROLL_INDEX, _cameraRollIndex);
-			createCameraDialog();
+		if (alsoSetCameraRollPath) {
+			if (setCameraRollPath(cameraPath)) {
+				_cameraRollIndex = _cameraRollListDialog->selectedIndices()[0];
+				_settings.setValue(CAMERA_ROLL_INDEX, _cameraRollIndex);
+				createCameraRollDialog();
+			}
 		}
+		emit cameraRollPathUpdated(cameraPath);
+	} else {
+		emit cameraRollPathNotUpdated();
 	}
 }
 
-bool CameraRollManager::setCameraRoll(QString path) {
+bool CameraSettingsManager::setCameraRollPath(QString path) {
 
 	qDebug() << "+++++++ Setting camera roll to: " << path << endl;
 
@@ -171,9 +177,13 @@ bool CameraRollManager::setCameraRoll(QString path) {
 
 }
 
-QString CameraRollManager::getAppDirectory() {
+QString CameraSettingsManager::getAppDirectory() {
 
 	return QDir::currentPath();
+}
+
+QString CameraSettingsManager::getCameraRollPath() {
+	return _cameraRollPath;
 }
 
 } /* namespace camera */

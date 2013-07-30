@@ -89,7 +89,7 @@ NavigationPane {
             	verticalAlignment: VerticalAlignment.Bottom
                 TextField {
                     id: cameraRollText
-                    text: cameraRollManager.getAppDirectory() + "/shared/Dropbox/Photos/"
+                    text: cameraSettingsManager.getAppDirectory() + "/shared/Dropbox/Photos/"
                 }
                 Label {
                     id: cameraRollLabel
@@ -125,8 +125,8 @@ NavigationPane {
                 CameraSettings {
                     id: cameraSettings
                 },
-                CameraRollManager {
-                    id: cameraRollManager
+                CameraSettingsManager {
+                    id: cameraSettingsManager
                 }
 
             ]
@@ -135,12 +135,12 @@ NavigationPane {
 
     }
     onCreationCompleted: {
-        cameraRollManager.setCamera(camera);
+        cameraSettingsManager.setCamera(camera);
     }
     Menu.definition: MenuDefinition {
         settingsAction: SettingsActionItem {
             onTriggered: {
-              cameraRollManager.promptCameraRollPath();
+              cameraSettingsManager.promptCameraRollPath(true);
               }
         }
     }

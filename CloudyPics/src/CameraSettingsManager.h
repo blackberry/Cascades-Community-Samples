@@ -1,12 +1,12 @@
 /*
- * CameraRollManager.h
+ * CameraSettingsManager.h
  *
  *  Created on: Apr 5, 2013
  *      Author: pbernhardt
  */
 
-#ifndef CAMERAROLLMANAGER_H_
-#define CAMERAROLLMANAGER_H_
+#ifndef CAMERASETTINGSMANAGER_H_
+#define CAMERASETTINGSMANAGER_H_
 
 #define CAMERA_ROLL_PATH "cameraRollPath"
 #define CAMERA_ROLL_INDEX "cameraRollIndex"
@@ -27,31 +27,33 @@ using namespace bb::cascades;
 using namespace bb::cascades::multimedia;
 using namespace bb::system;
 
-class CameraRollManager: public QObject {
+class CameraSettingsManager: public QObject {
 	Q_OBJECT
 
 	Q_PROPERTY(Camera* camera READ getCamera WRITE setCamera NOTIFY cameraChanged)
+	Q_PROPERTY(QString cameraRollPath READ getCameraRollPath WRITE setCameraRollPath NOTIFY cameraRollPathUpdated)
 public:
-	CameraRollManager(QObject *parent=0);
-	virtual ~CameraRollManager();
-
-
+	CameraSettingsManager(QObject *parent=0);
+	virtual ~CameraSettingsManager();
 
 	Q_INVOKABLE void setCamera(bb::cascades::multimedia::Camera *camera);
 	Q_INVOKABLE Camera* getCamera();
 	Q_INVOKABLE QString getAppDirectory();
-	Q_INVOKABLE bool setCameraRoll(QString path);
+	Q_INVOKABLE bool setCameraRollPath(QString path);
+	Q_INVOKABLE QString getCameraRollPath();
 
 public slots:
-	void promptCameraRollPath();
+	void promptCameraRollPath(bool setCameraRollPath);
 
 signals:
+	void cameraRollPathUpdated(QString alsoSetCameraRollPath);
+	void cameraRollPathNotUpdated();
 	void cameraChanged();
 	void cameraRollError(QString error);
 
 private:
 
-	void createCameraDialog();
+	void createCameraRollDialog();
 
 	Camera *_camera;
 	CameraSettings *_cameraSettings;
@@ -70,4 +72,4 @@ private:
 } /* namespace camera*/
 } /* namespace community */
 } /* namespace bb */
-#endif /* CAMERAROLLMANAGER_H_ */
+#endif /* CAMERASETTINGSMANAGER_H_ */
