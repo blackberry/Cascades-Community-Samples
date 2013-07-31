@@ -1,12 +1,12 @@
 /*
- * CameraSettingsManager.h
+ * CameraRollManager.h
  *
  *  Created on: Apr 5, 2013
  *      Author: pbernhardt
  */
 
-#ifndef CAMERASETTINGSMANAGER_H_
-#define CAMERASETTINGSMANAGER_H_
+#ifndef CAMERAROLLMANAGER_H_
+#define CAMERAROLLMANAGER_H_
 
 #define CAMERA_ROLL_PATH "cameraRollPath"
 #define CAMERA_ROLL_INDEX "cameraRollIndex"
@@ -27,33 +27,33 @@ using namespace bb::cascades;
 using namespace bb::cascades::multimedia;
 using namespace bb::system;
 
-class CameraSettingsManager: public QObject {
+class CameraRollManager: public QObject {
 	Q_OBJECT
 
-	Q_PROPERTY(Camera* camera READ getCamera WRITE setCamera NOTIFY cameraChanged)
-	Q_PROPERTY(QString cameraRollPath READ getCameraRollPath WRITE setCameraRollPath NOTIFY cameraRollPathUpdated)
+	//Q_PROPERTY(Camera* camera READ getCamera WRITE setCamera NOTIFY cameraChanged)
+	//Q_PROPERTY(QString cameraRollPath READ getCameraRollPath WRITE setCameraRollPath NOTIFY cameraRollPathUpdated)
 public:
-	CameraSettingsManager(QObject *parent=0);
-	virtual ~CameraSettingsManager();
+	CameraRollManager(QObject *parent=0);
+	virtual ~CameraRollManager();
 
-	Q_INVOKABLE void setCamera(bb::cascades::multimedia::Camera *camera);
+	//Q_INVOKABLE void setCamera(bb::cascades::multimedia::Camera *camera);
 	Q_INVOKABLE Camera* getCamera();
 	Q_INVOKABLE QString getAppDirectory();
-	Q_INVOKABLE bool setCameraRollPath(QString path);
+	//Q_INVOKABLE bool setCameraRollPath(QString path);
 	Q_INVOKABLE QString getCameraRollPath();
 
 public slots:
-	void promptCameraRollPath(bool setCameraRollPath);
+	void promptCameraRollPath();
+	void createCameraRollDialog();
 
 signals:
-	void cameraRollPathUpdated(QString alsoSetCameraRollPath);
+	void cameraRollPathUpdated(QString cameraRollPath);
 	void cameraRollPathNotUpdated();
 	void cameraChanged();
 	void cameraRollError(QString error);
 
-private:
 
-	void createCameraRollDialog();
+private:
 
 	Camera *_camera;
 	CameraSettings *_cameraSettings;
@@ -72,4 +72,4 @@ private:
 } /* namespace camera*/
 } /* namespace community */
 } /* namespace bb */
-#endif /* CAMERASETTINGSMANAGER_H_ */
+#endif /* CAMERAROLLMANAGER_H_ */

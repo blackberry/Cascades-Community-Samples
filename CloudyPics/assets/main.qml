@@ -125,8 +125,13 @@ NavigationPane {
                 CameraSettings {
                     id: cameraSettings
                 },
-                CameraSettingsManager {
-                    id: cameraSettingsManager
+                CameraRollManager {
+                    id: cameraRollManager
+                    onCameraRollPathUpdated: {
+                        camera.getSettings(cameraSettings);
+                        cameraSettings.cameraRollPath = cameraRollPath;
+                        camera.applySettings(cameraSettings);
+                    }
                 }
 
             ]
@@ -135,12 +140,12 @@ NavigationPane {
 
     }
     onCreationCompleted: {
-        cameraSettingsManager.setCamera(camera);
+        cameraRollManager.createCameraRollDialog();
     }
     Menu.definition: MenuDefinition {
         settingsAction: SettingsActionItem {
             onTriggered: {
-              cameraSettingsManager.promptCameraRollPath(true);
+                cameraRollManager.promptCameraRollPath();
               }
         }
     }

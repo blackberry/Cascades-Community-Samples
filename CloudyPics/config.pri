@@ -3,23 +3,27 @@ BASEDIR =  $$quote($$_PRO_FILE_PWD_)
 
 device {
     CONFIG(debug, debug|release) {
-        SOURCES +=  $$quote($$BASEDIR/src/CameraSettingsManager.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/CameraRollManager.cpp) \
+                 $$quote($$BASEDIR/src/CameraSettingsStore.cpp) \
                  $$quote($$BASEDIR/src/CardManager.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/CameraSettingsManager.h) \
+        HEADERS +=  $$quote($$BASEDIR/src/CameraRollManager.h) \
+                 $$quote($$BASEDIR/src/CameraSettingsStore.h) \
                  $$quote($$BASEDIR/src/CardManager.h) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
 
     CONFIG(release, debug|release) {
-        SOURCES +=  $$quote($$BASEDIR/src/CameraSettingsManager.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/CameraRollManager.cpp) \
+                 $$quote($$BASEDIR/src/CameraSettingsStore.cpp) \
                  $$quote($$BASEDIR/src/CardManager.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/CameraSettingsManager.h) \
+        HEADERS +=  $$quote($$BASEDIR/src/CameraRollManager.h) \
+                 $$quote($$BASEDIR/src/CameraSettingsStore.h) \
                  $$quote($$BASEDIR/src/CardManager.h) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
@@ -27,12 +31,14 @@ device {
 
 simulator {
     CONFIG(debug, debug|release) {
-        SOURCES +=  $$quote($$BASEDIR/src/CameraSettingsManager.cpp) \
+        SOURCES +=  $$quote($$BASEDIR/src/CameraRollManager.cpp) \
+                 $$quote($$BASEDIR/src/CameraSettingsStore.cpp) \
                  $$quote($$BASEDIR/src/CardManager.cpp) \
                  $$quote($$BASEDIR/src/applicationui.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/CameraSettingsManager.h) \
+        HEADERS +=  $$quote($$BASEDIR/src/CameraRollManager.h) \
+                 $$quote($$BASEDIR/src/CameraSettingsStore.h) \
                  $$quote($$BASEDIR/src/CardManager.h) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
