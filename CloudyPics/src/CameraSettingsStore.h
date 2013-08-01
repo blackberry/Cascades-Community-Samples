@@ -25,7 +25,7 @@ class CameraSettingsStore: public QObject {
 	Q_OBJECT
 
 public:
-	enum CameraSettings {
+	enum CameraSettingType {
 		CameraMode,
 		CameraRollPath,
 		CaptureResolution,
@@ -34,23 +34,27 @@ public:
 		FocusRegion,
 		ZoomLevel,
 		SceneMode,
-		ShootingMode
+		ShootingMode,
+		CameraSettingTypeCount
 	};
 
 	CameraSettingsStore(QObject *parent=0);
 	virtual ~CameraSettingsStore();
 
-	Q_INVOKABLE void saveSetting(CameraSettings setting, QVariant value);
-	Q_INVOKABLE QVariant restoreSetting(CameraSettings setting);
+	Q_INVOKABLE void saveSetting(CameraSettingType setting, QVariant value);
+	Q_INVOKABLE QVariant restoreSetting(CameraSettingType setting);
+	Q_INVOKABLE void applySetting(CameraSettingType setting, CameraSettings *settings);
+	Q_INVOKABLE void deleteSetting(CameraSettingType setting);
 
 	Q_INVOKABLE void saveSettings(CameraSettings *settings);
 	Q_INVOKABLE void restoreSettings(CameraSettings *settings);
+	Q_INVOKABLE void clearSettings(CameraSettings *settings);
 
 	Q_INVOKABLE void restoreAndApplySettings(Camera *camera);
 
 private:
-	QVariantList _cameraSettingsList;
-	QSettings _settings;
+	//QVariantList _cameraSettingsList;
+	QSettings* _qSettings;
 
 
 };
