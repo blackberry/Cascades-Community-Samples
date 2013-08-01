@@ -910,8 +910,8 @@ void NfcWorker::doIso7816Test(const QVariant &aid, bool select_only, const QVari
 			QString responseAsHex = QString::fromAscii(responseData.toHex());
 			emit message(QString("APDU response: %1").arg(responseAsHex));
 		}
+		free(result);
 	}
-	free(result);
 
 	// Close the channel
 	if (NFC_RESULT_SUCCESS != nfc_se_channel_close_channel(seChannel)) {

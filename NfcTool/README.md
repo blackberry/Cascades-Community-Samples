@@ -20,6 +20,9 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
+* **V5.0.2** 
+	* Improper freeing of memory fixed
+
 * **V5.0.1** 
 	* NDEF data included in Tag Details screens
 	* UI text simplified
