@@ -11,6 +11,7 @@ device {
 
         HEADERS +=  $$quote($$BASEDIR/src/CameraRollManager.h) \
                  $$quote($$BASEDIR/src/CameraSettingsStore.h) \
+                 $$quote($$BASEDIR/src/CameraSettingsType.h) \
                  $$quote($$BASEDIR/src/CardManager.h) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
@@ -24,6 +25,7 @@ device {
 
         HEADERS +=  $$quote($$BASEDIR/src/CameraRollManager.h) \
                  $$quote($$BASEDIR/src/CameraSettingsStore.h) \
+                 $$quote($$BASEDIR/src/CameraSettingsType.h) \
                  $$quote($$BASEDIR/src/CardManager.h) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }
@@ -39,6 +41,7 @@ simulator {
 
         HEADERS +=  $$quote($$BASEDIR/src/CameraRollManager.h) \
                  $$quote($$BASEDIR/src/CameraSettingsStore.h) \
+                 $$quote($$BASEDIR/src/CameraSettingsType.h) \
                  $$quote($$BASEDIR/src/CardManager.h) \
                  $$quote($$BASEDIR/src/applicationui.hpp)
     }

@@ -1,6 +1,7 @@
 // Default empty project template
 #include "applicationui.hpp"
 #include "CameraRollManager.h"
+#include "CameraSettingsStore.h"
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
@@ -23,6 +24,12 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 
 	qmlRegisterType<CameraRollManager>("bb.community.camera", 1, 0,
 				"CameraRollManager");
+
+	qmlRegisterType<CameraSettingsStore>("bb.community.camera", 1, 0,
+					"CameraSettingsStore");
+
+	qmlRegisterType<CameraSettingType>("bb.community.camera", 1, 0,
+						"CameraSettingType");
 
     // create scene document from main.qml asset
     // set parent to created document to ensure it exists for the whole application lifetime

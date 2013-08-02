@@ -16,7 +16,7 @@ NavigationPane {
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
             onCreationCompleted: {
-                console.debug("All cameras acessible: " + camera.allCamerasAccessible);
+                console.debug("All cameras accessible: " + camera.allCamerasAccessible);
                 if (camera.allCamerasAccessible) {
                     console.debug("Opening camera");
                     camera.open(CameraUnit.Rear);
@@ -51,6 +51,24 @@ NavigationPane {
                     console.debug("+++++++ Settings applied");*/
 /*                    camera.getSettings(cameraSettings);
                     cameraRollLabel.text = cameraSettings.cameraRollPath*/
+
+					
+					if (cameraSettingsStore.isEmpty()) {
+                        camera.getSettings(cameraSettings);
+                        console.debug("+++++++ No existing settings, setting sane default");
+						cameraSettings.cameraMode = CameraMode.Photo;
+                        cameraSettings.focusMode = CameraFocusMode.ContinuousAuto;
+                        cameraSettings.shootingMode = CameraShootingMode.Stabilization;
+                        
+                        camera.applySettings(cameraSettings);
+                        
+                        cameraSettingsStore.saveSettings(cameraSettings);
+					} else {
+                        console.debug("+++++++ Restoring previous settings");
+					    cameraSettingsStore.restoreAndApplySettings(camera);
+					}
+
+
                     console.debug("+++++++ Camera roll path: " + cameraSettings.cameraRollPath);
                     camera.startViewfinder();
                 }
@@ -131,7 +149,13 @@ NavigationPane {
                         camera.getSettings(cameraSettings);
                         cameraSettings.cameraRollPath = cameraRollPath;
                         camera.applySettings(cameraSettings);
+                        console.log("+++++++ Camera roll set to " + cameraRollPath);
+                        cameraSettingsStore.saveSetting(CameraSettingType.CameraRollPath, cameraRollPath);
+                        
                     }
+                },
+                CameraSettingsStore {
+                    id: cameraSettingsStore
                 }
 
             ]

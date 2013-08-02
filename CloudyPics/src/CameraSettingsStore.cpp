@@ -35,55 +35,57 @@ CameraSettingsStore::~CameraSettingsStore() {
 	_qSettings->deleteLater();
 }
 
-void CameraSettingsStore::saveSetting(CameraSettingType setting,
+void CameraSettingsStore::saveSetting(CameraSettingType::Type setting,
 		QVariant value) {
+	qDebug() << "+++++++ Saving " << CameraSettingName[setting] << endl;
 	_qSettings->setValue(CameraSettingName[setting], value);
 }
 
-QVariant CameraSettingsStore::restoreSetting(CameraSettingType setting) {
+QVariant CameraSettingsStore::loadSetting(CameraSettingType::Type setting) {
 	return _qSettings->value(CameraSettingName[setting], 0);
 }
 
-void CameraSettingsStore::applySetting(CameraSettingType setting,
+void CameraSettingsStore::populateSetting(CameraSettingType::Type setting,
 		CameraSettings *settings) {
+	qDebug() << "+++++++ Populating " << CameraSettingName[setting] << " of settings object" << endl;
 	if (_qSettings->contains(CameraSettingName[setting])) {
 		QVariant value = _qSettings->value(CameraSettingName[setting]);
 		QString key = CameraSettingName[setting];
 
 		switch (setting) {
-		case CameraMode:
+		case CameraSettingType::CameraMode:
 			settings->setCameraMode(CameraMode::Type(value.toInt()));
 			break;
-		case CameraRollPath:
+		case CameraSettingType::CameraRollPath:
 			settings->setCameraRollPath(value.toString());
 			break;
 
-		case CaptureResolution:
+		case CameraSettingType::CaptureResolution:
 			settings->setCaptureResolution(value.toSize());
 			break;
 
-		case FlashMode:
-			settings->setFlashMode(FlashMode::Type(value.toInt()));
+		case CameraSettingType::FlashMode:
+			settings->setFlashMode(CameraFlashMode::Type(value.toInt()));
 			break;
 
-		case FocusMode:
-			settings->setFlashMode(FocusMode::Type(value.toInt()));
+		case CameraSettingType::FocusMode:
+			settings->setFocusMode(CameraFocusMode::Type(value.toInt()));
 			break;
 
-		case FocusRegion:
+		case CameraSettingType::FocusRegion:
 			settings->setFocusRegion(value.toRect());
 			break;
 
-		case ZoomLevel:
+		case CameraSettingType::ZoomLevel:
 			settings->setZoomLevel(value.toUInt());
 			break;
 
-		case SceneMode:
-			settings->setFlashMode(SceneMode::Type(value.toInt()));
+		case CameraSettingType::SceneMode:
+			settings->setSceneMode(CameraSceneMode::Type(value.toInt()));
 			break;
 
-		case ShootingMode:
-			settings->setSceneMode(SceneMode::Type(value.toInt()));
+		case CameraSettingType::ShootingMode:
+			settings->setShootingMode(CameraShootingMode::Type(value.toInt()));
 			break;
 
 		default:
@@ -92,48 +94,54 @@ void CameraSettingsStore::applySetting(CameraSettingType setting,
 	}
 }
 
-void CameraSettingsStore::deleteSetting(CameraSettingType setting) {
+void CameraSettingsStore::deleteSetting(CameraSettingType::Type setting) {
 	_qSettings->remove(CameraSettingName[setting]);
 }
 
-void CameraSettingsStore::saveSettings(CameraSettings *settings) {
+void CameraSettingsStore::saveSettings(QObject* settings) {
+	CameraSettings *cameraSettings = qobject_cast<CameraSettings *>(settings);
+	saveSettings(cameraSettings);
+}
+
+void CameraSettingsStore::saveSettings(bb::cascades::multimedia::CameraSettings* settings) {
 
 	//CameraMode
-	_qSettings->setValue(CameraSettingName[CameraMode], settings->cameraMode());
+	_qSettings->setValue(CameraSettingName[CameraSettingType::CameraMode], settings->cameraMode());
 
 	//CameraRollPath
-	_qSettings->setValue(CameraSettingName[CameraRollPath],
+	_qSettings->setValue(CameraSettingName[CameraSettingType::CameraRollPath],
 			settings->cameraRollPath());
 
 	//CaptureResolution
-	_qSettings->setValue(CameraSettingName[CaptureResolution],
+	_qSettings->setValue(CameraSettingName[CameraSettingType::CaptureResolution],
 			settings->captureResolution());
 
 	//FlashMode
-	_qSettings->setValue(CameraSettingName[FlashMode], settings->flashMode());
+	_qSettings->setValue(CameraSettingName[CameraSettingType::FlashMode], settings->flashMode());
 
 	//FocusMode
-	_qSettings->setValue(CameraSettingName[FocusMode], settings->focusMode());
+	_qSettings->setValue(CameraSettingName[CameraSettingType::FocusMode], settings->focusMode());
 
 	//FocusRegion,
-	_qSettings->setValue(CameraSettingName[FocusRegion],
+	_qSettings->setValue(CameraSettingName[CameraSettingType::FocusRegion],
 			settings->focusRegion());
 
 	//ZoomLevel
-	_qSettings->setValue(CameraSettingName[ZoomLevel], settings->zoomLevel());
+	_qSettings->setValue(CameraSettingName[CameraSettingType::ZoomLevel], settings->zoomLevel());
 
 	//SceneMode
-	_qSettings->setValue(CameraSettingName[SceneMode], settings->sceneMode());
+	_qSettings->setValue(CameraSettingName[CameraSettingType::SceneMode], settings->sceneMode());
 
 	//ShootingMode
-	_qSettings->setValue(CameraSettingName[ShootingMode],
+	_qSettings->setValue(CameraSettingName[CameraSettingType::ShootingMode],
 			settings->shootingMode());
 }
 
-void CameraSettingsStore::restoreSettings(CameraSettings *settings) {
+void CameraSettingsStore::populateSettings(CameraSettings *settings) {
 
-	for (int i = 0; i < CameraSettingTypeCount; i++) {
-		applySetting(CameraSettingType(i), settings);
+	qDebug() << "+++++++ Populating settings object" << endl;
+	for (int i = 0; i < CameraSettingType::CameraSettingTypeCount; i++) {
+		populateSetting(CameraSettingType::Type(i), settings);
 	}
 
 }
@@ -143,12 +151,21 @@ void CameraSettingsStore::clearSettings(CameraSettings *settings) {
 }
 
 void CameraSettingsStore::restoreAndApplySettings(Camera *camera) {
-	CameraSettings *settings;
+	qDebug() << "+++++++ Restoring settings" << endl;
+
+	CameraSettings* settings = new CameraSettings(this);
 	camera->getSettings(settings);
 
-	restoreSettings(settings);
+	qDebug() << "+++++++ Current settings retrieved" << endl;
+
+	populateSettings(settings);
 
 	camera->applySettings(settings);
+	settings->deleteLater();
+}
+
+bool CameraSettingsStore::isEmpty() {
+	return _qSettings->allKeys().length() == 0;
 }
 
 } /* namespace camera */
