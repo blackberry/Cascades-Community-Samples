@@ -17,6 +17,7 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 **Release History**
 
 * **V1.0.0** - Initial release
+* **V1.0.1** - Modified messageUpdated to log Attachment.data() message payload to allow for calls made when a message is updated due to a further concatenated message segment arriving.
 
 **Dependencies**
 
@@ -31,7 +32,7 @@ Simply import the project into a workspace in your NDK. Of course you should rev
 
 If you don't want to build this sample application yourself we've included a pre-built and signed BAR file. You can find it in the folder "**installable-bar-files**" as follows:
 
-* **SmsMessageService-1\_0\_0\_1.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application (requires BlackBerry 10 Software 10.0.9 or later).
+* **SmsMessageService-1\_0\_0\_2.bar** -- Signed BAR file for Version 1.0 (V1.0) of the application (requires BlackBerry 10 Software 10.0.9 or later).
 
 **To contribute code to this repository you must be [signed up as an official contributor](http://blackberry.github.com/howToContribute.html).**
 

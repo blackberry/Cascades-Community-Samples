@@ -252,6 +252,8 @@ void SmsMessageService::sendMessage(const QString & text, const QString & destin
 
 void SmsMessageService::messageReceived(bb::pim::account::AccountKey account_key, bb::pim::message::ConversationKey conv, bb::pim::message::MessageKey message_key) {
 
+	qDebug() << "XXXX messageReceived";
+
 	Message message = _message_service->message(_sms_account_id, message_key);
 
 	qDebug() << "XXXX Message mime type:" << message.mimeType();
@@ -277,6 +279,7 @@ void SmsMessageService::messageReceived(bb::pim::account::AccountKey account_key
 void SmsMessageService::messageUpdated(bb::pim::account::AccountKey accountId, bb::pim::message::ConversationKey conversationId, bb::pim::message::MessageKey message_key,
 		bb::pim::message::MessageUpdate data) {
 
+	qDebug() << "XXXX messageUpdated";
 	Message message = _message_service->message(_sms_account_id, message_key);
 
 	qDebug() << "XXXX Message mime type:" << message.mimeType();
@@ -299,6 +302,8 @@ void SmsMessageService::messageUpdated(bb::pim::account::AccountKey accountId, b
 					}
 				}
 			}
+			bb::pim::message::Attachment attachment = message.attachmentAt(0);
+			log(QString(attachment.data()));
 		} else {
 			qDebug() << "XXXX messageUpdated: no SMS body; no attachments";
 		}
