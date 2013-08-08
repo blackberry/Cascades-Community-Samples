@@ -9,12 +9,13 @@
 
 namespace bb {
 namespace community {
-namespace cloudypics {
+namespace camera {
 
 CardManager::CardManager(QObject *parent) :
 		QObject(parent) {
-	// TODO Auto-generated constructor stub
 
+	// Get ready to be invoked
+	_pooled = false;
 	qDebug() << "+++++++++ Setting up card manager" << endl;
 
 	_invokeManager = new InvokeManager(this);
@@ -45,7 +46,6 @@ CardManager::~CardManager() {
 }
 
 void CardManager::onInvoked(const bb::system::InvokeRequest&) {
-	//if (_camera->)
 	if(_pooled) {
 		_camera->open(CameraUnit::Rear);
 		_camera->startViewfinder();
@@ -57,6 +57,7 @@ void CardManager::onCardPooled(const bb::system::CardDoneMessage&) {
 	_camera->stopViewfinder();
 	_camera->close();
 }
+
 void CardManager::triggerCardDone(const QString& data) {
 
 	if (_invoked) {
@@ -83,6 +84,6 @@ void CardManager::setCamera(Camera *camera) {
 			SLOT(triggerCardDone(const QString&)));
 }
 
-} /* namespace cloudypics */
+} /* namespace camera */
 } /* namespace community */
 } /* namespace bb */

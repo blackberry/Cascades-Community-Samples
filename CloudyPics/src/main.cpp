@@ -1,4 +1,4 @@
-// Default empty project template
+ // Default empty project template
 #include <bb/cascades/Application>
 
 #include <QLocale>

@@ -1,4 +1,3 @@
-// Default empty project template
 #ifndef ApplicationUI_HPP_
 #define ApplicationUI_HPP_
 
@@ -14,8 +13,6 @@ class Application;
 }
 }
 
-using namespace bb::community::cloudypics;
-
 /*!
  * @brief Application pane object
  *
@@ -28,14 +25,8 @@ public:
 	virtual ~ApplicationUI() {
 	}
 
-public slots:
-/*	void onInvoked(const bb::system::InvokeRequest&);
-	void onCardPooled(const bb::system::CardDoneMessage&);*/
-
-
 private:
-	CardManager *_cardManager;
-	bool _invoked;
+	bb::community::camera::CardManager *_cardManager;
 
 };
 

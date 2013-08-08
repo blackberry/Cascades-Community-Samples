@@ -16,7 +16,7 @@
 
 namespace bb {
 namespace community {
-namespace cloudypics {
+namespace camera {
 
 using namespace bb::system;
 using namespace bb::cascades::multimedia;
@@ -29,6 +29,7 @@ public:
 	virtual ~CardManager();
 
 public slots:
+	//Handle the various invocation signals
 	void onInvoked(const bb::system::InvokeRequest&);
 	void onCardPooled(const bb::system::CardDoneMessage&);
 	void triggerCardDone(const QString& data);
@@ -36,7 +37,6 @@ public slots:
 	void setCamera(Camera *camera);
 
 private:
-	//Card
 	InvokeManager *_invokeManager;
 	bool _invoked;
 	bool _pooled;
@@ -44,7 +44,7 @@ private:
 
 };
 
-} /* namespace cloudypics */
+} /* namespace camera */
 } /* namespace community */
 } /* namespace bb */
 #endif /* CARDMANAGER_H_ */

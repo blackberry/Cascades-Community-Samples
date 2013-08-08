@@ -12,7 +12,6 @@ NavigationPane {
             layout: DockLayout {
 
             }
-            //background: Color.create("#888800")
             horizontalAlignment: HorizontalAlignment.Fill
             verticalAlignment: VerticalAlignment.Fill
             onCreationCompleted: {
@@ -22,6 +21,7 @@ NavigationPane {
                     camera.open(CameraUnit.Rear);
                 }
             }
+            
             //TODO: Wrap this in a non-transparent foreign window to fix cards
             Camera {
                 id: camera
@@ -34,42 +34,38 @@ NavigationPane {
                     if (event.touchType == TouchType.Down && ! photoBeingTaken) {
                         photoBeingTaken = true;
                         camera.capturePhoto();
-                        console.debug("SNAP!");
+                        console.debug("+++++++ SNAP!");
                     }
                 }
                 onCameraOpened: {
                     
-                    //Camera roll stuff
                     console.debug("+++++++ Camera opened");
-/*                    camera.getSettings(cameraSettings);
-                    console.debug("+++++++ Settings got");
-                    console.debug("+++++++ Camera roll path: " + cameraSettings.cameraRollPath);
-                    cameraSettings.cameraRollPath ="/accounts/1000/removable/sdcard/camera/";
-
-
-                    camera.applySettings(cameraSettings);
-                    console.debug("+++++++ Settings applied");*/
-/*                    camera.getSettings(cameraSettings);
-                    cameraRollLabel.text = cameraSettings.cameraRollPath*/
-
 					
+					//Restore previous settings
 					if (cameraSettingsStore.isEmpty()) {
                         camera.getSettings(cameraSettings);
-                        console.debug("+++++++ No existing settings, setting sane default");
+                        
+                        console.debug("+++++++ No existing settings, setting some defaults");
 						cameraSettings.cameraMode = CameraMode.Photo;
                         cameraSettings.focusMode = CameraFocusMode.ContinuousAuto;
                         cameraSettings.shootingMode = CameraShootingMode.Stabilization;
                         
                         camera.applySettings(cameraSettings);
-                        
+                        console.log(cameraSettings);
                         cameraSettingsStore.saveSettings(cameraSettings);
 					} else {
                         console.debug("+++++++ Restoring previous settings");
 					    cameraSettingsStore.restoreAndApplySettings(camera);
+                        camera.getSettings(cameraSettings);
 					}
 
 
                     console.debug("+++++++ Camera roll path: " + cameraSettings.cameraRollPath);
+                    
+                    //Prepare a Camera Roll Dialog
+                    cameraRollManager.createCameraRollDialog(cameraSettings.cameraRollPath);
+                    
+                    //Now we can actually start the viewfinder
                     camera.startViewfinder();
                 }
                 onCameraOpenFailed: {
@@ -103,16 +99,7 @@ NavigationPane {
 
             }
             Container {
-/*            	horizontalAlignment: HorizontalAlignment.Center
-            	verticalAlignment: VerticalAlignment.Bottom
-                TextField {
-                    id: cameraRollText
-                    text: cameraSettingsManager.getAppDirectory() + "/shared/Dropbox/Photos/"
-                }
-                Label {
-                    id: cameraRollLabel
 
-                }*/
             }
             Label {
                 id: photoSavedLabel
@@ -142,6 +129,7 @@ NavigationPane {
 
                 CameraSettings {
                     id: cameraSettings
+                    objectName: "cameraSettings"
                 },
                 CameraRollManager {
                     id: cameraRollManager
@@ -150,7 +138,7 @@ NavigationPane {
                         cameraSettings.cameraRollPath = cameraRollPath;
                         camera.applySettings(cameraSettings);
                         console.log("+++++++ Camera roll set to " + cameraRollPath);
-                        cameraSettingsStore.saveSetting(CameraSettingType.CameraRollPath, cameraRollPath);
+                        cameraSettingsStore.saveSetting(CameraSettingsStore.CameraRollPath, cameraRollPath);
                         
                     }
                 },
@@ -164,7 +152,7 @@ NavigationPane {
 
     }
     onCreationCompleted: {
-        cameraRollManager.createCameraRollDialog();
+        //cameraRollManager.createCameraRollDialog();
     }
     Menu.definition: MenuDefinition {
         settingsAction: SettingsActionItem {

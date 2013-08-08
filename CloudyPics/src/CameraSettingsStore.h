@@ -12,7 +12,6 @@
 #include <QSettings>
 #include <bb/cascades/multimedia/CameraSettings>
 #include <bb/cascades/multimedia/Camera>
-#include "CameraSettingsType.h"
 
 namespace bb {
 namespace community {
@@ -20,14 +19,15 @@ namespace camera {
 
 using namespace bb::cascades;
 using namespace bb::cascades::multimedia;
-//using namespace bb::system;
 
 class CameraSettingsStore: public QObject {
 	Q_OBJECT
 
-/*	Q_ENUMS(CameraSettingType)
+	Q_ENUMS(CameraSettingsType)
 
-	enum CameraSettingType {
+public:
+	// All the settings that can be saved
+	enum CameraSettingsType {
 		CameraMode,
 		CameraRollPath,
 		CaptureResolution,
@@ -37,30 +37,36 @@ class CameraSettingsStore: public QObject {
 		ZoomLevel,
 		SceneMode,
 		ShootingMode,
-		CameraSettingTypeCount
-	};*/
+		CameraSettingsTypeCount // Not a setting, makes it easy to go through all settings
+	};
 
-public:
 	CameraSettingsStore(QObject *parent=0);
 	virtual ~CameraSettingsStore();
 
-	Q_INVOKABLE void saveSetting(CameraSettingType::Type setting, QVariant value);
-	Q_INVOKABLE QVariant loadSetting(CameraSettingType::Type setting);
-	Q_INVOKABLE void deleteSetting(CameraSettingType::Type setting);
+	// Save, load, or delete an individual setting from the file system
+	Q_INVOKABLE void saveSetting(CameraSettingsType setting, QVariant value);
+	Q_INVOKABLE QVariant loadSetting(CameraSettingsType setting);
+	Q_INVOKABLE void deleteSetting(CameraSettingsType setting);
 
-	Q_INVOKABLE void populateSetting(CameraSettingType::Type setting, CameraSettings *settings);
+	// Loads a setting and applies it to the supplied setting object
+	Q_INVOKABLE void populateSetting(CameraSettingsType setting, CameraSettings *settings);
 
-	Q_INVOKABLE void saveSettings(bb::cascades::multimedia::CameraSettings* settings);
+	// Saves all settings to the file system
 	Q_INVOKABLE void saveSettings(QObject* settings);
+	Q_INVOKABLE void saveSettings(CameraSettings *settings);
+	// Loads all saved settings from the file system and applies them to a settings object
 	Q_INVOKABLE void populateSettings(bb::cascades::multimedia::CameraSettings *settings);
-	Q_INVOKABLE void clearSettings(bb::cascades::multimedia::CameraSettings *settings);
+	// Clears out the settings object
+	Q_INVOKABLE void clearSettings();
 
+	// Takes all saved settings and applies them to a camera
 	Q_INVOKABLE void restoreAndApplySettings(bb::cascades::multimedia::Camera *camera);
 
+	// Checks if there are any saved settings
 	Q_INVOKABLE bool isEmpty();
 
 private:
-	//QVariantList _cameraSettingsList;
+	// This is where all our settings are stored
 	QSettings* _qSettings;
 
 
@@ -69,4 +75,9 @@ private:
 } /* namespace camera */
 } /* namespace community */
 } /* namespace bb */
+
+// Makes sure we can use these classes and enums in QML
+QML_DECLARE_TYPE(bb::community::camera::CameraSettingsStore)
+QML_DECLARE_TYPE(bb::community::camera::CameraSettingsStore::CameraSettingsType)
+
 #endif /* CAMERASETTINGSSTORE_H_ */
