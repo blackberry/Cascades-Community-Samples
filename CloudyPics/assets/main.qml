@@ -1,4 +1,3 @@
-// Default empty project template
 import bb.cascades 1.0
 import bb.cascades.multimedia 1.0
 import bb.multimedia 1.0
@@ -22,7 +21,6 @@ NavigationPane {
                 }
             }
             
-            //TODO: Wrap this in a non-transparent foreign window to fix cards
             Camera {
                 id: camera
                 objectName: "camera"
@@ -157,7 +155,8 @@ NavigationPane {
     Menu.definition: MenuDefinition {
         settingsAction: SettingsActionItem {
             onTriggered: {
-                cameraRollManager.promptCameraRollPath();
+                camera.getSettings(cameraSettings);
+                cameraRollManager.promptCameraRollPath(cameraSettings.cameraRollPath);
               }
         }
     }

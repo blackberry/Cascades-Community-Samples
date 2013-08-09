@@ -32,7 +32,10 @@ public slots:
 	//Handle the various invocation signals
 	void onInvoked(const bb::system::InvokeRequest&);
 	void onCardPooled(const bb::system::CardDoneMessage&);
+
+	// Send a signal back with the image path
 	void triggerCardDone(const QString& data);
+
 	InvokeManager* getInvokeManager();
 	void setCamera(Camera *camera);
 

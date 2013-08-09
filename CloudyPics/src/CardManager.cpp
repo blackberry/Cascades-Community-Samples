@@ -47,9 +47,10 @@ CardManager::~CardManager() {
 
 void CardManager::onInvoked(const bb::system::InvokeRequest&) {
 	if(_pooled) {
+		// TODO: Consider connecting this into CameraSettingsManager
 		_camera->open(CameraUnit::Rear);
 		_camera->startViewfinder();
-		_pooled = false; //Is this right?
+		_pooled = false;
 	}
 }
 void CardManager::onCardPooled(const bb::system::CardDoneMessage&) {
@@ -60,6 +61,7 @@ void CardManager::onCardPooled(const bb::system::CardDoneMessage&) {
 
 void CardManager::triggerCardDone(const QString& data) {
 
+	// Send a signal containing the image path
 	if (_invoked) {
 		qDebug() << "+++++++++ Sending done message" << endl;
 		QFileInfo fileInfo (data);

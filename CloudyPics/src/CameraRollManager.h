@@ -28,11 +28,21 @@ public:
 	Q_INVOKABLE QString getAppDirectory();
 
 public slots:
-	void promptCameraRollPath();
-	void createCameraRollDialog(QString cameraRollPath);
+	// Prompts the user to pick the camera roll path.
+	//  Fires cameraRollPathUpdated with the updated path if they select one
+	//  Fires cameraRollPathNotUpdated if they cancel
+	//  Will create the camera roll dialog
+	void promptCameraRollPath(QString currentCameraRollPath = "");
+
+	// Creates the camera roll dialog. Loads the options from the filesystem
+	// if they aren't already in memory. This can be a tad slow, so best to do
+	// this when the app has a free moment.
+	void createCameraRollDialog(QString cameraRollPath = "");
 
 signals:
+	// Fired after calling promptCameraRollPath when the user has selected a camera roll path
 	void cameraRollPathUpdated(QString cameraRollPath);
+	// Fired after calling promptCameraRollPath when the user has cancelled out
 	void cameraRollPathNotUpdated();
 
 private:
