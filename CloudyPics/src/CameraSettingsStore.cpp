@@ -141,6 +141,11 @@ void CameraSettingsStore::saveSettings(bb::cascades::multimedia::CameraSettings*
 	qDebug() << "+++++++ All settings saved" << endl;
 }
 
+void CameraSettingsStore::populateSettings(QObject* settings) {
+	CameraSettings *cameraSettings = qobject_cast<CameraSettings *>(settings);
+	populateSettings(cameraSettings);
+}
+
 void CameraSettingsStore::populateSettings(CameraSettings *settings) {
 
 	qDebug() << "+++++++ Populating settings object" << endl;

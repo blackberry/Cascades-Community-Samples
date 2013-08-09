@@ -56,6 +56,7 @@ public:
 	Q_INVOKABLE void saveSettings(QObject* settings);
 	Q_INVOKABLE void saveSettings(bb::cascades::multimedia::CameraSettings *settings);
 	// Loads all saved settings from the file system and applies them to a settings object
+	Q_INVOKABLE void populateSettings(QObject* settings);
 	Q_INVOKABLE void populateSettings(bb::cascades::multimedia::CameraSettings *settings);
 	// Clears out the settings object
 	Q_INVOKABLE void clearSettings();
