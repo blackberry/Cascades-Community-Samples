@@ -158,7 +158,14 @@ void btEvent(const int event, const char *bt_addr, const char *event_data) {
 	Q_UNUSED(bt_addr)
 
 	QString event_name = btEventName(event);
-	QString event_data_str = QString(*event_data);
+	qDebug() << "XXXX BT event_name=" << event_name;
+
+	if (event_data != NULL) {
+		QString event_data_str = QString(*event_data);
+		qDebug() << "XXXX BT event_data=" << event_data_str;
+	} else {
+		qDebug() << "XXXX BT event_data=NULL";
+	}
 }
 
 void notifications_cb(int instance, uint16_t handle, const uint8_t *val, uint16_t len, void *userData) {
