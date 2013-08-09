@@ -158,7 +158,14 @@ void btEvent(const int event, const char *bt_addr, const char *event_data) {
 	Q_UNUSED(bt_addr)
 
 	QString event_name = btEventName(event);
-	QString event_data_str = QString(*event_data);
+	qDebug() << "XXXX BT event_name=" << event_name;
+
+	if (event_data != NULL) {
+		QString event_data_str = QString(*event_data);
+		qDebug() << "XXXX BT event_data=" << event_data_str;
+	} else {
+		qDebug() << "XXXX BT event_data=NULL";
+	}
 }
 
 void notifications_cb(int instance, uint16_t handle, const uint8_t *val, uint16_t len, void *userData) {
@@ -189,6 +196,11 @@ void gatt_service_connected(const char *bdaddr, const char *service, int instanc
 
 	qDebug() << "YYYY gatt_service_connected";
 
+	uint8_t* ONE;
+	ONE = (uint8_t*) malloc(sizeof(uint8_t));
+	memset(ONE, 1, sizeof(uint8_t));
+
+
 	QString bdaddr_str = QString(bdaddr);
 	QString service_str = QString(service);
 
@@ -199,6 +211,8 @@ void gatt_service_connected(const char *bdaddr, const char *service, int instanc
 	if (rc != 0) {
 		qDebug() << "YYYY bt_gatt_reg_notifications errno=" << errno;
 		qDebug() << "YYYY bt_gatt_reg_notifications errno=" << strerror(errno);
+		Utilities::alert("bt_gatt_reg_notifications errno=" + QString::number(errno));
+		return;
 	} else {
 		qDebug() << "YYYY bt_gatt_reg_notifications was presumably OK";
 	}
@@ -212,7 +226,11 @@ void gatt_service_connected(const char *bdaddr, const char *service, int instanc
 		return;
 	}
 
+	qDebug() << "YYYY Allocated memory for notifications";
+
 	int num_characteristics = bt_gatt_characteristics_count(instance);
+
+	qDebug() << "YYYY # characteristics=" << num_characteristics;
 
 	if (num_characteristics > -1) {
 		qDebug() << QString("YYYY # characteristics: %1").arg(num_characteristics);
@@ -250,6 +268,12 @@ void gatt_service_connected(const char *bdaddr, const char *service, int instanc
 					qDebug() << "YYYY bt_gatt_enable_notify errno=" << strerror(errno);
 				} else {
 					qDebug() << "YYYY bt_gatt_enable_notify was presumably OK";
+					qDebug() << "YYYY updating client characteristic config to switch on notifications on the HRM";
+					if (bt_gatt_write_value_noresp(instance, characteristicList[i].handle, 0, ONE, sizeof(ONE)) == EOK) {
+						qDebug() << "YYYY notifications config written successfully";
+					} else {
+						qDebug() << "YYYY notifications config write error - errno=(" << errno << ") :" << strerror(errno);
+					}
 				}
 				qDebug() << "YYYY rc from registering for heart_rate_measurement notification=" << rc;
 
@@ -266,6 +290,7 @@ void gatt_service_connected(const char *bdaddr, const char *service, int instanc
 		/* END WORKAROUND */
 
 		qDebug() << "YYYY done registering for heart_rate_measurement notifications";
+
 	}
 }
 
@@ -355,6 +380,10 @@ void BluetoothHandler::receiveHrNotifications() {
 
 	if (bt_gatt_connect_service(device_addr.toAscii().constData(), HR_SERVICE_UUID, NULL, &conParm, this) < 0) {
 		qDebug() << "YYYY GATT connect service request failed: " + QString::number(errno) + " (" + QString(strerror(errno)) + ")";
+		// there's a known issue where sometimes we get ERRNO=EBUSY (16) when this is not the case and we've connected to the service OK. So for now we ignore this errno value.
+		if (errno != 16) {
+			Utilities::alert("GATT connect service request failed: " + QString::number(errno));
+		}
 	} else {
 		qDebug() << "YYYY requested connection to HR service OK";
 	}
