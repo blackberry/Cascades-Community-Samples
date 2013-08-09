@@ -41,11 +41,6 @@ void CameraSettingsStore::saveSetting(CameraSettingsType setting,
 	_qSettings->setValue(CameraSettingName[setting], value);
 }
 
-void CameraSettingsStore::saveSettings(QObject* settings) {
-	CameraSettings *cameraSettings = qobject_cast<CameraSettings *>(settings);
-	saveSettings(cameraSettings);
-}
-
 QVariant CameraSettingsStore::loadSetting(CameraSettingsType setting) {
 	return _qSettings->value(CameraSettingName[setting], 0);
 }
@@ -103,6 +98,11 @@ void CameraSettingsStore::populateSetting(CameraSettingsType setting,
 
 void CameraSettingsStore::deleteSetting(CameraSettingsType setting) {
 	_qSettings->remove(CameraSettingName[setting]);
+}
+
+void CameraSettingsStore::saveSettings(QObject* settings) {
+	CameraSettings *cameraSettings = qobject_cast<CameraSettings *>(settings);
+	saveSettings(cameraSettings);
 }
 
 void CameraSettingsStore::saveSettings(bb::cascades::multimedia::CameraSettings* settings) {

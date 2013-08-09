@@ -54,7 +54,7 @@ public:
 	// Saves all settings to the file system
 	//  QObject version is a work around to enable passing a CameraSettings object in QML, which otherwise doesn't work.
 	Q_INVOKABLE void saveSettings(QObject* settings);
-	Q_INVOKABLE void saveSettings(CameraSettings *settings);
+	Q_INVOKABLE void saveSettings(bb::cascades::multimedia::CameraSettings *settings);
 	// Loads all saved settings from the file system and applies them to a settings object
 	Q_INVOKABLE void populateSettings(bb::cascades::multimedia::CameraSettings *settings);
 	// Clears out the settings object
