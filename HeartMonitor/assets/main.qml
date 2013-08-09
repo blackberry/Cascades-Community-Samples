@@ -456,7 +456,7 @@ TabbedPane {
                 }
                 Label {
                     id: lblHeading_version
-                    text: qsTr("V1.0.1")
+                    text: qsTr("V1.0.3")
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }

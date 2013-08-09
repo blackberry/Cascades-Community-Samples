@@ -23,6 +23,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 * **V1.0.0** - Initial release
 * **V1.0.1** - OS Version support for Device Software **10.1.***
+* **V1.0.3** - Workaround for problem caused by NULL event_data in early 10.2 builds. Ignore false GATT connect errno 16 errors.
 
 **Dependencies**
 
