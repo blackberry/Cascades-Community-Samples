@@ -3,6 +3,7 @@ import bb.cascades 1.0
 Page {
     id: shareFilePage
     objectName: "shareFilePage"
+    
     signal enableFileSharing()
     signal disableSharing()
     signal updatedFileList(string paths)
@@ -12,12 +13,14 @@ Page {
     function updateFileList() {
         var files = [
         ];
-        for (var i = 0; i < boxes.controls.length; i ++) {
-            if (boxes.controls[i].checked) {
-                files.push(boxes.controls[i].file);
-            }
+        if (_nfcSharing.sharingActive) {
+	        for (var i = 0; i < boxes.controls.length; i ++) {
+	            if (boxes.controls[i].checked) {
+	                files.push(boxes.controls[i].file);
+	            }
+	        }
+        	updatedFileList(files.join());
         }
-        updatedFileList(files.join());
     }
     content: Container {
         layout: StackLayout {
@@ -51,6 +54,7 @@ Page {
                     bottomPadding: 20
                     MyCheckBox {
                         id: box1
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "jcmrim.png"
                         thumb: "jcmrim.png"
@@ -61,6 +65,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box2
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "mdwrim.png"
                         thumb: "mdwrim.png"
@@ -71,6 +76,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box3
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "robbieDubya.png"
                         thumb: "robbieDubya.png"
@@ -81,6 +87,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box4
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_0818.jpg"
                         thumb: "_MG_0818_thumb.jpg"
@@ -91,6 +98,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box5
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_1308.jpg"
                         thumb: "_MG_1308_thumb.jpg"
@@ -101,6 +109,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box6
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_2174.jpg"
                         thumb: "_MG_2174_thumb.jpg"
@@ -111,6 +120,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box7
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_4353.jpg"
                         thumb: "_MG_4353_thumb.jpg"
@@ -121,6 +131,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box8
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_5447.jpg"
                         thumb: "_MG_5447_thumb.jpg"
@@ -131,6 +142,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box9
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_8240.jpg"
                         thumb: "_MG_8240_thumb.jpg"
@@ -141,6 +153,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box10
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_8558.jpg"
                         thumb: "_MG_8558_thumb.jpg"
@@ -151,6 +164,7 @@ Page {
                     }
                     MyCheckBox {
                         id: box11
+                        checkBoxEnabled: _nfcSharing.sharingActive
                         message: "File " + file
                         file: "_MG_8746.jpg"
                         thumb: "_MG_8746_thumb.jpg"

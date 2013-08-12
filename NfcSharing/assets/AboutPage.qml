@@ -18,7 +18,7 @@ Page {
                     spaceQuota: 1
                 }
                 Label {
-                    text: " Welcome to NFC Sharing V1.1.0"
+                    text: " Welcome to NFC Sharing V1.1.1"
                     textStyle {
                         base: SystemDefaults.TextStyles.TitleText
                         fontWeight: FontWeight.W100
