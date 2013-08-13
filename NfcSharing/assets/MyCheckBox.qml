@@ -8,6 +8,7 @@ Container {
     property string file
     property string thumb
     property alias checked: fileBox.checked 
+    property alias checkBoxEnabled: fileBox.enabled
     
     signal myCheckChanged(bool checked)
 

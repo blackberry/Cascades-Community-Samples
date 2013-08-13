@@ -28,6 +28,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 **Release History**
 
 * **V1** - Initial release
+* **V1.0.1** - Minor change to text colour
 
 **Known Issues**
 
@@ -35,8 +36,8 @@ When using the app on a BlackBerry 10 device with physical keyboard, it should n
 
 **Dependencies**
 
-1. BlackBerry 10 Device Software **10.0.9**
-1. BlackBerry 10 Native SDK **10.0.9** (Gold)
+1. Requires BlackBerry 10 Device Software **10.0.9** and above
+1. Requires BlackBerry 10 Native SDK **10.0.9** (Gold) and above
 
 **How to Build BeanCanCommunicator**
 

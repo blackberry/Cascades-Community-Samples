@@ -213,6 +213,9 @@ Container {
             id: msg_part
             text: ""
             multiline: true
+            textStyle {
+                color: Color.Black
+            }
         }
     }
 
