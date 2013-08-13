@@ -1,7 +1,7 @@
 Cloudy Pics
 ===========
 
-By Paul Bernhardt ([@PBernhardt](https://twitter.com/PBernhardt "PBernhardt on Twitter")
+By Paul Bernhardt ([@PBernhardt](https://twitter.com/PBernhardt "PBernhardt on Twitter"))
 
 This is a sample app designed to show how to use the BlackBerry Cascades Camera API (https://developer.blackberry.com/cascades/reference/bb__cascades__multimedia__camera.html). It will eventually be a fully featured camera app, with modular features developers can use.
 
@@ -35,7 +35,7 @@ The options that appear in the Camera Roll Dialog are customizable by the develo
 * required path: This folder is required to exist for the CameraRollManager to consider the option valid. ie, the Dropbox folder needs to exist in order for Dropbox to be a valid option.
 * description: A short description for the option. Not currently used.
 
-_NOTE:_ '~/' in a path will be replaced by the app directory.
+__NOTE:__ '~/' in a path will be replaced by the app directory.
 
 Save and Restore Camera Settings
 --------------------------------
