@@ -49,6 +49,7 @@ private:
 
 	SystemListDialog *_cameraRollListDialog;
 	QVariantList _cameraRollList;
+	QRegExp _relativePathFixer;
 
 };
 

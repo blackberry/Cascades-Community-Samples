@@ -35,7 +35,7 @@ The options that appear in the Camera Roll Dialog are customizable by the develo
 * required path: This folder is required to exist for the CameraRollManager to consider the option valid. ie, the Dropbox folder needs to exist in order for Dropbox to be a valid option.
 * description: A short description for the option. Not currently used.
 
-__NOTE:__ '~/' in a path will be replaced by the app directory.
+__NOTE:__ A relative path will refer to the application's root directory.
 
 Save and Restore Camera Settings
 --------------------------------

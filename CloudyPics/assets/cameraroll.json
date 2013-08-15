@@ -4,10 +4,10 @@ Camera roll object format
 -------------------------
 
 name: Name to be displayed to the user
-path: Path to set the camera roll. If selected, this will be created if it does not exist. '~/' will be replaced by the app directory.
+path: Path to set the camera roll. If selected, this will be created if it does not exist. Relative paths refer to the app's root directory.
 required path: This path needs to exist for this camera roll optoin to be considered "avaliable". 
-	For example, "Dropbox" is available in  ~/shared/Dropbox/. If that folder does not exist, Dropbox is not present on the device.
-	The actual images should be stored in something like ~/shared/Dropbox/photos/, which may or may not exist even if the root Dropbox folder does.
+	For example, "Dropbox" is available in shared/Dropbox/. If that folder does not exist, Dropbox is not present on the device.
+	The actual images should be stored in something like shared/Dropbox/photos/, which may or may not exist even if the root Dropbox folder does.
 description: This text will be displayed to the user to give more details on the camera roll path
 
 NOTE:
@@ -17,26 +17,26 @@ If you want to do that, you would have to move it yourself once the photo is cap
 */
     {
         "name": "Default Device Storage",
-        "path": "~/shared/camera/",
-        "required path": "~/shared/",
+        "path": "shared/camera/",
+        "required path": "shared/",
         "description": "Default camera path"
     },
     {
         "name": "SD Card",
-        "path": "~/../../removable/sdcard/camera/",
-        "required path": "~/../../removable/sdcard/",
+        "path": "../../removable/sdcard/camera/",
+        "required path": "../../removable/sdcard/",
         "description": "Save to SD Card"
     },
     {
         "name": "Dropbox",
-        "path": "~/shared/Dropbox/photos/",
-        "required path": "~/shared/Dropbox/",
+        "path": "shared/Dropbox/photos/",
+        "required path": "shared/Dropbox/",
         "description": "Cloud storage with DropBox"
     },
     {
         "name": "Box",
-        "path": "~/shared/Box/pictures/",
-        "required path": "~/shared/Box/",
+        "path": "shared/Box/pictures/",
+        "required path": "shared/Box/",
         "description": "Cloud storage with Box"
     }
 ]

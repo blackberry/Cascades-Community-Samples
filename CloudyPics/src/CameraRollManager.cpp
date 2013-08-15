@@ -14,6 +14,8 @@
 #include <QDir>
 #include <QFile>
 
+#define APP_HOME_PATH "~/"
+
 namespace bb {
 namespace community {
 namespace camera {
@@ -23,8 +25,9 @@ using namespace bb::data;
 
 CameraRollManager::CameraRollManager(QObject *parent) :
 		QObject(parent) {
-	//Really should call createCameraRollDialog first
+
 	_cameraRollListDialog = 0;
+	_relativePathFixer = QRegExp("^(?!\/)");
 }
 
 CameraRollManager::~CameraRollManager() {
@@ -41,9 +44,11 @@ void CameraRollManager::createCameraRollDialog(QString cameraRollPath) {
 	QDir cameraRollDir = QDir(cameraRollPath);
 	qDebug() << "+++++++ Current CRP: " << cameraRollDir << endl;
 	_cameraRollListDialog = new SystemListDialog("Save", "Cancel");
+	_cameraRollListDialog->setTitle("Choose camera roll path");
 
 	//Make sure we only load the JSON once
 	// In the future, could load it from the data folder, and listen for changes..
+
 	if (_cameraRollList.length() == 0) {
 		JsonDataAccess jda;
 
@@ -51,7 +56,7 @@ void CameraRollManager::createCameraRollDialog(QString cameraRollPath) {
 				+ "/app/native/assets/cameraroll.json";
 		_cameraRollList = jda.load(jsonPath).toList();
 
-		_cameraRollListDialog->setTitle("Choose camera roll path");
+
 		if (jda.hasError()) {
 			qDebug() << "+++++++ JSON Error: " << jda.error();
 		}
@@ -65,11 +70,11 @@ void CameraRollManager::createCameraRollDialog(QString cameraRollPath) {
 		// If the "required path" exists, it means that option is valid and should be selectable
 		// eg, if the Dropbox folder is there, we can save to Dropbox
 		bool pathExists = QFile::exists(
-				cameraRollItem["required path"].toString().replace("~/",
+				cameraRollItem["required path"].toString().replace(_relativePathFixer,
 						getAppDirectory() + "/"));
 		// We'll also check and see if this option is the current path, and should therefore be selected
 		QDir listDir = QDir(
-				cameraRollItem["path"].toString().replace("~/",
+				cameraRollItem["path"].toString().replace(_relativePathFixer,
 						getAppDirectory() + "/"));
 		_cameraRollListDialog->appendItem(cameraRollItem["name"].toString(),
 				pathExists, cameraRollDir == listDir);
@@ -95,7 +100,7 @@ void CameraRollManager::promptCameraRollPath(QString currentCameraRollPath) {
 
 		QVariantMap cameraRollItem =
 				_cameraRollList[_cameraRollListDialog->selectedIndices()[0]].toMap();
-		QString cameraPath = cameraRollItem["path"].toString().replace("~/",
+		QString cameraPath = cameraRollItem["path"].toString().replace(_relativePathFixer,
 				getAppDirectory() + "/");
 
 		// We may need to create the actual final path (ie, add a "Photo" or "Camera" folder)
