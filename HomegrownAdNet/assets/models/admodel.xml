@@ -1,0 +1,7 @@
+<root>
+<InternetAdUnit name="BYO UFO" image="byoUfo.png" uri="https://github.com/blackberry/Cascades-Community-Samples/tree/master/FreemiumSampleApp" animated="0" />
+<InternetAdUnit name="BlackBerry Developer Blog" image="devBlog.png" uri="http://devblog.blackberry.com/" animated="0" />
+<BlackBerryWorldAdUnit name="Smart Tags" image="smartTags.gif" uri="27686824" animated="1" />
+<InternetAdUnit name="Flurry Analytics Sample" image="page2.png" uri="https://github.com/blackberry/Cascades-Community-Samples/tree/master/FlurryAnalyticsSample" animated="0" />
+<BlackBerryWorldAdUnit name="BlackBerry Travel" image="BlackBerryTravel.png" uri="22503878" animated="0" />
+</root>
