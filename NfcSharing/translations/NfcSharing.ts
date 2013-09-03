@@ -18,7 +18,7 @@
 <context>
     <name>ShareFilePage</name>
     <message>
-        <location filename="../assets/ShareFilePage.qml" line="10"/>
+        <location filename="../assets/ShareFilePage.qml" line="11"/>
         <source>
 </source>
         <translation type="unfinished"></translation>
