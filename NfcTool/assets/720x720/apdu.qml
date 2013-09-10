@@ -110,7 +110,7 @@ Page {
 		                    checked: _apdu._ppse
 		                    onCheckedChanged: {
 		                        if (checked) {
-		                            txf_aid.text = "325041592E5359532E444446303100"
+		                            txf_aid.text = "325041592E5359532E4444463031"
 		                        } else {
 		                            txf_aid.text = ""
 		                        }
