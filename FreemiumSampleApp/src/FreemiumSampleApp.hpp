@@ -20,29 +20,39 @@
 #include <bb/platform/bbm/Context>
 #include <bb/platform/bbm/MessageService>
 
-namespace bb { namespace cascades { class Application; }}
+#include "PurchaseStore.hpp"
+
+namespace bb {
+namespace cascades {
+class Application;
+}
+}
 
 /*!
  * @brief Application pane object
  *
  *Use this object to create and init app UI, to create context objects, to register the new meta types etc.
  */
-class FreemiumSampleApp : public QObject
-{
-    Q_OBJECT
+class FreemiumSampleApp: public QObject {
+Q_OBJECT
 public:
-    FreemiumSampleApp(bb::cascades::Application *app);
-    virtual ~FreemiumSampleApp() {}
+	FreemiumSampleApp(bb::cascades::Application *app);
+	virtual ~FreemiumSampleApp() {
+	}
 
-    //Expose this function so it can be called from QML
-    Q_INVOKABLE void inviteUserToDownloadViaBBM();
+public Q_SLOTS:
+	void registrationStateUpdated(
+			bb::platform::bbm::RegistrationState::Type state);
+
+	//Expose this function so it can be called from QML
+	Q_INVOKABLE
+	void inviteUserToDownloadViaBBM();
 
 private:
-    //All fields here used for BBM invitation support
-    bb::platform::bbm::Context *m_context;
-    bb::platform::bbm::MessageService *m_messageService;
-    Q_SLOT void registrationStateUpdated (bb::platform::bbm::RegistrationState::Type state);
+	//All fields here used for BBM invitation support
+	bb::platform::bbm::Context *m_context;
+	bb::platform::bbm::MessageService *m_messageService;
+	PurchaseStore *m_purchaseStore;
 };
-
 
 #endif /* FreemiumSampleApp_HPP_ */

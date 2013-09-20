@@ -15,7 +15,7 @@
 
 #include "FreemiumSampleApp.hpp"
 
-#include <QUuid>
+#include <qt4/QtCore/QUuid>
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
@@ -24,7 +24,16 @@
 using namespace bb::cascades;
 
 FreemiumSampleApp::FreemiumSampleApp(bb::cascades::Application *app) :
-		QObject(app) {
+		QObject(app), m_purchaseStore(new PurchaseStore(this)) {
+
+	QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty(
+			"PurchaseStore", m_purchaseStore);
+
+	//Expose this class to QML using the handle "mainApp", this will let our QML call
+	// the code needed to use BBM Invites
+	QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty(
+			"mainApp", this);
+
 	// create scene document from main.qml asset
 	// set parent to created document to ensure it exists for the whole application lifetime
 	QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
@@ -34,19 +43,17 @@ FreemiumSampleApp::FreemiumSampleApp(bb::cascades::Application *app) :
 	// set created root object as a scene
 	app->setScene(root);
 
-	//Expose this class to QML using the handle "mainApp", this will let our QML call
-	// the code needed to use BBM Invites
-	qml->setContextProperty("mainApp", this);
-
 	// All code below here allows the app to invite users via BBM to download the app
 	m_context = new bb::platform::bbm::Context(
-			QUuid("bf38c081-c104-4660-a958-618392541a28")); //UUID was randomly generated for dev testing
+			QUuid("bf38c081-c104-4660-a958-618392541a24"), this); //UUID was randomly generated for dev testing
 	if (m_context->registrationState()
 			!= bb::platform::bbm::RegistrationState::Allowed) {
-		connect(m_context,
-				SIGNAL(registrationStateUpdated (bb::platform::bbm::RegistrationState::Type)),
-				this,
-				SLOT(registrationStateUpdated (bb::platform::bbm::RegistrationState::Type)));
+		connect(m_context, SIGNAL(
+				registrationStateUpdated(
+						bb::platform::bbm::RegistrationState::Type)), this,
+				SLOT(
+						registrationStateUpdated(
+								bb::platform::bbm::RegistrationState::Type)));
 		m_context->requestRegisterApplication();
 	}
 }
