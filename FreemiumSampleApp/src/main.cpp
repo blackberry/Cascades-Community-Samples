@@ -25,27 +25,17 @@
 #include <Qt/qdeclarativedebug.h>
 
 #include "FreemiumSampleApp.hpp"
-#include "PaymentServiceControl.hpp"
 
 using namespace bb::cascades;
 
-void myMessageOutput(QtMsgType type, const char* msg){
-	fprintf(stdout, "%s\n", msg);
-	fflush(stdout);
-}
 
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
     // this is where the server is started etc
     Application app(argc, argv);
-    qInstallMsgHandler(myMessageOutput);
 
     // Register our advertising and payment classes so they can be accessed from QML
     qmlRegisterType<bb::cascades::advertisement::Banner>("bb.cascades.advertisement", 1, 0, "Banner");
-    qmlRegisterType<PaymentServiceControl>("com.sample.payment", 1, 0, "PaymentServiceControl");
-
-    // Set the Payment Service to Test mode, this needs to be set to Production before going live
-    bb::platform::PaymentManager::setConnectionMode(bb::platform::PaymentConnectionMode::Test);
 
     // localization support
     QTranslator translator;
@@ -61,3 +51,4 @@ Q_DECL_EXPORT int main(int argc, char **argv)
     return Application::exec();
     // when loop is exited the Application deletes the scene which deletes all its children (per qt rules for children)
 }
+

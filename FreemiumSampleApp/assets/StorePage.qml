@@ -14,7 +14,7 @@
  */
 
 import bb.cascades 1.0
-import com.sample.payment 1.0
+import bb.platform 1.2
 
 /**
  * This page represents the storefront. All Digital Goods sold within the 
@@ -25,14 +25,32 @@ import com.sample.payment 1.0
  */
 
 Page {
-    
+
     id: storePage
-    
-    // The PaymentServiceControl property is defined here to allow explicit
-    // setting of the variable over referencing the PaymentServiceControl of
-    // the parent class.
-    property PaymentServiceControl storePaymentServiceControl
-    
+
+    attachedObjects: [
+        // The PaymentServiceControl property is defined here to allow explicit
+        // setting of the variable over referencing the PaymentServiceControl of
+        // the parent class.
+        PaymentManager {
+            id: storePaymentManager
+            property bool busy: false
+            onExistingPurchasesFinished: {
+                storePaymentManager.busy = false;
+                
+                //If there's no error message in the response...
+                if (reply.errorCode == 0) {
+                    //...save the purchase to local cache
+                    for (var i = 0; i < reply.purchases.length; ++ i) {
+                        PurchaseStore.storePurchase(reply.purchases[i].receipt["digitalGoodSku"]);
+                    }
+                } else {
+                    console.log("Error: " + reply.errorInfo);
+                }
+            }
+        }
+    ]
+
     actionBarVisibility: ChromeVisibility.Hidden
     Container {
         layout: DockLayout {
@@ -43,14 +61,14 @@ Page {
             verticalAlignment: VerticalAlignment.Fill
             imageSource: "asset:///images/backgroundLandscape.png"
         }
-        
-        // An in-app advertisement Banner capable of being deleted. 
-        // See @FreemiumBanner.qml for more details        
+
+        // An in-app advertisement Banner capable of being deleted.
+        // See @FreemiumBanner.qml for more details
         FreemiumBanner {
             scaleX: 2.0
             scaleY: 2.0
             // removeAdsPurchased is the bool defined in main.qml
-            hideAd: removeAdsPurchased
+            hideAd: navigationPane.removeAdsPurchased
             horizontalAlignment: HorizontalAlignment.Center
         }
         Container {
@@ -60,7 +78,7 @@ Page {
                 layout: StackLayout {
                     orientation: LayoutOrientation.LeftToRight
                 }
-                
+
                 /**
                  * The following 4 DigitalGood items represent the items available for purchase
                  * within the game. The user starts out with the UFO but needs to purchase the 
@@ -69,7 +87,7 @@ Page {
                  * 
                  * See @DigitalGood.qml for more info
                  */
-                
+
                 DigitalGood {
                     id: ufo
                     owned: true
@@ -79,34 +97,31 @@ Page {
                 }
                 DigitalGood {
                     id: tbeam
-                    digitalGoodPaymentServiceControl: storePaymentServiceControl
                     imageSource: "asset:///images/tbeamThumb.png"
                     sku: "2"
                     name: "T-Beam"
                     // tbeamPurchased is the bool defined in main.qml
-                    onOwnedChanged: tbeamPurchased = owned
+                    onOwnedChanged: navigationPane.tbeamPurchased = owned
                 }
                 DigitalGood {
                     id: freakinLaserBeam
-                    digitalGoodPaymentServiceControl: storePaymentServiceControl
                     imageSource: "asset:///images/freakinLaserBeam.png"
                     sku: "3"
                     name: "Freakin Laser"
                     // freakinLaserBeamPurchased is the bool defined in main.qml
-                    onOwnedChanged: freakinLaserBeamPurchased = owned
+                    onOwnedChanged: navigationPane.freakinLaserBeamPurchased = owned
                 }
                 DigitalGood {
                     id: noAds
-                    digitalGoodPaymentServiceControl: storePaymentServiceControl
                     imageSource: "asset:///images/noAds.png"
                     sku: "4"
                     name: "Remove Ads"
                     // removeAdsPurchased is the bool defined in main.qml
-                    onOwnedChanged: removeAdsPurchased = owned
+                    onOwnedChanged: navigationPane.removeAdsPurchased = owned
                 }
             }
         }
-        
+
         // This button will force a refresh of purchased goods from the BlackBerry
         // World servers. It is manual and should not typically be needed.
         ImageButton {
@@ -114,10 +129,13 @@ Page {
             horizontalAlignment: HorizontalAlignment.Center
             defaultImageSource: "asset:///images/restorePurchases.png"
             preferredWidth: 900
-            enabled: ! storePaymentServiceControl.isPaymentSystemBusy
-            onClicked: storePaymentServiceControl.getExisting(true)
+            enabled: ! storePaymentManager.busy
+            onClicked: {
+                storePaymentManager.busy = true;
+                storePaymentManager.requestExistingPurchases(true);
+            }
         }
-        
+
         //This button pops the StorePage from the stack, returning to the previous page
         Container {
             horizontalAlignment: HorizontalAlignment.Left
@@ -139,7 +157,7 @@ Page {
             bottomPadding: 25
             ImageButton {
                 defaultImageSource: "asset:///images/ic_delete.png"
-                onClicked: storePaymentServiceControl.deletePurchaseRecords()
+                onClicked: PurchaseStore.deletePurchaseRecords()
             }
         }
     }
