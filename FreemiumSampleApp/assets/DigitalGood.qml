@@ -14,7 +14,7 @@
  */
 
 import bb.cascades 1.0
-import com.sample.payment 1.0
+import bb.platform 1.2
 
 /**
  * This Container represents a DigitalGood that can be sold. The QML file is fairly 
@@ -22,10 +22,21 @@ import com.sample.payment 1.0
  */
 
 Container {
-    // The PaymentServiceControl property is defined here to allow explicit
-    // setting of the variable over referencing the PaymentServiceControl of
-    // the parent class.
-    property PaymentServiceControl digitalGoodPaymentServiceControl
+    attachedObjects: [
+        // The PaymentServiceControl property is defined here to allow explicit
+        // setting of the variable over referencing the PaymentServiceControl of
+        // the parent class.
+        PaymentManager {
+            id: digitalGoodPaymentManager
+            onPurchaseFinished: {
+                if (reply.errorCode == 0) {
+                    PurchaseStore.storePurchase(reply.digitalGoodSku);
+                } else {
+                    console.log("Error: " + reply.errorInfo);
+                }
+            }
+        }
+    ]
 
     // Giving this control an ID allows it to be referenced explicitly from
     // methods where context is lost.
@@ -39,10 +50,10 @@ Container {
 
     layout: DockLayout {
     }
-    
+
     //Payment calls can only be made one at a time, so this line gives us a mutex
-    enabled: ! digitalGoodPaymentServiceControl.isPaymentSystemBusy
-    
+    //enabled: ! digitalGoodPaymentManager.isPaymentSystemBusy
+
     preferredHeight: 200
     preferredWidth: 250
     leftMargin: 25
@@ -66,7 +77,7 @@ Container {
         horizontalAlignment: HorizontalAlignment.Center
         verticalAlignment: VerticalAlignment.Bottom
     }
-    
+
     // The below container is an overlay displayed atop the digital good
     // if it has not yet been purchased.
     Container {
@@ -88,33 +99,32 @@ Container {
             verticalAlignment: VerticalAlignment.Center
         }
     }
-        
+
     // Handle clicks by the user, normally symbolizing a purchase attempt
     gestureHandlers: TapHandler {
         onTapped: {
             if (digitalGood.owned) {
                 // Do something, not needed for this sample
-                // May be good to display a message to the user, or bring up details on the 
+                // May be good to display a message to the user, or bring up details on the
                 // digital good
             } else {
-                digitalGood.enabled = ! digitalGoodPaymentServiceControl.isPaymentSystemBusy;
-                digitalGoodPaymentServiceControl.purchase(digitalGood.sku, digitalGood.name);
+                digitalGoodPaymentManager.requestPurchase("", digitalGood.sku, digitalGood.name);
             }
         }
     }
-    
+
     // Connect the important signals from the PaymentServiceControl to localized
     // functions within the DigitalGood class
     onCreationCompleted: {
-        digitalGoodPaymentServiceControl.skuOwned.connect(purchaseMade);
-        digitalGoodPaymentServiceControl.purchaseRecordsDeleted.connect(purchaseRecordsDeleted);
+        PurchaseStore.purchaseRetrieved.connect(purchaseMade);
+        PurchaseStore.purchaseRecordsDeleted.connect(purchaseRecordsDeleted);
     }
-    
+
     // Checks to see if the recent purchase was for this good
-    function purchaseMade(purchaseSku) {
-        digitalGood.owned |= (purchaseSku == digitalGood.sku);
+    function purchaseMade(digitalGoodSku) {
+        digitalGood.owned |= (digitalGoodSku == digitalGood.sku);
     }
-    
+
     // Wipes owenership field of this good if requested by the app
     function purchaseRecordsDeleted() {
         digitalGood.owned = false;

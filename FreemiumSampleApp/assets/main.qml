@@ -1,11 +1,11 @@
 /* Copyright (c) 2013 BlackBerry.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,30 +13,35 @@
  * limitations under the License.
  */
 
-import bb.cascades 1.0
-
-// Import our custom PaymentServiceControl class
-import com.sample.payment 1.0
+import bb.cascades 1.2
+import bb.platform 1.2
 
 NavigationPane {
     id: navigationPane
-    
+
     // The below 3 bool properties represent the purchase state of the goods
     property bool removeAdsPurchased: false
     property bool tbeamPurchased: false
     property bool freakinLaserBeamPurchased: false
-    
+
     attachedObjects: [
-        // This is the single instance of PaymentServiceControl that we will pass
-        // along to any objects that may need access to it.
-        PaymentServiceControl {
-            id: paymentServiceControl
+        PaymentManager {
+            id: rootPaymentManager
+            onExistingPurchasesFinished: {
+                if (reply.errorCode == 0) {
+                    for (var i = 0; i < reply.purchases.length; ++ i) {
+                        console.log(reply.purchases[i].receipt["digitalGoodSku"]);
+                        PurchaseStore.storePurchase(reply.purchases[i].receipt["digitalGoodSku"]);
+                    }
+                } else {
+                    console.log("Error: " + reply.errorText);
+                }
+            }
         },
         // StorePage is where users will see all Digital Goods for sale and be able
         // to make purchases
         StorePage {
             id: store
-            storePaymentServiceControl: paymentServiceControl
         },
         // The GamePlay page is a placeholder for when actual gameplay gets added to the app
         GamePlay {
@@ -49,7 +54,7 @@ NavigationPane {
         Container {
             layout: DockLayout {
             }
-            
+
             // Display the background image
             ImageView {
                 scalingMethod: ScalingMethod.AspectFill
@@ -65,7 +70,7 @@ NavigationPane {
                 hideAd: removeAdsPurchased
                 horizontalAlignment: HorizontalAlignment.Center
             }
-            
+
             /**
              * The next 3 ImageView elements provide a visual representation
              * of the state of the UFO based on what items the user may have
@@ -99,7 +104,7 @@ NavigationPane {
                 verticalAlignment: VerticalAlignment.Center
                 translationY: -140
             }
-            
+
             // The two main functions of our app, Play the game or Shop
             // for new features
             Container {
@@ -134,7 +139,9 @@ NavigationPane {
         }
     }
     onCreationCompleted: {
-        // As soon as the page loads, lets retrieve any past purchases
-        paymentServiceControl.getExisting(false);
+        rootPaymentManager.setConnectionMode(0);
+        // As soon as the page loads, lets retrieve any past purchases from local store then cache
+        PurchaseStore.retrieveLocalPurchases();
+        rootPaymentManager.requestExistingPurchases(false);
     }
 }

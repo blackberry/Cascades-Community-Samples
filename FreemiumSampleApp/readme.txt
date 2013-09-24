@@ -18,7 +18,7 @@ Note: All images of the UFO as well as UFO accessories and backgrounds were
 ========================================================================
 Requirements:
 
-BlackBerry 10 Native SDK (tested in 10.0.10.738)
+BlackBerry 10 Native SDK version 10.2
 
 ========================================================================
 Running the example:
