@@ -69,23 +69,23 @@
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7-g/MyApplication" entry="true" type="Qnx/Elf">MyApplication</asset>
-       <asset path="../MyLibrary/arm/so.le-v7-g/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
+       <asset path="../../MyLibrary/arm/so.le-v7-g/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
     </configuration>
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm/o.le-v7/MyApplication.so" entry="true" type="Qnx/Elf">MyApplication.so</asset>
-       <asset path="../MyLibrary/arm/so.le-v7/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
+       <asset path="../../MyLibrary/arm/so.le-v7/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
     </configuration>
     <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="arm-p/o.le-v7-g/MyApplication" entry="true" type="Qnx/Elf">MyApplication</asset>
-       <asset path="../MyLibrary/arm-p/so.le-v7-g/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
+       <asset path="../../MyLibrary/arm-p/so.le-v7-g/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
     </configuration>
     <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
        <asset path="x86/o-g/MyApplication" entry="true" type="Qnx/Elf">MyApplication</asset>
-       <asset path="../MyLibrary/x86/so-g/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
+       <asset path="../../MyLibrary/x86/so-g/libMyLibrary.so.1.0.0" type="Qnx/Elf">lib/libMyLibrary.so.1</asset>
     </configuration>
     
     <!--  The icon for the application -->
@@ -100,6 +100,7 @@
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
+    <asset path="../../MyLibrary/assets">assets</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>

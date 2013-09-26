@@ -1,27 +1,28 @@
 
 mylibrary {
-	MYLIBRARY_BASEDIR = $${PWD}$$dirname($${_FILE_})
+	BASEDIR = $${PWD}$$dirname($${_FILE_})
+	LIBTARGET = MyLibrary
 
-	INCLUDEPATH *=  $$quote($${MYLIBRARY_BASEDIR}/include)
-	DEPENDPATH *=  $$quote($${MYLIBRARY_BASEDIR}/include)
+	INCLUDEPATH *=  $$quote($${BASEDIR}/include)
+	DEPENDPATH *=  $$quote($${BASEDIR}/include)
 	
-	MYLIBRARY_LIBS = -lMyLibrary -lcpp
+	LIBS += 
 	device {
 		profile {
-		    LIBS += -L$${MYLIBRARY_BASEDIR}/arm/so.le-v7-g $${MYLIBRARY_LIBS}
-		    PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/arm/so.le-v7-g/libMyLibrary.so)		
+		    LIBS += -L$${BASEDIR}/arm/so.le-v7-g -l$${LIBTARGET}
+		    PRE_TARGETDEPS +=  $$quote($${BASEDIR}/arm/so.le-v7-g/lib$${LIBTARGET}.so)		
 		}
 		else {
 		    CONFIG(debug, debug|release) {
 		        # Device-Debug custom configuration
-		        LIBS += -L$${MYLIBRARY_BASEDIR}/arm/so.le-v7-g $${MYLIBRARY_LIBS}
-		        PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/arm/so.le-v7-g/libMyLibrary.so)
+		        LIBS += -L$${BASEDIR}/arm/so.le-v7-g -l$${LIBTARGET}
+		        PRE_TARGETDEPS +=  $$quote($${BASEDIR}/arm/so.le-v7-g/lib$${LIBTARGET}.so)
 		    }
 		
 		    CONFIG(release, debug|release) {
 		        # Device-Release custom configuration
-		        LIBS += -L$${MYLIBRARY_BASEDIR}/arm/so.le-v7 $${MYLIBRARY_LIBS}
-		        PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/arm/so.le-v7/libMyLibrary.so)
+		        LIBS += -L$${BASEDIR}/arm/so.le-v7 -l$${LIBTARGET}
+		        PRE_TARGETDEPS +=  $$quote($${BASEDIR}/arm/so.le-v7/lib$${LIBTARGET}.so)
 		    }
 	    }
 	}
@@ -29,11 +30,8 @@ mylibrary {
 	simulator {
 	    CONFIG(debug, debug|release) {
 	        # Simulator-Debug custom configuration
-	        LIBS += -L$${MYLIBRARY_BASEDIR}/x86/so-g $${MYLIBRARY_LIBS}
-	        PRE_TARGETDEPS +=  $$quote($${MYLIBRARY_BASEDIR}/x86/so-g/libMyLibrary.so)
+	        LIBS += -L$${BASEDIR}/x86/so-g -l$${LIBTARGET}
+	        PRE_TARGETDEPS +=  $$quote($${BASEDIR}/x86/so-g/lib$${LIBTARGET}.so)
 	    }
 	}
-	
-	INCLUDEPATH += $${MYLIBRARY_INCLUDES}
-	DEPENDPATH += $${MYLIBRARY_INCLUDES}
 }
