@@ -15,6 +15,7 @@
 
 #include "applicationui.hpp"
 
+#include <bb/cascades/NavigationPane>
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
@@ -32,8 +33,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app)
 
     // create root object for the UI
     //AbstractPane *root = qml->createRootObject<AbstractPane>();
-	AbstractPane *root = new custom::MyLibrary(this);
+
+	NavigationPane *pane = NavigationPane::create().parent(this);
+	pane->push(new custom::MyLibrary());
     // set created root object as a scene
-    app->setScene(root);
+    app->setScene(pane);
 }
 
