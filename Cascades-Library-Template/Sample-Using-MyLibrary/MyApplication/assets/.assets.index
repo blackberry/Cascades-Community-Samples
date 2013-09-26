@@ -1,3 +1,7 @@
 1
-1
+5
 main.qml
+VisualStyle.dark/lib.MyLibrary/MyPage.qml
+VisualStyle.bright/lib.MyLibrary/MyPage.qml
+720x720/VisualStyle.dark/lib.MyLibrary/MyPage.qml
+720x720/VisualStyle.bright/lib.MyLibrary/MyPage.qml
