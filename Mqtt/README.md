@@ -1,6 +1,6 @@
 # Mqtt - A Proof of Concept MQTT Shared Library
 
-This project implements a Proof of Concept shared library (**libMqtt.so**) for BlackBerry 10 that provides an API to the some some of the main aspects of the [MQTT](https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=mqtt) (**Message Queuing Telemetry Transport**) protocol stack as defined by [OASIS](http://www.oasis-open.org).
+This project implements a Proof of Concept shared library (**libMqtt.so**) for BlackBerry 10 that provides an API to some of the main aspects of the [MQTT](https://www.oasis-open.org/committees/tc_home.php?wg_abbrev=mqtt) (**Message Queuing Telemetry Transport**) protocol stack as defined by [OASIS](http://www.oasis-open.org).
 
 MQTT provides a lightweight publish/subscribe reliable messaging transport protocol suitable for communication in **M2M/IoT** (**Machine to Machine/Internet of Things**) contexts where a small code footprint is required and/or network bandwidth is at a premium.
 
