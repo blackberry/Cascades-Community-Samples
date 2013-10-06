@@ -24,10 +24,14 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 1. Minimal requirement for BlackBerry 10 Device Software is **10.2.0**
 1. Minimal requirement for BlackBerry 10 Native SDK is **10.2.0**
+1. [Mqtt library](https://github.com/blackberry/Cascades-Community-Samples/tree/master/Mqtt) 1.0.0 (also available from this GitHub repo)
+
 
 **How to Build TestMqtt**
 
 Simply import the project into a workspace in your NDK. Of course you should review the project after it's been imported; for example, paying attention to the settings in the **bar-descriptor.xml** file.
+
+This project makes use of the [Mqtt library](https://github.com/blackberry/Cascades-Community-Samples/tree/master/Mqtt) *libMqtt.so*. If you've installed the Mqtt project in the same workspace as this project then simply build the Mqtt project first, then perform a "Clean" and "Build" on this project. There is some logic built into the *TestMqtt.pro* file to locate and use the public header files for Mqtt and *libMqtt.so* itself.
 
 **But I don't want to build it myself!**
 
