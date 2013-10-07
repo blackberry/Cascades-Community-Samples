@@ -61,11 +61,13 @@ HelloVideoCameraApp::HelloVideoCameraApp(bb::cascades::Application *app) :
 
     QObject::connect(
             OrientationSupport::instance(),
-            // previously, I was using orientationChanged(), but things may look better if we
+            // previously, I was using displayDirectionChanged(), but things may look better if we
             // update the window before the rotation effect happens
-            SIGNAL(orientationAboutToChange(bb::cascades::UIOrientation::Type)),
+            SIGNAL(displayDirectionAboutToChange(bb::cascades::DisplayDirection::Type,
+                                                 bb::cascades::UIOrientation::Type)),
             this,
-            SLOT(onOrientationAboutToChange(bb::cascades::UIOrientation::Type)));
+            SLOT(onDisplayDirectionAboutToChange(bb::cascades::DisplayDirection::Type,
+                                                 bb::cascades::UIOrientation::Type)));
 
     // indicate all orientations are supported
     OrientationSupport::instance()->setSupportedDisplayOrientation(
@@ -345,14 +347,14 @@ void HelloVideoCameraApp::applyRotations(bool flush)
             screen_flush_context(screen_ctx, 0);
         }
     }
-
 }
 
 
-void HelloVideoCameraApp::onOrientationAboutToChange(bb::cascades::UIOrientation::Type orientation)
+void HelloVideoCameraApp::onDisplayDirectionAboutToChange(bb::cascades::DisplayDirection::Type direction,
+                                                          bb::cascades::UIOrientation::Type orientation)
 {
-    updateAngles(OrientationSupport::instance()->displayDirection());
-    qDebug() << "onOrientationAboutToChange() " << mDisplayDirection;
+    updateAngles(direction);
+    qDebug() << "onDisplayDirectionAboutToChange() " << mDisplayDirection;
     qDebug() << "orientation " << orientation;
     // apply rotations, but don't bother flushing context since we're about to hit a big graphics update.
     // if we were calling this function

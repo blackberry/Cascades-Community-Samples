@@ -10,7 +10,8 @@ cascades_library {
 	
 	QMAKE_CFLAGS   += -Wno-psabi
 	QMAKE_CXXFLAGS += -Wno-psabi
-
+	
+	QMAKE_LFLAGS += -Wl,--no-undefined
 
 	device {
 		CONFIG(static, static|shared) {

@@ -23,6 +23,7 @@
 #include <bb/cascades/Label>
 #include <bb/cascades/Application>
 #include <bb/cascades/OrientationSupport>
+#include <bb/cascades/DisplayDirection>
 
 
 #include <camera/camera_api.h>
@@ -41,7 +42,8 @@ public slots:
     void onStartRear();
     void onStopCamera();
     void onStartStopRecording();
-    void onOrientationAboutToChange(bb::cascades::UIOrientation::Type orientation);
+    void onDisplayDirectionAboutToChange(bb::cascades::DisplayDirection::Type direction,
+                                         bb::cascades::UIOrientation::Type orientation);
 
 
 public:

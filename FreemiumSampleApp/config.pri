@@ -4,31 +4,31 @@ BASEDIR =  $$quote($$_PRO_FILE_PWD_)
 device {
     CONFIG(debug, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/FreemiumSampleApp.cpp) \
-                 $$quote($$BASEDIR/src/PaymentServiceControl.cpp) \
+                 $$quote($$BASEDIR/src/PurchaseStore.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/FreemiumSampleApp.hpp) \
-                 $$quote($$BASEDIR/src/PaymentServiceControl.hpp)
+                 $$quote($$BASEDIR/src/PurchaseStore.hpp)
     }
 
     CONFIG(release, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/FreemiumSampleApp.cpp) \
-                 $$quote($$BASEDIR/src/PaymentServiceControl.cpp) \
+                 $$quote($$BASEDIR/src/PurchaseStore.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/FreemiumSampleApp.hpp) \
-                 $$quote($$BASEDIR/src/PaymentServiceControl.hpp)
+                 $$quote($$BASEDIR/src/PurchaseStore.hpp)
     }
 }
 
 simulator {
     CONFIG(debug, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/FreemiumSampleApp.cpp) \
-                 $$quote($$BASEDIR/src/PaymentServiceControl.cpp) \
+                 $$quote($$BASEDIR/src/PurchaseStore.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
         HEADERS +=  $$quote($$BASEDIR/src/FreemiumSampleApp.hpp) \
-                 $$quote($$BASEDIR/src/PaymentServiceControl.hpp)
+                 $$quote($$BASEDIR/src/PurchaseStore.hpp)
     }
 }
 
