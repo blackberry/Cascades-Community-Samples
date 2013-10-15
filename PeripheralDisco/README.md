@@ -36,6 +36,7 @@ This does include FTDI serial adaptors.
 However - generic serial support will not be available until 10.2.1. 
 
 This means if you want to use a generic serial device (such as an Arduino Uno R3) you will need either:
+
 * To wait for 10.2.1
 * An FTDI cable to connect into the TX/RX pins of the Arduino.
 
