@@ -11,12 +11,16 @@ you need for this demo is an Arduino and servo. An Arduino sketch is included.
 * BlackBerry Z30
   The BlackBerry Z30 is currently the only inmarket device supporting USB host mode.
 
+* USB OTG Cable
+  There is a pin in an OTG cable that signals to the BlackBerry device to become a host.
+
 * Arduino Uno (or similar)
   If you're expecting the Z30 to drive the Arduino and your power hungry motors - then you should probably be
   using an external power supply for the Arduino.
 
-* USB OTG Cable
-  There is a pin in an OTG cable that signals to the BlackBerry device to become a host.
+* Small Servo
+  Or other output device of your choosing (blinky?) that can demonstrate data is
+  correctly being exchanged between the BlackBerry and the USB serial accessory.
 
 ## Limitations
 
@@ -26,7 +30,7 @@ The BlackBerry Z30 is currently the only inmarket device supporting USB host mod
 
 ### Supported Serial Devices
 
-There is a bug (ommission?) in BlackBerry 10.2.0 which means that only a very specific set of USB devices are supported.
+There is a bug (omission?) in BlackBerry 10.2.0 which means that only a very specific set of USB devices are supported.
 This does include FTDI serial adaptors. 
 
 However - generic serial support will not be available until 10.2.1. 
