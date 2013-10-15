@@ -42,8 +42,17 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
 	_plainText = settings.value("plainText",
 			QString::fromUtf8(montreal, strlen(montreal))).toString();
-	_key = settings.value("key", generate()).toString();
-	_iv = settings.value("iv", generate()).toString();
+
+    // bugfix - initial values were being ignored...
+	if (!settings.contains("key")) {
+		settings.setValue("key",generate());
+	}
+	if (!settings.contains("iv")) {
+		settings.setValue("iv",generate());
+	}
+	_key = settings.value("key").toString();
+	_iv = settings.value("iv").toString();
+
 	_cipherText = settings.value("cipherText", "").toString();
 	_recoveredPlainText = settings.value("recoveredPlainText", "").toString();
 
