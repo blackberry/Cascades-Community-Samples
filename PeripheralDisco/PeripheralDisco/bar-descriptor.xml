@@ -55,20 +55,20 @@
     <platformVersion>10.2.0.0</platformVersion>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/PeripheralDiscovery" entry="true" type="Qnx/Elf">PeripheralDiscovery</asset>
+       <asset path="arm/o.le-v7-g/PeripheralDisco" entry="true" type="Qnx/Elf">PeripheralDisco</asset>
     </configuration>
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/PeripheralDiscovery.so" entry="true" type="Qnx/Elf">PeripheralDiscovery.so</asset>
+       <asset path="arm/o.le-v7/PeripheralDisco.so" entry="true" type="Qnx/Elf">PeripheralDisco.so</asset>
     </configuration>
     <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm-p/o.le-v7-g/PeripheralDiscovery" entry="true" type="Qnx/Elf">PeripheralDiscovery</asset>
+       <asset path="arm-p/o.le-v7-g/PeripheralDisco" entry="true" type="Qnx/Elf">PeripheralDisco</asset>
     </configuration>
     <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
-       <asset path="x86/o-g/PeripheralDiscovery" entry="true" type="Qnx/Elf">PeripheralDiscovery</asset>
+       <asset path="x86/o-g/PeripheralDisco" entry="true" type="Qnx/Elf">PeripheralDisco</asset>
     </configuration>
     
     <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->

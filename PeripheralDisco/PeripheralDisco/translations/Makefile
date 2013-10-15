@@ -1,4 +1,4 @@
-QMAKE_TARGET  = PeripheralDiscovery
+QMAKE_TARGET  = PeripheralDisco
 LUPDATE       = $(QNX_HOST)/usr/bin/lupdate
 LRELEASE      = $(QNX_HOST)/usr/bin/lrelease
 
