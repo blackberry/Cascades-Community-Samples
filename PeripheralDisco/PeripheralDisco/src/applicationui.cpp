@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QMetaObject>
+#include <QSet>
 
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
@@ -67,9 +68,28 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
 	qDebug() << "Connects worked: " << connects;
 
-	if (!peripheralOracle->registerInterest((pd_class_t) -1)) {
-		toast("Could not register any classes");
+	QString failMessage;
+
+	QSet<pd_bus_t> supported(peripheralOracle->getSupportedBusses());
+	if (!supported.contains(PD_BUS_USB_HOST_MODE)) {
+		failMessage += "This device does not support USB host mode. ";
 	}
+
+	QSet<pd_class_t> toRegister;
+	for (int i = 0; i < PD_CLASS_NUM_SUPPORTED; ++i) {
+		toRegister << (pd_class_t)i;
+	}
+
+	QSet<pd_class_t> registered(peripheralOracle->registerInterest(toRegister));
+	if (registered.size()==0) {
+		failMessage += "Could not register for notification on any events. ";
+	}
+
+	if (failMessage!="") {
+		failMessage += "This application may not be very impressive on this device.";
+		toast(failMessage);
+	}
+
 }
 
 void ApplicationUI::onSystemLanguageChanged() {
@@ -82,7 +102,7 @@ void ApplicationUI::onSystemLanguageChanged() {
 	}
 }
 
-void ApplicationUI::onPeripheralConnected(int peripheralId,
+void ApplicationUI::onPeripheralConnected(int,
 		PeripheralDetail detail) {
 	qDebug() << "Connected";
 	QString now = QDateTime::currentDateTime().toString();
@@ -93,7 +113,7 @@ void ApplicationUI::onPeripheralConnected(int peripheralId,
 	checkSerial();
 }
 
-void ApplicationUI::onPeripheralDisconnected(int peripheralId,
+void ApplicationUI::onPeripheralDisconnected(int,
 		PeripheralDetail detail) {
 	qDebug() << "Disconnected";
 	QString now = QDateTime::currentDateTime().toString();
