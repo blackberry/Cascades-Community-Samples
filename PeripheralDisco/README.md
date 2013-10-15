@@ -22,13 +22,11 @@ you need for this demo is an Arduino and servo. An Arduino sketch is included.
   Or other output device of your choosing (blinky?) that can demonstrate data is
   correctly being exchanged between the BlackBerry and the USB serial accessory.
 
-## Limitations
-
-### Supported BlackBerry Devices
+## Supported BlackBerry Devices
 
 The BlackBerry Z30 is currently the only inmarket device supporting USB host mode.
 
-### Supported Serial Devices
+## Supported Serial Devices
 
 There is a bug (omission?) in BlackBerry 10.2.0 which means that only a very specific set of USB devices are supported.
 This does include FTDI serial adaptors. 
