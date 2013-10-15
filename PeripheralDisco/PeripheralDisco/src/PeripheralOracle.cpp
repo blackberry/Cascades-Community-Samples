@@ -30,29 +30,42 @@ PeripheralOracle::~PeripheralOracle() {
 	bps_shutdown();
 }
 
-bool PeripheralOracle::registerInterest(pd_class_t klass) {
-	int min = klass;
-	int max = klass;
-	if (min == -1) {
-		min = 0;
-	}
-	if (max == -1) {
-		max = PD_CLASS_NUM_SUPPORTED - 1;
-	}
-	++max;
+QSet<pd_bus_t> PeripheralOracle::getSupportedBusses() {
+	QSet<pd_bus_t> toReturn;
 
-	bool toReturn = false;
-	bool result = false;
+	for (int i=0; i<PD_BUS_NUM_SUPPORTED; ++i) {
+		qDebug() << "Checking support for bus" << i;
+		pd_bus_t bus = (pd_bus_t)i;
+		bool result = false;
+		if (pd_is_bus_supported(bus,&result)==EOK) {
+			if (result) {
+				qDebug() << "Supported";
+				toReturn << bus;
+			} else {
+				qDebug() << "Not supported";
+			}
+		} else {
+			qDebug() << "Could not even check if bus is supported...";
+		}
+	}
 
-	for (int i = min; i < max; ++i) {
-		qDebug() << "Attempting to register" << i;
-		klass = (pd_class_t) i;
+	return toReturn;
+}
+
+QSet<pd_class_t> PeripheralOracle::registerInterest(const QSet<pd_class_t> & klasses) {
+	QSet<pd_class_t> toReturn;
+
+	for (QSet<pd_class_t>::const_iterator i = klasses.begin(); i!=klasses.end(); ++i) {
+		pd_class_t klass = *i;
+		qDebug() << "Attempting to register" << (int)klass;
+
+		bool result = false;
 
 		if (pd_is_class_supported(klass, &result) == EOK) {
 			if (result) {
 				if (pd_register_event(klass, &sigEvent) == EOK) {
 					qDebug() << "Good";
-					toReturn |= true;
+					toReturn << klass;
 				} else {
 					qDebug() << "Could not register";
 				}

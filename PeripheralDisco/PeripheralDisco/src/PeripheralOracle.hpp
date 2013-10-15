@@ -12,6 +12,7 @@
 #include <sys/siginfo.h>
 #include <QObject>
 #include <QMap>
+#include <QSet>
 #include <peripheral_discovery.h>
 
 #include "PeripheralDetail.hpp"
@@ -23,7 +24,8 @@ public:
 	virtual ~PeripheralOracle();
 
 	Q_INVOKABLE void refresh();
-	Q_INVOKABLE bool registerInterest(pd_class_t klass);
+	Q_INVOKABLE QSet<pd_class_t> registerInterest(const QSet<pd_class_t> &);
+	Q_INVOKABLE QSet<pd_bus_t> getSupportedBusses();
 
    int signalHandler();
 
