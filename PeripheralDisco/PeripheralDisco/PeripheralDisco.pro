@@ -1,4 +1,4 @@
-APP_NAME = PeripheralDiscovery
+APP_NAME = PeripheralDisco
 
 CONFIG += qt warn_on cascades10
 

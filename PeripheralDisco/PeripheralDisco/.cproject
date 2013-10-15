@@ -157,7 +157,7 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="PeripheralDiscovery.null.1588531085" name="PeripheralDiscovery"/>
+		<project id="PeripheralDisco.null.1588531085" name="PeripheralDisco"/>
 	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
