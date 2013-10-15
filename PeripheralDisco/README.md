@@ -1,49 +1,39 @@
-# AES Crypto Demo
+# Peripheral Disco
 
-The purpose of this demo is to see how to use AES from in Qt. This demo does not explain how or why you'd use AES.
+BlackBerry 10.2 introduced the peripheral discovery API. With the Z30 also came USB host mode. This sample shows
+you how to use the peripheral discovery API - AND - talk to a serial USB accessory.
 
-## Approach
+This application was originally written as a demo for BlackBerry Jam Asia 2013 (JAM804) - the USB 'accessory' 
+you need for this demo is an Arduino and servo. An Arduino sketch is included.
 
-If you're a proficient C coder - you might find this demo convoluted. Please, for your own sanity, avert your eyes.
+## Hardware Requirements
 
-The author finds [RAII](http://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization) to be one of the strongest 
-assets of the c++ language. To this end, the contexts required by the Certicom API are allocated and deallocated 
-in constructors and destructors - instead of monolithic if/goto blocks.
+* BlackBerry Z30
+  The BlackBerry Z30 is currently the only inmarket device supporting USB host mode.
 
-### Storing Keys, IVs and Cipher Text
+* Arduino Uno (or similar)
+  If you're expecting the Z30 to drive the Arduino and your power hungry motors - then you should probably be
+  using an external power supply for the Arduino.
 
-Keys, IVs and cipher text are pseudo random binary data. Think carefully about encodings if you're trying to store 
-them in strings. It is *very* probable that any of them will contain invalid characters or encodings. 
-
-It is very convenient (especially when using a GUI) to represent data like this as hex bytes. That's what this demo
-does.
+* USB OTG Cable
+  There is a pin in an OTG cable that signals to the BlackBerry device to become a host.
 
 ## Limitations
 
-### Hard Wiring
+### Supported BlackBerry Devices
 
-Several constants are used where a full functional library would allow parameterisation. For example;
+The BlackBerry Z30 is currently the only inmarket device supporting USB host mode.
 
-* The key size is 128 bits. 
-* The mode of AES is set to CBC.
+### Supported Serial Devices
 
-### Padding
+There is a bug (ommission?) in BlackBerry 10.2.0 which means that only a very specific set of USB devices are supported.
+This does include FTDI serial adaptors. 
 
-Block ciphers like AES and DES require consistent padding to complete partial blocks. The current Certicom API does not
-expose any (suitable) padding algorithms. PKCS#5 padding is implemented in this demo.
+However - generic serial support will not be available until 10.2.1. 
 
-#### A warning about Padding...
-
-Do *not* rely on padding for message integrity. Use a SHA, or a HMAC, or an authenticated cipher suite.
-
-Here's an exercise to demonstrate why relying on padding is bad:
-
-1. Enter a message that is 3 or 4 blocks long in the plain text field. 
-2. Generate a key and IV.
-3. Encrypt it
-4. Tamper with a single byte near the start or middle of the cipher text.
-5. Decrypt it
-
+This means if you want to use a generic serial device (such as an Arduino Uno R3) you will need either:
+* To wait for 10.2.1
+* An FTDI cable to connect into the TX/RX pins of the Arduino.
 
 ## Info
 
@@ -74,9 +64,7 @@ None
 1. BlackBerry 10 Device Software **10.2**
 1. BlackBerry 10 Native SDK **10.2** 
 
-With minimal massaging it will compile on 10.0.
-
-**How to Build AES Crypto Demo**
+**How to Build Peripheral Disco**
 
 Import the project into a workspace inside Momentics.
  
