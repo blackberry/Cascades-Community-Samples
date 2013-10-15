@@ -64,12 +64,10 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 	// Create root object for the UI
 	AbstractPane *root = qml->createRootObject<AbstractPane>();
 
-	logTextArea = root->findChild<TextArea*>("log");
-	logTextField = root->findChild<TextField*>("log2");
-
 	// Set created root object as the application scene
 	app->setScene(root);
 
+	// Create a PeripheralOracle - and connect all the signals.
 	peripheralOracle = new PeripheralOracle(this);
 
 	bool connects = true;
@@ -83,6 +81,7 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
 
 	qDebug() << "Connects worked: " << connects;
 
+	// Register interest - and check supported busses.
 	QString failMessage;
 
 	QSet<pd_bus_t> supported(peripheralOracle->getSupportedBusses());
@@ -140,7 +139,8 @@ void ApplicationUI::onPeripheralDisconnected(int,
 }
 
 void ApplicationUI::checkSerial() {
-//	addToLog("checkSerial");
+	// Ok - this code is lazy. It's hunting for the FIRST serial device it sees.
+	// For any non-trivial application - you should check a little harder!
 	QMap<int, PeripheralDetail> peripherals = peripheralOracle->peripherals();
 	bool serial = false;
 	QMap<int, PeripheralDetail>::iterator i(peripherals.begin());
@@ -154,9 +154,6 @@ void ApplicationUI::checkSerial() {
 		_serialPossible = serial;
 		emit serialPossibleChanged(serial);
 		closeSerial();
-//		addToLog(
-//				QString("Serial devices available %1").arg(
-//						serial ? "true" : "false"));
 	}
 }
 
@@ -165,12 +162,15 @@ void ApplicationUI::addToLog(QString toAdd) {
 }
 
 void ApplicationUI::openSerial() {
-	lastSerialWrite = 256;
 	if (serialFd != -1) {
 		toast("Serial connection already open...");
 		return;
 	}
 
+	// We can't actually write this value - so it's our nothing written value.
+	lastSerialWrite = 256;
+
+	// Lazily look for the first serial device. You sould be more thorough.
 	QMap<int, PeripheralDetail> peripherals = peripheralOracle->peripherals();
 	QMap<int, PeripheralDetail>::iterator i(peripherals.begin());
 	QMap<int, PeripheralDetail>::iterator end(peripherals.end());
@@ -185,6 +185,8 @@ void ApplicationUI::openSerial() {
 		}
 	}
 
+	// The path is the location on the filesystem we have to open to get access to
+	// that serial device.
 	if (path.isEmpty() || path.isNull()) {
 		toast("Could not find a serial device with a path...");
 		return;
@@ -197,6 +199,8 @@ void ApplicationUI::openSerial() {
 		return;
 	}
 
+	// This section here sets the input and output baud rate.
+	// Do you know what the default is? Does your appliance care?
 	struct termios attributes;
 
 	QString error;
@@ -216,6 +220,7 @@ void ApplicationUI::openSerial() {
 		toast(error);
 	}
 
+	// Using QSocketNotifier so we don't need to poll the file.
 	QSocketNotifier * notifier = new QSocketNotifier(serialFd,
 			QSocketNotifier::Read, this);
 	bool connected = connect(notifier, SIGNAL(activated(int)), this,
@@ -229,12 +234,14 @@ void ApplicationUI::openSerial() {
 
 	emit serialConnectedChanged(true);
 
+	// Check the arduino code for an idea of this 'protocol'.
 	write(serialFd,"\n\n\n\n\n\n\n\n\n\nRESET\n",16);
 }
 
 void ApplicationUI::closeSerial() {
 	qDebug() << "closeSerial";
 	if (serialFd!=-1) {
+		// We send a BYE so that the Arduino knows we aren't connected anymore.
 		write(serialFd,"BYE\n",4);
 		close(serialFd);
 		serialFd = -1;
@@ -267,6 +274,7 @@ void ApplicationUI::writeSerial(float f) {
 	if (serialFd != -1) {
 		char value = (char) (f * 180);
 		if (value != lastSerialWrite) {
+			// In this protocol, we say SET x\n where x is a byte value, between 0 and 180 (ish)
 			lastSerialWrite = value;
 			int wrote = write(serialFd, "SET ",4);
 			int wrote2 = write(serialFd,&value,1);

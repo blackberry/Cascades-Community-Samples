@@ -29,19 +29,14 @@ namespace bb
     {
         class Application;
         class LocaleHandler;
-        class TextArea;
-        class TextField;
     }
 }
 
 class QTranslator;
 
-/*!
- * @brief Application object
- *
- *
+/**
+ * UI (and serial comms) responsible class.
  */
-
 class ApplicationUI : public QObject
 {
     Q_OBJECT
@@ -49,27 +44,65 @@ public:
     ApplicationUI(bb::cascades::Application *app);
     virtual ~ApplicationUI() { }
 
+    /**
+     * Know if serial is currently possible. Only going to be possible if host mode
+     * supported - and a serial device is plugged in.
+     */
     Q_PROPERTY(bool serialPossible READ serialPossible NOTIFY serialPossibleChanged);
+    /**
+     * Know if we are connected to a serial device.
+     */
     Q_PROPERTY(bool serialConnected READ serialConnected NOTIFY serialConnectedChanged);
 
+    /**
+     * Open (the first) known serial device.
+     */
     Q_INVOKABLE void openSerial();
+    /**
+     * Close the open serial device.
+     */
     Q_INVOKABLE void closeSerial();
+    /**
+     * Write a value to the serial device.
+     */
     Q_INVOKABLE void writeSerial(float);
 
 signals:
+	/**
+	 * Fired when data is available to write to the log.
+	 */
 	void log(QString newLogMessage);
+	/**
+	 * Fired when serial possible has changed.
+	 */
 	void serialPossibleChanged(bool newVal);
+	/**
+	 * Fired when serial connected has changed.
+	 */
 	void serialConnectedChanged(bool newVal);
 
 public slots:
+	/**
+	 * Going to receive connect events.
+	 */
 	void onPeripheralConnected(int peripheralId,PeripheralDetail details);
+	/**
+	 * Going to receive disconnect events.
+	 */
 	void onPeripheralDisconnected(int peripheralId,PeripheralDetail details);
 
 private slots:
     void onSystemLanguageChanged();
+
+    /**
+     * Going to receive when data is available from the serial device.
+     */
     void dataAvailable(int fd);
 
 private:
+    /**
+     * Log a message (via emit)
+     */
     void addToLog(QString val);
 
     bool serialPossible() {
@@ -78,13 +111,18 @@ private:
     bool serialConnected() {
     	return serialFd != -1;
     }
+
+    /**
+     * Check if serial is possible with the current devices.
+     */
     void checkSerial();
 
+    /**
+     * Pop-up a nice crisp message - with honey.
+     */
     void toast(QString message);
 
     QTranslator* m_pTranslator;
-    bb::cascades::TextArea * logTextArea;
-    bb::cascades::TextField * logTextField;
     bb::cascades::LocaleHandler* m_pLocaleHandler;
 
     bool _serialPossible;
@@ -92,7 +130,15 @@ private:
 
     PeripheralOracle * peripheralOracle;
 
+    /**
+     * File descriptor of the serial device. Setting to -1 to indicate not open.
+     */
     int serialFd;
+
+    /**
+     * Store the byte that was last written as a coordinate to the serial device.
+     * Setting to 256 to indicate a new connection / nothing written.
+     */
     int lastSerialWrite;
 };
 

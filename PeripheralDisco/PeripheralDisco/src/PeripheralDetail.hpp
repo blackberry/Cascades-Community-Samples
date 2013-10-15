@@ -21,22 +21,54 @@
 #include <QVariant>
 #include <peripheral_discovery.h>
 
+/**
+ * Essentially a QMap of properties and values - with some extra functionality to ease management.
+ */
 class PeripheralDetail {
 public:
+	/**
+	 * Build from the low level data.
+	 */
 	PeripheralDetail(pd_peripheral_t *);
+	/**
+	 * Build a copy.
+	 */
 	PeripheralDetail(const PeripheralDetail &);
+	/**
+	 * Default constructor.
+	 */
 	PeripheralDetail();
+
 	virtual ~PeripheralDetail();
 
+	/**
+	 * Make a pretty listing in HTML.
+	 */
 	QString toHTML();
+	/**
+	 * Make a not-so-pretty listing in text.
+	 */
 	QString toString();
 
+	/**
+	 * Check if this peripheral is a USB serial device.
+	 */
 	bool isUSBSerial();
 
+	/**
+	 * Get a specific value from the details map.
+	 */
 	QVariant getValue(QString name);
 
 private:
+	/**
+	 * Convert to HTML, or a String.
+	 */
 	QString toSomething(bool isHTML);
+
+	/**
+	 * The peripheral's details.
+	 */
 	QMap<QString, QVariant> details;
 };
 

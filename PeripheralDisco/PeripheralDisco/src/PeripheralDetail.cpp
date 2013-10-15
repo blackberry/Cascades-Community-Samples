@@ -19,7 +19,6 @@
 #include <errno.h>
 
 PeripheralDetail::PeripheralDetail() {
-	// TODO Auto-generated constructor stub
 }
 
 PeripheralDetail::PeripheralDetail(const PeripheralDetail & p) {
@@ -74,8 +73,8 @@ QString PeripheralDetail::toString() {
 }
 
 QString PeripheralDetail::toSomething(bool isHTML) {
-	QString prefix(""); //  = isHTML ? "<table>" : "";
-	QString suffix(""); //  = isHTML ? "</table>" : "";
+	QString prefix("");
+	QString suffix("");
 
 	QString lineFormat = isHTML ? "<div><b>%1:</b>%2</div>" : "%1: %2";
 

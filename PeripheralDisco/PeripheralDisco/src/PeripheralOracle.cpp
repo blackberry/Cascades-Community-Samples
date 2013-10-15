@@ -21,16 +21,12 @@
 
 #include <errno.h>
 
-static int peripheralOracleSignalHandler(void * data) {
-	return ((PeripheralOracle*) data)->signalHandler();
-}
-
 PeripheralOracle::PeripheralOracle(QObject * owner) :
 		QObject(owner) {
 	bps_initialize();
 	pd_initialize(0);
 
-	bps_add_sigevent_handler(&sigEvent, peripheralOracleSignalHandler, this);
+	bps_add_sigevent_handler(&sigEvent, signalHandlerStatic, this);
 }
 
 PeripheralOracle::~PeripheralOracle() {
@@ -41,6 +37,7 @@ PeripheralOracle::~PeripheralOracle() {
 QSet<pd_bus_t> PeripheralOracle::getSupportedBusses() {
 	QSet<pd_bus_t> toReturn;
 
+	// Check if all the known busses are supported.
 	for (int i=0; i<PD_BUS_NUM_SUPPORTED; ++i) {
 		qDebug() << "Checking support for bus" << i;
 		pd_bus_t bus = (pd_bus_t)i;
@@ -87,51 +84,50 @@ QSet<pd_class_t> PeripheralOracle::registerInterest(const QSet<pd_class_t> & kla
 	return toReturn;
 }
 
-//// Cleans up a bps event for peripheral discovery
-//static void pd_bps_completion(bps_event_t *event) {
-//	fprintf(stderr, "Cleaning up an event\n");
-//	bps_event_payload_t *evtPayload = bps_event_get_payload(event);
-//	pd_free_peripheral((pd_peripheral_t**)&(evtPayload->data1));
-//	free( (int*)(evtPayload->data2) );
-//	bps_event_destroy(event);
-//}
+int PeripheralOracle::signalHandlerStatic(void * data) {
+	return ((PeripheralOracle*) data)->signalHandler();
+}
 
 int PeripheralOracle::signalHandler() {
 	qDebug() << "In signal handler" << (int) QThread::currentThreadId();
 
 	pd_peripheral_t *peripheral = pd_alloc_peripheral();
 
-	int peripheralId;
-	pd_event_type_t type;
+	if (peripheral!=NULL) {
 
-	if (pd_get_event(&type, &peripheralId, peripheral) == EOK) {
-		qDebug() << "Event type,id" << (int) type << peripheralId;
-		if (type==    PD_EVENT_INSERTION) {
-			qDebug() << "Emitting insertion";
-			PeripheralDetail detail(peripheral);
-			details[peripheralId] = detail;
-			QMetaObject::invokeMethod(this,"toEmit",Qt::QueuedConnection,Q_ARG(bool, true),Q_ARG(int,peripheralId),Q_ARG(PeripheralDetail,detail));
-		} else if (type==PD_EVENT_REMOVAL){
-			qDebug() << "Emiting removal";
-			if (details.contains(peripheralId)) {
-				QMetaObject::invokeMethod(this,"toEmit",Qt::QueuedConnection,Q_ARG(bool, false),Q_ARG(int,peripheralId),Q_ARG(PeripheralDetail,details[peripheralId]));
+		int peripheralId;
+		pd_event_type_t type;
+
+		// Which thread does this happen in? It's a signal handler - it could be any thread.
+		// That's why QMetaObject::invokeMethod is called. Let Qt do the hard work.
+
+		if (pd_get_event(&type, &peripheralId, peripheral) == EOK) {
+			qDebug() << "Event type,id" << (int) type << peripheralId;
+			if (type==    PD_EVENT_INSERTION) {
+				qDebug() << "Emitting insertion";
+				PeripheralDetail detail(peripheral);
+				details[peripheralId] = detail;
+				QMetaObject::invokeMethod(this,"toEmit",Qt::QueuedConnection,Q_ARG(bool, true),Q_ARG(int,peripheralId),Q_ARG(PeripheralDetail,detail));
+			} else if (type==PD_EVENT_REMOVAL){
+				qDebug() << "Emiting removal";
+				if (details.contains(peripheralId)) {
+					QMetaObject::invokeMethod(this,"toEmit",Qt::QueuedConnection,Q_ARG(bool, false),Q_ARG(int,peripheralId),Q_ARG(PeripheralDetail,details[peripheralId]));
+				} else {
+					QMetaObject::invokeMethod(this,"toEmit",Qt::QueuedConnection,Q_ARG(bool, false),Q_ARG(int,peripheralId),Q_ARG(PeripheralDetail,PeripheralDetail()));
+				}
+				details.remove(peripheralId);
 			} else {
-				QMetaObject::invokeMethod(this,"toEmit",Qt::QueuedConnection,Q_ARG(bool, false),Q_ARG(int,peripheralId),Q_ARG(PeripheralDetail,PeripheralDetail()));
+				qDebug() << "Unknown pd event type" << type;
 			}
-			details.remove(peripheralId);
 		} else {
-			qDebug() << "Unknown pd event type" << type;
+			qDebug() << "pd_get_event failed";
 		}
+
+		pd_free_peripheral(&peripheral);
 	} else {
-		qDebug() << "pd_get_event failed";
+		qDebug() << "Could not allocate peripheral!?!?";
 	}
-
-	pd_free_peripheral(&peripheral);
 	return 0;
-}
-
-void PeripheralOracle::refresh() {
-	qDebug() << "refresh";
 }
 
 void PeripheralOracle::toEmit(bool isConnect, int peripheralId, PeripheralDetail detail) {
