@@ -31,7 +31,7 @@ Page {
         ActionItem {
             ActionBar.placement: ActionBarPlacement.OnBar
             title: "Refresh"
-            imageSource: "asset:///icons/ic_refresh.png"
+            imageSource: "asset:///icons/refresh.png"
             onTriggered: {
                 app.refreshProperties();
             }
@@ -66,7 +66,7 @@ Page {
                             contextActions: ActionSet {
                                 ActionItem {
                                     title: "Edit"
-                                    imageSource: "asset:///icons/ic_edit.png"
+                                    imageSource: "asset:///icons/edit.png"
                                     onTriggered: {
                                         itemContainer.ListItem.view.handleEdit(ListItemData.scope, ListItemData.name);
                                     }
