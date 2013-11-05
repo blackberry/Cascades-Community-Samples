@@ -182,6 +182,16 @@ void NfcManager::sendVcard(QString* first_name, QString* last_name, QString* add
 	qDebug() << "XXXX NfcManager::sendVcard done";
 }
 
+void NfcManager::startLlcp() {
+	qDebug() << "XXXX NfcManager::startLlcp";
+	Logger::getInstance()->clearLog();
+	_workerInstance = NfcWorker::getInstance();
+	QObject::disconnect(this, SIGNAL(start_llcp()), 0,0);
+	QObject::connect(this, SIGNAL(start_llcp()), _workerInstance, SLOT(startLlcp()), Qt::QueuedConnection);
+	emit start_llcp();
+	qDebug() << "XXXX NfcManager::startLlcp done";
+}
+
 void NfcManager::iso7816Test(QString* aid, bool select_only, QString* target, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le) {
 	Logger::getInstance()->clearLog();
 	_workerInstance = NfcWorker::getInstance();

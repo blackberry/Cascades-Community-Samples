@@ -15,7 +15,10 @@
 import bb.cascades 1.0
 
 Container {
+    
     property variant menuColor: Color.create ("#262626")
+    
+    leftPadding: 10
 
     background: menuColor
 

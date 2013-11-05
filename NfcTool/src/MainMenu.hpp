@@ -28,6 +28,7 @@
 #include "WriteText.hpp"
 #include "WriteCustom.hpp"
 #include "SendVcard.hpp"
+#include "Llcp.hpp"
 #include "ApduDetails.hpp"
 #include "About.hpp"
 #include "EmulateSp.hpp"
@@ -55,6 +56,7 @@ private:
     WriteText* _writeText;
     WriteCustom* _writeCustom;
     SendVcard* _sendVcard;
+    Llcp* _llcp;
     ApduDetails* _apduDetails;
     EventLog* _eventLog;
     About* _about;
@@ -86,6 +88,7 @@ signals:
     void write_text();
     void write_custom();
     void send_vcard_selected();
+    void llcp_selected();
     void emulate_tag_selected();
     void emulate_echo_selected();
     void iso7816_selected();

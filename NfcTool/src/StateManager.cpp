@@ -85,6 +85,7 @@ void StateManager::setDefaultState() {
 	m_inReadState = true;
 	m_inDetectAndWriteState = false;
 	m_inNdefPushState = false;
+	m_inLlcpState = false;
 	m_inTagEmulationState = false;
 	m_inIso14443_4_EmulationState = false;
 	m_event_log_is_showing = false;
@@ -101,6 +102,12 @@ void StateManager::setNdefPushState(bool ndef_push_state) {
 	qDebug() << "XXXX StateManager::setNdefPushState=" << ndef_push_state;
 	m_inNdefPushState = ndef_push_state;
 	emit inNdefPushStateChanged();
+}
+
+void StateManager::setLlcpState(bool llcp_state) {
+	qDebug() << "XXXX StateManager::setLlcpState=" << llcp_state;
+	m_inLlcpState = llcp_state;
+	emit inLlcpStateChanged();
 }
 
 bool StateManager::isEventLogShowing() const {
@@ -135,4 +142,9 @@ void StateManager::setIso14443_4_EmulationState(bool emulation_state) {
 	qDebug() << "XXXX StateManager::setIso14443_4_EmulationState=" << emulation_state;
 	m_inIso14443_4_EmulationState = emulation_state;
 	emit inIso14443_4_EmulationStateChanged();
+}
+
+bool StateManager::inLlcpState() const {
+	qDebug() << "XXXX StateManager::inLlcpState=" << m_inLlcpState;
+	return m_inLlcpState;
 }

@@ -20,6 +20,10 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
+* **V5.1.0** 
+  * Added LLCP function
+  * Fixed some memory management issues
+
 * **V5.0.2** 
 	* Improper freeing of memory fixed
 
