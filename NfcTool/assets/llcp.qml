@@ -25,7 +25,7 @@ Page {
     }
     
     content: MenuContainer {
-        id: llcp
+        id: llcp_menu
         objectName: "llcp"
 
         signal sendLlcpRequested()
