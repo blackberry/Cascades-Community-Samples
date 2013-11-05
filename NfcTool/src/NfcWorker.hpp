@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2013 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,7 @@ public:
 		READ_ISO15693,
 		WRITE_ISO15693,
 		SEND_VCARD,
+		LLCP,
 		EMULATE_TAG,
 		EMULATE_ECHO,
 		CARD_APDU_EXCHANGE,
@@ -66,6 +67,7 @@ public:
 signals:
 	void message(const QVariant &message);
 	void clearMessages();
+	void logMessageHere(const QString &message);
 	void stopped(const QVariant &message);
 	void started(const QVariant &message);
 	void event_log_needed();
@@ -97,6 +99,7 @@ public slots:
 	void sendVcard(const QVariant &first_name, const QVariant &last_name,
 			const QVariant &address, const QVariant &email,
 			const QVariant &mobile);
+	void startLlcp();
 	void emulateTag(const QVariant &uri, const QVariant &text);
 	void emulateEcho();
 	void doIso7816Test(const QVariant &aid, bool select_only,  const QVariant &hex_cla, const QVariant &hex_ins, const QVariant &hexp1p2, const QVariant &hex_lc,
@@ -118,6 +121,9 @@ public:
 	static NfcWorker* getInstance();
 	void readTag();
 	void handleTagReadInvocation(const QByteArray data);
+	void setLlcpSendFlag();
+	void clearLlcpSendData();
+	void setLlcpSendText(QString text);
 
 private:
 	NfcWorker(QObject *parent = 0);
@@ -132,6 +138,7 @@ private:
 	void handleGvbEvent(bps_event_t *event);
 	void handleReadTagDetailsEvent(bps_event_t *event);
 	void handleSendVcardEvent(bps_event_t *event);
+	void handleLlcpEvent(bps_event_t *event);
 	void handleEmulateNfcEvent(bps_event_t *event);
 	void handleEmulateEchoEvent(bps_event_t *event);
 	void processIso144434EchoCommandEvent(nfc_target_t *target);
@@ -186,6 +193,11 @@ private:
 	QString _hex_le;
 	QString _data;
 	EventLog* _eventLog;
+
+	nfc_llcp_connection_listener_t* _llcp_server;
+	nfc_llcp_connection_listener_t* _llcp_client;
+	QString _llcp_text;
+	bool _llcp_send;
 
 };
 

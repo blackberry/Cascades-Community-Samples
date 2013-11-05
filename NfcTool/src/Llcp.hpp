@@ -12,42 +12,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef About_h
-#define About_h
+#ifndef Llcp_h
+#define Llcp_h
 
 #include <QtCore/QObject>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/Control>
 #include <bb/cascades/Container>
 #include <bb/cascades/Page>
+#include "NfcWorker.hpp"
+
+#include "EventLog.hpp"
 
 using namespace bb::cascades;
 
-class About: public QObject {
+class Llcp: public QObject {
 
 	Q_OBJECT
-	Q_PROPERTY(QString appVersion READ appVersion WRITE setAppVersion NOTIFY detectAppVersionChanged)
 
 public:
-	About();
-	virtual ~About();
+	Llcp();
+	virtual ~Llcp();
 
-	QString appVersion() const;
-	void setAppVersion(QString appVersion);
+	Q_INVOKABLE QString getText() const;
+	void setText(QString text);
 
 private:
-	QString _appVersion;
-	QmlDocument *_qml;
-	Page *_root;
+	QmlDocument* _qml;
+	Page* _root;
+	EventLog* _eventLog;
+	QString _llcp_text;
+	bool _llcp_send;
+	NfcWorker* _workerInstance;
+
+	void findAndConnectControls();
 
 public slots:
 	void show();
+	void startLlcp();
+	void stopLlcp();
+	void sendOverLlcp(QString text);
+	void onBack();
+	void logMessageHere(QString message);
 
 private slots:
 
 signals:
-	void detectAppVersionChanged();
+
+	void showEventLog();
 
 };
 
-#endif // ifndef About_h
+#endif // ifndef Llcp_h
