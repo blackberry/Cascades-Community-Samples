@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2013 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 // General constants
 
-const char* Settings::AppVersion = "5.0.2";
+const char* Settings::AppVersion = "5.1.0";
 const char* Settings::DOMAIN = "my.domain.com";
 const char* Settings::TYPE = "myrecordtype";
 const char* Settings::CONTENT = "content";

@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2013 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ using namespace bb::cascades;
 MainMenu::MainMenu(Application *app) :
 		_nfcManager(0), _appVersion(QString(Settings::AppVersion)) {
 
-	bb::cascades::Application::setOrganizationName("RIM");
+	bb::cascades::Application::setOrganizationName("BlackBerry");
 	bb::cascades::Application::setApplicationName("NfcTool");
 
 	qDebug() << "XXXX NFC Tool V" << Settings::AppVersion;
@@ -116,6 +116,10 @@ void MainMenu::deleteModules() {
 		delete _sendVcard;
 		_sendVcard = 0;
 	}
+	if (_llcp) {
+		delete _llcp;
+		_llcp = 0;
+	}
 	if (_apduDetails) {
 		delete _apduDetails;
 		_apduDetails = 0;
@@ -146,6 +150,7 @@ void MainMenu::createModules() {
 	_writeText = new WriteText();
 	_writeCustom = new WriteCustom();
 	_sendVcard = new SendVcard();
+	_llcp = new Llcp();
 	_apduDetails = new ApduDetails();
 	_eventLog = EventLog::getInstance();
 	_emulateSp = new EmulateSp();
@@ -178,6 +183,7 @@ void MainMenu::findAndConnectControls() {
 	QObject::connect(this, SIGNAL(write_text()), _writeText, SLOT(show()));
 	QObject::connect(this, SIGNAL(write_custom()), _writeCustom, SLOT(show()));
 	QObject::connect(this, SIGNAL(send_vcard_selected()), _sendVcard, SLOT(show()));
+	QObject::connect(this, SIGNAL(llcp_selected()), _llcp, SLOT(show()));
 	QObject::connect(this, SIGNAL(emulate_tag_selected()), _emulateSp, SLOT(show()));
 	QObject::connect(this, SIGNAL(emulate_echo_selected()), this, SLOT(emulateEcho()));
 	QObject::connect(this, SIGNAL(iso7816_selected()), _apduDetails, SLOT(show()));
@@ -202,73 +208,77 @@ void MainMenu::onListSelectionChanged(const QVariantList indexPath) {
 			qDebug() << "XXXX selected item name=" << item;
 
 			if (item.compare("item_read") == 0) {
-				qDebug() << "XXXX Read Tag was selected!";
+				qDebug() << "XXXX Read Tag was selected";
 				StateManager* state_mgr = StateManager::getInstance();
 				state_mgr->setEventLogShowing(true);
 				_eventLog->setMessage("Bring a tag close");
 				emit read_selected();
 
 			} else if (item.compare("item_tag_details") == 0) {
-				qDebug() << "XXXX Tag Details was selected!";
+				qDebug() << "XXXX Tag Details was selected";
 				emit tag_details_selected();
 
 			} else if (item.compare("item_uri") == 0) {
-				qDebug() << "XXXX Write URI was selected!";
+				qDebug() << "XXXX Write URI was selected";
 				QObject::connect(_eventLog, SIGNAL(back()), _writeURI, SLOT(backFromEventLog()));
 				emit write_uri();
 
 			} else if (item.compare("item_sp") == 0) {
-				qDebug() << "XXXX Write SP was selected!";
+				qDebug() << "XXXX Write SP was selected";
 				QObject::connect(_eventLog, SIGNAL(back()), _writeSp, SLOT(backFromEventLog()));
 				emit write_sp();
 
 			} else if (item.compare("item_text") == 0) {
-				qDebug() << "XXXX Write Text was selected!";
+				qDebug() << "XXXX Write Text was selected";
 				QObject::connect(_eventLog, SIGNAL(back()), _writeText, SLOT(backFromEventLog()));
 				emit write_text();
 
 			} else if (item.compare("item_custom") == 0) {
-				qDebug() << "XXXX Write Custom was selected!";
+				qDebug() << "XXXX Write Custom was selected";
 				QObject::connect(_eventLog, SIGNAL(back()), _writeCustom, SLOT(backFromEventLog()));
 				emit write_custom();
 
 			} else if (item.compare("item_about") == 0) {
-				qDebug() << "XXXX About was selected!";
+				qDebug() << "XXXX About was selected";
 				emit about_selected();
 
 			} else if (item.compare("item_snep_vcard") == 0) {
-				qDebug() << "XXXX Send vCard (SNEP) was selected!";
+				qDebug() << "XXXX Send vCard (SNEP) was selected";
 				QObject::connect(_eventLog, SIGNAL(back()), _sendVcard, SLOT(backFromEventLog()));
 				emit send_vcard_selected();
 
+			} else if (item.compare("item_llcp") == 0) {
+				qDebug() << "XXXX LLCP was selected";
+				emit llcp_selected();
+
 			} else if (item.compare("item_emulate_tag") == 0) {
-				qDebug() << "XXXX Emulate Tag was selected!";
+				qDebug() << "XXXX Emulate Tag was selected";
 				QObject::connect(_eventLog, SIGNAL(back()), _emulateSp, SLOT(backFromEventLog()));
 				emit emulate_tag_selected();
 			} else if (item.compare("item_emulate_echo") == 0) {
-				qDebug() << "XXXX Emulate Echo was selected!";
+				qDebug() << "XXXX Emulate Echo was selected";
 				StateManager* state_mgr = StateManager::getInstance();
 				state_mgr->setEventLogShowing(true);
 				_eventLog->setMessage("Place BlackBerry on reader");
 				emit emulate_echo_selected();
 			} else if (item.compare("item_iso7816") == 0) {
-				qDebug() << "XXXX ISO7816 APDU was selected!";
+				qDebug() << "XXXX ISO7816 APDU was selected";
 				StateManager* state_mgr = StateManager::getInstance();
 				state_mgr->setEventLogShowing(true);
 				QObject::connect(_eventLog, SIGNAL(back()), _apduDetails, SLOT(backFromEventLog()));
 				emit iso7816_selected();
 			} else if (item.compare("item_read_iso15693") == 0) {
-				qDebug() << "XXXX Read ISO15693 was selected!";
+				qDebug() << "XXXX Read ISO15693 was selected";
 				StateManager* state_mgr = StateManager::getInstance();
 				state_mgr->setEventLogShowing(false);
 				emit readIso15693_selected();
 			} else if (item.compare("item_write_iso15693") == 0) {
-				qDebug() << "XXXX Write ISO15693 was selected!";
+				qDebug() << "XXXX Write ISO15693 was selected";
 				StateManager* state_mgr = StateManager::getInstance();
 				state_mgr->setEventLogShowing(false);
 				emit writeIso15693_selected();
 			} else if (item.compare("item_read_gvb") == 0) {
-				qDebug() << "XXXX Read GVB was selected!";
+				qDebug() << "XXXX Read GVB was selected";
 				StateManager* state_mgr = StateManager::getInstance();
 				state_mgr->setEventLogShowing(false);
 				emit readGvb_selected();
