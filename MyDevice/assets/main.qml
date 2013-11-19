@@ -144,37 +144,37 @@ TabbedPane {
     function networkType(network_intf_name) {
         if (network_intf_name.indexOf("lo") == 0) {
             return "Loopback";
-        }        
-    	if (network_intf_name.indexOf("en") == 0) {
-    	    return "Ethernet";
-    	}        
+        }
+        if (network_intf_name.indexOf("en") == 0) {
+            return "Ethernet";
+        }
         if (network_intf_name.indexOf("cellular") == 0) {
             return "Cellular";
-        }        
+        }
         if (network_intf_name.indexOf("rndis") == 0) {
             return "USB logical";
-        }        
+        }
         if (network_intf_name.indexOf("ecm") == 0) {
             return "USB (MAC)";
-        }        
+        }
         if (network_intf_name.indexOf("ncm") == 0) {
             return "USB";
-        }        
+        }
         if (network_intf_name.indexOf("tiw") == 0) {
             return "Wi-Fi";
-        }        
+        }
         if (network_intf_name.indexOf("bcm") == 0) {
             return "Wi-Fi";
-        }        
+        }
         if (network_intf_name.indexOf("qca") == 0) {
             return "Wi-Fi";
-        }        
+        }
         if (network_intf_name.indexOf("vpn") == 0) {
             return "VPN";
-        }        
+        }
         if (network_intf_name.indexOf("bptp") == 0) {
             return "P2P Logical";
-        }        
+        }
         return "Unrecognised";
     }
 
@@ -197,312 +197,319 @@ TabbedPane {
                     verticalAlignment: VerticalAlignment.Top
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_device_name
-                        text: qsTr("Device Name")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                ScrollView {
+                    id: deviceScroller
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    Container {
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_device_name
+                                text: qsTr("Device Name")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_device_name
+                                text: hw.deviceName
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_device_name
-                        text: hw.deviceName
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_hw_id
+                                text: qsTr("Hardware ID")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_hw_id
+                                text: hw.hardwareId
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_hw_id
-                        text: qsTr("Hardware ID")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_hdmi
+                                text: qsTr("HDMI")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_hdmi
+                                text: hdmiConnectorType(hw.hdmiConnector)
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_hw_id
-                        text: hw.hardwareId
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_imei
+                                text: qsTr("IMEI")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_imei
+                                text: hw.imei
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_hdmi
-                        text: qsTr("HDMI")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_kb
+                                text: qsTr("Physical Keyboard?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_kb
+                                text: hw.isPhysicalKeyboardDevice
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_hdmi
-                        text: hdmiConnectorType(hw.hdmiConnector)
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_meid
+                                text: qsTr("MEID")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_meid
+                                text: hw.meid
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_imei
-                        text: qsTr("IMEI")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_model
+                                text: qsTr("Model Name")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_model
+                                text: hw.modelName
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_imei
-                        text: hw.imei
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_model_num
+                                text: qsTr("Model No.")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_model_num
+                                text: hw.modelNumber
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_kb
-                        text: qsTr("Physical Keyboard?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_pin
+                                text: qsTr("PIN")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_pin
+                                text: hw.pin
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_kb
-                        text: hw.isPhysicalKeyboardDevice
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_serial_num
+                                text: qsTr("Serial Number")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_serial_num
+                                text: hw.serialNumber
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                multiline: true
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_meid
-                        text: qsTr("MEID")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_processors
+                                text: qsTr("Processors")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_processors
+                                text: app.getProcessorCount()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_meid
-                        text: hw.meid
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_processor_model
+                                text: qsTr("Processor Model")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_processor_model
+                                text: app.getProcessorModels()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                multiline: true
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_model
-                        text: qsTr("Model Name")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_model
-                        text: hw.modelName
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_model_num
-                        text: qsTr("Model No.")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_model_num
-                        text: hw.modelNumber
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_pin
-                        text: qsTr("PIN")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_pin
-                        text: hw.pin
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_serial_num
-                        text: qsTr("Serial Number")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_serial_num
-                        text: hw.serialNumber
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        multiline: true
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_processors
-                        text: qsTr("Processors")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_processors
-                        text: app.getProcessorCount()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_processor_model
-                        text: qsTr("Processor Model")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_processor_model
-                        text: app.getProcessorModels()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        multiline: true
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_processor_speed
-                        text: qsTr("Processor Speed")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_processor_speed
-                        text: app.getProcessorSpeeds()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        multiline: true
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_processor_speed
+                                text: qsTr("Processor Speed")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_processor_speed
+                                text: app.getProcessorSpeeds()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                multiline: true
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
                     }
                 }
@@ -523,97 +530,105 @@ TabbedPane {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_mcc
-                        text: qsTr("MCC")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 40
+                ScrollView {
+                    id: simScroller
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    Container {
+
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_mcc
+                                text: qsTr("MCC")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 40
+                                }
+                            }
+                            Label {
+                                id: val_mcc
+                                text: sim.mobileCountryCode
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 60
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_mcc
-                        text: sim.mobileCountryCode
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 60
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_mnc
+                                text: qsTr("MNC")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 40
+                                }
+                            }
+                            Label {
+                                id: val_mnc
+                                text: sim.mobileNetworkCode
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 60
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_mnc
-                        text: qsTr("MNC")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 40
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_sno
+                                text: qsTr("Serial Number")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 40
+                                }
+                            }
+                            Label {
+                                id: val_sno
+                                text: sim.serialNumber
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 60
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_mnc
-                        text: sim.mobileNetworkCode
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 60
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_sno
-                        text: qsTr("Serial Number")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 40
-                        }
-                    }
-                    Label {
-                        id: val_sno
-                        text: sim.serialNumber
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 60
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_state
-                        text: qsTr("State")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 40
-                        }
-                    }
-                    Label {
-                        id: val_state
-                        text: simStateName(sim.state)
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 60
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_state
+                                text: qsTr("State")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 40
+                                }
+                            }
+                            Label {
+                                id: val_state
+                                text: simStateName(sim.state)
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 60
+                                }
+                            }
                         }
                     }
                 }
@@ -634,168 +649,175 @@ TabbedPane {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_charging_state
-                        text: qsTr("Charging State")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                ScrollView {
+                    id: batteryScroller
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    Container {
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_charging_state
+                                text: qsTr("Charging State")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_charging_state
+                                text: batteryChargingStateName(bat.chargingState)
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_charging_state
-                        text: batteryChargingStateName(bat.chargingState)
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_battery_condition
+                                text: qsTr("Condition")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_battery_condition
+                                text: batteryConditionName(bat.condition)
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_battery_condition
-                        text: qsTr("Condition")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_cycle_count
+                                text: qsTr("Cycle Count")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_cycle_count
+                                text: bat.cycleCount
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_battery_condition
-                        text: batteryConditionName(bat.condition)
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_full_charge_capacity
+                                text: qsTr("Full Charge Capacity")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_full_charge_capacity
+                                text: bat.fullChargeCapacity
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_cycle_count
-                        text: qsTr("Cycle Count")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_level
+                                text: qsTr("Level")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_level
+                                text: bat.level
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_cycle_count
-                        text: bat.cycleCount
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_present
+                                text: qsTr("Present?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_present
+                                text: bat.present
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_full_charge_capacity
-                        text: qsTr("Full Charge Capacity")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_full_charge_capacity
-                        text: bat.fullChargeCapacity
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_level
-                        text: qsTr("Level")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_level
-                        text: bat.level
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_present
-                        text: qsTr("Present?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_present
-                        text: bat.present
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_temperature
-                        text: qsTr("Temperature")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_temperature
-                        text: bat.temperature
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_temperature
+                                text: qsTr("Temperature")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_temperature
+                                text: bat.temperature
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
                     }
                 }
@@ -816,310 +838,317 @@ TabbedPane {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_aspect_type
-                        text: qsTr("Aspect Type")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                ScrollView {
+                    id: displayScroller
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    Container {
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_aspect_type
+                                text: qsTr("Aspect Type")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_aspect_type
+                                text: aspectTypeName(disp.aspectType)
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_aspect_type
-                        text: aspectTypeName(disp.aspectType)
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_attached
+                                text: qsTr("Attached")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_attached
+                                text: disp.attached
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_attached
-                        text: qsTr("Attached")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_detachable
+                                text: qsTr("Detachable")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_detachable
+                                text: disp.detachable
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_attached
-                        text: disp.attached
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_display_id
+                                text: qsTr("Display ID")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_display_id
+                                text: disp.displayId
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_detachable
-                        text: qsTr("Detachable")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_display_name
+                                text: qsTr("Display Name")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_display_name
+                                text: disp.displayName
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_detachable
-                        text: disp.detachable
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_display_tech
+                                text: qsTr("Display Tech")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_display_tech
+                                text: displayTechName(disp.displayTechnology)
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_display_id
-                        text: qsTr("Display ID")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_width_mm
+                                text: qsTr("Width (mm)")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_width_mm
+                                text: app.getDisplayPhysicalWidth()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_display_id
-                        text: disp.displayId
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_height_mm
+                                text: qsTr("Height (mm)")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_height_mm
+                                text: app.getDisplayPhysicalHeight()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_display_name
-                        text: qsTr("Display Name")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_width_pixels
+                                text: qsTr("Width (pixels)")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_width_pixels
+                                text: app.getDisplayPixelWidth()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_display_name
-                        text: disp.displayName
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_height_pixels
+                                text: qsTr("Height (pixels)")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_height_pixels
+                                text: app.getDisplayPixelHeight()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_display_tech
-                        text: qsTr("Display Tech")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_width_resolution
+                                text: qsTr("Res. Width (pixels/m)")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_width_resolution
+                                text: app.getDisplayResolutionWidth()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_display_tech
-                        text: displayTechName(disp.displayTechnology)
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_height_resolution
+                                text: qsTr("Res. Height (pixels/m)")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_height_resolution
+                                text: app.getDisplayResolutionHeight()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_width_mm
-                        text: qsTr("Width (mm)")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_width_mm
-                        text: app.getDisplayPhysicalWidth()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_height_mm
-                        text: qsTr("Height (mm)")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_height_mm
-                        text: app.getDisplayPhysicalHeight()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_width_pixels
-                        text: qsTr("Width (pixels)")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_width_pixels
-                        text: app.getDisplayPixelWidth()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_height_pixels
-                        text: qsTr("Height (pixels)")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_height_pixels
-                        text: app.getDisplayPixelHeight()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_width_resolution
-                        text: qsTr("Res. Width (pixels/m)")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_width_resolution
-                        text: app.getDisplayResolutionWidth()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_height_resolution
-                        text: qsTr("Res. Height (pixels/m)")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_height_resolution
-                        text: app.getDisplayResolutionHeight()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_wireless
-                        text: qsTr("Wireless connected?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_wireless
-                        text: disp.wireless
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_wireless
+                                text: qsTr("Wireless connected?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_wireless
+                                text: disp.wireless
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
                     }
                 }
@@ -1140,250 +1169,256 @@ TabbedPane {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                Container {
-                    DropDown {
-                        id: networkInterfaces
-                        objectName: "networkInterfaces"
-                        title: "Network Interfaces"
-                        enabled: true
-                        
-                        onSelectedIndexChanged: {
-                            console.log("SelectedIndex was changed to " + selectedOption.text);
-                            app.selectNetworkInterfaceByName(selectedOption.text);
-                            val_net_type = networkType(selectedOption.text);
-                            val_hw_address.text = app.getNetworkInterfaceHwAddress();
-                            val_net_addresses.text = app.getNetworkAddresses();
-                            val_is_up.text = app.isUp();
-                            val_is_running = app.isRunning();
-                            val_can_broadcast = app.canBroadcast();
-                            val_is_loopback = app.isLoopback();
-                            val_is_point_to_point = app.isPointToPoint();
-                            val_can_multicast = app.canMulticast();
+                ScrollView {
+                    id: networkScroller
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    Container {
+                        Container {
+                            DropDown {
+                                id: networkInterfaces
+                                objectName: "networkInterfaces"
+                                title: "Network Interfaces"
+                                enabled: true
+
+                                onSelectedIndexChanged: {
+                                    console.log("SelectedIndex was changed to " + selectedOption.text);
+                                    app.selectNetworkInterfaceByName(selectedOption.text);
+                                    val_net_type = networkType(selectedOption.text);
+                                    val_hw_address.text = app.getNetworkInterfaceHwAddress();
+                                    val_net_addresses.text = app.getNetworkAddresses();
+                                    val_is_up.text = app.isUp();
+                                    val_is_running = app.isRunning();
+                                    val_can_broadcast = app.canBroadcast();
+                                    val_is_loopback = app.isLoopback();
+                                    val_is_point_to_point = app.isPointToPoint();
+                                    val_can_multicast = app.canMulticast();
+                                }
+
+                            }
+                            background: Color.Gray
                         }
-                        
-                    }
-                    background: Color.Gray
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_net_type
-                        text: qsTr("Type")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_net_type
+                                text: qsTr("Type")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_net_type
+                                text: networkType(networkInterfaces.selectedOption.text)
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_net_type
-                        text: networkType(networkInterfaces.selectedOption.text)
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_hw_addr
+                                text: qsTr("Hardware Address")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_hw_address
+                                text: app.getNetworkInterfaceHwAddress()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_hw_addr
-                        text: qsTr("Hardware Address")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_net_addresses
+                                text: qsTr("IP Address(es)")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_net_addresses
+                                text: app.getNetworkAddresses()
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_hw_address
-                        text: app.getNetworkInterfaceHwAddress()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_is_up
+                                text: qsTr("Is up?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_is_up
+                                text: app.isUp()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_net_addresses
-                        text: qsTr("IP Address(es)")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_is_running
+                                text: qsTr("Is running?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_is_running
+                                text: app.isRunning()
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_net_addresses
-                        text: app.getNetworkAddresses()
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_can_broadcast
+                                text: qsTr("Can broadcast?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_can_broadcast
+                                text: app.canBroadcast()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_is_up
-                        text: qsTr("Is up?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_is_loopback
+                                text: qsTr("Is loopback?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_is_loopback
+                                text: app.isLoopback()
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_is_up
-                        text: app.isUp()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_is_point_to_point
+                                text: qsTr("Point to point?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_is_point_to_point
+                                text: app.isPointToPoint()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_is_running
-                        text: qsTr("Is running?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_is_running
-                        text: app.isRunning()
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_can_broadcast
-                        text: qsTr("Can broadcast?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_can_broadcast
-                        text: app.canBroadcast()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_is_loopback
-                        text: qsTr("Is loopback?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_is_loopback
-                        text: app.isLoopback()
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_is_point_to_point
-                        text: qsTr("Point to point?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_is_point_to_point
-                        text: app.isPointToPoint()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_can_multicast
-                        text: qsTr("Can multicast?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_can_multicast
-                        text: app.canMulticast()
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_can_multicast
+                                text: qsTr("Can multicast?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_can_multicast
+                                text: app.canMulticast()
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-
     }
     Tab {
         id: phone_tab
@@ -1399,126 +1434,132 @@ TabbedPane {
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }
-                Container {
-                    DropDown {
-                        id: phoneLines
-                        objectName: "phoneLines"
-                        title: "Phone Lines"
-                        enabled: true
-                        
-                        onSelectedIndexChanged: {
-                            console.log("SelectedIndex was changed to " + selectedOption.text);
-                            app.selectLineById(selectedOption.text);
-                            val_phone_line_type.text = app.getLineType()
-                            val_phone_address.text = app.getLineAddress();
-                            val_phone_description.text = app.getLineDescription()
-                            val_phone_isvalid = app.isLineValid();
+                ScrollView {
+                    id: phoneScroller
+                    horizontalAlignment: HorizontalAlignment.Fill
+                    verticalAlignment: VerticalAlignment.Fill
+                    Container {
+                        Container {
+                            DropDown {
+                                id: phoneLines
+                                objectName: "phoneLines"
+                                title: "Phone Lines"
+                                enabled: true
+
+                                onSelectedIndexChanged: {
+                                    console.log("SelectedIndex was changed to " + selectedOption.text);
+                                    app.selectLineById(selectedOption.text);
+                                    val_phone_line_type.text = app.getLineType()
+                                    val_phone_address.text = app.getLineAddress();
+                                    val_phone_description.text = app.getLineDescription()
+                                    val_phone_isvalid = app.isLineValid();
+                                }
+
+                            }
+                            background: Color.Gray
                         }
-                    
-                    }
-                    background: Color.Gray
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_phone_ine_type
-                        text: qsTr("Line Type")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_phone_ine_type
+                                text: qsTr("Line Type")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_phone_line_type
+                                text: app.getLineType()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_phone_line_type
-                        text: app.getLineType()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_phone_address
+                                text: qsTr("Address")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_phone_address
+                                text: app.getLineAddress()
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_phone_address
-                        text: qsTr("Address")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            Label {
+                                id: lbl_phone_description
+                                text: qsTr("Description")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_phone_description
+                                text: app.getLineDescription()
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
-                    }
-                    Label {
-                        id: val_phone_address
-                        text: app.getLineAddress();
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    Label {
-                        id: lbl_phone_description
-                        text: qsTr("Description")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_phone_description
-                        text: app.getLineDescription()
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
-                        }
-                    }
-                }
-                Container {
-                    layout: StackLayout {
-                        orientation: LayoutOrientation.LeftToRight
-                    }
-                    background: Color.Gray
-                    Label {
-                        id: lbl_phone_isvalid
-                        text: qsTr("Valid?")
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 45
-                        }
-                    }
-                    Label {
-                        id: val_phone_isvalid
-                        text: app.isLineValid()
-                        multiline: true
-                        verticalAlignment: VerticalAlignment.Center
-                        horizontalAlignment: HorizontalAlignment.Center
-                        layoutProperties: StackLayoutProperties {
-                            spaceQuota: 55
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
+                            Label {
+                                id: lbl_phone_isvalid
+                                text: qsTr("Valid?")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_phone_isvalid
+                                text: app.isLineValid()
+                                multiline: true
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-    
     }
-    
+
     Tab {
         id: about_tab
         title: "About"
@@ -1543,7 +1584,7 @@ TabbedPane {
                     }
                     Label {
                         id: lblHeading_version
-                        text: qsTr("V1.0.0")
+                        text: qsTr("V1.0.1")
                         horizontalAlignment: HorizontalAlignment.Center
                     }
                     Label {

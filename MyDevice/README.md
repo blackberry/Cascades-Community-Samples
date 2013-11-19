@@ -17,6 +17,7 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 **Release History**
 
 * **V1.0.0** - Initial release
+* **V1.0.1** - Made pages scrollable
 
 **Dependencies**
 
