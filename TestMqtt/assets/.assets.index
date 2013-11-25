@@ -1,0 +1,17 @@
+1
+15
+720x720/ImageLabel.qml
+720x720/images/led_green_black.png
+720x720/images/led_red_black.png
+720x720/Logger.qml
+720x720/main.qml
+AboutSheet.qml
+ImageLabel.qml
+images/about.png
+images/led_green_black.png
+images/led_red_black.png
+images/monitor.png
+images/mosquitto.png
+lib/libMqtt.so
+Logger.qml
+main.qml
