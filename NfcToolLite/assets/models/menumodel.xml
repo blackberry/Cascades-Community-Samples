@@ -1,9 +1,0 @@
-<root>
-    <menuitem title="Read"                   image="asset:///images/read.png" file="reader.qml" itemName="item_read"/>
-    <menuitem title="Write URI"              image="asset:///images/uri.png" file="write_uri.qml" itemName="item_uri"/>
-    <menuitem title="Write Smart Poster"     image="asset:///images/sp.png" file="write_sp.qml" itemName="item_sp"/>
-    <menuitem title="Write Text"             image="asset:///images/text.png" file="write_text.qml" itemName="item_text"/>
-    <menuitem title="Write Custom"           image="asset:///images/custom.png" file="write_custom.qml" itemName="item_custom"/>
-    <menuitem title="Send vCard (SNEP)"      image="asset:///images/snep.png" file="vcard.qml" itemName="item_snep_vcard"/>
-    <menuitem title="About"                  image="asset:///images/about.png" file="about.qml" itemName="item_about"/>
-</root>
