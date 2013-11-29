@@ -13,6 +13,9 @@ Author: Diego Anfuso <br>
 Email: diegoanfuso@gmail.com <br>
 Twitter: @diegoanfuso
 
+<br>
+Images by Diego Anfuso and released under Apache 2.0 license.
+
 ================================================================================================
 Disclaimer
 
