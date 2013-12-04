@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2013 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ public:
 	void writeCustom(QString* domain, QString* type, QString* payload);
 	void sendVcard(QString* first_name, QString* last_name, QString* address,
 			QString* email, QString* mobile);
+	void startLlcp();
 	void iso7816Test(QString* aid, bool select_only, QString* target, QString* hex_cla, QString* hex_ins, QString* hex_p1p2, QString* hex_lc, QString* hex_command, QString* hex_le);
 	void readIso15693();
 	void writeIso15693(QString* data);
@@ -81,6 +82,7 @@ signals:
 	void start_write_custom(const QVariant &domain, const QVariant &type,
 			const QVariant &payload);
 	void start_send_vcard(const QVariant &first_name, const QVariant &last_name, const QVariant &address, const QVariant &email, const QVariant &mobile);
+	void start_llcp();
 	void start_tag_emulation(const QVariant &uri, const QVariant &text);
 	void stop_tag_emulation();
 	void start_echo_emulation();

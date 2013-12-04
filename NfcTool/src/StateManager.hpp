@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2013 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ class StateManager: public QObject {
 	Q_PROPERTY(bool inReadState READ inReadState WRITE setReadState NOTIFY inReadStateChanged)
 	Q_PROPERTY(bool inDetectAndWriteState READ inDetectAndWriteState WRITE setDetectAndWriteState NOTIFY inDetectAndWriteStateChanged)
 	Q_PROPERTY(bool inNdefPushState READ inNdefPushState WRITE setNdefPushState NOTIFY inNdefPushStateChanged)
+	Q_PROPERTY(bool inLlcpState READ inLlcpState WRITE setLlcpState NOTIFY inLlcpStateChanged)
 	Q_PROPERTY(bool inEventLogShowingState READ isEventLogShowing WRITE setEventLogShowing NOTIFY inEventLogShowingStateChanged)
 	Q_PROPERTY(bool inTagEmulationState READ inTagEmulationState WRITE setTagEmulationState NOTIFY inTagEmulationStateChanged)
 	Q_PROPERTY(bool inIso14443_4_EmulationState READ inIso14443_4_EmulationState WRITE setIso14443_4_EmulationState NOTIFY inIso14443_4_EmulationStateChanged)
@@ -40,6 +41,8 @@ public:
 	void setNoNfcState();
 	bool inNdefPushState() const;
 	void setNdefPushState(bool ndef_push_state);
+	bool inLlcpState() const;
+	void setLlcpState(bool ndef_push_state);
 	bool isEventLogShowing() const;
 	void setEventLogShowing(bool event_log_showing);
 	bool inTagEmulationState() const;
@@ -51,6 +54,7 @@ signals:
 	void inReadStateChanged();
 	void inDetectAndWriteStateChanged();
 	void inNdefPushStateChanged();
+	void inLlcpStateChanged();
 	void inTagEmulationStateChanged();
 	void inIso14443_4_EmulationStateChanged();
 	void inEventLogShowingStateChanged();
@@ -61,6 +65,7 @@ private:
 	bool m_inReadState;
 	bool m_inDetectAndWriteState;
 	bool m_inNdefPushState;
+	bool m_inLlcpState;
 	bool m_event_log_is_showing;
 	bool m_inTagEmulationState;
 	bool m_inIso14443_4_EmulationState;
