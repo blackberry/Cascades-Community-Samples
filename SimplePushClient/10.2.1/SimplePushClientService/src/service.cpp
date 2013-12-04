@@ -27,9 +27,8 @@ using namespace bb::network;
 
 // The following strings must be updated to use the values for your Push Services account
 const QString Service::BLACKBERRY_PUSH_APPLICATION_ID =
-		"347-49c51r10y766766fa3980tichh5c0602e711"; //"Application ID";
-const QString Service::BLACKBERRY_PUSH_URL =
-		"http://cp347.pushapi.na.blackberry.com"; //"http://pushapi.eval.blackberry.com";
+		"Application ID";
+const QString Service::BLACKBERRY_PUSH_URL = "http://cpXXXX.pushapi.eval.blackberry.com";
 
 //Update this value as well as the invoke-target id in the bar-descriptor.xml file
 const QString Service::BLACKBERRY_INVOKE_TARGET_ID =
