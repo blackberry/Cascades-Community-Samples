@@ -25,7 +25,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 1. Minimal requirement BlackBerry 10 Device Software **10.2.0**
 1. Minimal requirement BlackBerry 10 Native SDK **10.2.0**
 
-**How to Build HeartMonitor**
+**How to Build BlackBerryBleExplorer**
 
 Simply Import the project into a workspace in your NDK. Of course you should review the project after it's been imported paying particular attention to the settings in the **bar-descriptor.xml** file.
 
@@ -38,7 +38,7 @@ You will need one or more Bluetooth Smart (Low Energy) devices and pair them to 
 If you don't want to build this sample application yourself we've included a pre-build and signed BAR file. You can find it in the 
 folder "installable-bar-files" as follows:
 
-* **BlackBerryBleExplorer-1\_0\_0\_nnnn.bar** -- Signed BAR file for Version 1.0.0 (V1.0.0) of the application ( minimal requirement BlackBerry 10 Software 10.2.0 )
+* **BlackBerryBleExplorer-1\_0\_0\_1.bar** -- Signed BAR file for Version 1.0.0 (V1.0.0) of the application ( minimal requirement BlackBerry 10 Software 10.2.0 )
 
 **To contribute code to this repository you must be [signed up as an official contributor](http://blackberry.github.com/howToContribute.html).**
 
