@@ -104,7 +104,7 @@ Page {
                     checked: _apdu._ppse
                     onCheckedChanged: {
                         if (checked) {
-                            txf_aid.text = "325041592E5359532E444446303100"
+                            txf_aid.text = "325041592E5359532E4444463031"
                         } else {
                             txf_aid.text = ""
                         }
@@ -240,6 +240,15 @@ Page {
                 }
             }
             Label {
+                text: "Note: For a zero length response, some cards require Le=0x00 whilsts others require it to be completely absent from the APDU"
+                multiline: true
+                textStyle {
+                    base: SystemDefaults.TextStyles.SmallText
+                    fontStyle: FontStyle.Italic
+                    color: Color.LightGray
+                }
+            }
+            Label {
                 text: "Command data:"
                 textStyle {
                     base: SystemDefaults.TextStyles.BodyText
@@ -266,7 +275,7 @@ Page {
             ActionBar.placement: ActionBarPlacement.OnBar
             onTriggered: {
                 console.log("Issue APDU Triggered");
-                apdu.apduRequested();
+                apdu_menu.apduRequested();
             }
         }
     ]

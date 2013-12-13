@@ -16,7 +16,7 @@
 
 // General constants
 
-const char* Settings::AppVersion = "5.1.0";
+const char* Settings::AppVersion = "5.1.1";
 const char* Settings::DOMAIN = "my.domain.com";
 const char* Settings::TYPE = "myrecordtype";
 const char* Settings::CONTENT = "content";
