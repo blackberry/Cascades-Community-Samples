@@ -1,0 +1,1 @@
+Static library file libid3.a will be copied here from lib_versions at build time

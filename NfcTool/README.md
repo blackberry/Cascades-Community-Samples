@@ -20,6 +20,10 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 **Release History**
 
+* **V5.1.1** 
+  * Fixed PPSE AID value (removed final 0x00). Added note to apdu.qml pages to indicate that users must decide whether or not to specify Le=0x00 or not as this requirement varies from card to card.
+  * Fixed incorrect QML id reference in qpdu.qml
+
 * **V5.1.0** 
   * Added LLCP function
   * Fixed some memory management issues
