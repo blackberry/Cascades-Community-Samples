@@ -26,15 +26,18 @@ BluetoothManager::~BluetoothManager() {
 }
 
 void BluetoothManager::init() {
-  Serial.begin(baud); //Set BluetoothBee BaudRate to default baud rate 38400
-  Serial.print("\r\n+STWMOD=0\r\n"); //set the bluetooth work in slave mode
-  Serial.print("\r\n+STNA=Railway\r\n"); //set the bluetooth name as "SeeedBTSlave"
-  Serial.print("\r\n+STOAUT=1\r\n"); // Permit Paired device to connect me
-  Serial.print("\r\n+STAUTO=0\r\n"); // Auto-connection should be forbidden here
-  delay(2000); // This delay is required.
-  Serial.print("\r\n+INQ=1\r\n"); //make the slave bluetooth inquirable 
-  //  Serial.println("The slave bluetooth is inquirable!");
-  delay(2000); // This delay is required.
+  // The following configuration is pretty much as recommended in the SeeedStudio sample.
+  // I am using hardware serial on 1+2.
+
+  Serial.begin(baud); 
+  Serial.print("\r\n+STWMOD=0\r\n"); 
+  Serial.print("\r\n+STNA=HolidayTrain\r\n"); 
+  Serial.print("\r\n+STOAUT=1\r\n"); 
+  Serial.print("\r\n+STAUTO=0\r\n"); 
+  delay(2000); 
+  Serial.print("\r\n+INQ=1\r\n"); 
+  
+  delay(2000); 
   Serial.flush();
 }
 
