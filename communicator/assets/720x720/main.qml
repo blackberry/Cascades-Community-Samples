@@ -43,7 +43,7 @@ Page {
             }
         },
         ActionItem {
-            title: "Dailpad"
+            title: "Dial Pad"
             ActionBar.placement: ActionBarPlacement.InOverflow
             imageSource: "asset:///images/icon_127.png"
             onTriggered: {
