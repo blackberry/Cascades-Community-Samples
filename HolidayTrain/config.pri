@@ -4,29 +4,42 @@ BASEDIR =  $$quote($$_PRO_FILE_PWD_)
 device {
     CONFIG(debug, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/applicationui.cpp) \
+                 $$quote($$BASEDIR/src/bluetooth/BluetoothManager.cpp) \
+                 $$quote($$BASEDIR/src/bluetooth/SPPConnection.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp)
+        HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/bluetooth/BluetoothManager.hpp) \
+                 $$quote($$BASEDIR/src/bluetooth/SPPConnection.hpp)
     }
 
     CONFIG(release, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/applicationui.cpp) \
+                 $$quote($$BASEDIR/src/bluetooth/BluetoothManager.cpp) \
+                 $$quote($$BASEDIR/src/bluetooth/SPPConnection.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp)
+        HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/bluetooth/BluetoothManager.hpp) \
+                 $$quote($$BASEDIR/src/bluetooth/SPPConnection.hpp)
     }
 }
 
 simulator {
     CONFIG(debug, debug|release) {
         SOURCES +=  $$quote($$BASEDIR/src/applicationui.cpp) \
+                 $$quote($$BASEDIR/src/bluetooth/BluetoothManager.cpp) \
+                 $$quote($$BASEDIR/src/bluetooth/SPPConnection.cpp) \
                  $$quote($$BASEDIR/src/main.cpp)
 
-        HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp)
+        HEADERS +=  $$quote($$BASEDIR/src/applicationui.hpp) \
+                 $$quote($$BASEDIR/src/bluetooth/BluetoothManager.hpp) \
+                 $$quote($$BASEDIR/src/bluetooth/SPPConnection.hpp)
     }
 }
 
-INCLUDEPATH +=  $$quote($$BASEDIR/src)
+INCLUDEPATH +=  $$quote($$BASEDIR/src/bluetooth) \
+         $$quote($$BASEDIR/src)
 
 CONFIG += precompile_header
 
@@ -38,9 +51,17 @@ lupdate_inclusion {
              $$quote($$BASEDIR/../src/*.cc) \
              $$quote($$BASEDIR/../src/*.cpp) \
              $$quote($$BASEDIR/../src/*.cxx) \
+             $$quote($$BASEDIR/../src/bluetooth/*.c) \
+             $$quote($$BASEDIR/../src/bluetooth/*.c++) \
+             $$quote($$BASEDIR/../src/bluetooth/*.cc) \
+             $$quote($$BASEDIR/../src/bluetooth/*.cpp) \
+             $$quote($$BASEDIR/../src/bluetooth/*.cxx) \
              $$quote($$BASEDIR/../assets/*.qml) \
              $$quote($$BASEDIR/../assets/*.js) \
-             $$quote($$BASEDIR/../assets/*.qs)
+             $$quote($$BASEDIR/../assets/*.qs) \
+             $$quote($$BASEDIR/../assets/images/*.qml) \
+             $$quote($$BASEDIR/../assets/images/*.js) \
+             $$quote($$BASEDIR/../assets/images/*.qs)
 
     HEADERS +=  $$quote($$BASEDIR/../src/*.h) \
              $$quote($$BASEDIR/../src/*.h++) \

@@ -22,11 +22,18 @@
 
 #include <Qt/qdeclarativedebug.h>
 
+#include <bb/cascades/QmlDocument>
+
 using namespace bb::cascades;
+
+#include "BluetoothManager.hpp"
 
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
-    Application app(argc, argv);
+	qmlRegisterType<BluetoothManager>("com.robwilliamsjnr.holidaytrain",1,0,"BluetoothManager");
+	qmlRegisterType<SPPConnection>("com.robwilliamsjnr.holidaytrain",1,0,"SPPConnection");
+
+	Application app(argc, argv);
 
     // Create the Application UI object, this is where the main.qml file
     // is loaded and the application scene is set.
