@@ -42,7 +42,7 @@ The blinking is currently ugly. Going to change to an algorithm I'd used in an e
 
 With minimal massaging it will compile on 10.0.
 
-**How to Build AES Crypto Demo**
+**How to Build Holiday Train**
 
 Import the project into a workspace inside Momentics.
  
