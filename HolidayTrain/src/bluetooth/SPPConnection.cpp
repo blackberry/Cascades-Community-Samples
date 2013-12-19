@@ -18,15 +18,14 @@
 #include <fcntl.h>
 #include <termios.h>
 
-
 int SPPConnection::_sppInitCount(0);
 
 SPPConnection::SPPConnection(QObject * owner) :
-		QObject(owner), _readWorker(new QThread(this)), _fd(-1) {
+		QObject(owner), _fd(-1), _readWorker(new QThread(this)) {
 	++_sppInitCount;
 	_readWorker->start();
 	if (_sppInitCount == 1) {
-		int rc = bt_spp_init();
+		bt_spp_init();
 	}
 }
 
@@ -55,34 +54,20 @@ void SPPConnection::open() {
 		return;
 	}
 	QByteArray addr(_address.toAscii());
-	_fd = bt_spp_open(addr.data(),"0x1101",false);
-	if (_fd==-1) {
+	QByteArray service("0x1101");
+	_fd = bt_spp_open(addr.data(), service.data(), false);
+	if (_fd == -1) {
 		qDebug() << "Open failed";
 		emit closed();
 	} else {
 		qDebug() << "Open success" << _fd;
 
-//		struct termios attributes;
-//		QString error;
-//
-//		tcgetattr(_fd, &attributes);
-//		if (cfsetispeed(&attributes, B38400) < 0) {
-//			error += "Could not set input speed. ";
-//		}
-//		if (cfsetospeed(&attributes, B38400) < 0) {
-//			error += "Could not set output speed. ";
-//		}
-//		if (tcsetattr(_fd, TCSANOW, &attributes) < 0) {
-//			error += "Could not apply speeds settings. ";
-//		}
-//
-//		if (error.size()!=0) {
-//			qDebug() << "ERROR:" << error;
-//		}
-
 		SPPReadWorker * readWorker = new SPPReadWorker(_fd);
 		readWorker->moveToThread(_readWorker);
-		QMetaObject::invokeMethod(readWorker,"read",Qt::QueuedConnection);
+
+		connect(readWorker,SIGNAL(closed()),this,SIGNAL(closed()));
+		connect(readWorker,SIGNAL(messageReceived(QString)),this,SIGNAL(message(QString)));
+		QMetaObject::invokeMethod(readWorker, "read", Qt::QueuedConnection);
 		emit opened();
 	}
 }
@@ -101,7 +86,7 @@ void SPPConnection::sendMessage(QString message) {
 }
 
 void SPPConnection::close() {
-	if (_fd!=-1) {
+	if (_fd != -1) {
 		bt_spp_close(_fd);
 		_fd = -1;
 		emit closed();
@@ -113,17 +98,15 @@ void SPPReadWorker::read() {
 	char buffer[20000];
 	int readLength = -1;
 	do {
-		readLength = ::read(_fd,buffer,20000);
-		if (readLength==-1) {
+		readLength = ::read(_fd, buffer, 20000);
+		if (readLength == -1) {
+			qDebug() << "Closed";
 			emit closed();
 		} else {
-			qDebug() << "Just read" << readLength << "bytes from the SPP connection.";
-			QByteArray temp(buffer,readLength);
+			QByteArray temp(buffer, readLength);
 			QString justIn(temp);
-			qDebug() << justIn;
-
-			write(_fd,buffer,readLength);
+			emit messageReceived(justIn);
 		}
-	} while(readLength>=0);
+	} while (readLength >= 0);
 	qDebug() << "Left READ";
 }
