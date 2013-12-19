@@ -1,10 +1,18 @@
 /*
- * SPPConnection.hpp
+ * Copyright (c) 2011-2013 BlackBerry Limited.
  *
- *  Created on: 2013-12-06
- *      Author: robwilliams
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 #ifndef SPPCONNECTION_HPP_
 #define SPPCONNECTION_HPP_
 
@@ -104,22 +112,41 @@ private:
 class SPPReadWorker: public QObject {
 Q_OBJECT
 public:
+	/**
+	 * Constructor requires open file handle.
+	 */
 	SPPReadWorker(int fd) {
 		_fd = fd;
 	}
 
+	/**
+	 * Destructor is very simple.
+	 */
 	virtual ~SPPReadWorker() {
-
 	}
 
+	/**
+	 * read is the loop that will get data from the file.
+	 */
 	Q_SLOT
 	void read();
 
 signals:
+	/**
+	 * Emitted when a message is received. Keep in mind that this could easilly be
+	 * a partial line.
+	 */
 	void messageReceived(QString);
+
+	/**
+	 * Emitted when the connection is closed.
+	 */
 	void closed();
 
 private:
+	/**
+	 * The file descriptor which will be read from.
+	 */
 	int _fd;
 
 };

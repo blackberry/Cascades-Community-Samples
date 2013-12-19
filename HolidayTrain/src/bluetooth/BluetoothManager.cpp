@@ -1,23 +1,45 @@
 /*
- * BluetoothManager.cpp
+ * Copyright (c) 2011-2013 BlackBerry Limited.
  *
- *  Created on: 2013-12-05
- *      Author: robwilliams
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 #include "BluetoothManager.hpp"
 #include <QDebug>
 #include <QList>
 #include <QMutex>
 #include <QMutexLocker>
 
+/**
+ * This mutex protects the list of managers.
+ */
 static QMutex managersMutex;
+
+/**
+ * This list of managers tracks all instantiated BluetoothManager instances.
+ */
 static QList<BluetoothManager*> managers;
 
 using namespace bb::cascades;
 
+/**
+ * Track how many times we've called init so we can tidy up nicely.
+ */
 int BluetoothManager::bluetoothInitCount = 0;
 
+/**
+ * This static method is called directly from C. It then iterates all instantiated
+ * BluetoothManagers and sends them the events.
+ */
 void BluetoothManager::bluetoothCallback(const int a, const char * b,
 		const char * c) {
 	QMutexLocker locker(&managersMutex);
@@ -33,6 +55,9 @@ void BluetoothManager::bluetoothCallback(const int a, const char * b,
 	}
 }
 
+/**
+ * Construct a BluetoothManager.
+ */
 BluetoothManager::BluetoothManager(QObject * owner) :
 		QObject(owner), _inquiryInProgress(false), _devices(
 				new ArrayDataModel(this)), _workerThread(new QThread(this)), _connection(
@@ -52,6 +77,9 @@ BluetoothManager::BluetoothManager(QObject * owner) :
 	refreshDevices();
 }
 
+/**
+ * Delete a BluetoothManager.
+ */
 BluetoothManager::~BluetoothManager() {
 	QMutexLocker locker(&managersMutex);
 	--bluetoothInitCount;
@@ -61,6 +89,12 @@ BluetoothManager::~BluetoothManager() {
 	managers.removeAll(this);
 }
 
+/**
+ * Refresh the list of devices.
+ *
+ * Why's this so long??? Code in here (should) prevent the screen from flickering by
+ * making sure that objects are replaced in the list - not appended / removed.
+ */
 void BluetoothManager::refreshDevices() {
 	int count(0);
 	++_iterationNumber;
@@ -136,10 +170,16 @@ void BluetoothManager::refreshDevices() {
 	qDebug() << "End retrieve";
 }
 
+/**
+ * Check to see if an inquiry is already in progress.
+ */
 bool BluetoothManager::inquiryInProgress() {
 	return _inquiryInProgress;
 }
 
+/**
+ * Connect to the given device.
+ */
 void BluetoothManager::connectDevice(QString address) {
 	qDebug() << "ConnectDevice" << address;
 	if (_connection == NULL) {
@@ -159,11 +199,16 @@ void BluetoothManager::connectDevice(QString address) {
 	}
 }
 
+/**
+ * Track that a connection was opened.
+ */
 void BluetoothManager::connectionOpened() {
-
 	qDebug() << "Connection opened";
 }
 
+/**
+ * Track that a connection was closed.
+ */
 void BluetoothManager::connectionClosed() {
 	qDebug() << "Connection closed";
 	if (_connection != NULL) {
@@ -173,10 +218,16 @@ void BluetoothManager::connectionClosed() {
 	}
 }
 
+/**
+ * Receive a message from the connection.
+ */
 void BluetoothManager::connectionMessage(QString message) {
 	qDebug() << "Message" << message;
 }
 
+/**
+ * Start an inquery - using a worker in a different thread.
+ */
 void BluetoothManager::startInquiry() {
 	if (_inquiryInProgress) {
 		return;
@@ -194,16 +245,26 @@ void BluetoothManager::startInquiry() {
 	emit inquiryInProgressChanged(true);
 }
 
+/**
+ * Record that an inquiry has finished.
+ */
 void BluetoothManager::inquiryFinished() {
 	_inquiryInProgress = false;
 	emit inquiryInProgressChanged(false);
 	refreshDevices();
 }
 
+/**
+ * Hear about the callback that happened in the library. Lazily ignoring
+ * the parameters and just updated the device list.
+ */
 void BluetoothManager::callback(QVariantList) {
 	refreshDevices();
 }
 
+/**
+ * Start a pairing in another thread with a worker.
+ */
 void BluetoothManager::pair(QString address) {
 	BluetoothPairWorker * bpw = new BluetoothPairWorker();
 	bpw->moveToThread(_workerThread);
@@ -215,6 +276,9 @@ void BluetoothManager::pair(QString address) {
 			Q_ARG(QString,address));
 }
 
+/**
+ * Pair from the worker. bt_rdev_get_device() can take a while.
+ */
 void BluetoothPairWorker::pair(QString address) {
 	QByteArray addr(address.toAscii());
 	qDebug() << "Get device";
@@ -226,6 +290,9 @@ void BluetoothPairWorker::pair(QString address) {
 	emit finished();
 }
 
+/**
+ * Inquire from the worker. bt_disc_start_inqury() can take a while.
+ */
 void BluetoothInquiryWorker::inquire() {
 	qDebug() << "Inquiry start";
 	bt_disc_start_inquiry(BT_INQUIRY_GIAC);
