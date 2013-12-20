@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.3.1 r9886"
-   sodipodi:docname="New document 1">
+   sodipodi:docname="allIcons.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -108,23 +108,35 @@
      inkscape:groupmode="layer"
      id="layer1">
     <path
-       style="fill:#009100;fill-opacity:1;stroke:none"
+       style="fill:#cccccc;fill-opacity:1;stroke:none"
        d="m -193.66071,-644.62054 -21.21875,33.53125 c -32.43476,-14.31671 -68.33065,-22.25 -106.0625,-22.25 -145.17199,0 -262.875,117.67176 -262.875,262.84375 0,60.21924 20.24683,115.71209 54.3125,160.03125 l 13.65625,-13.625 33.96875,64.78125 34.4375,65.656254 22.4375,-35.437504 c 31.91481,13.78516 67.0864,21.4375 104.0625,21.4375 145.17199,0 262.843746,-117.67176 262.843746,-262.84375 0,-60.21924 -20.25313,-115.71209 -54.312496,-160.03125 l -14.0625,14.0625 -32.75,-62.46875 -34.4375,-65.6875 z m -127.28125,76.96875 c 24.7927,0 48.52104,4.57799 70.375,12.9375 l -22.40625,35.40625 74.09375,3.03125 69.40625,2.8125 -29.9375,29.9375 c 22.43054,32.0059 35.59375,70.98082 35.59375,113.03125 0,108.87899 -88.24601,197.15625 -197.125,197.15625 -24.02932,0 -47.04963,-4.31572 -68.34375,-12.1875 l 21.125,-33.40625 -74.0625,-3.03125 -72.8125,-2.9375 32.5625,-32.5625 c -22.44075,-32.00787 -35.625,-70.97623 -35.625,-113.03125 0,-108.87899 88.27726,-197.15625 197.15625,-197.15625 z"
        id="path2991"
-       inkscape:connector-curvature="0" />
-    <path
-       style="fill:url(#radialGradient3840);fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -286.25,586.8125 c -67.94879,0.87335 -51.01038,114.38092 -90.90625,154.27679 -40,40 -88.5625,105.70536 -88.5625,162.84821 0,57.14286 45.73214,148.5625 102.875,148.5625 7.4556,0 15.68333,0.1939 24.3125,0.4688 15.52459,1.7428 33.81195,2.0139 52.53125,1.6874 18.73021,0.3273 37.02926,0.056 52.5625,-1.6874 8.62917,-0.2749 16.85689,-0.4688 24.3125,-0.4688 57.1428,0 102.875,-91.41963 102.875,-148.5625 0,-57.14284 -57.16518,-117.13393 -97.16518,-157.13393 -39.89587,-39.89587 -14.3548,-159.11772 -82.30357,-159.99107 -0.17734,-0.002 -0.35275,0 -0.53125,0 z"
-       id="path3045"
        inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cssscccssssc" />
-    <path
-       style="fill:#b88100;stroke:#000000;stroke-width:0.61916464999999998px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -300.19043,612.5526 c 0,-19.75322 22.81397,-82.3051 28.51746,-92.18171 5.70349,-9.87661 20.9128,0 20.9128,0 0,0 3.80232,-3.29221 -3.80233,9.87661 -7.60465,13.16882 -22.81396,62.55188 -26.61629,72.42848 -3.80232,9.87662 -19.01164,9.87662 -19.01164,9.87662 z"
-       id="path3842"
-       inkscape:connector-curvature="0" />
+       inkscape:export-filename="C:\Users\robwilliams\Documents\git\Cascades-Community-Samples\HolidayTrain\icons\refresh.png"
+       inkscape:export-xdpi="12.251148"
+       inkscape:export-ydpi="12.251148" />
     <g
-       id="g4036">
+       id="g4066"
+       inkscape:export-filename="C:\Users\robwilliams\Documents\git\Cascades-Community-Samples\HolidayTrain\icons\pair.png"
+       inkscape:export-xdpi="12.509124"
+       inkscape:export-ydpi="12.509124">
+      <path
+         sodipodi:nodetypes="cssscccssssc"
+         inkscape:connector-curvature="0"
+         id="path3045"
+         d="m -286.25,586.8125 c -67.94879,0.87335 -51.01038,114.38092 -90.90625,154.27679 -40,40 -88.5625,105.70536 -88.5625,162.84821 0,57.14286 45.73214,148.5625 102.875,148.5625 7.4556,0 15.68333,0.1939 24.3125,0.4688 15.52459,1.7428 33.81195,2.0139 52.53125,1.6874 18.73021,0.3273 37.02926,0.056 52.5625,-1.6874 8.62917,-0.2749 16.85689,-0.4688 24.3125,-0.4688 57.1428,0 102.875,-91.41963 102.875,-148.5625 0,-57.14284 -57.16518,-117.13393 -97.16518,-157.13393 -39.89587,-39.89587 -14.3548,-159.11772 -82.30357,-159.99107 -0.17734,-0.002 -0.35275,0 -0.53125,0 z"
+         style="fill:url(#radialGradient3840);fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3842"
+         d="m -300.19043,612.5526 c 0,-19.75322 22.81397,-82.3051 28.51746,-92.18171 5.70349,-9.87661 20.9128,0 20.9128,0 0,0 3.80232,-3.29221 -3.80233,9.87661 -7.60465,13.16882 -22.81396,62.55188 -26.61629,72.42848 -3.80232,9.87662 -19.01164,9.87662 -19.01164,9.87662 z"
+         style="fill:#b88100;stroke:#000000;stroke-width:0.61916464999999998px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <g
+       id="g4036"
+       inkscape:export-filename="C:\Users\robwilliams\Documents\git\Cascades-Community-Samples\HolidayTrain\icons\connect.png"
+       inkscape:export-xdpi="7.7690463"
+       inkscape:export-ydpi="7.7690463">
       <path
          id="rect3844-4"
          d="M -1121.1562 969.34375 L -1173.6875 1021.875 L -872.5 1323.0625 L -1447.5625 1323.0625 L -1447.5625 1391.6562 L -876.78125 1391.6562 L -1173.6875 1688.5625 L -1121.1562 1741.0938 L -787.8125 1407.75 L -735.28125 1355.2188 L -787.8125 1302.6875 L -1121.1562 969.34375 z "
@@ -135,7 +147,11 @@
          style="fill:#19aeff;fill-opacity:1;stroke:none" />
     </g>
     <g
-       id="g4030">
+       id="g4030"
+       transform="translate(48.571429,42.857143)"
+       inkscape:export-filename="C:\Users\robwilliams\Documents\git\Cascades-Community-Samples\HolidayTrain\icons\disconnect.png"
+       inkscape:export-xdpi="10.478469"
+       inkscape:export-ydpi="10.478469">
       <path
          inkscape:connector-curvature="0"
          id="rect3844-8-5"
@@ -241,7 +257,10 @@ jlOaszDPYrMp8UQPCZY4hdKUYXaXnuT/6V/oNSRYokFK05cTIRtBHh/DJViiIErTAbMZ3SRgLPUc
 +C7BEkVTmirM9k6TML8uO9b8OwmWCIT/Ufw8/CHz/wEU4OvThNz55AAAAABJRU5ErkJggg==
 "
        height="300"
-       width="150" />
+       width="150"
+       inkscape:export-filename="C:\Users\robwilliams\Documents\git\Cascades-Community-Samples\HolidayTrain\icons\appIcon.png"
+       inkscape:export-xdpi="32.209999"
+       inkscape:export-ydpi="32.209999" />
     <image
        y="36.647907"
        x="-272.14285"
@@ -332,6 +351,9 @@ wDPABK1YEcLxhANaGqxPMffspgGLtaI2vJKEC/INVg2wiLowacXK6EoSLmgqWHuA1zBhmuH6IzpE
 uOoHazPm29w0YK5W7I2/JOGC1sBnHLpeekdu+oow/B9uQQLkC83msAAAAABJRU5ErkJggg==
 "
        height="300"
-       width="150" />
+       width="150"
+       inkscape:export-filename="C:\Users\robwilliams\Documents\git\Cascades-Community-Samples\HolidayTrain\icons\appIcon.png"
+       inkscape:export-xdpi="32.209999"
+       inkscape:export-ydpi="32.209999" />
   </g>
 </svg>
