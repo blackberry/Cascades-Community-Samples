@@ -18,7 +18,7 @@ import com.robwilliamsjnr.holidaytrain 1.0
 
 Page {
     titleBar: TitleBar {
-        title: "Holiday Railway"
+        title: "Holiday Train"
     }
 
     property BluetoothManager bluetoothManager
