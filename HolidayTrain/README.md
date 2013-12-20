@@ -1,6 +1,6 @@
 # Holiday Train
 
-The purpos of this code is to share the Bluetooth remote control as used in the BatBerry and for my holiday train. 
+The purpose of this code is to share the Bluetooth remote control as used in the BatBerry and for my holiday train. 
 It could be the basis for controlling... anything...
 
 ## Hardware
