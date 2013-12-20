@@ -30,6 +30,7 @@ using namespace bb::cascades;
 
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
+	// Register the connection and manager types.
 	qmlRegisterType<BluetoothManager>("com.robwilliamsjnr.holidaytrain",1,0,"BluetoothManager");
 	qmlRegisterType<SPPConnection>("com.robwilliamsjnr.holidaytrain",1,0,"SPPConnection");
 
