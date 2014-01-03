@@ -39,11 +39,13 @@ public:
     Q_INVOKABLE
     void monitorProximity(QString device_addr, QString device_name);Q_INVOKABLE
     Q_INVOKABLE
-    void saveSettings(QString rssiNear,QString rssiMedium);
+    void saveSettings(QString rssiNear,QString rssiMedium,QString rssiFluctuationSensitivity);
     Q_INVOKABLE
     int getRssiNear();
     Q_INVOKABLE
     int getRssiMedium();
+    Q_INVOKABLE
+    int getRssiFluctuationSensitivity();
 
 public slots:
     void onLinkEstablished();
