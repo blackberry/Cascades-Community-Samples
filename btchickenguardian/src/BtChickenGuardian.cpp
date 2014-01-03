@@ -107,11 +107,12 @@ void BtChickenGuardian::cleanUpOnExit() {
     _handler->quit();
 }
 
-void BtChickenGuardian::saveSettings(QString rssiNear,QString rssiMedium) {
+void BtChickenGuardian::saveSettings(QString rssiNear,QString rssiMedium, QString rssiFluctuationSensitivity) {
     qDebug() << "XXXX saveSettings:" << rssiNear << "," << rssiMedium;
     DataContainer* dc = DataContainer::getInstance();
     dc->setMinRssiNear(rssiNear.toInt());
     dc->setMinRssiMedium(rssiMedium.toInt());
+    dc->setRssiFluctuationSensitivity(rssiFluctuationSensitivity.toInt());
 }
 
 int BtChickenGuardian::getRssiNear() {
@@ -124,4 +125,10 @@ int BtChickenGuardian::getRssiMedium() {
     qDebug() << "XXXX getRssiMedium";
     DataContainer* dc = DataContainer::getInstance();
     return dc->getMinRssiMedium();
+}
+
+int BtChickenGuardian::getRssiFluctuationSensitivity() {
+    qDebug() << "XXXX getRssiFluctuationSensitivity";
+    DataContainer* dc = DataContainer::getInstance();
+    return dc->getRssiFluctuationSensitivity();
 }
