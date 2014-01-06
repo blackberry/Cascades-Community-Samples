@@ -1,7 +1,6 @@
 1
 29
 720x720/Chicken.qml
-720x720/images/040. Settings.png
 720x720/images/about.png
 720x720/images/emergency.png
 720x720/images/far.png
@@ -12,10 +11,10 @@
 720x720/images/near.png
 720x720/images/panic_chicken.png
 720x720/images/scan.png
+720x720/images/settings.png
 720x720/images/unknown.png
 720x720/main.qml
 Chicken.qml
-images/040. Settings.png
 images/about.png
 images/emergency.png
 images/far.png
@@ -26,6 +25,7 @@ images/monitor.png
 images/near.png
 images/panic_chicken.png
 images/scan.png
+images/settings.png
 images/unknown.png
 main.qml
 sounds/chicken.wav
