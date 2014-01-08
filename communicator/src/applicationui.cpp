@@ -96,7 +96,9 @@ void ApplicationUI::onSystemLanguageChanged() {
 
 void ApplicationUI::InvokeSmsComposer(QString PhoneNumber) {
 	InvokeRequest cardrequest;
-	cardrequest.setTarget("sys.pim.text_messaging.composer");
+	//cardrequest.setTarget("sys.pim.text_messaging.composer"); - not working on WorkSpace perimeter
+	//cross-perimeter invoke
+	cardrequest.setTarget("sys.pim.text_messaging.smsuri");
 	cardrequest.setAction("bb.action.SENDTEXT");
 	cardrequest.setUri("tel:" + PhoneNumber);
 	InvokeManager invokemanager;
