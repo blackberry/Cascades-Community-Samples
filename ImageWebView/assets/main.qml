@@ -21,7 +21,8 @@ Page {
     Container {
         
         ImageWebView {
-            imageURL: "http://www.w3.org/html/logo/downloads/HTML5_Logo_256.png"
+            //imageURL: "http://www.w3.org/html/logo/downloads/HTML5_Logo_256.png"
+            imageURL: "file:///accounts/1000/shared/camera/IMG_20140103_205333.png"
         }
     }
 }
