@@ -102,6 +102,16 @@ TabbedPane {
         setMessage("No longer connected");
     }
 
+    function sensitivity_text(sensitivity_value) {
+        if (sensitivity_value < 4) {
+            return "LOW";
+        }
+        if (sensitivity_value < 7) {
+            return "MEDIUM";
+        }
+        return "HIGH";                
+    }
+
     Tab {
         id: chicken_tab
         imageSource: "asset:///images/monitor.png"
@@ -399,7 +409,7 @@ TabbedPane {
     Tab {
         id: settings_tab
         title: "Settings"
-        imageSource: "asset:///images/040.%20Settings.png"
+        imageSource: "asset:///images/settings.png"
         onTriggered: {
         }
         Page {
@@ -410,7 +420,7 @@ TabbedPane {
                 verticalAlignment: VerticalAlignment.Fill
                 Label {
                     id: lblSettingsHeading
-                    text: qsTr("Signal Strength Thresholds")
+                    text: qsTr("Settings")
                     textStyle.base: SystemDefaults.TextStyles.TitleText
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
@@ -443,11 +453,29 @@ TabbedPane {
                         flags: TextInputFlag.AutoCapitalizationOff
                     }
                 }
+                Divider {
+                    
+                }
+                Label {
+                    id: lblSensitivity
+                    text: qsTr("RSSI Fluctuation Sensitivity: "+Math.round(slider_sensitivity.immediateValue)+" ("+sensitivity_text(slider_sensitivity.immediateValue)+")")
+                    verticalAlignment: VerticalAlignment.Center
+                    horizontalAlignment: HorizontalAlignment.Center
+                }
+                Slider {
+                    id: slider_sensitivity
+                    fromValue: 1
+                    toValue: 10
+                    value: _bcg.getRssiFluctuationSensitivity()
+                }
+                Divider {
+                
+                }
                 Button {
                     text: "Save"
                     horizontalAlignment: HorizontalAlignment.Fill
                     onClicked: {
-                        _bcg.saveSettings(tfRssiNear.text, tfRssiMedium.text);
+                        _bcg.saveSettings(tfRssiNear.text, tfRssiMedium.text,Math.round(slider_sensitivity.immediateValue));
                         lblSettingsMessage.text = "Settings have been saved";
                         settings_timer.start();
                     }
@@ -499,7 +527,7 @@ TabbedPane {
                     }
                     Label {
                         id: lblHeading_version
-                        text: qsTr("V1.0.0")
+                        text: qsTr("V1.1.1")
                         horizontalAlignment: HorizontalAlignment.Center
                     }
                     Label {

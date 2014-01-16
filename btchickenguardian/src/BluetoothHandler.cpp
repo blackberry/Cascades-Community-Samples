@@ -58,6 +58,11 @@ static const int PROXIMITY_NEAR = 0;
 static const int PROXIMITY_MEDIUM = 1;
 static const int PROXIMITY_FAR = 2;
 
+// proximity band tracking and change notification - used to smooth the data in the face of RSSI fluctuations either side of a proximity threshold
+static int last_proximity_band_notified = -1;         // the proximity band value we last notified to the UI
+static int tracking_proximity_band = -1;              // the proximity band we changed to and are now tracking for fluctuations / significance
+static int this_proximity_band_count = 0;             // measures how many successive RSSI reads have placed us in "this" proximity band
+static int proximity_band_change_notified = 0;        // indicates that we have emitted a signal denoting a change in proximity band
 
 typedef struct
 {
@@ -153,6 +158,8 @@ QString btEventName(int event)
             return QString("BT_EVT_LE_DEVICE_CONNECTED");
         case BT_EVT_LE_DEVICE_DISCONNECTED:
             return QString("BT_EVT_LE_DEVICE_DISCONNECTED");
+        case BT_EVT_LE_NAME_UPDATED:
+            return QString("BT_EVT_LE_NAME_UPDATED");
         case BT_EVT_FAULT:
             return QString("BT_EVT_FAULT");
         case BT_EVT_UNDEFINED_EVENT:
@@ -743,9 +750,25 @@ void BluetoothHandler::pollRssi()
 
         emit signalRssi(QVariant(proximity_indicator), QVariant(*rssi));
 
-        if (proximity_indicator != dc->getProximityIndicator()) {
+        qDebug() << "XXXX checking: proximity_indicator=" << proximity_indicator << " tracking_proximity_band=" << tracking_proximity_band << " last_proximity_band_notified=" << last_proximity_band_notified;
+
+        if (proximity_indicator == tracking_proximity_band) {
+            qDebug() << "XXXX tracked proximity band not changed, count=" << this_proximity_band_count;
+            this_proximity_band_count++;
+        } else {
+            this_proximity_band_count = 1;
+            proximity_band_change_notified = 0;
+            tracking_proximity_band = proximity_indicator;
+            qDebug() << "XXXX tracking proximity band " << proximity_indicator;
+        }
+
+        qDebug() << "XXXX checking: proximity_band_change_notified=" << proximity_band_change_notified << " this_proximity_band_count=" << this_proximity_band_count << " last_proximity_band_notified=" << last_proximity_band_notified;
+        if ((proximity_band_change_notified == 0 && this_proximity_band_count > (10 - dc->getRssiFluctuationSensitivity())) || (last_proximity_band_notified == -1)) {
+            qDebug() << "XXXX signalling proximity band change: proximity_band_change_notified=" << proximity_band_change_notified << " this_proximity_band_count=" << this_proximity_band_count << " last_proximity_band_notified=" << last_proximity_band_notified;
             dc->setProximityIndicator(proximity_indicator);
             emit signalProximityChange(proximity_indicator);
+            last_proximity_band_notified = proximity_indicator;
+            proximity_band_change_notified = 1;
         }
     }
 

@@ -17,7 +17,8 @@ import bb.cascades 1.0
 WebView {
     id: imageWebView
     property variant imageURL: ""
-    url: "local:///assets/web/index.html"
+    //url: "local:///assets/web/index.html"
+    url: "file:///" + homeDir + "/assets/web/index.html"   
     onMessageReceived: {
         if(message.data === "ready"){
             postMessage(imageURL);

@@ -24,6 +24,7 @@ QString DataContainer::KEY_DEVICE_NAME = "device_name";
 QString DataContainer::KEY_DEVICE_ADDR = "device_addr";
 QString DataContainer::KEY_MIN_RSSI_NEAR = "min_rssi_near";
 QString DataContainer::KEY_MIN_RSSI_MEDIUM = "min_rssi_medium";
+QString DataContainer::KEY_RSSI_FLUCTUATION_SENSITIVITY = "rssi_fluctuation_sensitivity";
 
 // FLAGS field bit mask values
 
@@ -35,6 +36,7 @@ DataContainer::DataContainer()
     bool ok;
     _min_rssi_near = settings.value(KEY_MIN_RSSI_NEAR, "-70").toInt(&ok);
     _min_rssi_medium = settings.value(KEY_MIN_RSSI_MEDIUM, "-85").toInt(&ok);
+    _rssi_fluctuation_sensitivity = settings.value(KEY_RSSI_FLUCTUATION_SENSITIVITY, "5").toInt(&ok);
     _immediate_alert_level_handle = 0;
     _immediate_alert_level_value_handle = 0;
     _alert_service_instance = 0;
@@ -295,4 +297,14 @@ void DataContainer::setMinRssiMedium(int rssi_threshold) {
 
 int DataContainer::getMinRssiMedium() {
     return _min_rssi_medium;
+}
+
+void DataContainer::setRssiFluctuationSensitivity(int sensitivity) {
+    _rssi_fluctuation_sensitivity = sensitivity;
+    QSettings settings;
+    settings.setValue(KEY_RSSI_FLUCTUATION_SENSITIVITY, sensitivity);
+}
+
+int DataContainer::getRssiFluctuationSensitivity() {
+    return _rssi_fluctuation_sensitivity;
 }
