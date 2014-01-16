@@ -35,7 +35,6 @@ NavigationPane {
                     camera.open(CameraUnit.Rear);
                 }
             }
-            
             Camera {
                 id: camera
                 objectName: "camera"
@@ -109,10 +108,30 @@ NavigationPane {
                     photoBeingTaken = false;
                     photoSavedLabel.text = "Saved: " + fileName;
                 }
+                onFocusStateChanged: {
+                    if(state == CameraFocusState.Locked) {
+                        focusRectangle
+                    }
+                }
 
             }
             Container {
+                horizontalAlignment: HorizontalAlignment.Fill
+                verticalAlignment: VerticalAlignment.Fill
+                layout: AbsoluteLayout {
+                    
+                }
+                ImageView {
+                    id: focusRectangle
+                    scalingMethod: ScalingMethod.Fill
+                    imageSource: "asset:///rectangle.png"
+                    layoutProperties: AbsoluteLayoutProperties {
+                        positionX: 500.0
+                        positionY: 500.0
 
+                    }
+
+                }
             }
             Label {
                 id: photoSavedLabel
