@@ -77,7 +77,10 @@ NavigationPane {
                     }
 
                     console.debug("+++++++ Camera roll path: " + cameraSettings.cameraRollPath);
+                    console.debug("+++++++ Camera preview frame direction: " + camera.devicePreviewFrameDirection);
 
+                    var captureSize = cameraSettings.captureResolution;
+                    console.debug("+++++++ Camera size: " + captureSize.height + "h x " + captureSize.width + "w");
                     //Prepare a Camera Roll Dialog
                     cameraRollManager.createCameraRollDialog(cameraSettings.cameraRollPath);
 
@@ -122,10 +125,44 @@ NavigationPane {
                 property int width
                 property int height
 
+                property int leftBound: 0
+                property int rightBound: width
+                property int topBound: 0
+                property int bottomBound: height
+
                 horizontalAlignment: HorizontalAlignment.Fill
                 verticalAlignment: VerticalAlignment.Fill
 
                 overlapTouchPolicy: OverlapTouchPolicy.Allow
+
+                function updateFocusBoundingBox() {
+                    var captureSize = cameraSettings.captureResolution;
+                    var captureRatio = captureSize.height / captureSize.width;
+                    var screenRatio = height / width;
+                    console.log("+++++++ Calculating bounding box...");
+                    if (captureRatio < screenRatio) {
+
+                        console.log("+++++++ Height is greater than width");
+                        var cameraHeight = width * captureRatio;
+
+                        topBound = (height - cameraHeight) / 2;
+                        bottomBound = height - (height - cameraHeight) / 2;
+
+                        leftBound = 0;
+                        rightBound = width;
+
+                    } else { // Not tested as app doesn't support landscape mode yet
+                        var cameraWidth = height * captureRatio;
+                        
+                        leftBound = (width - cameraWidth) / 2;
+                        rightBound = width - (width - cameraWidth) / 2
+                        
+                        topBound = 0;
+                        bottomBound = height;
+                    }
+
+                    console.log("+++++++ Bounding box: (" + topBound + ", " + bottomBound + ", " + rightBound + ", " + leftBound + ")");
+                }
 
                 layout: AbsoluteLayout {
                 }
@@ -151,26 +188,49 @@ NavigationPane {
 
                     property bool cameraFocused: false
 
+					opacity: .1
+					
                     overlapTouchPolicy: OverlapTouchPolicy.Allow
 
                     function move(x, y) {
-                        var newX = Math.max(0, x - absoluteLayout.touchDeltaX);
-                        var newY = Math.max(0, y - absoluteLayout.touchDeltaY);
+                        var newX = Math.max(focusRectangleContainer.leftBound, x - absoluteLayout.touchDeltaX);
+                        var newY = Math.max(focusRectangleContainer.topBound, y - absoluteLayout.touchDeltaY);
 
-                        newX = Math.min(newX, focusRectangleContainer.width - width);
-                        newY = Math.min(newY, focusRectangleContainer.height - height);
+                        newX = Math.min(newX, focusRectangleContainer.rightBound - width);
+                        newY = Math.min(newY, focusRectangleContainer.bottomBound - height);
+
+                        console.log("+++++++ New position: (" + newX + ", " + newY + ")");
 
                         absoluteLayout.positionX = newX;
                         absoluteLayout.positionY = newY;
+
                     }
 
+                    onMovingChanged: {
+                    	if (!moving) {
+                            console.log("+++++++ Setting focus region");
+                            
+                            var captureSize = cameraSettings.captureResolution;
+                            var focusRegion = cameraSettings.focusRegion;
+                            
+                            //We can actually set these
+                            focusRegion.x = (absoluteLayout.positionX - focusRectangleContainer.leftBound) * (captureSize.width / focusRectangleContainer.width);
+                            focusRegion.y = (absoluteLayout.positionY - focusRectangleContainer.topBound) * (captureSize.height / focusRectangleContainer.height);
+                            
+                            focusRegion.width = width * captureSize.width / focusRectangleContainer.width;
+                            focusRegion.height = height * captureSize.height / focusRectangleContainer.height;
+                            
+                            console.log("++++++ Focus region: " + focusRegion.x + ", " + focusRegion.y);
+                            
+                            cameraSettings.focusRegion = focusRegion;
+                            camera.applySettings(cameraSettings);
+                            
+                    	}
+                    }
                     layout: DockLayout {
                     }
                     layoutProperties: AbsoluteLayoutProperties {
                         id: absoluteLayout
-
-                        property int touchOriginX
-                        property int touchOriginY
 
                         property int touchDeltaX
                         property int touchDeltaY
@@ -186,8 +246,8 @@ NavigationPane {
                         imageSource: "asset:///rectangle.amd"
                         horizontalAlignment: HorizontalAlignment.Center
                         verticalAlignment: VerticalAlignment.Center
-                        preferredHeight: 200
-                        preferredWidth: 200
+                        preferredHeight: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
+                        preferredWidth: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
                     }
                     ImageView {
                         overlapTouchPolicy: OverlapTouchPolicy.Allow
@@ -195,8 +255,8 @@ NavigationPane {
                         verticalAlignment: VerticalAlignment.Center
                         visible: focusRectangle.cameraFocused
                         imageSource: "asset:///rectangle-focused.amd"
-                        preferredHeight: 200
-                        preferredWidth: 200
+                        preferredHeight: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
+                        preferredWidth: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
                     }
                     attachedObjects: [
                         LayoutUpdateHandler {
@@ -205,6 +265,7 @@ NavigationPane {
                                     console.log("Layout focus rect: [" + layoutFrame.width + ", " + layoutFrame.height + "]");
                                     focusRectangle.width = layoutFrame.width;
                                     focusRectangle.height = layoutFrame.height;
+                                    
                                 }
                             }
                         }
@@ -227,6 +288,10 @@ NavigationPane {
                             console.log("Layout focus container: [" + layoutFrame.width + ", " + layoutFrame.height + "]");
                             focusRectangleContainer.width = layoutFrame.width;
                             focusRectangleContainer.height = layoutFrame.height;
+                            
+                            focusRectangle.opacity = .8;
+                            focusRectangleContainer.updateFocusBoundingBox();
+                            
                         }
                     }
                 ]
