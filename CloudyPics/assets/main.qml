@@ -120,11 +120,16 @@ NavigationPane {
                 }
 
             }
+            
+            // To do the focus rectangle, we will have an absolute layout container as big as the camera to move the rectagle around
             Container {
                 id: focusRectangleContainer
+                
+                //Keep track of the actual size of the container
                 property int width
                 property int height
 
+				// This area will be the boundry for the focus indicator so you can't move it outside of the viewfinder
                 property int leftBound: 0
                 property int rightBound: width
                 property int topBound: 0
@@ -135,6 +140,7 @@ NavigationPane {
 
                 overlapTouchPolicy: OverlapTouchPolicy.Allow
 
+				// Calculate the correct size of the viewfinder on the screen
                 function updateFocusBoundingBox() {
                     var captureSize = cameraSettings.captureResolution;
                     var captureRatio = captureSize.height / captureSize.width;
@@ -184,14 +190,18 @@ NavigationPane {
                     property int width
                     property int height
 
+					//Whether we are in the middle of moving the focus indicator around or not
                     property bool moving: false
 
+					//Controls which focus indicator to show
                     property bool cameraFocused: false
-
-					opacity: .1
+                    
+                    // Start of nearly transparent so we still get drawn
+					opacity: .1 
 					
                     overlapTouchPolicy: OverlapTouchPolicy.Allow
 
+					//Move the focus indicator, keeping it within the bounds of the viewfinder
                     function move(x, y) {
                         var newX = Math.max(focusRectangleContainer.leftBound, x - absoluteLayout.touchDeltaX);
                         var newY = Math.max(focusRectangleContainer.topBound, y - absoluteLayout.touchDeltaY);
@@ -205,7 +215,8 @@ NavigationPane {
                         absoluteLayout.positionY = newY;
 
                     }
-
+                    
+                    //Whenever we stop moving the viewfinder, the camera should refocus on the new region if it needs to
                     onMovingChanged: {
                     	if (!moving) {
                             console.log("+++++++ Setting focus region");
@@ -213,7 +224,8 @@ NavigationPane {
                             var captureSize = cameraSettings.captureResolution;
                             var focusRegion = cameraSettings.focusRegion;
                             
-                            //We can actually set these
+                            //We can actually set these here, see 
+                            //https://www.blackberry.com/jira/browse/BBTEN-2099
                             focusRegion.x = (absoluteLayout.positionX - focusRectangleContainer.leftBound) * (captureSize.width / focusRectangleContainer.width);
                             focusRegion.y = (absoluteLayout.positionY - focusRectangleContainer.topBound) * (captureSize.height / focusRectangleContainer.height);
                             
@@ -222,6 +234,12 @@ NavigationPane {
                             
                             console.log("++++++ Focus region: " + focusRegion.x + ", " + focusRegion.y);
                             
+                            // If this cameraSettings object ever gets saved in it's entirety by the CameraSettingsStore
+                            // We might end up restoring the last focus region, so the focus indicator would not be lined up
+                            // until it's moved for the first time. That's not happening now, but FYI if you are using this
+                            // code in your own app.
+                            //
+                            // You probably want to be selective about what settings you save.
                             cameraSettings.focusRegion = focusRegion;
                             camera.applySettings(cameraSettings);
                             
@@ -234,18 +252,23 @@ NavigationPane {
 
                         property int touchDeltaX
                         property int touchDeltaY
-
+                        
+                        //Always start in the middle of the viewfinder, though we could save and restore from settings
                         positionX: focusRectangleContainer.width / 2 - focusRectangle.width / 2
                         positionY: focusRectangleContainer.height / 2 - focusRectangle.height / 2
 
                     }
 
+					//Focus rectangle images
                     ImageView {
                         overlapTouchPolicy: OverlapTouchPolicy.Allow
                         visible: ! focusRectangle.cameraFocused
                         imageSource: "asset:///rectangle.amd"
                         horizontalAlignment: HorizontalAlignment.Center
                         verticalAlignment: VerticalAlignment.Center
+                        
+                        //Make these to be 20% of the smallest dimension, so they scale resonably with device size 
+                        // In the future, could be user scalable. Not clear if that's useful though
                         preferredHeight: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
                         preferredWidth: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
                     }
@@ -255,6 +278,9 @@ NavigationPane {
                         verticalAlignment: VerticalAlignment.Center
                         visible: focusRectangle.cameraFocused
                         imageSource: "asset:///rectangle-focused.amd"
+                        
+                        //Make these to be 20% of the smallest dimension, so they scale resonably with device size
+                        // In the future, could be user scalable. Not clear if that's useful though
                         preferredHeight: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
                         preferredWidth: Math.min(focusRectangleContainer.width, focusRectangleContainer.height) / 5
                     }
@@ -282,6 +308,7 @@ NavigationPane {
 
                     }
                 }
+                // Layout updadate handler for the focus container
                 attachedObjects: [
                     LayoutUpdateHandler {
                         onLayoutFrameChanged: {
@@ -297,6 +324,8 @@ NavigationPane {
                 ]
 
             }
+            
+            // Label to show the path of the saved image if you enter debug mode
             Label {
                 id: photoSavedLabel
                 multiline: true

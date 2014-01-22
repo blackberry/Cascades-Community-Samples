@@ -11,13 +11,19 @@ Currently, you can:
 * Control the Camera Roll with CameraRollManager
 * Save and restore camera settings with CameraSettingsStore
 * Be invoked like the built-in camera app with CardManager
+* Control the focus region
 
 Future plans include:
 * A UI to view/change all camera settings
 * Email photo to a specified address (ie, for Picasa email upload support)
-* Focus rectangle
 
 Want it to do something else? Send me a tweet.
+
+CloudyPics has been featured on the BlackBerry Developer Blog several times, where you can see more in-depth documentation on it's features:
+http://devblog.blackberry.com/2013/10/cloudy-pics-part-1-the-introduction/
+http://devblog.blackberry.com/2013/10/cloudy-pics-part-2-managing-the-camera-roll/
+http://devblog.blackberry.com/2013/12/cloudy-pics-part-3-persisting-camera-settings/
+http://devblog.blackberry.com/2014/01/cloudy-pics-part-4-cards-and-enterprise/
 
 Control the Camera Roll
 -----------------------
@@ -52,3 +58,9 @@ Be invoked
 CardManager provides some simple functions that mostly control the state of the viewfinder when the Cloudy Pics card is invoked or pooled. If you look in bar-descriptor.xml you can see the various ways to invoke the app. These line up with the ways the built in camera app is invoked.
 
 This would have to be more complicated if we wanted a different UI for when the app is invoked, but we do not.
+
+Control the focus region
+------------------------
+The user can drag and move the focus indicator to focus on different regions of the viewfinder. 
+
+A bit of math is used to convert screen coordinates to viewfinder coordinates, and keep the focus indicator on the viewscreen.
