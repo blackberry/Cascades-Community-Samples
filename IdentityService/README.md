@@ -58,7 +58,7 @@ Inserting a space in a profile key appears to fail at the back end.
 
 With minimal massaging it will compile on 10.0.
 
-**How to Build AES Crypto Demo**
+**How to Build Identity Service Demo**
 
 Import the project into a workspace inside Momentics.
  
