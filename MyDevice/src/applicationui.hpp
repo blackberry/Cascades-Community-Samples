@@ -17,7 +17,11 @@
 #ifndef ApplicationUI_HPP_
 #define ApplicationUI_HPP_
 
+#include <errno.h>
+
 #include <QObject>
+#include <QList>
+#include <QMap>
 #include <bb/device/SimCardInfo>
 #include <bb/device/HardwareInfo>
 #include <bb/device/BatteryInfo>
@@ -61,7 +65,6 @@ public:
     QString _line_address;
     QString _line_description;
     QNetworkInterface _network_interface;
-    QList<QNetworkInterface> _network_interfaces;
     bb::cascades::DropDown *_dd_net_interfaces;
     QList < bb::system::phone::Line > _lines;
 
@@ -74,7 +77,6 @@ public:
     Q_INVOKABLE int getDisplayPixelWidth();
     Q_INVOKABLE qreal getDisplayResolutionHeight();
     Q_INVOKABLE qreal getDisplayResolutionWidth();
-    Q_INVOKABLE QString getNetworkInterfaceHwAddress();
     Q_INVOKABLE void selectNetworkInterfaceByName(QString name);
     Q_INVOKABLE QString getNetworkAddresses();
     Q_INVOKABLE bool isUp();
@@ -88,6 +90,46 @@ public:
     Q_INVOKABLE QString getLineType();
     Q_INVOKABLE bool isLineValid();
     Q_INVOKABLE void selectLineById(QString id);
+    Q_INVOKABLE QMap<QString, QVariant> getInterfaceAttributes(QString if_name);
+
+    Q_PROPERTY(QString selected_if_type READ getSelectedIfType NOTIFY signalSelectedIfTypeChanged);
+    Q_PROPERTY(QString selected_ip_addresses READ getSelectedIpAddresses NOTIFY signalSelectedIpAddressesChanged);
+    Q_PROPERTY(QString selected_link_addr READ getSelectedLinkAddr NOTIFY signalSelectedLinkAddrChanged);
+    Q_PROPERTY(QString selected_name_servers READ getSelectedNameServers NOTIFY signalSelectedNameServersChanged);
+    Q_PROPERTY(QString selected_ip_status READ getSelectedIpStatus NOTIFY signalSelectedIpStatusChanged);
+    Q_PROPERTY(bool selected_if_is_up READ isSelectedIfUp NOTIFY signalSelectedIfIsUpChanged);
+    Q_PROPERTY(bool selected_if_is_running READ isSelectedIfRunning NOTIFY signalSelectedIfIsRunningChanged);
+    Q_PROPERTY(bool selected_if_can_broadcast READ canSelectedIfBroadcast NOTIFY signalSelectedIfCanBroadcastChanged);
+    Q_PROPERTY(bool selected_if_is_loopback READ isSelectedIfLoopback NOTIFY signalSelectedIfIsLoopbackChanged);
+    Q_PROPERTY(bool selected_if_is_p2p READ isSelectedIfP2p NOTIFY signalSelectedIfIsP2pChanged);
+    Q_PROPERTY(bool selected_if_can_multicast READ canSelectedIfMulticast NOTIFY signalSelectedIfCanMulticastChanged);
+
+    QString getSelectedIfType();
+    QString getSelectedIpAddresses();
+    QString getSelectedLinkAddr();
+    QString getSelectedNameServers();
+    QString getSelectedIpStatus();
+
+    bool isSelectedIfUp();
+    bool isSelectedIfRunning();
+    bool canSelectedIfBroadcast();
+    bool isSelectedIfLoopback();
+    bool isSelectedIfP2p();
+    bool canSelectedIfMulticast();
+
+signals:
+    void signalSelectedIfTypeChanged();
+    void signalSelectedIpAddressesChanged();
+    void signalSelectedLinkAddrChanged();
+    void signalSelectedNameServersChanged();
+    void signalSelectedIpStatusChanged();
+
+    void signalSelectedIfIsUpChanged();
+    void signalSelectedIfIsRunningChanged();
+    void signalSelectedIfCanBroadcastChanged();
+    void signalSelectedIfIsLoopbackChanged();
+    void signalSelectedIfIsP2pChanged();
+    void signalSelectedIfCanMulticastChanged();
 
 private slots:
     void onSystemLanguageChanged();
@@ -97,6 +139,26 @@ private:
 
     void populateNetworkInterfacesDropDown();
     void populatePhoneLinesDropDown();
+    void buildBpsNetworkInterfacesAttributeMap();
+    void buildQNetworkInterfacesAttributeMap();
+
+    QMap<QString , QMap<QString, QVariant> > *_bps_interfaces_attr_map;
+    QMap<QString, QNetworkInterface> *_q_interfaces_attr_map;
+    QMap<QString, QVariant> *_selected_interface;
+
+    QString _selected_if_type;
+    QString _selected_if_name;
+    QString _selected_ip_addresses;
+    QString _selected_link_addr;
+    QString _selected_status;
+    QString _selected_name_servers;
+    QString _selected_ip_status;
+    bool _selected_if_is_up;
+    bool _selected_if_is_running;
+    bool _selected_if_can_broadcast;
+    bool _selected_if_is_loopback;
+    bool _selected_if_is_p2p;
+    bool _selected_if_can_multicast;
 };
 
 #endif /* ApplicationUI_HPP_ */
