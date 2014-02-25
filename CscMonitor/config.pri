@@ -91,7 +91,19 @@ lupdate_inclusion {
              $$quote($$BASEDIR/../src/*.cxx) \
              $$quote($$BASEDIR/../assets/*.qml) \
              $$quote($$BASEDIR/../assets/*.js) \
-             $$quote($$BASEDIR/../assets/*.qs)
+             $$quote($$BASEDIR/../assets/*.qs) \
+             $$quote($$BASEDIR/../assets/common/*.qml) \
+             $$quote($$BASEDIR/../assets/common/*.js) \
+             $$quote($$BASEDIR/../assets/common/*.qs) \
+             $$quote($$BASEDIR/../assets/images/*.qml) \
+             $$quote($$BASEDIR/../assets/images/*.js) \
+             $$quote($$BASEDIR/../assets/images/*.qs) \
+             $$quote($$BASEDIR/../assets/webview/*.qml) \
+             $$quote($$BASEDIR/../assets/webview/*.js) \
+             $$quote($$BASEDIR/../assets/webview/*.qs) \
+             $$quote($$BASEDIR/../assets/webview/js/*.qml) \
+             $$quote($$BASEDIR/../assets/webview/js/*.js) \
+             $$quote($$BASEDIR/../assets/webview/js/*.qs)
 
     HEADERS +=  $$quote($$BASEDIR/../src/*.h) \
              $$quote($$BASEDIR/../src/*.h++) \

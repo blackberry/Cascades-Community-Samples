@@ -416,3 +416,7 @@ void BluetoothHandler::stopCscNotifications() {
 	}
 
 }
+
+void BluetoothHandler::discover() {
+    _deviceListing->discover();
+}
