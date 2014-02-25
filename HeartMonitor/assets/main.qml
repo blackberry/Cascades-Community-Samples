@@ -30,20 +30,35 @@ TabbedPane {
     property int p_scan_tab: 1
     property int p_history_tab: 2
     property int p_about_tab: 3
-    property variant digit: [
-        "asset:///images/dg0.PNG",
-        "asset:///images/dg1.PNG",
-        "asset:///images/dg2.PNG",
-        "asset:///images/dg3.PNG",
-        "asset:///images/dg4.PNG",
-        "asset:///images/dg5.PNG",
-        "asset:///images/dg6.PNG",
-        "asset:///images/dg7.PNG",
-        "asset:///images/dg8.PNG",
-        "asset:///images/dg9.PNG"
-    ]
+    property variant digit: [ "asset:///images/dg0.PNG", "asset:///images/dg1.PNG", "asset:///images/dg2.PNG", "asset:///images/dg3.PNG",
+        "asset:///images/dg4.PNG", "asset:///images/dg5.PNG", "asset:///images/dg6.PNG", "asset:///images/dg7.PNG",
+        "asset:///images/dg8.PNG", "asset:///images/dg9.PNG" ]
     property variant dash: "asset:///images/dgh.PNG"
     property variant blank: "asset:///images/dgblank.PNG"
+
+    function onShowTab(tab_index) {
+        switch (tab_index) {
+            case 0:
+                tabbedPane.activeTab = monitor_tab
+                break;
+            case 1:
+                tabbedPane.activeTab = scan_tab
+                break;
+            case 2:
+                tabbedPane.activeTab = about_tab
+                break;
+            default:
+                console.log("QQQQ onShowTab(" + tab_index + ") - invalid tab index");
+        }
+    }
+    
+    function startActivityIndicator() {
+        activityIndicator.start();
+    }
+
+    function stopActivityIndicator() {
+        activityIndicator.stop();
+    }    
 
     function monitor(device_addr, device_name) {
         _scan.setRemoteDevice(device_addr);
@@ -68,7 +83,7 @@ TabbedPane {
         var image1_url = digit[index1];
         var image2_url = digit[index2];
         var image3_url = digit[index3];
-        
+
         if (index1 === 0) {
             imgDigit1.imageSource = blank;
         } else {
@@ -92,20 +107,19 @@ TabbedPane {
         lblMaxHr.text = "Max: " + max_hr;
         lblAvgHr.text = "Avg: " + avg_hr;
     }
-    onCreationCompleted: {
-        console.log("YYYY current device name:" + _hrdc.getCurrentDeviceName());
-        console.log("YYYY current device addr:" + _hrdc.getCurrentDeviceAddr());
-        if (_hrdc.getCurrentDeviceAddr() != "") {
-            p_prev_tab = p_monitor_tab;
-            tabbedPane.activeTab = monitor_tab;
-        } else {
-            tabbedPane.activeTab = scan_tab;
-            _scan.deviceListing.discover();
-            beat_timer.stop();
-            scan_timer.start();
-            p_prev_tab = p_scan_tab;
-        }
-    }
+//    onCreationCompleted: {
+//        console.log("YYYY current device name:" + _hrdc.getCurrentDeviceName());
+//        console.log("YYYY current device addr:" + _hrdc.getCurrentDeviceAddr());
+//        if (_hrdc.getCurrentDeviceAddr() != "") {
+//            p_prev_tab = p_monitor_tab;
+//            tabbedPane.activeTab = monitor_tab;
+//        } else {
+//            tabbedPane.activeTab = scan_tab;
+//            _scan.deviceListing.discover();
+//            beat_timer.stop();
+//            p_prev_tab = p_scan_tab;
+//        }
+//    }
     onActiveTabChanged: {
     }
     Tab {
@@ -114,7 +128,6 @@ TabbedPane {
         imageSource: "asset:///images/monitor.png"
         onTriggered: {
             beat_timer.start();
-            scan_timer.stop();
         }
         Page {
             actionBarVisibility: ChromeVisibility.Visible
@@ -243,30 +256,29 @@ TabbedPane {
                     }
                 }
             }
-            
-            
+
             // Actions are associated with the History function and will be reinstated in a later release when session history can be saved and restored
-//            actions: [
-//                ActionItem {
-//                    id: toggle_hr
-//                    title: qsTr("Stop and Save")
-//                    imageSource: "asset:///images/save.png"
-//                    onTriggered: {
-//                        if (p_monitoring == 1) {
-//                            beat_timer.stop();
-//                            _hrm.stopMonitoringHeartRate();
-//                            _hrm.saveSession("test");
-//                            toggle_hr.title = "Start"
-//                            p_monitoring = 0;
-//                        } else {
-//                            beat_timer.start();
-//                            _hrm.monitorHeartRate(p_dev_addr, p_dev_name);
-//                            toggle_hr.title = "Stop and Save";
-//                            p_monitoring = 1;
-//                        }
-//                    }
-//                }
-//            ]
+            //            actions: [
+            //                ActionItem {
+            //                    id: toggle_hr
+            //                    title: qsTr("Stop and Save")
+            //                    imageSource: "asset:///images/save.png"
+            //                    onTriggered: {
+            //                        if (p_monitoring == 1) {
+            //                            beat_timer.stop();
+            //                            _hrm.stopMonitoringHeartRate();
+            //                            _hrm.saveSession("test");
+            //                            toggle_hr.title = "Start"
+            //                            p_monitoring = 0;
+            //                        } else {
+            //                            beat_timer.start();
+            //                            _hrm.monitorHeartRate(p_dev_addr, p_dev_name);
+            //                            toggle_hr.title = "Stop and Save";
+            //                            p_monitoring = 1;
+            //                        }
+            //                    }
+            //                }
+            //            ]
         }
     }
     Tab {
@@ -274,11 +286,8 @@ TabbedPane {
         title: "Scan"
         imageSource: "asset:///images/scan.png"
         onTriggered: {
-            _scan.deviceListing.discover();
-            beat_timer.stop();
-//            scan_timer.start();
-            _scan.deviceListing.update();
-            p_prev_tab = p_scan_tab;
+            console.log("QQQQ scan_tab onTriggered");
+            _hrm.scanForDevices();
         }
         Page {
             actionBarVisibility: ChromeVisibility.Visible
@@ -286,6 +295,7 @@ TabbedPane {
                 layout: StackLayout {
                 }
                 verticalAlignment: VerticalAlignment.Fill
+                              
                 Label {
                     id: lblHeading_scan
                     textStyle {
@@ -307,6 +317,14 @@ TabbedPane {
                     }
                     horizontalAlignment: HorizontalAlignment.Center
                 }
+                
+                ActivityIndicator {
+                    id: activityIndicator
+                    preferredWidth: 300
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
+                }
+                
                 Container {
                     topPadding: 20
                     leftPadding: 20
@@ -336,99 +354,91 @@ TabbedPane {
                         }
                     }
                 }
-//                Timer {
-//                    id: scan_timer
-//                    time_limit: 10000
-//                    onTimeout: {
-//                        _scan.deviceListing.update();
-//                    }
-//                }
             }
         }
     }
-    
-    
+
     // The History feature is a work in progress and will be completed in a subsequent release
-    
-//    Tab {
-//        id: history_tab
-//        title: "History"
-//        imageSource: "asset:///images/history.png"
-//        onTriggered: {
-//            _hrm.stopMonitoringHeartRate();
-//            beat_timer.stop();
-//            scan_timer.stop();
-//            console.log("XXXX requesting loadSavedSessionList");
-//            _sessions.loadSavedSessionList();
-//            p_prev_tab = p_history_tab;
-//        }
-//        Page {
-//            actionBarVisibility: ChromeVisibility.Visible
-//            Container {
-//                layout: StackLayout {
-//                }
-//                verticalAlignment: VerticalAlignment.Fill
-//                Label {
-//                    id: lblHeading_history
-//                    text: qsTr("History")
-//                    textStyle {
-//                        base: SystemDefaults.TextStyles.BigText
-//                        color: Color.Green
-//                    }
-//                    verticalAlignment: VerticalAlignment.Center
-//                    horizontalAlignment: HorizontalAlignment.Center
-//                }
-//                Container {
-//                    topPadding: 20
-//                    leftPadding: 20
-//                    rightPadding: 20
-//                    bottomPadding: 20
-//                    ListView {
-//                        dataModel: _sessions.model
-//                        listItemComponents: [
-//                            ListItemComponent {
-//                                type: "listItem"
-//                                StandardListItem {
-//                                    title: ListItemData.session_name
-//                                }
-//                            },
-//                            ListItemComponent {
-//                                type: "listItem"
-//                                StandardListItem {
-//                                    title: ListItemData.session_datetime
-//                                }
-//                            }
-//                        ]
-//                        onTriggered: {
-//                        }
-//                        function itemType(data, indexPath) {
-//                            if (indexPath.length == 1) {
-//                                return "header";
-//                            } else {
-//                                return "listItem";
-//                            }
-//                        }
-//                    }
-//                }
-//                Label {
-//                    id: lblHistoryMessage
-//                    textStyle {
-//                        base: SystemDefaults.TextStyles.BodyText
-//                        color: Color.Green
-//                        fontFamily: "Courier"
-//                        lineHeight: 1.1
-//                    }
-//                }
-//                Timer {
-//                    id: history_timer
-//                    time_limit: 5000
-//                    onTimeout: {
-//                        lblHistoryMessage.text = ""
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+    //    Tab {
+    //        id: history_tab
+    //        title: "History"
+    //        imageSource: "asset:///images/history.png"
+    //        onTriggered: {
+    //            _hrm.stopMonitoringHeartRate();
+    //            beat_timer.stop();
+    //            scan_timer.stop();
+    //            console.log("XXXX requesting loadSavedSessionList");
+    //            _sessions.loadSavedSessionList();
+    //            p_prev_tab = p_history_tab;
+    //        }
+    //        Page {
+    //            actionBarVisibility: ChromeVisibility.Visible
+    //            Container {
+    //                layout: StackLayout {
+    //                }
+    //                verticalAlignment: VerticalAlignment.Fill
+    //                Label {
+    //                    id: lblHeading_history
+    //                    text: qsTr("History")
+    //                    textStyle {
+    //                        base: SystemDefaults.TextStyles.BigText
+    //                        color: Color.Green
+    //                    }
+    //                    verticalAlignment: VerticalAlignment.Center
+    //                    horizontalAlignment: HorizontalAlignment.Center
+    //                }
+    //                Container {
+    //                    topPadding: 20
+    //                    leftPadding: 20
+    //                    rightPadding: 20
+    //                    bottomPadding: 20
+    //                    ListView {
+    //                        dataModel: _sessions.model
+    //                        listItemComponents: [
+    //                            ListItemComponent {
+    //                                type: "listItem"
+    //                                StandardListItem {
+    //                                    title: ListItemData.session_name
+    //                                }
+    //                            },
+    //                            ListItemComponent {
+    //                                type: "listItem"
+    //                                StandardListItem {
+    //                                    title: ListItemData.session_datetime
+    //                                }
+    //                            }
+    //                        ]
+    //                        onTriggered: {
+    //                        }
+    //                        function itemType(data, indexPath) {
+    //                            if (indexPath.length == 1) {
+    //                                return "header";
+    //                            } else {
+    //                                return "listItem";
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //                Label {
+    //                    id: lblHistoryMessage
+    //                    textStyle {
+    //                        base: SystemDefaults.TextStyles.BodyText
+    //                        color: Color.Green
+    //                        fontFamily: "Courier"
+    //                        lineHeight: 1.1
+    //                    }
+    //                }
+    //                Timer {
+    //                    id: history_timer
+    //                    time_limit: 5000
+    //                    onTimeout: {
+    //                        lblHistoryMessage.text = ""
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
     Tab {
         id: about_tab
         title: "About"
@@ -456,7 +466,7 @@ TabbedPane {
                 }
                 Label {
                     id: lblHeading_version
-                    text: qsTr("V1.0.3")
+                    text: qsTr("V1.0.4")
                     verticalAlignment: VerticalAlignment.Center
                     horizontalAlignment: HorizontalAlignment.Center
                 }
