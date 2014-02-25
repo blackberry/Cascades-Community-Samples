@@ -84,7 +84,6 @@ void DeviceListing::discover()
     toast.exec();
 
     bt_disc_start_inquiry(BT_INQUIRY_GIAC);
-    delay(5);
     bt_disc_cancel_inquiry();
 
     toast.setBody(tr("Search completed!"));
@@ -134,7 +133,14 @@ void DeviceListing::discover()
 
 bool DeviceListing::isAHeartRateMonitor(bt_remote_device_t * remoteDevice) {
 
-    qDebug() << "YYYY DeviceListing::isAHeartRateMonitor() - entering";
+    char buffer[128];
+    const int bufferSize = sizeof(buffer);
+    bt_rdev_get_friendly_name(remoteDevice, buffer, bufferSize);
+    QString device_name = QString::fromLatin1(buffer);
+    bt_rdev_get_address(remoteDevice, buffer);
+    QString device_addr = QString::fromLatin1(buffer);
+
+    qDebug() << "YYYY DeviceListing::isAHeartRateMonitor() starting - " << device_name << "[" << device_addr << "] - entering";
 
 	bool foundMonitor = false;
 
