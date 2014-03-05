@@ -5,6 +5,10 @@ This is an example plugin for BlackBerry Express that get's images from devianta
 
 Full details are included in this [blog post](http://devblog.blackberry.com/2014/03/express-dev/).
 
+## Author
+
+[Johan Larsby](https://github.com/jlarsby)
+
 ## Contributing Changes
 
 Please see the [README](https://github.com/blackberry/Cascades-Community-Samples/blob/master/README.md) 
