@@ -20,6 +20,10 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 **Release History**
 
 * **V1.0.0** - Initial release
+* **V1.0.1** - Updated FLOT to version 0.8.2. 
+               Trigger device scanning on start now performed in C++ instead of QML as this was blocking completion of QML loading/rendering at 10.2.1.
+               Added ActivityIndicator to indicate scanning activity
+
 
 **Dependencies**
 

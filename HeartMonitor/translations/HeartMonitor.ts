@@ -14,12 +14,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="90"/>
+        <location filename="../src/DeviceListing.cpp" line="89"/>
         <source>Search completed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/DeviceListing.cpp" line="121"/>
+        <location filename="../src/DeviceListing.cpp" line="120"/>
         <source>Bluetooth Devices Nearby</source>
         <translation type="unfinished"></translation>
     </message>
@@ -285,42 +285,42 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="126"/>
+        <location filename="../assets/main.qml" line="139"/>
         <source>Heart Rate Monitor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="295"/>
+        <location filename="../assets/main.qml" line="305"/>
         <source>Available Monitors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="449"/>
+        <location filename="../assets/main.qml" line="459"/>
         <source>About HeartMonitor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="459"/>
-        <source>V1.0.1</source>
+        <location filename="../assets/main.qml" line="469"/>
+        <source>V1.0.4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="465"/>
+        <location filename="../assets/main.qml" line="475"/>
         <source>The HeartMonitor application demonstrates how to acquire and use data transmitted by a Bluetooth 4.0 LE heart monitor device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="476"/>
+        <location filename="../assets/main.qml" line="486"/>
         <source>Authors:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="487"/>
+        <location filename="../assets/main.qml" line="497"/>
         <source>Martin Woolley (@mdwrim)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="498"/>
+        <location filename="../assets/main.qml" line="508"/>
         <source>John Murray (@jcmrim)</source>
         <translation type="unfinished"></translation>
     </message>

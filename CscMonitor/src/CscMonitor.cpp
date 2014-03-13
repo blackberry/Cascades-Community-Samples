@@ -60,7 +60,9 @@ CscMonitor::CscMonitor(bb::cascades::Application *app) :
 
 	if (cscdc->getCurrentDeviceAddr() != NULL) {
 		monitor(cscdc->getCurrentDeviceAddr(), cscdc->getCurrentDeviceName());
-	}
+    } else {
+        scanForDevices();
+    }
 }
 
 void CscMonitor::monitor(QString device_addr, QString device_name) {
@@ -100,4 +102,24 @@ void CscMonitor::logCscData(const QVariant &wheel,const QVariant &crank) {
 
 void CscMonitor::cscDevicesFound() {
 	qDebug() << "YYYY CSC devices were found!";
+}
+
+void CscMonitor::showTab(int tab_index)
+{
+    QMetaObject::invokeMethod(_root, "onShowTab", Q_ARG(QVariant, tab_index));
+}
+
+void CscMonitor::startActivityIndicator() {
+    QMetaObject::invokeMethod(_root, "startActivityIndicator");
+}
+
+void CscMonitor::stopActivityIndicator() {
+    QMetaObject::invokeMethod(_root, "stopActivityIndicator");
+}
+
+void CscMonitor::scanForDevices() {
+    showTab(1);
+    startActivityIndicator();
+    _handler->discover();
+    stopActivityIndicator();
 }

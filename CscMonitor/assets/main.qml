@@ -34,30 +34,39 @@ TabbedPane {
     property int p_monitor_tab: 0
     property int p_scan_tab: 1
     property int p_about_tab: 2
-    property variant digit_orange: [
-        "asset:///images/orange0.png",
-        "asset:///images/orange1.png",
-        "asset:///images/orange2.png",
-        "asset:///images/orange3.png",
-        "asset:///images/orange4.png",
-        "asset:///images/orange5.png",
-        "asset:///images/orange6.png",
-        "asset:///images/orange7.png",
-        "asset:///images/orange8.png",
-        "asset:///images/orange9.png"
-    ]
-    property variant digit_bluegreen: [
-        "asset:///images/bluegreen0.png",
-        "asset:///images/bluegreen1.png",
-        "asset:///images/bluegreen2.png",
-        "asset:///images/bluegreen3.png",
-        "asset:///images/bluegreen4.png",
-        "asset:///images/bluegreen5.png",
-        "asset:///images/bluegreen6.png",
-        "asset:///images/bluegreen7.png",
-        "asset:///images/bluegreen8.png",
-        "asset:///images/bluegreen9.png"
-    ]
+    property variant digit_orange: [ "asset:///images/orange0.png", "asset:///images/orange1.png", "asset:///images/orange2.png",
+        "asset:///images/orange3.png", "asset:///images/orange4.png", "asset:///images/orange5.png",
+        "asset:///images/orange6.png", "asset:///images/orange7.png", "asset:///images/orange8.png",
+        "asset:///images/orange9.png" ]
+    property variant digit_bluegreen: [ "asset:///images/bluegreen0.png", "asset:///images/bluegreen1.png", "asset:///images/bluegreen2.png",
+        "asset:///images/bluegreen3.png", "asset:///images/bluegreen4.png", "asset:///images/bluegreen5.png",
+        "asset:///images/bluegreen6.png", "asset:///images/bluegreen7.png", "asset:///images/bluegreen8.png",
+        "asset:///images/bluegreen9.png" ]
+
+    function onShowTab(tab_index) {
+        switch (tab_index) {
+            case 0:
+                tabbedPane.activeTab = monitor_tab
+                break;
+            case 1:
+                tabbedPane.activeTab = scan_tab
+                break;
+            case 2:
+                tabbedPane.activeTab = about_tab
+                break;
+            default:
+                console.log("QQQQ onShowTab(" + tab_index + ") - invalid tab index");
+        }
+    }
+
+    function startActivityIndicator() {
+        activityIndicator.start();
+    }
+
+    function stopActivityIndicator() {
+        activityIndicator.stop();
+    }
+
     function monitor(device_addr, device_name) {
         console.log("XXXX device selected");
         _scan.setRemoteDevice(device_addr);
@@ -158,18 +167,6 @@ TabbedPane {
         lblMaxCrankRpm.text = "Max: " + max_crank_rpm;
         lblAvgCrankRpm.text = "Avg: " + avg_crank_rpm;
         console.log("XXXX:QML done updating stats");
-    }
-    onCreationCompleted: {
-        console.log("YYYY current device name:" + _cscdc.getCurrentDeviceName());
-        console.log("YYYY current device addr:" + _cscdc.getCurrentDeviceAddr());
-        if (_cscdc.getCurrentDeviceAddr() != "") {
-            tabbedPane.activeTab = monitor_tab;
-        } else {
-            tabbedPane.activeTab = scan_tab;
-            _scan.deviceListing.discover();
-        }
-    }
-    onActiveTabChanged: {
     }
     Tab {
         id: monitor_tab
@@ -407,8 +404,8 @@ TabbedPane {
         title: "Scan"
         imageSource: "asset:///images/scan.png"
         onTriggered: {
-            _scan.deviceListing.discover();
-            _scan.deviceListing.update();
+            console.log("QQQQ scan_tab onTriggered");
+            _cscm.scanForDevices();
         }
         Page {
             actionBarVisibility: ChromeVisibility.Visible
@@ -436,6 +433,12 @@ TabbedPane {
                         lineHeight: 1.1
                     }
                     horizontalAlignment: HorizontalAlignment.Center
+                }
+                ActivityIndicator {
+                    id: activityIndicator
+                    preferredWidth: 300
+                    horizontalAlignment: HorizontalAlignment.Center
+                    verticalAlignment: VerticalAlignment.Center
                 }
                 Container {
                     topPadding: 20
@@ -506,7 +509,7 @@ TabbedPane {
         title: "About"
         imageSource: "asset:///images/about.png"
         onTriggered: {
-        	aboutInfo.open();
+            aboutInfo.open();
         }
         Page {
         }
