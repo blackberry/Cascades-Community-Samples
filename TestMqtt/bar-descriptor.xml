@@ -71,21 +71,60 @@
     </icon>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7-g/TestMqtt" entry="true" type="Qnx/Elf">TestMqtt</asset>
+	   <entryPointType>Qnx/Elf</entryPointType>
+
+       <asset entryPointId="TestMqtt"
+              path="arm/o.le-v7-g/TestMqtt" 
+       		  entry="true" type="Qnx/Elf">TestMqtt</asset>
+	   <asset entryPointId="Mqtt"
+		      path="../Mqtt/Device-Debug/libMqtt.so"
+			  type="Qnx/Elf">lib/libMqtt.so</asset>
     </configuration>
+
     <configuration name="Device-Release">
        <entryPointType>Qnx/Cascades</entryPointType>
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm/o.le-v7/TestMqtt.so" entry="true" type="Qnx/Elf">TestMqtt.so</asset>
+       
+       <asset entryPointId="TestMqtt"
+              path="arm/o.le-v7/TestMqtt.so" 
+              entry="true" type="Qnx/Elf">TestMqtt.so</asset>
+	   <asset entryPointId="Mqtt"
+		      path="../Mqtt/Device-Release/libMqtt.so"
+			  type="Qnx/Elf">lib/libMqtt.so</asset>
     </configuration>
+
     <configuration name="Device-Profile">
        <platformArchitecture>armle-v7</platformArchitecture>
-       <asset path="arm-p/o.le-v7-g/TestMqtt" entry="true" type="Qnx/Elf">TestMqtt</asset>
+	   <entryPointType>Qnx/Elf</entryPointType>
+       
+       <asset entryPointId="TestMqtt"
+              path="arm-p/o.le-v7-g/TestMqtt" 
+              entry="true" type="Qnx/Elf">TestMqtt</asset>
+	   <asset entryPointId="Mqtt"
+		      path="../Mqtt/Device-Debug/libMqtt.so"
+			  type="Qnx/Elf">lib/libMqtt.so</asset>
     </configuration>
+
     <configuration name="Simulator-Debug">
        <platformArchitecture>x86</platformArchitecture>
-       <asset path="x86/o-g/TestMqtt" entry="true" type="Qnx/Elf">TestMqtt</asset>
+	   <entryPointType>Qnx/Elf</entryPointType>
+       
+       <asset entryPointId="TestMqtt"
+              path="x86/o-g/TestMqtt" 
+              entry="true" type="Qnx/Elf">TestMqtt</asset>
+	   <asset entryPointId="Mqtt"
+		      path="../Mqtt/Simulator-Debug/libMqtt.so"
+			  type="Qnx/Elf">lib/libMqtt.so</asset>
     </configuration>
+    
+	<entryPoint id="TestMqtt">
+		<name>TestMqtt</name>
+	</entryPoint>
+
+	<entryPoint id="Mqtt">
+		<name>Mqtt</name>
+		<entryPointType>Qnx/Elf</entryPointType>
+	</entryPoint>
     
     <!--  The icon for the application -->
 
@@ -97,7 +136,6 @@
         <include name="*.qm"/>
     </asset>
     <asset path="assets/images/monitor.png">monitor.png</asset>
-    <asset path="assets/lib">lib</asset>
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
