@@ -1,0 +1,43 @@
+
+# debuginfo provides customized strip capabilities
+# Use: STRIP_SECTIONS += strtab symtab
+# Use: DEBUGINFO = full
+
+separate_debug_symbols:!staticlib:!static:!contains(TEMPLATE, subdirs):!isEmpty(QMAKE_OBJCOPY) {	
+	CONFIG(release, debug|release) {
+		QMAKE_CFLAGS *= $${QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO}
+		QMAKE_CXXFLAGS *= $${QMAKE_CFXXLAGS_RELEASE_WITH_DEBUGINFO}
+		QMAKE_LFLAGS *= $${QMAKE_LFLAGS_RELEASE_WITH_DEBUGINFO}
+	}
+
+    qnx {
+        debug_info_suffix = sym
+        debug_info_keep = --keep-file-symbols
+        debug_info_strip = $${QMAKE_STRIPFLAGS_LIB} -R.ident
+    } else {
+        debug_info_suffix = debug
+        debug_info_keep = --only-keep-debug
+        debug_info_strip = $${QMAKE_STRIPFLAGS_LIB}
+    }
+	
+	QMAKE_SEPARATE_DEBUG_SYMBOLS = \
+		-$(DEL_FILE) \"$(DESTDIR)/$(TARGETD).sym\"\
+		$$escape_expand(\\n\\t)$$QMAKE_OBJCOPY $$debug_info_keep \"$(DESTDIR)$(TARGETD)\" \"$(DESTDIR)$(TARGETD).$$debug_info_suffix\" \
+		$$escape_expand(\\n\\t)$$QMAKE_STRIP $$debug_info_strip \"$(DESTDIR)$(TARGETD)\" \
+		$$escape_expand(\\n\\t)cd $(DESTDIR)$(dirname $(TARGETD)) && \
+			$$QMAKE_OBJCOPY --add-gnu-debuglink=\"$(notdir $(TARGETD)).$$debug_info_suffix\" \"$(TARGETD)\" \
+		$$escape_expand(\\n\\t)-chmod -x \"$(DESTDIR)$(TARGETD).$$debug_info_suffix\"
+
+    isEmpty(QMAKE_POST_LINK) {
+    	QMAKE_POST_LINK = $$QMAKE_SEPARATE_DEBUG_SYMBOLS
+    } else {
+    	QMAKE_POST_LINK = $$QMAKE_SEPARATE_DEBUG_SYMBOLS$$escape_expand(\\n\\t)$$QMAKE_POST_LINK
+    }
+    silent:QMAKE_POST_LINK = @echo creating $@.$$debug_info_suffix && $$QMAKE_POST_LINK
+
+    isEmpty(DESTDIR) {
+        QMAKE_DISTCLEAN += "$(notdir $(TARGET)).$$debug_info_suffix"
+    } else {
+        QMAKE_DISTCLEAN += "$(DESTDIR)/$(basename $(TARGET)).$$debug_info_suffix"
+    }
+}
