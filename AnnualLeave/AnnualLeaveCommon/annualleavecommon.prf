@@ -1,0 +1,37 @@
+
+annualleavecommon {
+	BASEDIR = $${PWD}$$dirname($${_FILE_})
+	LIBTARGET = AnnualLeaveCommon
+
+	INCLUDEPATH *=  $$quote($${BASEDIR}/public)
+	DEPENDPATH *=  $$quote($${BASEDIR}/public)
+	
+	LIBS += 
+	device {
+		profile {
+		    LIBS += -L$${BASEDIR}/arm/so.le-v7-g -l$${LIBTARGET}
+		    PRE_TARGETDEPS +=  $$quote($${BASEDIR}/arm/so.le-v7-g/lib$${LIBTARGET}.so)		
+		}
+		else {
+		    CONFIG(debug, debug|release) {
+		        # Device-Debug custom configuration
+		        LIBS += -L$${BASEDIR}/arm/so.le-v7-g -l$${LIBTARGET}
+		        PRE_TARGETDEPS +=  $$quote($${BASEDIR}/arm/so.le-v7-g/lib$${LIBTARGET}.so)
+		    }
+		
+		    CONFIG(release, debug|release) {
+		        # Device-Release custom configuration
+		        LIBS += -L$${BASEDIR}/arm/so.le-v7 -l$${LIBTARGET}
+		        PRE_TARGETDEPS +=  $$quote($${BASEDIR}/arm/so.le-v7/lib$${LIBTARGET}.so)
+		    }
+	    }
+	}
+	
+	simulator {
+	    CONFIG(debug, debug|release) {
+	        # Simulator-Debug custom configuration
+	        LIBS += -L$${BASEDIR}/x86/so-g -l$${LIBTARGET}
+	        PRE_TARGETDEPS +=  $$quote($${BASEDIR}/x86/so-g/lib$${LIBTARGET}.so)
+	    }
+	}
+}
