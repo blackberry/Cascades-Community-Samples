@@ -30,8 +30,8 @@ NavigationPane {
             onExistingPurchasesFinished: {
                 if (reply.errorCode == 0) {
                     for (var i = 0; i < reply.purchases.length; ++ i) {
-                        console.log(reply.purchases[i].receipt["digitalGoodSku"]);
-                        PurchaseStore.storePurchase(reply.purchases[i].receipt["digitalGoodSku"]);
+                        console.log(reply.purchases[i]["digitalGoodSku"]);
+                        PurchaseStore.storePurchase(reply.purchases[i]["digitalGoodSku"]);
                     }
                 } else {
                     console.log("Error: " + reply.errorText);
