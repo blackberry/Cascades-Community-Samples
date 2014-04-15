@@ -42,7 +42,7 @@ Page {
                 if (reply.errorCode == 0) {
                     //...save the purchase to local cache
                     for (var i = 0; i < reply.purchases.length; ++ i) {
-                        PurchaseStore.storePurchase(reply.purchases[i].receipt["digitalGoodSku"]);
+                        PurchaseStore.storePurchase(reply.purchases[i]["digitalGoodSku"]);
                     }
                 } else {
                     console.log("Error: " + reply.errorInfo);
