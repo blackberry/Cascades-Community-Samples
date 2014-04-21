@@ -1,0 +1,440 @@
+[{
+"locale":"pl",
+
+"title":"AKCEPTACJA LICENCJI:",
+
+"body":"Your EULA.",
+
+"button1":"Zgadzam się",
+"button2":"Nie zgadzam się"},
+
+{
+"locale":"pt_br",
+
+"title":"CONFIRMAÇÃO DA LICENÇA",
+
+"body":"Your EULA.",
+
+"button1":"Concordo",
+"button2":"Não concordo"},
+
+
+{
+"locale":"pt",
+
+"title":"CONFIRMAÇÃO DE LICENÇA",
+
+"body":"Your EULA.",
+
+"button1":"Concordo",
+"button2":"Não concordo"},
+
+{
+"locale":"ro",
+
+"title":"CONFIRMAREA LICENŢEI",
+
+"body":"Your EULA.",
+
+"button1":"Sunt de acord",
+"button2":"Nu sunt de acord"},
+
+{
+"locale":"ru",
+
+"title":"УВЕДОМЛЕНИЕ О ПРЕДОСТАВЛЕНИИ ЛИЦЕНЗИИ",
+
+"body":"Your EULA.",
+
+"button1":"согласен",
+"button2":"не согласен"},
+
+{
+"locale":"sr",
+
+"title":"ПОТВРДА О ПРИХВАТАЊУ ЛИЦЕНЦЕ",
+
+"body":"Your EULA.",
+
+"button1":"Сагласан сам",
+"button2":"Нисам сагласан"},
+
+{
+"locale":"sk",
+
+"title":"PRIJATIE LICENČNÝCH PODMIENOK",
+
+"body":"Your EULA.",
+
+"button1":"Súhlasím",
+"button2":"Nesúhlasím"},
+
+{
+"locale":"sl",
+
+"title":"POTRDITEV LICENCE",
+
+"body":"Your EULA.",
+
+"button1":"Strinjam se",
+"button2":"Ne strinjam se"},
+
+{
+"locale":"es",
+
+"title":"ACUERDO DE LICENCIA",
+
+"body":"Your EULA.",
+
+"button1":"Acepto",
+"button2":"No acepto"},
+
+{
+"locale":"sv",
+
+"title":"Licensbekräftelse",
+
+"body":"Your EULA.",
+
+"button1":"Jag godkänner",
+"button2":"Jag godkänner inte"},
+
+{
+"locale":"th",
+
+"title":"การรับทราบสิทธิ์การใช้งาน",
+
+"body":"Your EULA.",
+
+"button1":"ฉันยอมรับ",
+"button2":"ฉันไม่ยอมรับ"},
+
+{
+"locale":"tr",
+
+"title":"LİSANS KABULÜ",
+
+"body":"Your EULA.",
+
+"button1":"Jag godkänner",
+"button2":"Jag godkänner inte"},
+
+{
+"locale":"tk",
+
+"title":"YGTYÝARNAMANY KABUL ETME",
+
+"body":"Your EULA.",
+
+"button1":"Men Ylalaşýaryn",
+"button2":"Men Ylalaşmaýaryn"},
+
+{
+"locale":"uk",
+
+"title":"ПІДТВЕРДЖЕННЯ ЛІЦЕНЗІЇ",
+
+"body":"Your EULA.",
+
+"button1":"Погоджуюся",
+"button2":"Не погоджуюся"},
+
+{
+"locale":"vi",
+
+"title":"TUYÊN BỐ GIẤY PHÉP",
+
+"body":"Your EULA.",
+
+"button1":"Tôi đồng ý",
+"button2":"Tôi không đồng ý"},
+
+{
+"locale":"me",
+
+"title":"POTVRDA LICENCE",
+
+"body":"Your EULA.",
+
+"button1":"Prihvatam",
+"button2":"Ne prihvatam"},
+
+{
+"locale":"mo",
+
+"title":"CONFIRMARE DE LICENŢĂ",
+
+"body":"Your EULA.",
+
+"button1":"Sunt de acord",
+"button2":"Nu sunt de acord"},
+
+{
+"locale":"ms",
+
+"title":"PERAKUAN LESEN",
+
+"body":"Your EULA.",
+
+"button1":"Saya Setuju",
+"button2":"Saya Tidak Setuju"},
+
+{
+"locale":"mk",
+
+"title":"ПРИФАЌАЊЕ НА ЛИЦЕНЦАТА",
+
+"body":"Your EULA.",
+
+"button1":"Се согласувам",
+"button2":"Не се согласувам"},
+
+{
+"locale":"lt",
+
+"title":"LICENCIJOS PATVIRTINIMAS",
+
+"body":"Your EULA.",
+
+"button1":"Sutinku",
+"button2":"Nesutinku"},
+
+{
+"locale": "de",
+
+"title": "LIZENZBESTÄTIGUNG",
+
+"body": "Your EULA.",
+
+"button1": "Ich stimme zu",
+"button2": "Ich stimme nicht zu"
+},
+
+{
+"locale":"el",
+
+"title":"ΑΠΟΔΟΧΗ ΆΔΕΙΑΣ",
+
+"body":"Your EULA.",
+
+"button1":"Ich stimme zu",
+"button2":"Ich stimme nicht zu"},
+
+{
+"locale":"he",
+
+"title":"אישור רישיון",
+
+"body":"Your EULA.",
+
+"button1":"אני מסכים",
+"button2":"אני לא מסכים"},
+
+{
+"locale": "hu",
+"title": "LICENCELISMERVÉNY",
+"body": "Your EULA.",
+"button1": "Elfogadom",
+"button2": "Nem fogadom el"
+},
+
+{
+"locale": "is",
+"title": "LEYFISSAMKOMULAG",
+"body": "Your EULA.",
+"button1": "Ég samþykki",
+"button2": "Ég samþykki ekki"
+},
+
+{
+"locale": "it",
+"title": "DICHIARAZIONE DI ACCETTAZIONE DELLA LICENZA",
+"body": "Your EULA.",
+"button1": "Accetto",
+"button2": "Non accetto"
+},
+
+{
+"locale": "ja",
+"title": "使用許諾契約書",
+"body": "Your EULA.",
+"button1": "承諾する",
+"button2": "承諾しない"
+},
+
+{
+"locale": "kk",
+"title": "ЛИЦЕНЗИЯНЫ РАСТАУ",
+"body": "Your EULA.",
+"button1": "Келісемін",
+"button2": "Келіспеймін"
+},
+
+{
+"locale": "km",
+"title": "ការទទួលស្គាល់អាជ្ញាប័ណ្ណ",
+"body": "Your EULA.",
+"button1": "ខ្ញុំយល់ព្រម",
+"button2": "ខ្ញុំមិនយល់ព្រម"
+},
+
+{
+"locale": "ko",
+"title": "사용권 승인",
+"body": "Your EULA.",
+"button1": "동의함",
+"button2": "동의 안 함"
+},
+
+{
+"locale": "ky",
+"title": "ЛИЦЕНЗИЯНЫН БЕРИЛИШИН КАБАРЛОО",
+"body": "Your EULA.",
+"button1": "Макулмун",
+"button2": "Макул эмесмин"
+},
+
+{
+"locale": "lv",
+"title": "LICENCES APLIECINĀJUMS",
+"body": "Your EULA.",
+"button1": "Es piekrītu",
+"button2": "Es nepiekrītu"
+},
+
+{
+"locale": "az",
+"title": "LISENZIYANIN TƏSDIQ EDILMƏSI",
+"body": "Your EULA.",
+"button1": "Razıyam Razı",
+"button2": "deyiləm"
+},
+
+{
+"locale": "sq",
+"title": "PRANIMI I LIÇENSËS",
+"body": "Your EULA.",
+"button1": "Pranoj",
+"button2": "Nuk pranoj"
+},
+
+{
+"locale": "ar",
+"title": "إقرار ترخيص",
+"body": "Your EULA.",
+"button1": "لا أوافق",
+"button2": "أوافق"
+},
+
+{
+"locale": "hy",
+"title": "ԱՐՏՈՆԱԳՐԻ ԸՆԴՈՒՆՈՒՄ",
+"body": "Your EULA.",
+"button1": "Համաձայն եմ",
+"button2": "Համաձայն չեմ"
+},
+
+{
+"locale": "id",
+"title": "PERNYATAAN PENERIMAAN LISENSI",
+"body": "Your EULA.",
+"button1": "Saya Setuju",
+"button2": "Saya Tidak Setuju"
+},
+
+{
+"locale": "bs",
+"title": "POTVRDA O LICENCI",
+"body": "Your EULA.",
+"button1": "Prihvatam",
+"button2": "Ne prihvatam"
+},
+
+{
+"locale": "bg",
+"title": "ПОТВЪРЖДЕНИЕ НА ЛИЦЕНЗ",
+"body": "Your EULA.",
+"button1": "Съгласен съм",
+"button2": "Не съм съгласен"
+},
+
+{
+"locale": "cn",
+"title": "许可确认书",
+"body": "Your EULA.",
+"button1": "我同意",
+"button2": "我不同意"
+},
+
+{
+"locale": "tw",
+"title": "授權確認",
+"body": "Your EULA.",
+"button1": "我同意",
+"button2": "我不同意"
+},
+
+{
+"locale": "hr",
+"title": "POTVRDA O LICENCI",
+"body": "Your EULA.",
+"button1": "Prihvaćam",
+"button2": "Ne prihvaćam"
+},
+
+{
+"locale": "cs",
+"title": "PŘIJETÍ LICENČNÍCH PODMÍNEK",
+"body": "Your EULA.",
+"button1": "Souhlasím",
+"button2": "Nesouhlasím"
+},
+
+{
+"locale": "da",
+"title": "LICENSBEKRÆFTELSE",
+"body": "Your EULA.",
+"button1": "Jeg accepterer",
+"button2": "Jeg accepterer ikke"
+},
+
+{
+"locale": "nl",
+"title": "LICENTIEBEVESTIGING",
+"body": "Your EULA.",
+"button1": "Akkoord Niet",
+"button2": "akkoord"
+},
+
+{
+"locale": "en",
+"title": "LICENSE ACKNOWLEDGEMENT",
+"body": "Your EULA.",
+"button1": "I Agree",
+"button2": "I Do Not Agree"
+},
+
+{
+"locale": "et",
+"title": "LITSENTSIGA NÕUSTUMINE",
+"body": "Your EULA.",
+"button1": "Nõustun Ei",
+"button2": "nõustu"
+},
+
+{
+"locale": "fi",
+"title": "LISENSSIN HYVÄKSYMINEN",
+"body": "Your EULA.",
+"button1": "Hyväksyn",
+"button2": "En hyväksy"
+},
+
+{
+"locale": "fr",
+"title": "ACCUSE DE RECEPTION",
+"body": "Your EULA.",
+"button1": "J'accepte",
+"button2": "Je n'accepte pas"
+}
+]
