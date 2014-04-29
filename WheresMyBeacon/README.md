@@ -12,10 +12,12 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 **Author(s)** 
 
 * [John Murray](https://github.com/jcmurray)
+* [Martin Woolley](https://github.com/mdwoolley)
 
 **Release History**
 
 * **V1.0.0** - Initial release
+* **V1.0.1** - Added an "About" page and improved layout of iBeacon(TM) information in ListView.
 
 **Known Issues**
 

@@ -34,7 +34,8 @@ BtleAdvertData::~BtleAdvertData()
 /*
 	Sample data
 
-	data = 02 01 05 1a ff 4c 00 02 15 b9 40 7f 30 f5 f8 46 6e af f9 25 55 6b 57 fe 6d fa 46 b8 1a c2
+	Estimote data = 02 01 05 1a ff 4c 00 02 15 b9 40 7f 30 f5 f8 46 6e af f9 25 55 6b 57 fe 6d fa 46 b8 1a c2
+	Sensor Tag               1A FF 4C 00 02 15 FA 5F 55 D9 BC 63 40 2E A2 54 09 1B 8F E8 C9 91 00 01 00 01 C5
 	02 (AD Structure length)
 	    01  (AD Type - flags)
 	        05  (AD Data)
@@ -51,6 +52,9 @@ BtleAdvertData::~BtleAdvertData()
 
 bool BtleAdvertData::parse(const QByteArray &advertData)
 {
+
+    qDebug() << "BBBB parse [" << advertData.toHex() << "]";
+
 	if (advertData.length() < 27) { // quick sanity check 27 is minimal length of iBeacon advertisment
 		_hasBeaconData = false;
 		return true;

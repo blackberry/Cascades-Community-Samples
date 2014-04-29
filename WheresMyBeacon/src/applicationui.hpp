@@ -47,6 +47,7 @@ class ApplicationUI : public QObject
     Q_OBJECT
 
     Q_PROPERTY(bb::cascades::DataModel* model READ model CONSTANT)
+    Q_PROPERTY(int state READ state NOTIFY stateChanged);
 
 public:
     ApplicationUI();
@@ -67,6 +68,7 @@ public slots:
 
 signals:
     void message(const QVariant &text);
+    void stateChanged();
 
 private:
     bb::cascades::DataModel* model() const;
@@ -77,6 +79,13 @@ private:
     AbstractPane *_root;
     QObject *_mainPage;
     GroupDataModel *_model;
+
+    static const int STATE_STOPPED = 1;
+    static const int STATE_STARTED = 2;
+    int _state;
+
+    int state();
+
 };
 
 #endif /* ApplicationUI_HPP_ */
