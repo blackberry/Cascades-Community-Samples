@@ -73,6 +73,10 @@ public slots:
 
     void onInAdapterStatusResp(int opStatus);
 
+    void onInClientSynchronizeResp(int opStatus);
+
+    void onInServerSyncResultRequ(QByteArray serialized_data);
+
 private slots:
 	void onSettingsChanged();
 

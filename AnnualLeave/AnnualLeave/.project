@@ -5,6 +5,7 @@
 	<projects>
 		<project>AnnualLeaveAdapterEmail</project>
 		<project>AnnualLeaveCommon</project>
+		<project>AnnualLeaveModel</project>
 		<project>AnnualLeaveService</project>
 	</projects>
 	<buildSpec>

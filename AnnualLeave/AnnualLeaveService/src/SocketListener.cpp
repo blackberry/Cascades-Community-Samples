@@ -24,6 +24,11 @@ SocketListener::SocketListener(QObject *parent)
 	, _socket(NULL)
 	, _ops(Operations::getInstance(this))
 {
+    QFile socketFilePath(_ops->getSocketServerPath());
+    if (socketFilePath.exists()) {
+        qDebug() << "SSSS Socket server signal file exists from previous instantiation - deleting " << _ops->getSocketServerPath() << endl;
+        socketFilePath.remove();
+    }
 	if (QObject::connect(_server, SIGNAL(newConnection()),
 			                this, SLOT(onNewConnection()))) {
 		qDebug() << "SSSS Connected socket server signal" << endl;
@@ -58,9 +63,21 @@ SocketListener *SocketListener::getInstance(QObject *parent)
 
 void SocketListener::listen()
 {
-	qDebug() << "SSSS Start listening" << endl;
 
-	_server->listen(ANNUAL_LEAVE_HEADLESS_SOCKET_SERVER_NAME);
+    qDebug() << "SSSS SocketListener::listen() - _ops->getSocketServerPath() " << _ops->getSocketServerPath() << endl;
+
+    qDebug() << "SSSS Start listening" << endl;
+
+	_server->listen(_ops->getSocketServerPath());
+
+    qDebug() << "SSSS QLocalServer info -            serverName() " << _server->serverName() << endl;
+    qDebug() << "SSSS QLocalServer info -        fullServerName() " << _server->fullServerName() << endl;
+    qDebug() << "SSSS QLocalServer info -           isListening() " << _server->isListening() << endl;
+    qDebug() << "SSSS QLocalServer info - maxPendingConnections() " << _server->maxPendingConnections() << endl;
+    qDebug() << "SSSS QLocalServer info - hasPendingConnections() " << _server->hasPendingConnections() << endl;
+    qDebug() << "SSSS QLocalServer info -           serverError() " << _server->serverError() << endl;
+    qDebug() << "SSSS QLocalServer info -           errorString() " << _server->errorString() << endl;
+
 }
 
 void SocketListener::onNewConnection()

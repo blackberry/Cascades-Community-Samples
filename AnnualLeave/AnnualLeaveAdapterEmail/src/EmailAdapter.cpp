@@ -15,26 +15,18 @@
  */
 
 #include "EmailAdapter.hpp"
+#include "BookingList.hpp"
 
 EmailAdapter* EmailAdapter::_instance;
 Settings* EmailAdapter::_settings;
 AdapterSettings* EmailAdapter::_adapter_settings;
 SimpleTestCalendar* EmailAdapter::_calendar;
 
-EmailAdapter::EmailAdapter(QObject *parent)
-	: QObject(parent)
-	, _adapterImpl(NULL) // careful -- don't initialise with AdapterImpl::getInstance(this) here - recursion!!!
-    , _messageService(new MessageService(this))
-	, _accountList(bb::pim::account::AccountService().accounts(bb::pim::account::Service::Messages))
-	, _model(new GroupDataModel(this))
-	, _builder(NULL)
-	, _mapOpType(new StringMap())
-	, _mapStatus(new StringMap())
-	, _mapTaskType(new StringMap())
-	, _cache(EntitlementCache::getInstance(this))
-	, _last_configured_value(-1)
-	, _rollBack(RollBack::getInstance(this))
-	, _userIdCache(UserIdCache::getInstance(this))
+EmailAdapter::EmailAdapter(QObject *parent) :
+        QObject(parent), _adapterImpl(NULL) // careful -- don't initialise with AdapterImpl::getInstance(this) here - recursion!!!
+                , _messageService(new MessageService(this)), _accountList(bb::pim::account::AccountService().accounts(bb::pim::account::Service::Messages)), _model(new GroupDataModel(this)), _builder(
+                NULL), _mapOpType(new StringMap()), _mapStatus(new StringMap()), _mapTaskType(new StringMap()), _cache(EntitlementCache::getInstance(this)), _last_configured_value(-1), _rollBack(
+                RollBack::getInstance(this)), _userIdCache(UserIdCache::getInstance(this))
 {
     qDebug() << "EEEE EmailAdapter::EmailAdapter(QObject *parent)" << endl;
 
@@ -136,8 +128,8 @@ void EmailAdapter::connectSignals()
         qWarning() << "EEEE EmailAdapter::start() - connect failed - messageAdded" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(_messageService, SIGNAL(messageRemoved(bb::pim::account::AccountKey, bb::pim::message::ConversationKey, bb::pim::message::MessageKey, QString)),
-    		                         this,   SLOT(messageRemoved(bb::pim::account::AccountKey, bb::pim::message::ConversationKey, bb::pim::message::MessageKey, QString)))) {
+    if (!QObject::connect(_messageService, SIGNAL(messageRemoved(bb::pim::account::AccountKey, bb::pim::message::ConversationKey, bb::pim::message::MessageKey, QString)), this,
+            SLOT(messageRemoved(bb::pim::account::AccountKey, bb::pim::message::ConversationKey, bb::pim::message::MessageKey, QString)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - messageRemoved" << strerror(errno) << endl;
     }
 
@@ -170,24 +162,31 @@ void EmailAdapter::connectSignals()
         qWarning() << "EEEE EmailAdapter::start() - connect failed - inUpdateBookingResp" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(this, SIGNAL(inApprovalTaskRequ(int, const QString &, int, qint64, qint64, bool, bool, int, int, int, const QString &,int)),
-    		      _adapterImpl, SIGNAL(inApprovalTaskRequ(int, const QString &, int, qint64, qint64, bool, bool, int, int, int, const QString &,int)))) {
+    if (!QObject::connect(this, SIGNAL(inApprovalTaskRequ(int, const QString &, int, qint64, qint64, bool, bool, int, int, int, const QString &,int)), _adapterImpl,
+            SIGNAL(inApprovalTaskRequ(int, const QString &, int, qint64, qint64, bool, bool, int, int, int, const QString &,int)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - inApprovalTaskRequ (BOOKING)" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(this, SIGNAL(inApprovalTaskRequ(int, int, int, int, qint64, qint64, qint64, qint64, bool, bool, bool, bool, int, int, const QString &, int, int)),
-    		      _adapterImpl, SIGNAL(inApprovalTaskRequ(int, int, int, int, qint64, qint64, qint64, qint64, bool, bool, bool, bool, int, int, const QString &, int, int)))) {
+    if (!QObject::connect(this, SIGNAL(inApprovalTaskRequ(int, int, int, int, qint64, qint64, qint64, qint64, bool, bool, bool, bool, int, int, const QString &, int, int)), _adapterImpl,
+            SIGNAL(inApprovalTaskRequ(int, int, int, int, qint64, qint64, qint64, qint64, bool, bool, bool, bool, int, int, const QString &, int, int)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - inApprovalTaskRequ (UPDATE)" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(this, SIGNAL(inApprovalTaskRequ(int, int, int, qint64, qint64, bool, bool, int, const QString &, const QString &, int, int)),
-    		      _adapterImpl, SIGNAL(inApprovalTaskRequ(int, int, int, qint64, qint64, bool, bool, int, const QString &, const QString &, int, int)))) {
+    if (!QObject::connect(this, SIGNAL(inApprovalTaskRequ(int, int, int, qint64, qint64, bool, bool, int, const QString &, const QString &, int, int)), _adapterImpl,
+            SIGNAL(inApprovalTaskRequ(int, int, int, qint64, qint64, bool, bool, int, const QString &, const QString &, int, int)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - inApprovalTaskRequ (CANCEL)" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(this, SIGNAL(inApprovalTaskOutcomeResp(int, int)),
-    		      _adapterImpl, SIGNAL(inApprovalTaskOutcomeResp(int, int)))) {
+    if (!QObject::connect(this, SIGNAL(inApprovalTaskOutcomeResp(int, int)), _adapterImpl, SIGNAL(inApprovalTaskOutcomeResp(int, int)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - inApprovalTaskOutcomeResp" << strerror(errno) << endl;
+    }
+
+    if (!QObject::connect(this, SIGNAL(inClientSynchronizeResp(int)), _adapterImpl, SIGNAL(inClientSynchronizeResp(int)))) {
+        qWarning() << "EEEE EmailAdapter::start() - connect failed - inClientSynchronizeResp" << strerror(errno) << endl;
+    }
+
+    if (!QObject::connect(this, SIGNAL(inServerSyncResultRequ(QByteArray)), _adapterImpl, SIGNAL(inServerSyncResultRequ(QByteArray)))) {
+        qWarning() << "EEEE EmailAdapter::start() - connect failed - inServerSyncResultRequ" << strerror(errno) << endl;
     }
 
     if (!QObject::connect(this, SIGNAL(pauseDataFromApi()), _adapterImpl, SIGNAL(pauseDataFromApi()))) {
@@ -198,20 +197,18 @@ void EmailAdapter::connectSignals()
         qWarning() << "EEEE EmailAdapter::start() - connect failed - pauseDataFromApi" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(_model, SIGNAL(itemAdded(QVariantList)),
-    		                this, SLOT(onItemAdded(QVariantList)))) {
+    if (!QObject::connect(_model, SIGNAL(itemAdded(QVariantList)), this, SLOT(onItemAdded(QVariantList)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - itemAdded" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(_model, SIGNAL(itemUpdated(QVariantList)),
-    		                this, SLOT(onItemUpdated(QVariantList)))) {
+    if (!QObject::connect(_model, SIGNAL(itemUpdated(QVariantList)), this, SLOT(onItemUpdated(QVariantList)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - itemUpdated" << strerror(errno) << endl;
     }
 
-    if (!QObject::connect(_model, SIGNAL(itemRemoved(QVariantList)),
-    		                this, SLOT(onItemRemoved(QVariantList)))) {
+    if (!QObject::connect(_model, SIGNAL(itemRemoved(QVariantList)), this, SLOT(onItemRemoved(QVariantList)))) {
         qWarning() << "EEEE EmailAdapter::start() - connect failed - itemRemoved" << strerror(errno) << endl;
     }
+
 }
 
 int EmailAdapter::stop()
@@ -239,9 +236,9 @@ int EmailAdapter::stop()
 
 void EmailAdapter::onItemAdded(QVariantList indexPath)
 {
-	if (indexPath.length() != 2) {
-		return;
-	}
+    if (indexPath.length() != 2) {
+        return;
+    }
 
     qDebug() << "EEEE onItemAdded() - DataModel item ADDED at indexPath=" << indexPath << endl;
 
@@ -259,9 +256,9 @@ void EmailAdapter::onItemAdded(QVariantList indexPath)
 
 void EmailAdapter::onItemUpdated(QVariantList indexPath)
 {
-	if (indexPath.length() != 2) {
-		return;
-	}
+    if (indexPath.length() != 2) {
+        return;
+    }
 
     qDebug() << "EEEE onItemUpdated() - DataModel item UPDATED at indexPath=" << indexPath << endl;
 
@@ -279,9 +276,9 @@ void EmailAdapter::onItemUpdated(QVariantList indexPath)
 
 void EmailAdapter::onItemRemoved(QVariantList indexPath)
 {
-	if (indexPath.length() != 2) {
-		return;
-	}
+    if (indexPath.length() != 2) {
+        return;
+    }
 
     qDebug() << "EEEE onItemRemoved() - DataModel item REMOVED at indexPath=" << indexPath << endl;
 }
@@ -373,6 +370,30 @@ int EmailAdapter::outSubmitBookingRequ(int localId, int leaveYear, qint64 fromDa
     return ADAPTER_IMPL_ACCEPTED;
 }
 
+int EmailAdapter::outClientSynchronizeRequ(int leave_year)
+{
+    qDebug() << "EEEE EmailAdapter:outClientSynchronizeRequ(" << leave_year << ")" << endl;
+    if (!_adapter_settings->isConfigured()) {
+        return ADAPTER_IMPL_NOTACCEPTED;
+    }
+
+    // THIS ADAPTER DOES NOT SUPPORT THE SYNC OPERATIONS SO ALWAYS REPLIES WITH A NEGATIVE ACK
+
+    qDebug() << "EEEE EmailAdapter:outClientSynchronizeRequ(): emitting inClientSynchronizeResp";
+    emit inClientSynchronizeResp(OP_STATUS_NOT_SUPPORTED);
+
+    return ADAPTER_IMPL_NOTACCEPTED;
+}
+
+int EmailAdapter::outServerSyncResultResp(int op_id, int op_status) {
+    Q_UNUSED(op_id)
+    Q_UNUSED(op_status)
+    if (!_adapter_settings->isConfigured()) {
+        return ADAPTER_IMPL_NOTACCEPTED;
+    }
+    return ADAPTER_IMPL_ACCEPTED;
+}
+
 int EmailAdapter::outCancelBookingRequ(int localId, int leaveYear, qint64 fromDate, qint64 toDate, bool firstDayHalf, bool lastDayHalf, int dayHalf, const QString &note, int originating_op_id)
 {
 
@@ -387,7 +408,6 @@ int EmailAdapter::outCancelBookingRequ(int localId, int leaveYear, qint64 fromDa
 
     _rollBack->deleteItem(localId);
     _rollBack->addItem(localId, originating_op_id, leaveYear, half_days);
-
 
     // Send an cancellation task request to the p2p approver
     parameters[EMAIL_ADAPTER_KEY_OPERATION] = stringForOpType(OP_TYPE_APPROVAL_TASK_REQUEST);
@@ -414,15 +434,8 @@ int EmailAdapter::outCancelBookingRequ(int localId, int leaveYear, qint64 fromDa
     return ADAPTER_IMPL_ACCEPTED;
 }
 
-int EmailAdapter::outUpdateBookingRequ(
-        int localId,
-        int oldYear, int newYear,
-        qint64 oldFromDate, qint64 newFromDate,
-        qint64 oldToDate, qint64 newToDate,
-        bool oldFirstDayHalf, bool newFirstDayHalf,
-        bool oldLastDayHalf, bool newLastDayHalf,
-        int oldDayHalf, int newDayHalf,
-        const QString &note, int originating_op_id)
+int EmailAdapter::outUpdateBookingRequ(int localId, int oldYear, int newYear, qint64 oldFromDate, qint64 newFromDate, qint64 oldToDate, qint64 newToDate, bool oldFirstDayHalf, bool newFirstDayHalf,
+        bool oldLastDayHalf, bool newLastDayHalf, int oldDayHalf, int newDayHalf, const QString &note, int originating_op_id)
 {
     Q_UNUSED(note)
 
@@ -455,9 +468,11 @@ int EmailAdapter::outUpdateBookingRequ(
     //Normally I'd expect the back end system to do this so we do our best here
 
     int oldHalfDayCount = _calendar->calculateHalfDays(oldFromDate, oldToDate, oldFirstDayHalf, oldLastDayHalf);
-    qDebug() << "EEEE calculated old half days for from_date=" << oldFromDate << " to_date=" << oldToDate << " first_day_half=" << oldFirstDayHalf << " last_day_half=" << oldLastDayHalf << " half_days=" << oldHalfDayCount;
+    qDebug() << "EEEE calculated old half days for from_date=" << oldFromDate << " to_date=" << oldToDate << " first_day_half=" << oldFirstDayHalf << " last_day_half=" << oldLastDayHalf
+            << " half_days=" << oldHalfDayCount;
     int newHalfDayCount = _calendar->calculateHalfDays(newFromDate, newToDate, newFirstDayHalf, newLastDayHalf);
-    qDebug() << "EEEE calculated new half days for from_date=" << newFromDate << " to_date=" << newToDate << " first_day_half=" << newFirstDayHalf << " last_day_half=" << newLastDayHalf << " half_days=" << newHalfDayCount;
+    qDebug() << "EEEE calculated new half days for from_date=" << newFromDate << " to_date=" << newToDate << " first_day_half=" << newFirstDayHalf << " last_day_half=" << newLastDayHalf
+            << " half_days=" << newHalfDayCount;
 
     parameters[EMAIL_ADAPTER_KEY_HALF_DAYS] = newHalfDayCount;
 
@@ -483,13 +498,12 @@ int EmailAdapter::outUpdateBookingRequ(
     return ADAPTER_IMPL_ACCEPTED;
 }
 
-
 int EmailAdapter::outApprovalOutcomeResp(int localId, int opStatus)
 {
-	Q_UNUSED(localId)
-	Q_UNUSED(opStatus)
+    Q_UNUSED(localId)
+    Q_UNUSED(opStatus)
 
-	if (!_adapter_settings->isConfigured()) {
+    if (!_adapter_settings->isConfigured()) {
         return ADAPTER_IMPL_NOTACCEPTED;
     }
 
@@ -498,8 +512,8 @@ int EmailAdapter::outApprovalOutcomeResp(int localId, int opStatus)
 
 int EmailAdapter::outHalfDaysUsedResp(int localId, int opStatus)
 {
-	Q_UNUSED(localId)
-	Q_UNUSED(opStatus)
+    Q_UNUSED(localId)
+    Q_UNUSED(opStatus)
 
     if (!_adapter_settings->isConfigured()) {
         return ADAPTER_IMPL_NOTACCEPTED;
@@ -536,25 +550,26 @@ int EmailAdapter::outAnnualEntitlementRequ(int year)
 
 int EmailAdapter::outApprovalTaskResp(int taskId, int opStatus, const QString &userId)
 {
-	Q_UNUSED(opStatus)
+    Q_UNUSED(opStatus)
 
     if (!_adapter_settings->isConfigured()) {
         return ADAPTER_IMPL_NOTACCEPTED;
     }
 
-	if (_userIdCache->foundUserIdMatch(userId)) {
-		qDebug() << "EEEE EmailAdapter::outApprovalTaskResp - adding to UserId Cache UserId=" << userId << ", taskId=" << taskId << endl;
-		_userIdCache->updateItem(userId, taskId);
-	} else {
-		qWarning() << "EEEE EmailAdapter::outApprovalTaskResp - no match on UserId=" << userId << endl;
+    if (_userIdCache->foundUserIdMatch(userId)) {
+        qDebug() << "EEEE EmailAdapter::outApprovalTaskResp - adding to UserId Cache UserId=" << userId << ", taskId=" << taskId << endl;
+        _userIdCache->updateItem(userId, taskId);
+    } else {
+        qWarning() << "EEEE EmailAdapter::outApprovalTaskResp - no match on UserId=" << userId << endl;
         return ADAPTER_IMPL_NOTACCEPTED;
-	}
+    }
     return ADAPTER_IMPL_ACCEPTED;
 }
 
 int EmailAdapter::outApprovalTaskOutcomeRequ(int taskId, int local_request_id, int requestStatus, int originating_op_id, int task_type)
 {
-    qDebug() << "EEEE EmailAdapter:outApprovalTaskOutcomeRequ() taskId=" << taskId << " local_request_id=" << local_request_id << " requestStatus=" << requestStatus << " originating_op_id=" << originating_op_id << endl;
+    qDebug() << "EEEE EmailAdapter:outApprovalTaskOutcomeRequ() taskId=" << taskId << " local_request_id=" << local_request_id << " requestStatus=" << requestStatus << " originating_op_id="
+            << originating_op_id << endl;
     if (!_adapter_settings->isConfigured()) {
         return ADAPTER_IMPL_NOTACCEPTED;
     }
@@ -569,7 +584,7 @@ int EmailAdapter::outApprovalTaskOutcomeRequ(int taskId, int local_request_id, i
     parameters[EMAIL_ADAPTER_KEY_TASK_TYPE] = task_type;
 
     if (!_userIdCache->foundTaskIdMatch(taskId)) {
-		qWarning() << "EEEE EmailAdapter::outApprovalTaskOutcomeRequ - no match on TaskId=" << taskId << endl;
+        qWarning() << "EEEE EmailAdapter::outApprovalTaskOutcomeRequ - no match on TaskId=" << taskId << endl;
         return ADAPTER_IMPL_NOTACCEPTED;
     }
 
@@ -581,7 +596,7 @@ int EmailAdapter::outApprovalTaskOutcomeRequ(int taskId, int local_request_id, i
 
     _userIdCache->removeItem(taskId);
 
-	return ADAPTER_IMPL_ACCEPTED;
+    return ADAPTER_IMPL_ACCEPTED;
 }
 
 int EmailAdapter::outAdapterStatusRequ()
@@ -593,7 +608,6 @@ int EmailAdapter::outAdapterStatusRequ()
 
     return ADAPTER_IMPL_ACCEPTED;
 }
-
 
 void EmailAdapter::onSettingsChanged()
 {
@@ -663,22 +677,22 @@ void EmailAdapter::onSettingsChanged()
 void EmailAdapter::logAccounts()
 {
     foreach (const bb::pim::account::Account &account, _accountList){
-    	qDebug() << "EEEE account: displayName=" << account.displayName() << " providerName=" << account.provider().name() << endl;
-    }
+    qDebug() << "EEEE account: displayName=" << account.displayName() << " providerName=" << account.provider().name() << endl;
+}
 }
 
 void EmailAdapter::selectCurrentAccount()
 {
     foreach (const bb::pim::account::Account &account, _accountList){
     qDebug() << "EEEE selectCurrentAccount: " << account.displayName() << " vs " << _adapter_settings->accountName() << " and " << account.provider().name() << " vs " << _adapter_settings->providerName();
-		if ((account.displayName().compare(_adapter_settings->accountName(), Qt::CaseInsensitive) == 0) &&
-				(account.provider().name().compare(_adapter_settings->providerName(), Qt::CaseInsensitive) == 0)) {
-			_currentAccount = account;
-			qDebug() << "EEEE selected account " << _currentAccount.id();
-			continue;
-		}
-	}
-    _builder = MessageBuilder::create(_currentAccount.id());
+    if ((account.displayName().compare(_adapter_settings->accountName(), Qt::CaseInsensitive) == 0) &&
+            (account.provider().name().compare(_adapter_settings->providerName(), Qt::CaseInsensitive) == 0)) {
+        _currentAccount = account;
+        qDebug() << "EEEE selected account " << _currentAccount.id();
+        continue;
+    }
+}
+_builder = MessageBuilder::create(_currentAccount.id());
 }
 
 void EmailAdapter::messagesUpdated()
@@ -703,19 +717,19 @@ void EmailAdapter::messagesUpdated()
     const QList<Message> messages = _messageService->searchLocal(_currentAccount.id(), filter);
 
     foreach (const Message &message, messages){
-        qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing Id:" << message.id() << endl;
-        qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing Subject:" << message.subject() << endl;
-        qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing To:" << message.recipientAt(0).address() << endl;
-        qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing From:" << message.sender().address() << endl;
-        qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing isInbound:" << message.isInbound() << endl;
-        qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing status:" << message.status() << endl;
+    qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing Id:" << message.id() << endl;
+    qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing Subject:" << message.subject() << endl;
+    qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing To:" << message.recipientAt(0).address() << endl;
+    qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing From:" << message.sender().address() << endl;
+    qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing isInbound:" << message.isInbound() << endl;
+    qDebug() << "EEEE EmailAdapter::messagesUpdated() - processing status:" << message.status() << endl;
 
-        if(addMessage(message)) {
-            qDebug() << "EEEE EmailAdapter::messagesUpdated() - Added:" << message.id() << endl;
-        } else {
-            qDebug() << "EEEE EmailAdapter::messagesUpdated() - Not added:" << message.id() << endl;
-        }
+    if(addMessage(message)) {
+        qDebug() << "EEEE EmailAdapter::messagesUpdated() - Added:" << message.id() << endl;
+    } else {
+        qDebug() << "EEEE EmailAdapter::messagesUpdated() - Not added:" << message.id() << endl;
     }
+}
 
     processInboundMessages();
 }
@@ -724,25 +738,25 @@ void EmailAdapter::modelClear()
 {
     for (QVariantList indexPath = _model->first(); !indexPath.isEmpty(); indexPath = _model->after(indexPath)) {
         QVariantMap entry = _model->data(indexPath).toMap();
-		bool toBeRemoved = entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED].toBool();
-		if (toBeRemoved) {
+        bool toBeRemoved = entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED].toBool();
+        if (toBeRemoved) {
 
-		    MessageKey messageId = entry[EMAIL_ADAPTER_KEY_MESSAGE_ID].toLongLong();
-		    bool completed = entry[EMAIL_ADAPTER_KEY_MESSAGE_COMPLETED].toBool();
-		    bool messageBeingProcessed = entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED].toBool();
+            MessageKey messageId = entry[EMAIL_ADAPTER_KEY_MESSAGE_ID].toLongLong();
+            bool completed = entry[EMAIL_ADAPTER_KEY_MESSAGE_COMPLETED].toBool();
+            bool messageBeingProcessed = entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED].toBool();
 
-		    qDebug() << "EEEE modelClear() - DataModel item requesting removal        at indexPath=" << indexPath << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting removal           messageId=" << messageId << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting removal         toBeRemoved=" << toBeRemoved << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting removal           completed=" << completed << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting removal     being processed=" << messageBeingProcessed << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting removal        at indexPath=" << indexPath << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting removal           messageId=" << messageId << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting removal         toBeRemoved=" << toBeRemoved << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting removal           completed=" << completed << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting removal     being processed=" << messageBeingProcessed << endl;
 
-			_model->removeAt(indexPath);
+            _model->removeAt(indexPath);
 
-		} else {
-		    qDebug() << "EEEE modelClear() - DataModel item not requiring removal at indexPath=" << indexPath << endl;
+        } else {
+            qDebug() << "EEEE modelClear() - DataModel item not requiring removal at indexPath=" << indexPath << endl;
 
-		}
+        }
     }
 }
 
@@ -762,63 +776,62 @@ bool EmailAdapter::modelInsert(QVariantMap entry)
             qWarning() << "EEEE EmailAdapter::modelInsert() - improper targetMessageId" << targetEntry[EMAIL_ADAPTER_KEY_MESSAGE_ID] << endl;
             continue;
         }
-		if (targetMessageId == insertMessageId) {
-			duplicate = true;
-		}
+        if (targetMessageId == insertMessageId) {
+            duplicate = true;
+        }
     }
     if (!duplicate) {
 
-	    bool completed = entry[EMAIL_ADAPTER_KEY_MESSAGE_COMPLETED].toBool();
-		bool toBeRemoved = entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED].toBool();
-	    bool messageBeingProcessed = entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED].toBool();
+        bool completed = entry[EMAIL_ADAPTER_KEY_MESSAGE_COMPLETED].toBool();
+        bool toBeRemoved = entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED].toBool();
+        bool messageBeingProcessed = entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED].toBool();
 
-	    qDebug() << "EEEE modelInsert() - DataModel item requesting insertion       messageId=" << insertMessageId << endl;
-	    qDebug() << "EEEE modelInsert() - DataModel item requesting insertion     toBeRemoved=" << toBeRemoved << endl;
-	    qDebug() << "EEEE modelInsert() - DataModel item requesting insertion       processed=" << completed << endl;
-	    qDebug() << "EEEE modelInsert() - DataModel item requesting insertion being processed=" << messageBeingProcessed << endl;
+        qDebug() << "EEEE modelInsert() - DataModel item requesting insertion       messageId=" << insertMessageId << endl;
+        qDebug() << "EEEE modelInsert() - DataModel item requesting insertion     toBeRemoved=" << toBeRemoved << endl;
+        qDebug() << "EEEE modelInsert() - DataModel item requesting insertion       processed=" << completed << endl;
+        qDebug() << "EEEE modelInsert() - DataModel item requesting insertion being processed=" << messageBeingProcessed << endl;
 
-	    _model->insert(entry);
-    	return true;
+        _model->insert(entry);
+        return true;
     } else {
         qDebug() << "EEEE EmailAdapter::modelInsert() - attempting to add duplicate message" << insertMessageId << endl;
         return false;
     }
 }
 
-void EmailAdapter::messageRemoved(bb::pim::account::AccountKey accountId, bb::pim::message::ConversationKey conversationId,
-                    bb::pim::message::MessageKey messageId, QString sourceId)
+void EmailAdapter::messageRemoved(bb::pim::account::AccountKey accountId, bb::pim::message::ConversationKey conversationId, bb::pim::message::MessageKey messageId, QString sourceId)
 {
-	Q_UNUSED(accountId)
-	Q_UNUSED(conversationId)
-	Q_UNUSED(sourceId)
+    Q_UNUSED(accountId)
+    Q_UNUSED(conversationId)
+    Q_UNUSED(sourceId)
 
-	qDebug() << "EEEE EmailAdapter::messageRemoved() - message removed" << messageId << endl;
+    qDebug() << "EEEE EmailAdapter::messageRemoved() - message removed" << messageId << endl;
 
     for (QVariantList indexPath = _model->first(); !indexPath.isEmpty(); indexPath = _model->after(indexPath)) {
-	    bool ok;
+        bool ok;
         QVariantMap entry = _model->data(indexPath).toMap();
         MessageKey targetMessageId = entry[EMAIL_ADAPTER_KEY_MESSAGE_ID].toLongLong(&ok);
         if (!ok) {
             qWarning() << "EEEE EmailAdapter::messageRemoved() - improper MessageId" << entry[EMAIL_ADAPTER_KEY_MESSAGE_ID] << endl;
             continue;
         }
-		if (targetMessageId == messageId) {
-			qDebug() << "EEEE EmailAdapter::messageRemoved() - removed message matches target message --- flag to be removed in model" << messageId << endl;
-			entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED] = true;
+        if (targetMessageId == messageId) {
+            qDebug() << "EEEE EmailAdapter::messageRemoved() - removed message matches target message --- flag to be removed in model" << messageId << endl;
+            entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED] = true;
 
-		    bool completed = entry[EMAIL_ADAPTER_KEY_MESSAGE_COMPLETED].toBool();
-		    bool messageBeingProcessed = entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED].toBool();
+            bool completed = entry[EMAIL_ADAPTER_KEY_MESSAGE_COMPLETED].toBool();
+            bool messageBeingProcessed = entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED].toBool();
 
-		    qDebug() << "EEEE modelClear() - DataModel item requesting updating    at indexPath=" << indexPath << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting updating       messageId=" << messageId << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting updating     toBeRemoved=" << entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED].toBool() << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting updating       completed=" << completed << endl;
-		    qDebug() << "EEEE modelClear() - DataModel item requesting updating being processed=" << messageBeingProcessed << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting updating    at indexPath=" << indexPath << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting updating       messageId=" << messageId << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting updating     toBeRemoved=" << entry[EMAIL_ADAPTER_KEY_TO_BE_REMOVED].toBool() << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting updating       completed=" << completed << endl;
+            qDebug() << "EEEE modelClear() - DataModel item requesting updating being processed=" << messageBeingProcessed << endl;
 
-			_model->updateItem(indexPath, entry);
-		} else {
-			qDebug() << "EEEE EmailAdapter::messageRemoved() - removed message does NOT matches target message" << messageId << endl;
-		}
+            _model->updateItem(indexPath, entry);
+        } else {
+            qDebug() << "EEEE EmailAdapter::messageRemoved() - removed message does NOT matches target message" << messageId << endl;
+        }
     }
 }
 
@@ -886,11 +899,11 @@ bool EmailAdapter::addMessage(const Message &message)
             entry[EMAIL_ADAPTER_KEY_MESSAGE_COMPLETED] = false;
             entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED] = false;
             if (!modelInsert(entry)) {
-            	return false;
+                return false;
             }
         } else {
             qWarning() << "EEEE EmailAdapter::addMessage() - message body JSON parse error" << contentRx.cap(1) << endl;
-        	return false;
+            return false;
         }
     } else {
         qWarning() << "EEEE EmailAdapter::addMessage() - no identifiable content in email body:" << messageBody << endl;
@@ -927,11 +940,11 @@ void EmailAdapter::processJsonInboundMessages()
 
         if (toBeRemoved) {
             qDebug() << "EEEE processJsonInboundMessages - ignoring message - flagged to be removed - id:" << entry[EMAIL_ADAPTER_KEY_MESSAGE_ID].toLongLong(&ok) << endl;
-        	continue;
+            continue;
         }
         if (messageCompleted) {
             qDebug() << "EEEE processJsonInboundMessages - ignoring message - flagged as complete - id:" << entry[EMAIL_ADAPTER_KEY_MESSAGE_ID].toLongLong(&ok) << endl;
-        	continue;
+            continue;
         }
 
         // +++ GUARD +++ GUARD +++ GUARD +++ GUARD +++ GUARD +++ GUARD +++
@@ -945,16 +958,16 @@ void EmailAdapter::processJsonInboundMessages()
 
         if (messageBeingProcessed) {
             qDebug() << "EEEE processJsonInboundMessages - ignoring message - flagged as in progress - id:" << entry[EMAIL_ADAPTER_KEY_MESSAGE_ID].toLongLong(&ok) << endl;
-        	_mutex.unlock();
-        	continue;
+            _mutex.unlock();
+            continue;
         } else {
             messageBeingProcessed = true;
             entry[EMAIL_ADAPTER_KEY_MESSAGE_BEING_PROCESSED] = messageBeingProcessed;
-			_model->updateItem(indexPath, entry);
+            _model->updateItem(indexPath, entry);
         }
-    	_mutex.unlock();
+        _mutex.unlock();
 
-    	// END
+        // END
         // +++ GUARD +++ GUARD +++ GUARD +++ GUARD +++ GUARD +++ GUARD +++
 
         qDebug() << "EEEE processJsonInboundMessages - Processing Message Id:" << entry[EMAIL_ADAPTER_KEY_MESSAGE_ID].toLongLong(&ok) << endl;
@@ -974,7 +987,7 @@ void EmailAdapter::processJsonInboundMessages()
 
         if (operation.compare(stringForOpType(OP_TYPE_APPROVAL_OUTCOME_REQUEST)) == 0) {
 
-            int  localId = payload[EMAIL_ADAPTER_KEY_LOCAL_ID].toInt(&ok);
+            int localId = payload[EMAIL_ADAPTER_KEY_LOCAL_ID].toInt(&ok);
             if (!ok) {
                 qWarning() << "EEEE EmailAdapter::processJsonInboundMessages() - improper localId" << payload[EMAIL_ADAPTER_KEY_LOCAL_ID] << endl;
                 replyWithErrorMessage(messageId, QString("*** Parse Error - localId *** : %1").arg(payload[EMAIL_ADAPTER_KEY_LOCAL_ID].toString()));
@@ -989,14 +1002,14 @@ void EmailAdapter::processJsonInboundMessages()
                 continue;
             }
 
-			int task_type = payload[EMAIL_ADAPTER_KEY_TASK_TYPE].toInt(&ok);
-			Q_UNUSED(task_type)
-			if (!ok) {
-			  qWarning() << "EEEE EmailAdapter::processJsonInboundMessages() - improper task_type" << payload[EMAIL_ADAPTER_KEY_TASK_TYPE] << endl;
-			  replyWithErrorMessage(messageId, QString("*** Parse Error - task_type *** : %1").arg(payload[EMAIL_ADAPTER_KEY_TASK_TYPE].toString()));
-			  deleteMessage(messageId, indexPath, entry);
-			  continue;
-			}
+            int task_type = payload[EMAIL_ADAPTER_KEY_TASK_TYPE].toInt(&ok);
+            Q_UNUSED(task_type)
+            if (!ok) {
+                qWarning() << "EEEE EmailAdapter::processJsonInboundMessages() - improper task_type" << payload[EMAIL_ADAPTER_KEY_TASK_TYPE] << endl;
+                replyWithErrorMessage(messageId, QString("*** Parse Error - task_type *** : %1").arg(payload[EMAIL_ADAPTER_KEY_TASK_TYPE].toString()));
+                deleteMessage(messageId, indexPath, entry);
+                continue;
+            }
 
             QString requestStatusParam = payload[EMAIL_ADAPTER_KEY_STATUS].toString();
 
@@ -1008,7 +1021,7 @@ void EmailAdapter::processJsonInboundMessages()
                 continue;
             }
 
-            int  originating_op_id = payload[EMAIL_ADAPTER_KEY_ORIGINATING_OP_ID].toInt(&ok);
+            int originating_op_id = payload[EMAIL_ADAPTER_KEY_ORIGINATING_OP_ID].toInt(&ok);
             if (!ok) {
                 qWarning() << "EEEE EmailAdapter::processJsonInboundMessages() - improper originating_op_id" << payload[EMAIL_ADAPTER_KEY_ORIGINATING_OP_ID] << endl;
                 replyWithErrorMessage(messageId, QString("*** Parse Error - originating_op_id *** : %1").arg(payload[EMAIL_ADAPTER_KEY_ORIGINATING_OP_ID].toString()));
@@ -1023,13 +1036,13 @@ void EmailAdapter::processJsonInboundMessages()
             if (requestStatus == STATUS_BOOKING_APPROVED) {
 
                 int half_days = _rollBack->getHalfDays(localId, originating_op_id);
-            	_rollBack->deleteItem(localId, originating_op_id);
+                _rollBack->deleteItem(localId, originating_op_id);
 
-            	emit inApprovalOutcomeRequ(localId, STATUS_BOOKING_APPROVED, note, originating_op_id, half_days);
+                emit inApprovalOutcomeRequ(localId, STATUS_BOOKING_APPROVED, note, originating_op_id, half_days);
 
             } else if (requestStatus == STATUS_BOOKING_REJECTED) {
 
-            	int year = _rollBack->getYear(localId, originating_op_id);
+                int year = _rollBack->getYear(localId, originating_op_id);
                 int half_days = _rollBack->getHalfDays(localId, originating_op_id);
                 _cache->increment(year, half_days);
                 _rollBack->deleteItem(localId, originating_op_id);
@@ -1038,100 +1051,100 @@ void EmailAdapter::processJsonInboundMessages()
 
             } else if (requestStatus == STATUS_CANCELLATION_OK) {
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - Entitlement check" << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - Entitlement check" << endl;
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - localId=" << localId << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - originating_op_id=" << originating_op_id << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - localId=" << localId << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - originating_op_id=" << originating_op_id << endl;
 
-            	int half_days = _rollBack->getHalfDays(localId, originating_op_id);
+                int half_days = _rollBack->getHalfDays(localId, originating_op_id);
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - halfDays from Rollback=" << half_days << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - Deleting Rollback" << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - halfDays from Rollback=" << half_days << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - Deleting Rollback" << endl;
 
-            	_rollBack->deleteItem(localId, originating_op_id);
+                _rollBack->deleteItem(localId, originating_op_id);
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - Approval to GUI for origOpId=" << originating_op_id << ", halfdays=" << half_days << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_OK - Approval to GUI for origOpId=" << originating_op_id << ", halfdays=" << half_days << endl;
 
                 emit inApprovalOutcomeRequ(localId, STATUS_CANCELLATION_OK, note, originating_op_id, half_days);
 
             } else if (requestStatus == STATUS_CANCELLATION_REJECTED) {
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Entitlement check" << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Entitlement check" << endl;
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - localId=" << localId << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - originating_op_id=" << originating_op_id << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - localId=" << localId << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - originating_op_id=" << originating_op_id << endl;
 
-            	int year = _rollBack->getYear(localId, originating_op_id);
+                int year = _rollBack->getYear(localId, originating_op_id);
                 int half_days = _rollBack->getHalfDays(localId, originating_op_id);
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - year from Rollback=" << year << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - halfDays from Rollback=" << half_days << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Decrementing Entitlement cache for year=" << year << ",by " << half_days << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - year from Rollback=" << year << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - halfDays from Rollback=" << half_days << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Decrementing Entitlement cache for year=" << year << ",by " << half_days << endl;
 
                 _cache->decrement(year, half_days);
 
-                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Deleting Rollback for localId=" << localId << ", origOpId=" << originating_op_id<< endl;
-
-            	_rollBack->deleteItem(localId, originating_op_id);
-
-            	qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Rejection to GUI for origOpId=" << originating_op_id << ", halfdays=" << half_days << endl;
-
-            	emit inApprovalOutcomeRequ(localId, STATUS_CANCELLATION_REJECTED, note, originating_op_id, half_days);
-
-            } else if (requestStatus == STATUS_UPDATE_OK) {
-
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - Entitlement check" << endl;
-
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - localId=" << localId << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - originating_op_id=" << originating_op_id << endl;
-
-            	int newHalfDays = _rollBack->getNewHalfDays(localId, originating_op_id);
-
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - newHalfDays from Rollback=" << newHalfDays << endl;
-                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - Deleting Rollback for localId=" << localId << ", origOpId=" << originating_op_id<< endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Deleting Rollback for localId=" << localId << ", origOpId=" << originating_op_id << endl;
 
                 _rollBack->deleteItem(localId, originating_op_id);
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - Approval to GUI for origOpId=" << originating_op_id << ", newHalfdays=" << newHalfDays << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_CANCELLATION_REJECTED - Rejection to GUI for origOpId=" << originating_op_id << ", halfdays=" << half_days << endl;
 
-            	emit inApprovalOutcomeRequ(localId, STATUS_UPDATE_OK, note, originating_op_id, newHalfDays);
+                emit inApprovalOutcomeRequ(localId, STATUS_CANCELLATION_REJECTED, note, originating_op_id, half_days);
+
+            } else if (requestStatus == STATUS_UPDATE_OK) {
+
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - Entitlement check" << endl;
+
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - localId=" << localId << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - originating_op_id=" << originating_op_id << endl;
+
+                int newHalfDays = _rollBack->getNewHalfDays(localId, originating_op_id);
+
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - newHalfDays from Rollback=" << newHalfDays << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - Deleting Rollback for localId=" << localId << ", origOpId=" << originating_op_id << endl;
+
+                _rollBack->deleteItem(localId, originating_op_id);
+
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_OK - Approval to GUI for origOpId=" << originating_op_id << ", newHalfdays=" << newHalfDays << endl;
+
+                emit inApprovalOutcomeRequ(localId, STATUS_UPDATE_OK, note, originating_op_id, newHalfDays);
 
             } else if (requestStatus == STATUS_UPDATE_REJECTED) {
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Entitlement check" << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Entitlement check" << endl;
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - localId=" << localId << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - originating_op_id=" << originating_op_id << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - localId=" << localId << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - originating_op_id=" << originating_op_id << endl;
 
                 int oldYear = _rollBack->getOldYear(localId, originating_op_id);
                 int oldHalfDayCount = _rollBack->getOldHalfDays(localId, originating_op_id);
                 int newYear = _rollBack->getNewYear(localId, originating_op_id);
                 int newHalfDayCount = _rollBack->getNewHalfDays(localId, originating_op_id);
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - old year from Rollback=" << oldYear << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - old half day count from Rollback=" << oldHalfDayCount << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - new year from Rollback=" << newYear << endl;
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - new half day count from Rollback=" << newHalfDayCount << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - old year from Rollback=" << oldYear << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - old half day count from Rollback=" << oldHalfDayCount << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - new year from Rollback=" << newYear << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - new half day count from Rollback=" << newHalfDayCount << endl;
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Decrementing Entitlement cache for oldYear=" << oldYear << ",by oldHalfDayCount=" << oldHalfDayCount << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Decrementing Entitlement cache for oldYear=" << oldYear << ",by oldHalfDayCount=" << oldHalfDayCount << endl;
 
                 _cache->decrement(oldYear, oldHalfDayCount);
 
                 qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Incrementing Entitlement cache for newYear=" << newYear << ",by newHalfDayCount=" << newHalfDayCount << endl;
 
-            	_cache->increment(newYear, newHalfDayCount);
+                _cache->increment(newYear, newHalfDayCount);
 
-                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Deleting Rollback for localId=" << localId << ", origOpId=" << originating_op_id<< endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Deleting Rollback for localId=" << localId << ", origOpId=" << originating_op_id << endl;
 
                 _rollBack->deleteItem(localId, originating_op_id);
 
-            	qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Rejectiom to GUI for origOpId=" << originating_op_id << ", oldHalfDayCount=" << oldHalfDayCount << endl;
+                qDebug() << "EEEE EmailAdapter - STATUS_UPDATE_REJECTED - Rejectiom to GUI for origOpId=" << originating_op_id << ", oldHalfDayCount=" << oldHalfDayCount << endl;
 
-            	emit inApprovalOutcomeRequ(localId, STATUS_UPDATE_REJECTED, note, originating_op_id, oldHalfDayCount);
+                emit inApprovalOutcomeRequ(localId, STATUS_UPDATE_REJECTED, note, originating_op_id, oldHalfDayCount);
 
             } else {
 
-            	qWarning() << "EEEE EmailAdapter::processJsonInboundMessages() - unrecognised outcome" << requestStatus << endl;
+                qWarning() << "EEEE EmailAdapter::processJsonInboundMessages() - unrecognised outcome" << requestStatus << endl;
                 replyWithErrorMessage(messageId, QString("*** Parse Error - requestStatus *** : %1").arg(requestStatus));
                 deleteMessage(messageId, indexPath, entry);
                 continue;
@@ -1267,8 +1280,8 @@ void EmailAdapter::processJsonInboundMessages()
                     continue;
                 }
 
-                qDebug() << "EEEE EmailAdapter received approval task: " << userId << "," << leaveYear << "," << fromDate << "," << toDate << "," << firstDayHalf << "," << lastDayHalf << "," << dayHalf
-                        << "," << half_days << "," << local_request_id << "," << note << "," << originating_op_id;
+                qDebug() << "EEEE EmailAdapter received approval task: " << userId << "," << leaveYear << "," << fromDate << "," << toDate << "," << firstDayHalf << "," << lastDayHalf << ","
+                        << dayHalf << "," << half_days << "," << local_request_id << "," << note << "," << originating_op_id;
 
                 _userIdCache->add(userId, senderEmail);
 
@@ -1337,7 +1350,7 @@ void EmailAdapter::processJsonInboundMessages()
 
                 _userIdCache->add(userId, senderEmail);
 
-            	emit inApprovalTaskRequ(taskType, local_request_id, leaveYear, fromDate, toDate, firstDayHalf, lastDayHalf, dayHalf, note, userId, half_days, originating_op_id);
+                emit inApprovalTaskRequ(taskType, local_request_id, leaveYear, fromDate, toDate, firstDayHalf, lastDayHalf, dayHalf, note, userId, half_days, originating_op_id);
 
             } else if (taskType == TASK_TYPE_UPDATE_APPROVAL) {
 
@@ -1436,7 +1449,8 @@ void EmailAdapter::processJsonInboundMessages()
 
                 _userIdCache->add(userId, senderEmail);
 
-                emit inApprovalTaskRequ(taskType, local_request_id, oldYear, newYear, oldFromDate, newFromDate, oldToDate, newToDate, oldFirstDayHalf, newFirstDayHalf, oldLastDayHalf, newLastDayHalf, oldDayHalf, newDayHalf, userId, half_days, originating_op_id);
+                emit inApprovalTaskRequ(taskType, local_request_id, oldYear, newYear, oldFromDate, newFromDate, oldToDate, newToDate, oldFirstDayHalf, newFirstDayHalf, oldLastDayHalf, newLastDayHalf,
+                        oldDayHalf, newDayHalf, userId, half_days, originating_op_id);
             }
 
         } else if (operation.compare(stringForOpType(OP_TYPE_APPROVAL_TASK_OUTCOME_RESPONSE)) == 0) {
@@ -1512,7 +1526,7 @@ void EmailAdapter::deleteMessage(MessageKey id)
 {
     qWarning() << "EEEE EmailAdapter::deleteMessage() - deleting message:" << id << endl;
 
-	_messageService->remove(_currentAccount.id(), id);
+    _messageService->remove(_currentAccount.id(), id);
 }
 
 void EmailAdapter::replyWithErrorMessage(MessageKey id, const QString &errorMessage)
@@ -1521,15 +1535,15 @@ void EmailAdapter::replyWithErrorMessage(MessageKey id, const QString &errorMess
     qWarning() << "EEEE EmailAdapter::replyWithErrorMessage() - Error Response suppressed in this build" << endl;
 
     /*
-    MessageBuilder *builder = MessageBuilder::create(_currentAccount.id(), _messageService->message(_currentAccount.id(), id));
+     MessageBuilder *builder = MessageBuilder::create(_currentAccount.id(), _messageService->message(_currentAccount.id(), id));
 
-    QByteArray bodyData = QByteArray().append(errorMessage);
-    builder->body(MessageBody::PlainText, bodyData);
+     QByteArray bodyData = QByteArray().append(errorMessage);
+     builder->body(MessageBody::PlainText, bodyData);
 
-    MessageKey messageId = _messageService->send(_currentAccount.id(), *builder);
+     MessageKey messageId = _messageService->send(_currentAccount.id(), *builder);
 
-    qDebug() << "EEEE EmailAdapter::replyWithErrorMessage() - Reply Message Id:" << messageId << endl;
-	*/
+     qDebug() << "EEEE EmailAdapter::replyWithErrorMessage() - Reply Message Id:" << messageId << endl;
+     */
 }
 
 bool EmailAdapter::constructAndSendMessage(QVariantMap parameters, const QString &recipientEmail, const QString &recipientName)

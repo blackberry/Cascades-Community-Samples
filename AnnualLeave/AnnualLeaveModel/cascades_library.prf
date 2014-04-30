@@ -1,0 +1,73 @@
+# "default" project
+
+cascades_library {
+
+	CONFIG += separate_debug_symbols shared
+	
+	LIBS           += -lbbcascades
+	QT             += declarative
+	QT             -= gui
+	
+	QMAKE_CFLAGS   += -Wno-psabi
+	QMAKE_CXXFLAGS += -Wno-psabi
+	
+	QMAKE_LFLAGS += -Wl,--no-undefined
+
+	device {
+		CONFIG(static, static|shared) {
+			QNX_VARIANT = a.le-v7
+		}
+		CONFIG(shared, static|shared) {
+			QNX_VARIANT = so.le-v7
+		}
+	}
+	simulator {
+		CONFIG(static, static|shared) {
+			QNX_VARIANT = a
+		}
+		CONFIG(shared, static|shared) {
+			QNX_VARIANT = so
+		}
+	}
+	
+	CONFIG(release, debug|release) {
+		DESTDIR = $$QNX_VARIANT
+		!contains(CASCADES_LIBRARY, visible) {
+			QMAKE_CFLAGS *= -fvisibility=hidden
+			QMAKE_CXXFLAGS *= -fvisibility=hidden
+		}
+		!contains(CONFIG, link_time_optimize) {
+			 QMAKE_CFLAGS *= -g
+			 QMAKE_CXXFLAGS *= -g
+			 QMAKE_LFLAGS *= -Wl,-O1
+		}
+	}
+	CONFIG(debug, debug|release) {
+	    DESTDIR = $$QNX_VARIANT-g
+	    DEFINES += QT_DECLARATIVE_DEBUG
+	    QMAKE_CFLAGS *= -g -Og
+	    QMAKE_CXXFLAGS *= -g -Og
+	}
+		
+	!contains(CASCADES_LIBRARY, no_static) {
+		libS.target = $${DESTDIR}/$${QMAKE_PREFIX_STATICLIB}$${TARGET}S.$${QMAKE_EXTENSION_STATICLIB}
+		libS.commands = $$escape_expand(-$(DEL_FILE) $${libS.target} \
+			\\n\\t$(AR) $${libS.target} $(OBJECTS) \
+			\\n\\t$(RANLIB) $${libS.target})
+		libS.depends = $(OBJECTS) $(OBJCOMP) 
+		libS.no_link = true
+		QMAKE_EXTRA_TARGETS += libS
+		POST_TARGETDEPS += $${libS.target}
+	}
+	
+	profile {
+	    QMAKE_CXXFLAGS += -g -finstrument-functions
+	    LIBS += -lprofilingS
+	}
+	
+	OBJECTS_DIR = $${DESTDIR}/.obj
+	MOC_DIR = $${DESTDIR}/.moc
+	RCC_DIR = $${DESTDIR}/.rcc
+	UI_DIR = $${DESTDIR}/.ui
+
+}

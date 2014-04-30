@@ -22,11 +22,62 @@ RollBackItem::RollBackItem()
 	, _halfDays(0)
 	, _year(0)
 	, _newItem(false)
+{}
+
+RollBackItem::~RollBackItem() {}
+
+QDataStream &operator<<(QDataStream &out, const RollBackItem &rollBackItem)
 {
+	int schemaVersion = ROLLBACK_ITEM_SCHEMA_VERSION_CURRENT;
+
+	out << schemaVersion
+		<< rollBackItem.getLocalId()
+		<< rollBackItem.getOriginatingOpId()
+		<< rollBackItem.getHalfDays()
+		<< rollBackItem.getYear()
+		<< rollBackItem.isNewItem();
+	return out;
 }
 
-RollBackItem::~RollBackItem()
+QDataStream &operator>>(QDataStream &in, RollBackItem &rollBackItem)
 {
+	int localId;
+	int originating_op_id;
+	int halfDays;
+	int year;
+	bool isNewItem;
+	int schemaVersion;
+
+	in >> schemaVersion;
+
+	switch (schemaVersion) {
+		case ROLLBACK_ITEM_SCHEMA_VERSION_CURRENT:
+			in >> localId >> originating_op_id >> halfDays >> year >> isNewItem;
+			rollBackItem.setLocalId(localId);
+			rollBackItem.setOriginatingOpId(originating_op_id);
+			rollBackItem.setHalfDays(halfDays);
+			rollBackItem.setYear(year);
+			rollBackItem.setNewItem(isNewItem);
+			break;
+//
+// Handle older schema versions just in case application has been updated
+//
+//		case ROLLBACK_ITEM_SCHEMA_VERSION_X:
+//			in >> localId >> originating_op_id >> halfDays >> year >> isNewItem >> xxx;
+//			rollBackItem.setLocalId(localId);
+//			rollBackItem.setOriginatingOpId(originating_op_id);
+//			rollBackItem.setHalfDays(halfDays);
+//			rollBackItem.setYear(year);
+//			rollBackItem.setNewItem(isNewItem);
+//			rollBackItem.setXXX(xxx);
+//			break;
+
+		default:
+			qWarning() << "EEEE RollBackItem  unrecognised schema version detected" << schemaVersion << endl;
+			break;
+	}
+
+	return in;
 }
 
 int RollBackItem::getHalfDays() const {
@@ -67,33 +118,4 @@ bool RollBackItem::isNewItem() const {
 
 void RollBackItem::setNewItem(bool isNewItem) {
 	_newItem = isNewItem;
-}
-
-QDataStream &operator<<(QDataStream &out, const RollBackItem &rollBackItem)
-{
-	out << rollBackItem.getLocalId()
-		<< rollBackItem.getOriginatingOpId()
-		<< rollBackItem.getHalfDays()
-		<< rollBackItem.getYear()
-		<< rollBackItem.isNewItem();
-	return out;
-}
-
-QDataStream &operator>>(QDataStream &in, RollBackItem &rollBackItem)
-{
-	int localId;
-	int originating_op_id;
-	int halfDays;
-	int year;
-	bool isNewItem;
-
-	in >> localId >> originating_op_id >> halfDays >> year >> isNewItem;
-
-	rollBackItem.setLocalId(localId);
-	rollBackItem.setOriginatingOpId(originating_op_id);
-	rollBackItem.setHalfDays(halfDays);
-	rollBackItem.setYear(year);
-	rollBackItem.setNewItem(isNewItem);
-
-	return in;
 }

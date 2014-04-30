@@ -28,7 +28,6 @@ using namespace bb::cascades;
 using namespace bb::data;
 
 OpsSqlDataSource* OpsSqlDataSource::_instance;
-QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
 SqlDataAccess* OpsSqlDataSource::_sda;
 
 OpsSqlDataSource::OpsSqlDataSource(QObject *parent) :
@@ -39,7 +38,6 @@ OpsSqlDataSource::OpsSqlDataSource(QObject *parent) :
 
     QDir home = QDir::home();
     _source = home.absoluteFilePath(OPS_QUEUE_DATABASE);
-    database.setDatabaseName(_source);
 
     _sda = new SqlDataAccess(_source);
 
@@ -50,11 +48,11 @@ OpsSqlDataSource::OpsSqlDataSource(QObject *parent) :
     } else {
         qDebug() << "OOOO database already exists";
     }
-    if (!database.isOpen()) {
-        bool ok = database.open();
+    if (!_sda->connection().isOpen()) {
+        bool ok = _sda->connection().open();
         qDebug() << "OOOO Ops database opened " << ok;
         if (!ok) {
-            const QSqlError error = database.lastError();
+            const QSqlError error = _sda->connection().lastError();
             qDebug() << "OOOO result=" << error;
             return;
         }
@@ -105,9 +103,9 @@ void OpsSqlDataSource::createDatabase()
     QFile file(filePath);
 
     qDebug() << "OOOO setting database name=" << filePath;
-    database.setDatabaseName(filePath);
+    _sda->connection().setDatabaseName(filePath);
 
-    bool database_opened = database.open();
+    bool database_opened = _sda->connection().open();
     qDebug() << "OOOO createDatabase(): database opened " << database_opened;
 
     if (database_opened) {
@@ -123,20 +121,20 @@ void OpsSqlDataSource::createDatabase()
 
             qDebug() << "OOOO creating table inbound_ops_queue";
             _sda->execute("CREATE TABLE inbound_ops_queue( in_op_id INTEGER PRIMARY KEY AUTOINCREMENT, op_type integer, local_request_id integer, payload blob );");
-            const QSqlError error = database.lastError();
+            const QSqlError error = _sda->connection().lastError();
             qDebug() << "OOOO result=" << error;
 
             qDebug() << "OOOO creating table outbound_ops_queue";
             _sda->execute("CREATE TABLE outbound_ops_queue( out_op_id INTEGER PRIMARY KEY AUTOINCREMENT, op_type integer, local_request_id integer, payload blob );");
-            const QSqlError error2 = database.lastError();
+            const QSqlError error2 = _sda->connection().lastError();
             qDebug() << "OOOO result=" << error2;
 
         } else {
-            const QSqlError error = database.lastError();
-            qDebug() << "OOOO failed to create database. error=" << error;
+            const QSqlError error = _sda->connection().lastError();
+            qDebug() << "OOOO failed to create _sda->connection(). error=" << error;
         }
     } else {
-        const QSqlError error = database.lastError();
+        const QSqlError error = _sda->connection().lastError();
         qDebug() << "OOOO Don't have read/write access to db file. error=" << error;
 
     }
@@ -194,7 +192,7 @@ int OpsSqlDataSource::storeOutbound(int op_type, int local_request_id, QByteArra
     qDebug() << "OOOO storeOutbound:" << insert_sql;
     _sda->execute(insert_sql);
 
-    const QSqlError error = database.lastError();
+    const QSqlError error = _sda->connection().lastError();
     qDebug() << "OOOO result=" << error;
 
     int id = lastOutboundId();
@@ -250,7 +248,7 @@ void OpsSqlDataSource::deleteInboundOp(int op_id)
     qDebug() << "OOOO deleteInboundOp:" << delete_sql;
     _sda->execute(delete_sql);
 
-    const QSqlError error = database.lastError();
+    const QSqlError error = _sda->connection().lastError();
     qDebug() << "OOOO result=" << error;
 
 }
@@ -264,7 +262,7 @@ void OpsSqlDataSource::deleteOutboundOp(int op_id)
     qDebug() << "OOOO deleteOutboundOp:" << delete_sql;
     _sda->execute(delete_sql);
 
-    const QSqlError error = database.lastError();
+    const QSqlError error = _sda->connection().lastError();
     qDebug() << "OOOO result=" << error;
 
 }
@@ -279,7 +277,7 @@ void OpsSqlDataSource::deleteOutboundOp(int local_request_id, int op_type)
     qDebug() << "OOOO deleteOutboundOp:" << delete_sql;
     _sda->execute(delete_sql);
 
-    const QSqlError error = database.lastError();
+    const QSqlError error = _sda->connection().lastError();
     qDebug() << "OOOO result=" << error;
 }
 

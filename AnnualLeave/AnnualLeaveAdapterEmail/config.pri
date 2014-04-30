@@ -10,6 +10,7 @@ device {
             CONFIG += \
                 config_pri_source_group1
         }
+
     }
 
     CONFIG(release, debug|release) {

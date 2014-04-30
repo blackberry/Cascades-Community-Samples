@@ -42,12 +42,12 @@
 		can also be 1-part or 2-part. It is not necessary to have a 3-part value.
 		An updated version of application must have a versionNumber value higher
 		than the previous version. Required. -->
-	<versionNumber>0.0.2</versionNumber>
+	<versionNumber>0.0.3</versionNumber>
  <packageLocale>en-US,en-GB,en-CA</packageLocale>
 
 	<!-- Fourth digit segment of the package version. First three segments are
 		taken from the <versionNumber> element. Must be an integer from 0 to 2^16-1 -->
-	<buildId>10</buildId>
+	<buildId>4</buildId>
 
 	<!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents
 		the version of the application, as it should be shown to users. Optional. -->
@@ -85,6 +85,10 @@
 			path="../AnnualLeaveCommon/arm/so.le-v7-g/libAnnualLeaveCommon.so"
 			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
 
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/arm/so.le-v7-g/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
+
 		<asset entryPointId="AnnualLeaveAdapter"
 			path="../AnnualLeaveAdapterEmail/arm/so.le-v7-g/libAnnualLeaveAdapter.so"
 			type="Qnx/Elf">lib/libAnnualLeaveAdapter.so.1</asset>
@@ -105,6 +109,10 @@
 		<asset entryPointId="AnnualLeaveCommon"
 			path="../AnnualLeaveCommon/arm/so.le-v7/libAnnualLeaveCommon.so"
 			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
+
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/arm/so.le-v7/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
 
 		<asset entryPointId="AnnualLeaveAdapter"
 			path="../AnnualLeaveAdapterEmail/arm/so.le-v7/libAnnualLeaveAdapter.so"
@@ -127,6 +135,10 @@
 			path="../AnnualLeaveCommon/arm-p/so.le-v7-g/libAnnualLeaveCommon.so"
 			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
 
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/arm-p/so.le-v7-g/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
+
 		<asset entryPointId="AnnualLeaveAdapter"
 			path="../AnnualLeaveAdapterEmail/arm-p/so.le-v7-g/libAnnualLeaveAdapter.so"
 			type="Qnx/Elf">lib/libAnnualLeaveAdapter.so.1</asset>
@@ -144,6 +156,9 @@
 		<asset entryPointId="AnnualLeaveCommon"
 			path="../AnnualLeaveCommon/x86/so-g/libAnnualLeaveCommon.so"
 			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/x86/so-g/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
 		<asset entryPointId="AnnualLeaveAdapter"
 			path="../AnnualLeaveAdapterEmail/x86/so-g/libAnnualLeaveAdapter.so"
 			type="Qnx/Elf">lib/libAnnualLeaveAdapter.so.1</asset>
@@ -160,6 +175,11 @@
 
 	<entryPoint id="AnnualLeaveCommon">
 		<name>AnnualLeave Common</name>
+		<entryPointType>Qnx/Elf</entryPointType>
+	</entryPoint>
+
+	<entryPoint id="AnnualLeaveModel">
+		<name>AnnualLeave Model</name>
 		<entryPointType>Qnx/Elf</entryPointType>
 	</entryPoint>
 

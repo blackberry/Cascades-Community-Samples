@@ -30,6 +30,10 @@
 #include <OpApprovalTaskResp.hpp>
 #include <OpAdapterStatusRequ.hpp>
 #include <OpAdapterStatusResp.hpp>
+#include <OpClientSynchronizeRequ.hpp>
+#include <OpClientSynchronizeResp.hpp>
+#include <OpServerSyncResultRequ.hpp>
+#include <OpServerSyncResultResp.hpp>
 #include <bb/system/InvokeManager>
 #include <bb/system/InvokeRequest>
 #include <bb/platform/Notification>
@@ -38,12 +42,9 @@
 
 Operations* Operations::_instance;
 
-Operations::Operations(QObject *parent)
-	: QObject(parent)
-	, _notify(new bb::platform::Notification(this))
-	, _invokeManager(new bb::system::InvokeManager(this))
-	, _guiConnected(false)
-	, _guiAppProcessRunning(false)
+Operations::Operations(QObject *parent) :
+        QObject(parent), _notify(new bb::platform::Notification(this)), _invokeManager(new bb::system::InvokeManager(this)), _guiConnected(false), _guiAppProcessRunning(false), _socketServerPath(
+                QDir::tempPath().append("/").append(ANNUAL_LEAVE_HEADLESS_SOCKET_SERVER_NAME))
 {
     qDebug() << "OOOO constructing Operations object";
     _sql = OpsSqlDataSource::getInstance(this);
@@ -206,8 +207,8 @@ void Operations::adapter_details_Resp(OpAdapterDetailsResp response)
     _invokeManager->invoke(invoke_request);
 }
 
-
-void Operations::adapter_status_Requ(OpAdapterStatusRequ request) {
+void Operations::adapter_status_Requ(OpAdapterStatusRequ request)
+{
     qDebug() << "OOOO Operations API: adapter_status_Requ()";
     int id = _sql->storeOutbound(request.opType(), -1, request.marshall());
     qDebug() << "OOOO Operations API: adapter_status_Requ got in_op_id=" << id;
@@ -218,7 +219,8 @@ void Operations::adapter_status_Requ(OpAdapterStatusRequ request) {
     _invokeManager->invoke(invoke_request);
 }
 
-void Operations::adapter_status_Resp(OpAdapterStatusResp response) {
+void Operations::adapter_status_Resp(OpAdapterStatusResp response)
+{
     qDebug() << "OOOO Operations API: adapter_status_Resp";
 
     int id = _sql->storeInbound(response.opType(), -1, response.marshall());
@@ -279,7 +281,6 @@ void Operations::approval_outcome_Requ(OpApprovalOutcomeRequ request)
     }
 
 }
-
 
 // acknowledging the approval outcome request
 void Operations::approval_outcome_Resp(OpApprovalOutcomeResp response)
@@ -350,6 +351,48 @@ void Operations::approval_task_Resp(OpApprovalTaskResp response)
 
 }
 
+void Operations::client_synchronize_Requ(OpClientSynchronizeRequ request)
+{
+    qDebug() << "OOOO Operations API: client_synchronize_Requ";
+    int id = _sql->storeOutbound(request.opType(), -1, request.marshall());
+    qDebug() << "OOOO Operations API: client_synchronize_Requ got out_op_id=" << id;
+    bb::system::InvokeRequest invoke_request;
+    invoke_request.setTarget(TARGET_AL_SERVICE);
+    invoke_request.setAction(TARGET_AL_ACTION_OUTBOUND_QUEUE);
+    _invokeManager->invoke(invoke_request);
+}
+
+void Operations::client_synchronize_Resp(OpClientSynchronizeResp response)
+{
+    qDebug() << "OOOO Operations API: client_synchronize_Resp: op_id=" << response.opId();
+    int id = _sql->storeInbound(response.opType(), -1, response.marshall());
+    qDebug() << "OOOO Operations API: client_synchronize_Resp got in_op_id=" << id;
+
+    if (isAlGuiRunning()) {
+        GuiIndicator* indicator = GuiIndicator::getInstance(this);
+        indicator->indicateWaitingInboundOperation();
+    }
+}
+
+void Operations::server_sync_result_Requ(OpServerSyncResultRequ request)
+{
+    qDebug() << "OOOO Operations API: server_sync_result_Requ";
+    int id = _sql->storeInbound(request.opType(), -1, request.marshall());
+    qDebug() << "OOOO Operations API: server_sync_result_Requ got in_op_id=" << id;
+}
+
+void Operations::server_sync_result_Resp(OpServerSyncResultResp response)
+{
+    qDebug() << "OOOO Operations API: server_sync_result_Resp: op_status=" << response.opStatus();
+    int id = _sql->storeOutbound(response.opType(), -1, response.marshall());
+    qDebug() << "OOOO Operations API: server_sync_result_Resp got in_op_id=" << id;
+
+    bb::system::InvokeRequest invoke_request;
+    invoke_request.setTarget(TARGET_AL_SERVICE);
+    invoke_request.setAction(TARGET_AL_ACTION_OUTBOUND_QUEUE);
+    _invokeManager->invoke(invoke_request);
+}
+
 QList<OperationAl*> Operations::inboundQueueOps()
 {
     qDebug() << "OOOO Operations::inboundQueueOps";
@@ -376,6 +419,8 @@ QList<OperationAl*> Operations::inboundQueueOps()
         OpAdapterDetailsRequ* adapter_details_request;
         OpAdapterStatusResp* adapter_status_response;
         OpApprovalTaskOutcomeResp* approval_task_outcome_response;
+        OpClientSynchronizeResp* client_synchronize_response;
+        OpServerSyncResultRequ* server_sync_result_request;
 
         switch (op_type) {
             case OP_TYPE_SUBMIT_BOOKING_RESPONSE:
@@ -461,6 +506,21 @@ QList<OperationAl*> Operations::inboundQueueOps()
                 adapter_status_response->unmarshall(payload);
                 ops_objects.append(adapter_status_response);
                 break;
+            case OP_TYPE_CLIENT_SYNCHRONIZE_RESPONSE:
+                client_synchronize_response = new OpClientSynchronizeResp();
+                client_synchronize_response->setOpId(op_id);
+                client_synchronize_response->setOpType(op_type);
+                client_synchronize_response->unmarshall(payload);
+                ops_objects.append(client_synchronize_response);
+                break;
+            case OP_TYPE_SERVER_SYNC_RESULT_REQUEST:
+                server_sync_result_request = new OpServerSyncResultRequ();
+                server_sync_result_request->setOpId(op_id);
+                server_sync_result_request->setOpType(op_type);
+                server_sync_result_request->unmarshall(payload);
+                ops_objects.append(server_sync_result_request);
+                break;
+
             default:
                 qDebug() << "OOOO ERROR - unrecognised op_type in inbound queue record: " << op_type;
                 break;
@@ -495,6 +555,8 @@ QList<OperationAl*> Operations::outboundQueueOps()
         OpUpdateBookingRequ* update_booking_request;
         OpAdapterDetailsResp* adapter_details_response;
         OpAdapterStatusRequ* adapter_status_request;
+        OpClientSynchronizeRequ* client_synchronize_request;
+        OpServerSyncResultResp* server_sync_result_response;
 
         switch (op_type) {
             case OP_TYPE_SUBMIT_BOOKING_REQUEST:
@@ -580,6 +642,20 @@ QList<OperationAl*> Operations::outboundQueueOps()
                 adapter_status_request->setOpType(op_type);
                 adapter_status_request->unmarshall(payload);
                 ops_objects.append(adapter_status_request);
+                break;
+            case OP_TYPE_CLIENT_SYNCHRONIZE_REQUEST:
+                client_synchronize_request = new OpClientSynchronizeRequ();
+                client_synchronize_request->setOpId(op_id);
+                client_synchronize_request->setOpType(op_type);
+                client_synchronize_request->unmarshall(payload);
+                ops_objects.append(client_synchronize_request);
+                break;
+            case OP_TYPE_SERVER_SYNC_RESULT_RESPONSE:
+                server_sync_result_response = new OpServerSyncResultResp();
+                server_sync_result_response->setOpId(op_id);
+                server_sync_result_response->setOpType(op_type);
+                server_sync_result_response->unmarshall(payload);
+                ops_objects.append(server_sync_result_response);
                 break;
             default:
                 qDebug() << "OOOO ERROR - unrecognised op_type in outbound queue record: " << op_type;
@@ -766,9 +842,9 @@ void Operations::logInboundQueue()
                 break;
             case OP_TYPE_ADAPTER_DETAILS_REQUEST:
                 op_adapter_details_requ = dynamic_cast<OpAdapterDetailsRequ*>(ops.at(i));
-                qDebug() << "OOOO OP_TYPE_ADAPTER_DETAILS_REQUEST op_id=" << op_adapter_details_requ->opId() << " adapter_name="
-                        << op_adapter_details_requ->adapterName() << " adapter_version=" << op_adapter_details_requ->adapterVersion() << " adapter_description="
-                        << op_adapter_details_requ->adapterDescription() << " configured=" << op_adapter_details_requ->isConfigured();
+                qDebug() << "OOOO OP_TYPE_ADAPTER_DETAILS_REQUEST op_id=" << op_adapter_details_requ->opId() << " adapter_name=" << op_adapter_details_requ->adapterName() << " adapter_version="
+                        << op_adapter_details_requ->adapterVersion() << " adapter_description=" << op_adapter_details_requ->adapterDescription() << " configured="
+                        << op_adapter_details_requ->isConfigured();
                 break;
             default:
                 qDebug() << "OOOO logOutboundQueue - invalid op_type:" << op_type;
@@ -778,18 +854,27 @@ void Operations::logInboundQueue()
     }
 }
 
-bool Operations::isGuiConnected() const {
-	return _guiConnected;
+bool Operations::isGuiConnected() const
+{
+    return _guiConnected;
 }
 
-void Operations::setGuiConnected(bool guiConnected) {
-	_guiConnected = guiConnected;
+void Operations::setGuiConnected(bool guiConnected)
+{
+    _guiConnected = guiConnected;
 }
 
-bool Operations::isGuiAppProcessRunning() const {
-	return _guiAppProcessRunning;
+bool Operations::isGuiAppProcessRunning() const
+{
+    return _guiAppProcessRunning;
 }
 
-void Operations::setGuiAppProcessRunning(bool guiAppProcessRunning) {
-	_guiAppProcessRunning = guiAppProcessRunning;
+void Operations::setGuiAppProcessRunning(bool guiAppProcessRunning)
+{
+    _guiAppProcessRunning = guiAppProcessRunning;
+}
+
+const QString& Operations::getSocketServerPath() const
+{
+    return _socketServerPath;
 }

@@ -17,6 +17,9 @@
 #ifndef USERIDCACHE_HPP_
 #define USERIDCACHE_HPP_
 
+#define USERID_CACHE_SCHEMA_VERSION_1 1
+#define USERID_CACHE_SCHEMA_VERSION_CURRENT USERID_CACHE_SCHEMA_VERSION_1
+
 #include <UserIdCacheItem.hpp>
 #include <Settings.hpp>
 #include <common.hpp>

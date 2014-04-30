@@ -17,6 +17,9 @@
 #ifndef ENTITLEMENTCACHE_HPP_
 #define ENTITLEMENTCACHE_HPP_
 
+#define ENTITLEMENT_CACHE_SCHEMA_VERSION_1 1
+#define ENTITLEMENT_CACHE_SCHEMA_VERSION_CURRENT ENTITLEMENT_CACHE_SCHEMA_VERSION_1
+
 #include <EntitlementCacheItem.hpp>
 #include <Settings.hpp>
 #include <common.hpp>

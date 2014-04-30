@@ -55,14 +55,14 @@ TabbedPane {
     function refreshRequests() {
         console.log("QQQQ refreshRequests");
         requestsDataModel.clear();
-        sql.loadRequestData(dd_leave_year.selectedValue);
+        app.loadRequestData(dd_leave_year.selectedValue);
         tabbed_pane.activeTab = tab_request_list
     }
 
     function refreshRequestsForYear(year) {
         console.log("QQQQ refreshRequests for "+year);
         requestsDataModel.clear();
-        sql.loadRequestData(year);
+        app.loadRequestData(year);
 		var options = dd_leave_year.options;
         for (var i = 0; i < dd_leave_year.options.length; i ++) {
             if (dd_leave_year.options[i].value == year) {
@@ -88,7 +88,7 @@ TabbedPane {
     function refreshTasks() {
         console.log("QQQQ refreshTasks");
         tasksDataModel.clear();
-        sql.loadTaskData();
+        app.loadTaskData();
         tabbed_pane.activeTab = tab_inbox
     }
 
@@ -119,7 +119,7 @@ TabbedPane {
 
         onTriggered: {
             console.log("QQQQ tab is loading data");
-            sql.loadRequestData(dd_leave_year.selectedValue);
+            app.loadRequestData(dd_leave_year.selectedValue);
         }
         
 
@@ -180,7 +180,7 @@ TabbedPane {
 
                     onSelectedIndexChanged: {
                         app.refreshEntitlement(dd_leave_year.selectedValue);
-                        sql.loadRequestData(dd_leave_year.selectedValue);
+                        app.loadRequestData(dd_leave_year.selectedValue);
                     }
                 }
                 Divider {
@@ -308,7 +308,7 @@ TabbedPane {
 
                         onCreationCompleted: {
                             console.log("QQQQ onCreationCompleted for ListView - invoking loadRequestData with " + dd_leave_year.selectedValue)
-                            sql.loadRequestData(dd_leave_year.selectedValue);
+                            app.loadRequestData(dd_leave_year.selectedValue);
                         }
 
                     } // ListView
@@ -351,7 +351,7 @@ TabbedPane {
         imageSource: "asset:///images/in_2.png"
         onTriggered: {
             console.log("QQQQ tab is loading data");
-            sql.loadTaskData();
+            app.loadTaskData();
         }
 
         Page {
@@ -488,7 +488,7 @@ TabbedPane {
                         ]
 
                         onCreationCompleted: {
-                            sql.loadTaskData();
+                            app.loadTaskData();
                         }
 
                     } // ListView
@@ -513,11 +513,15 @@ TabbedPane {
         HelpSheet {
             id: help
         },
+        SyncSheet {
+            id: sync
+        },
         AboutSheet {
             id: aboutInfo
         },
         Settings {
             id: settings
+            objectName: "settings"
         }
     ]
 
@@ -533,6 +537,23 @@ TabbedPane {
                 }
             },
             ActionItem {
+                title: "About"
+                imageSource: "images/about.png"
+                
+                onTriggered: {
+                    aboutInfo.open();
+                }
+            },
+            ActionItem {
+                id: action_sync
+                title: "Sync"
+                imageSource: "asset:///images/sync.png"
+                ActionBar.placement: ActionBarPlacement.OnBar
+                onTriggered: {
+                    sync.open();
+                }
+            },
+            ActionItem {
                 id: action_settings
                 title: "Settings"
                 imageSource: "asset:///images/al_settings.png"
@@ -540,15 +561,7 @@ TabbedPane {
                 onTriggered: {
                     settings.open();
                 }
-            },
-            ActionItem {
-                title: "About"
-                imageSource: "images/about.png"
-
-                onTriggered: {
-                    aboutInfo.open();
-                }
             }
-        ]
+         ]
     }
 }
