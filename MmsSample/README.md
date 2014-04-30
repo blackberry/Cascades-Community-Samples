@@ -17,6 +17,7 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 **Release History**
 
 * **V1.0.0** - Initial release
+* **V1.0.1** - Implemented workaround to API defect that can cause sent messages to not be visible in the hub.
 
 **Dependencies**
 
