@@ -12,6 +12,7 @@ device {
                 config_pri_assets \
                 config_pri_source_group1
         }
+
     }
 
     CONFIG(release, debug|release) {
@@ -46,6 +47,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/RequestSheet.qml) \
         $$quote($$BASEDIR/assets/Settings.qml) \
         $$quote($$BASEDIR/assets/Style.qml) \
+        $$quote($$BASEDIR/assets/SyncSheet.qml) \
         $$quote($$BASEDIR/assets/Task.qml) \
         $$quote($$BASEDIR/assets/TaskSheet.qml) \
         $$quote($$BASEDIR/assets/images/about.png) \
@@ -75,6 +77,7 @@ config_pri_assets {
         $$quote($$BASEDIR/assets/images/out_2.png) \
         $$quote($$BASEDIR/assets/images/previous.png) \
         $$quote($$BASEDIR/assets/images/reset.png) \
+        $$quote($$BASEDIR/assets/images/sync.png) \
         $$quote($$BASEDIR/assets/images/unknown.png) \
         $$quote($$BASEDIR/assets/images/update_pending.png) \
         $$quote($$BASEDIR/assets/images/update_rejected.png) \
@@ -86,22 +89,14 @@ config_pri_assets {
 
 config_pri_source_group1 {
     SOURCES += \
-        $$quote($$BASEDIR/src/DataManager.cpp) \
         $$quote($$BASEDIR/src/DbAnnualLeaveRecord.cpp) \
         $$quote($$BASEDIR/src/Entitlement.cpp) \
-        $$quote($$BASEDIR/src/SecurityManager.cpp) \
-        $$quote($$BASEDIR/src/UserSqlDataSource.cpp) \
-        $$quote($$BASEDIR/src/Utilities.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/main.cpp)
 
     HEADERS += \
-        $$quote($$BASEDIR/src/DataManager.hpp) \
         $$quote($$BASEDIR/src/DbAnnualLeaveRecord.hpp) \
         $$quote($$BASEDIR/src/Entitlement.hpp) \
-        $$quote($$BASEDIR/src/SecurityManager.hpp) \
-        $$quote($$BASEDIR/src/UserSqlDataSource.hpp) \
-        $$quote($$BASEDIR/src/Utilities.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp)
 }
 

@@ -23,6 +23,8 @@ The model we've implemented is that of a Vacation/Annual Leave request applicati
 
 In order to make it easy to demonstrate and test we've written an adapter for this version of the application that simply uses email to communicate requests and approvals between two BlackBerry 10 devices that are using this application. One device could take the role of the Approver ( Manager ) and the other the requestor ( Manager's direct report ).   
 
+We've also made it easy to customise the user interface by separation of the main logic of the visible component of the application into distinct GUI and Model components. The look and feel can be changed without impacting the application logic. 
+
 #### Functionality
 Primary functionality includes:
 
@@ -36,6 +38,8 @@ Primary functionality includes:
 
 - Process approval request
 
+- Provision for initial or periodic synchronisation of requests with an enterprise system.
+
 - Notifications delivered though the Hub
 
 - Ability to add approved requests to the BlackBerry PIM Calendar
@@ -45,6 +49,15 @@ Primary functionality includes:
 The sample code for this application is Open Source under 
 the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
+#### Refactoring Performed from Beta 2 to Beta 3
+
+Perhaps the major change between Beta 2 and Beta 3 that's worth describing in more detail has been the refactoring of the main user interface component of the application into two parts:
+
+- A Model component that contains the business logic of the User Interface component of the application and exposes a well defined IModel interface to the GUI component
+- A component that concerns itself with only the User Interface elements of the application and interacts with the Model through the IModel interface.
+
+This follows directly from the requirement that user interface elements and look and feel should be decoupled from the business logic of the application to allow flexible customisation and re-skinning  of the user interface. It also follows good design practice by following the **MVC** ( *Model*, *View*, *Controller* ) pattern.
+ 
 ### Applies To
 
 - [Cascades for BlackBerry 10](https://bdsc.webapps.blackberry.com/cascades/)
@@ -58,7 +71,12 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 ### Release History
 
-- **Beta 0.0.2** - Initial Beta Version for public release
+- **Beta 2 (Version 0.0.2)** - Initial Beta Version for public release
+- **Beta 3 (Version 0.0.3)** - The main highlighted changes in this Beta Version include:
+	- Refactoring of the main application component of the application into a pure GUI and Model components 
+	- Request synchronisation with an enterprise system (the GUI and Model components include this ability but the peer-to-peer sample email adapter does not since there is no "back-end server" in the peer-to-peer model from which to synchronise). 
+	- Improvements to the configuration of the email adapter settings
+	- Fixes to known issues found in the Beta 2 version.
 
 ### Dependencies
 
@@ -69,7 +87,8 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 The AnnualLeave application consists of four interrelated projects:
 
-- __AnnualLeave__ -- the GUI component of the application.
+- __AnnualLeave__ -- the GUI component of the application.  
+- __AnnualLeaveModel__ -- This **NEW** component contains all the business specific logic that had been in the *AnnualLeave* component in Beta 2. 
 - __AnnualLeaveService__ -- the Headless service component of the application.
 - __AnnualLeaveAdapterEmail__ -- a sample adapter, as defined by our architecture, that will allow delivery of annual leave requests and responses to be carried between BlackBerry handsets without the need of a back end system.
 - __AnnualLeaveCommon__ -- Location for all the common interface elements used by the other three projects.
@@ -90,27 +109,25 @@ These should be:
 
 - __AnnualLeave__ references
 	- __AnnualLeaveAdapterEmail__,
-	-  __AnnualLeaveCommon__,
-	- and __AnnualLeaveService__
-- __AnnualLeaveService__ references
+	- __AnnualLeaveService__,
+	- __AnnualLeaveModel__
+	- and __AnnualLeaveCommon__,
+- __AnnualLeaveModel__ references
 	- __AnnualLeaveCommon__
-	- and __AnnualLEaveAdapterEmail__
+- __AnnualLeaveService__ references
+	- __AnnualLEaveAdapterEmail__
+	- and __AnnualLeaveCommon__
 - __AnnualLeaveAdapterEmail__ references
 	- __AnnualLeaveCommon__
+- __AnnualLeaveCommon__ has **no** references to other projects
 
 ### How to configue the Application
 
 The __Settings__ page can be accessed from the main page of the application by dragging down from the top of the screen.
 
-There are 5 fields that need to be completed - press the __"Save"__ button once you've completed these settings:
+There are 4 fields that need to be completed - press the __"Save"__ button once you've completed these settings:
 
-- The __"Email Account Name"__  -- this is the name of one of the Email account that you have configured for your device and which can be found in _"Settings >> Accounts"_
-
-- The __"Email Provider Name"__ identifies the email transport that the email account uses. 
-
-	- For IMAP this will be __"Imap Email"__,
-	- for POP this will be __"Pop Email"__ 
-	- and for an Enterprise BES email account this will be __"ActiveSync"__ [sic]
+- The __"Email Account"__  -- this is the one of the Email account that you have configured for your devcie. Simply choose the appropriate account from the drop-down menu.
 
 - The __"Approver Name"__ field can be anything you want. it's just used as a display name associated with the _Approver's Email Address_ in messages.
 
@@ -126,7 +143,7 @@ If you don't want to build this sample application yourself we've included a
 pre-build and signed BAR file. You can find it in the 
 folder "installable-bar-files" as follows:
 
-* **AnnualLeave-0\_0\_2\_10.bar** -- Signed BAR file for Beta 0.0.2 of the application ( minimal requirement BlackBerry 10 Software 10.2.1 )
+* **AnnualLeave-0\_0\_3\_4.bar** -- Signed BAR file for Beta 3 (0.0.3) of the application ( minimal requirement BlackBerry 10 Software 10.2.1 )
 
 * **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
@@ -137,25 +154,31 @@ This is a __Beta__ version of a sample application that implements the __Flexibl
 
 1. English language text only
 
-1. No "synchronise" operation to catch up with changes made (say) from desktop.
-
 1. Outbound emails sent by the application are currently not deleted from the hub.
 
 1. Graphics are not final
 
-1. When running in the work perimeter and the GUI is closed "disco lights" may be seen on the LED. Headless service continues to run and when GUI is relaunched it continues to function as expected. No core files are seen in the application's "log" folder and slog2 identifies the /bin/cascades binary as having crashed.
-
-1. There seems to be an issue when the headless service is running in the work perimeter with permissions on the path to the Unix Domain socket. No external functionality is impacted.
-
-1. "Object::connect: No such signal AdapterImpl::inAdapterStatusResp(int)" may be seen in slog2. This seems to be a failure to connect a signal. No external impact.
-
-1. Inbox should place UNDECIDED items at the top of the list for improved usability
+1. When running in the work perimeter and the GUI is closed "disco lights" may occasionally be seen on the LED. Headless service continues to run and when GUI is relaunched it continues to function as expected. No core files are seen in the application's "log" folder and slog2 identifies the /bin/cascades binary as having crashed.
 
 1. Sometimes if a POP account is in use, operation messages destined for the application will not be downloaded by the BlackBerry 10 email client. This is an issue with the email client but has the consequence that the application will not receive an update until something prompts the email client to do the download. Sending another message *may* achieve this.
 
-1. On a Z30 which has both an IMAP and a BES account, Adding to the PIM calendar fails. Suspect calendar being selected is the enterprise one.
+1. Dates are sometimes one day "out" when an approver views an update.
+	
+	The approver and requester should both be in the same time zone ideally. 
 
-1. Dates are sometimes one day "out" when an approver views an update
+	If they are not then the approver will see dates presented as they would be in their own time zone. Effectively a date range for a holiday has an implicit time of midnight i.e. the very start of the specified date. So if, for example, the approver is in a time zone one or more hours behind the requester, then they will see the dates shifted backwards one day since those one or more hours takes us earlier than midnight and therefore into the day before.
+
+1. It has been noted that the application's headless service may crash and core dump under some circumstances:
+
+		Process 28086283 (AnnualLeaveService) terminated SIGSEGV code=1 fltno=11 ip=78cc6dfa(/apps/com.example.AnnualLeave.testDev_AnnualLeaveb7769d87/native/lib/libAnnualLeaveAdapter.so.1@_ZNK15UserIdCacheItem9getTaskIdEv+0x15) mapaddr=00036dfa. ref=0000010d
+
+	There have been changes to the format of data that is persisted by the Headless Service between Beta 2 and Beta 3.
+
+	You should completely de-install the application and re-install it to remove inconsistent persisted data. Beta 3 identifies the data's format with a verison number so this shouldn't occur in the future.
+
+1. On a device that has both an IMAP and a BES account, adding to the PIM calendar may fail.
+
+	Ensure that the correct default calendar is specified in the BlackBerry 10 "Settings".
 
 ## Contributing Changes
 

@@ -10,6 +10,7 @@ device {
             CONFIG += \
                 config_pri_source_group1
         }
+
     }
 
     CONFIG(release, debug|release) {
@@ -31,6 +32,8 @@ simulator {
 
 config_pri_source_group1 {
     SOURCES += \
+        $$quote($$BASEDIR/src/Booking.cpp) \
+        $$quote($$BASEDIR/src/BookingsList.cpp) \
         $$quote($$BASEDIR/src/GuiIndicator.cpp) \
         $$quote($$BASEDIR/src/NetworkMonitor.cpp) \
         $$quote($$BASEDIR/src/OpAdapterDetailsRequ.cpp) \
@@ -47,8 +50,12 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/OpApprovalTaskResp.cpp) \
         $$quote($$BASEDIR/src/OpCancelBookingRequ.cpp) \
         $$quote($$BASEDIR/src/OpCancelBookingResp.cpp) \
+        $$quote($$BASEDIR/src/OpClientSynchronizeRequ.cpp) \
+        $$quote($$BASEDIR/src/OpClientSynchronizeResp.cpp) \
         $$quote($$BASEDIR/src/OpHalfDaysUsedRequ.cpp) \
         $$quote($$BASEDIR/src/OpHalfDaysUsedResp.cpp) \
+        $$quote($$BASEDIR/src/OpServerSyncResultRequ.cpp) \
+        $$quote($$BASEDIR/src/OpServerSyncResultResp.cpp) \
         $$quote($$BASEDIR/src/OpSubmitBookingRequ.cpp) \
         $$quote($$BASEDIR/src/OpSubmitBookingResp.cpp) \
         $$quote($$BASEDIR/src/OpUpdateBookingRequ.cpp) \
@@ -56,10 +63,13 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/OperationAl.cpp) \
         $$quote($$BASEDIR/src/Operations.cpp) \
         $$quote($$BASEDIR/src/OpsSqlDataSource.cpp) \
-        $$quote($$BASEDIR/src/Settings.cpp)
+        $$quote($$BASEDIR/src/Settings.cpp) \
+        $$quote($$BASEDIR/src/Utilities.cpp)
 
     HEADERS += \
         $$quote($$BASEDIR/public/ApiVersion.hpp) \
+        $$quote($$BASEDIR/public/Booking.hpp) \
+        $$quote($$BASEDIR/public/BookingList.hpp) \
         $$quote($$BASEDIR/public/GuiIndicator.hpp) \
         $$quote($$BASEDIR/public/NetworkMonitor.hpp) \
         $$quote($$BASEDIR/public/OpAdapterDetailsRequ.hpp) \
@@ -76,8 +86,12 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/public/OpApprovalTaskResp.hpp) \
         $$quote($$BASEDIR/public/OpCancelBookingRequ.hpp) \
         $$quote($$BASEDIR/public/OpCancelBookingResp.hpp) \
+        $$quote($$BASEDIR/public/OpClientSynchronizeRequ.hpp) \
+        $$quote($$BASEDIR/public/OpClientSynchronizeResp.hpp) \
         $$quote($$BASEDIR/public/OpHalfDaysUsedRequ.hpp) \
         $$quote($$BASEDIR/public/OpHalfDaysUsedResp.hpp) \
+        $$quote($$BASEDIR/public/OpServerSyncResultRequ.hpp) \
+        $$quote($$BASEDIR/public/OpServerSyncResultResp.hpp) \
         $$quote($$BASEDIR/public/OpSubmitBookingRequ.hpp) \
         $$quote($$BASEDIR/public/OpSubmitBookingResp.hpp) \
         $$quote($$BASEDIR/public/OpUpdateBookingRequ.hpp) \
@@ -86,11 +100,14 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/public/Operations.hpp) \
         $$quote($$BASEDIR/public/OpsSqlDataSource.hpp) \
         $$quote($$BASEDIR/public/Settings.hpp) \
+        $$quote($$BASEDIR/public/Utilities.hpp) \
         $$quote($$BASEDIR/public/common.hpp)
 }
 
 config_pri_source_group2 {
     SOURCES += \
+        $$quote($$BASEDIR/src/Booking.cpp) \
+        $$quote($$BASEDIR/src/BookingsList.cpp) \
         $$quote($$BASEDIR/src/GuiIndicator.cpp) \
         $$quote($$BASEDIR/src/NetworkMonitor.cpp) \
         $$quote($$BASEDIR/src/OpAdapterDetailsRequ.cpp) \
@@ -107,8 +124,12 @@ config_pri_source_group2 {
         $$quote($$BASEDIR/src/OpApprovalTaskResp.cpp) \
         $$quote($$BASEDIR/src/OpCancelBookingRequ.cpp) \
         $$quote($$BASEDIR/src/OpCancelBookingResp.cpp) \
+        $$quote($$BASEDIR/src/OpClientSynchronizeRequ.cpp) \
+        $$quote($$BASEDIR/src/OpClientSynchronizeResp.cpp) \
         $$quote($$BASEDIR/src/OpHalfDaysUsedRequ.cpp) \
         $$quote($$BASEDIR/src/OpHalfDaysUsedResp.cpp) \
+        $$quote($$BASEDIR/src/OpServerSyncResultRequ.cpp) \
+        $$quote($$BASEDIR/src/OpServerSyncResultResp.cpp) \
         $$quote($$BASEDIR/src/OpSubmitBookingRequ.cpp) \
         $$quote($$BASEDIR/src/OpSubmitBookingResp.cpp) \
         $$quote($$BASEDIR/src/OpUpdateBookingRequ.cpp) \
@@ -116,10 +137,13 @@ config_pri_source_group2 {
         $$quote($$BASEDIR/src/OperationAl.cpp) \
         $$quote($$BASEDIR/src/Operations.cpp) \
         $$quote($$BASEDIR/src/OpsSqlDataSource.cpp) \
-        $$quote($$BASEDIR/src/Settings.cpp)
+        $$quote($$BASEDIR/src/Settings.cpp) \
+        $$quote($$BASEDIR/src/Utilities.cpp)
 
     HEADERS += \
         $$quote($$BASEDIR/public/ApiVersion.hpp) \
+        $$quote($$BASEDIR/public/Booking.hpp) \
+        $$quote($$BASEDIR/public/BookingList.hpp) \
         $$quote($$BASEDIR/public/GuiIndicator.hpp) \
         $$quote($$BASEDIR/public/NetworkMonitor.hpp) \
         $$quote($$BASEDIR/public/OpAdapterDetailsRequ.hpp) \
@@ -136,8 +160,12 @@ config_pri_source_group2 {
         $$quote($$BASEDIR/public/OpApprovalTaskResp.hpp) \
         $$quote($$BASEDIR/public/OpCancelBookingRequ.hpp) \
         $$quote($$BASEDIR/public/OpCancelBookingResp.hpp) \
+        $$quote($$BASEDIR/public/OpClientSynchronizeRequ.hpp) \
+        $$quote($$BASEDIR/public/OpClientSynchronizeResp.hpp) \
         $$quote($$BASEDIR/public/OpHalfDaysUsedRequ.hpp) \
         $$quote($$BASEDIR/public/OpHalfDaysUsedResp.hpp) \
+        $$quote($$BASEDIR/public/OpServerSyncResultRequ.hpp) \
+        $$quote($$BASEDIR/public/OpServerSyncResultResp.hpp) \
         $$quote($$BASEDIR/public/OpSubmitBookingRequ.hpp) \
         $$quote($$BASEDIR/public/OpSubmitBookingResp.hpp) \
         $$quote($$BASEDIR/public/OpUpdateBookingRequ.hpp) \
@@ -146,6 +174,7 @@ config_pri_source_group2 {
         $$quote($$BASEDIR/public/Operations.hpp) \
         $$quote($$BASEDIR/public/OpsSqlDataSource.hpp) \
         $$quote($$BASEDIR/public/Settings.hpp) \
+        $$quote($$BASEDIR/public/Utilities.hpp) \
         $$quote($$BASEDIR/public/common.hpp)
 }
 

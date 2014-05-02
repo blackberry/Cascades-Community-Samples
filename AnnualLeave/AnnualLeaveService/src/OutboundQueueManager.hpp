@@ -64,6 +64,8 @@ private:
     int doOutApprovalTaskOutcomeRequ(OpApprovalTaskOutcomeRequ *request);
     int doOutAdapterDetailsResp(OpAdapterDetailsResp *response);
     int doOutAdapterStatusRequ(OpAdapterStatusRequ *request);
+    int doOutClientSynchronizeRequ(OpClientSynchronizeRequ *request);
+    int doOutServerSyncResultResp(OpServerSyncResultResp *response);
 
     void failBookingRequ(int LocalId);
     void failCancelRequ(int LocalId);

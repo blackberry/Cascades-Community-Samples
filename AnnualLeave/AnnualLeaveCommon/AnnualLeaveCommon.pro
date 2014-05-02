@@ -6,7 +6,7 @@ CONFIG += hardening
 include(config.pri)
 
 LIBS += -lbbdata
-LIBS += -lbb -lbbsystem -lbbplatform -lbps
+LIBS += -lbb -lbbsystem -lbbplatform -lbps -lbbutility
 
 device {
     CONFIG(debug, debug|release) {

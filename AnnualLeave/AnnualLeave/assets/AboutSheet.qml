@@ -26,7 +26,7 @@ Sheet {
     Page {
         
         id: about
-        property variant build_id: "0.0.2.10"
+        property variant build_id: "0.0.3.4"
         
         titleBar: TitleBar {
             kind: TitleBarKind.FreeForm
@@ -89,7 +89,7 @@ Sheet {
             }
             Label {
                 id: lblHeading_version
-                text: qsTr("Beta 0.0.2 Build "+about.build_id)
+                text: qsTr("Beta 0.0.3 Build "+about.build_id)
                 verticalAlignment: VerticalAlignment.Center
                 horizontalAlignment: HorizontalAlignment.Center
             }

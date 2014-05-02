@@ -64,9 +64,7 @@ void InboundQueueManager::onInSubmitBookingResp(int localId, int status)
 {
     qDebug() << "SSSS onInSubmitBookingResp";
     OpSubmitBookingResp response;
-
     dumpQueue();
-
     response.setOpStatus(OP_STATUS_OK);
     response.setRequestStatus(status);
     response.setLocalRequestId(localId);
@@ -352,6 +350,26 @@ void InboundQueueManager::onInAdapterStatusResp(int opStatus)
     OpAdapterStatusResp response;
     response.setOpStatus(opStatus);
     _ops->adapter_status_Resp(response);
+    dumpQueue();
+}
+
+void InboundQueueManager::onInClientSynchronizeResp(int opStatus)
+{
+    qDebug() << "SSSS onInClientSynchronizeResp: opstatus=" << opStatus;
+    dumpQueue();
+    OpClientSynchronizeResp response;
+    response.setOpStatus(opStatus);
+    _ops->client_synchronize_Resp(response);
+    dumpQueue();
+}
+
+void InboundQueueManager::onInServerSyncResultRequ(QByteArray serialized_data)
+{
+    qDebug() << "SSSS onInServerSyncResultRequ";
+    dumpQueue();
+    OpServerSyncResultRequ request;
+    request.unmarshall(serialized_data);
+    _ops->server_sync_result_Requ(request);
     dumpQueue();
 }
 

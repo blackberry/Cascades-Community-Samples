@@ -56,6 +56,43 @@ EntitlementCache *EntitlementCache::getInstance(QObject *parent)
     return _instance;
 }
 
+QByteArray EntitlementCache::marshall()
+{
+    LOGIT("marshall()");
+    QByteArray serialisedData;
+    QDataStream stream(&serialisedData, QIODevice::WriteOnly);
+	EntitlementList::iterator curr;
+	int schemaVersion = ENTITLEMENT_CACHE_SCHEMA_VERSION_CURRENT;
+
+	stream << schemaVersion;
+	stream << _entitlementList->size();
+
+	for (curr = _entitlementList->begin(); curr != _entitlementList->end(); curr++) {
+		stream << *curr;
+	}
+
+    return serialisedData;
+}
+
+void EntitlementCache::unmarshall(QByteArray serialisedData)
+{
+    LOGIT("unmarshall()");
+    QDataStream stream(&serialisedData, QIODevice::ReadOnly);
+    int size;
+    EntitlementCacheItem item;
+	int schemaVersion;
+
+	stream >> schemaVersion;
+	stream >> size;
+
+	clearCache();
+
+	for (int i = 0; i < size; i++) {
+		stream >> item;
+		_entitlementList->append(item);
+	}
+}
+
 void EntitlementCache::restore()
 {
 	qDebug() << "EEEE EntitlementCache::restore()" << endl;
@@ -211,38 +248,4 @@ QList<int> EntitlementCache::years()
 		yearsInList.append(curr->getYear());
 	}
 	return yearsInList;
-}
-
-
-QByteArray EntitlementCache::marshall()
-{
-    LOGIT("marshall()");
-    QByteArray serialisedData;
-    QDataStream stream(&serialisedData, QIODevice::WriteOnly);
-	EntitlementList::iterator curr;
-
-	stream << _entitlementList->size();
-
-	for (curr = _entitlementList->begin(); curr != _entitlementList->end(); curr++) {
-		stream << *curr;
-	}
-
-    return serialisedData;
-}
-
-void EntitlementCache::unmarshall(QByteArray serialisedData)
-{
-    LOGIT("unmarshall()");
-    QDataStream stream(&serialisedData, QIODevice::ReadOnly);
-    int size;
-    EntitlementCacheItem item;
-
-	stream >> size;
-
-	clearCache();
-
-	for (int i = 0; i < size; i++) {
-		stream >> item;
-		_entitlementList->append(item);
-	}
 }

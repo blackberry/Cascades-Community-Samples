@@ -27,7 +27,7 @@
 #include <bb/pim/account/Account>
 #include <bb/pim/account/Provider>
 
-#define ADAPTER_IMPL_VERSION "Beta 0.0.2.10"
+#define ADAPTER_IMPL_VERSION "Beta 0.0.3.4"
 #define ADAPTER_IMPL_DESCRIPTION "A simple adapter that uses email as a transport to operate in peer-to-peer mode."
 #define ADAPTER_IMPL_NAME "EmailAdapter"
 
@@ -80,6 +80,10 @@ public:
 
 	int outAdapterStatusRequ();
 
+	int outClientSynchronizeRequ(int leave_year);
+
+	int outServerSyncResultResp(int op_id, int op_status);
+
 signals:
 	void pauseDataFromApi();
 	void resumeDataFromApi();
@@ -107,6 +111,8 @@ signals:
 	void inApprovalTaskOutcomeResp(int taskId, int opStatus);
     void inAdapterDetailsRequ();
     void inAdapterStatusResp(int opStatus);
+    void inClientSynchronizeResp(int opStatus);
+    void inServerSyncResultRequ(QByteArray serialized_data);
 
 private:
 	AdapterImpl(QObject *parent=NULL);

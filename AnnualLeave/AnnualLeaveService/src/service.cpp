@@ -64,8 +64,14 @@ Service::Service(bb::Application *app)
 
 	if (!QObject::connect(dynamic_cast<QObject *>(_iAdapter), SIGNAL(inSubmitBookingResp(int, int)),
 			                            _inboundQueueManager, SLOT(onInSubmitBookingResp(int, int)))) {
-		qWarning() << "SSSS Service::Service() - connect failed - onSubmitBookingResp" << strerror(errno) << endl;
+		qWarning() << "SSSS Service::Service() - connect failed - onInSubmitBookingResp" << strerror(errno) << endl;
 	}
+
+    if (!QObject::connect(dynamic_cast<QObject *>(_iAdapter), SIGNAL(inClientSynchronizeResp(int)),
+                                        _inboundQueueManager, SLOT(onInClientSynchronizeResp(int)))) {
+        qWarning() << "SSSS Service::Service() - connect failed - onInClientSynchronizeResp" << strerror(errno) << endl;
+    }
+
 
 	if (!QObject::connect(dynamic_cast<QObject *>(_iAdapter), SIGNAL(inAnnualEntitlementResp(int, int, int, int)),
 			                            _inboundQueueManager, SLOT(onInAnnualEntitlementResp(int, int, int, int)))) {
@@ -109,6 +115,13 @@ Service::Service(bb::Application *app)
         qWarning() << "SSSS Service::Service() - connect failed - onInAdapterStatusResp" << strerror(errno) << endl;
     } else {
         qDebug() << "SSSS  Service::Service() - connected inAdapterStatusResp to onInAdapterStatusResp OK";    }
+
+    if (!QObject::connect(dynamic_cast<QObject *>(_iAdapter), SIGNAL(inServerSyncResultRequ(QByteArray)),
+                                        _inboundQueueManager, SLOT(onInServerSyncResultRequ(QByteArray)))) {
+        qWarning() << "SSSS Service::Service() - connect failed - inServerSyncResultRequ" << strerror(errno) << endl;
+    } else {
+        qDebug() << "SSSS  Service::Service() - connected inServerSyncResultRequ to oninServerSyncResultRequ OK";
+    }
 
 
 	if (!QObject::connect(_networkMonitor, SIGNAL(networkAvailable()),

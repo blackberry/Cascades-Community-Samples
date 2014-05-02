@@ -57,6 +57,43 @@ RollBack *RollBack::getInstance(QObject *parent)
     return _instance;
 }
 
+QByteArray RollBack::marshall()
+{
+    LOGIT("marshall()");
+    QByteArray serialisedData;
+    QDataStream stream(&serialisedData, QIODevice::WriteOnly);
+    RollBackList::iterator curr;
+	int schemaVersion = ROLLBACK_SCHEMA_VERSION_CURRENT;
+
+	stream << schemaVersion;
+	stream << _rollBackList->size();
+
+	for (curr = _rollBackList->begin(); curr != _rollBackList->end(); curr++) {
+		stream << *curr;
+	}
+
+    return serialisedData;
+}
+
+void RollBack::unmarshall(QByteArray serialisedData)
+{
+    QDataStream stream(&serialisedData, QIODevice::ReadOnly);
+    int size;
+    RollBackItem item;
+	int schemaVersion;
+
+	stream >> schemaVersion;
+	stream >> size;
+
+	clear();
+
+	for (int i = 0; i < size; i++) {
+		stream >> item;
+		_rollBackList->append(item);
+	}
+    LOGIT("unmarshall()");
+}
+
 void RollBack::restore()
 {
 	qDebug() << "EEEE RollBack::restore()" << endl;
@@ -262,37 +299,4 @@ int RollBack::getNewYear(int localId, int originating_op_id)
 	}
 	qDebug() << "EEEE RollBack::getYear()" << 0 << endl;
 	return 0;
-}
-
-QByteArray RollBack::marshall()
-{
-    LOGIT("marshall()");
-    QByteArray serialisedData;
-    QDataStream stream(&serialisedData, QIODevice::WriteOnly);
-    RollBackList::iterator curr;
-
-	stream << _rollBackList->size();
-
-	for (curr = _rollBackList->begin(); curr != _rollBackList->end(); curr++) {
-		stream << *curr;
-	}
-
-    return serialisedData;
-}
-
-void RollBack::unmarshall(QByteArray serialisedData)
-{
-    QDataStream stream(&serialisedData, QIODevice::ReadOnly);
-    int size;
-    RollBackItem item;
-
-	stream >> size;
-
-	clear();
-
-	for (int i = 0; i < size; i++) {
-		stream >> item;
-		_rollBackList->append(item);
-	}
-    LOGIT("unmarshall()");
 }
