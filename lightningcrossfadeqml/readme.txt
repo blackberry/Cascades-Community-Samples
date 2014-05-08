@@ -25,10 +25,10 @@ Running the example:
 4. Browse to the location where you extracted the sample file, and then click OK.
 5. The sample project should display in the Projects section. 
    Click Finish to import the project into your workspace.
-6. In the Project Explorer pane, Right-click the project (for example hellocascades) 
+6. In the Project Explorer pane, Right-click the project (for example lightningcrossfadeqml) 
    and select Build Project.
-7. In the Project Explorer pane, Right-click the project (for example hellocascades) 
+7. In the Project Explorer pane, Right-click the project (for example lightningcrossfadeqml) 
    and select Run As > BlackBerry C/C++ Application.
-8. The application will now install and launch on your device. If it doesent you might
+8. The application will now install and launch on your device. If it doesn't you might
    have to set up your environment: 
-   http://developer.blackberry.com/cascades/documentation/getting_started/setting_up.html
+   http://developer.blackberry.com/native/documentation/cascades/getting_started/setting_up.html
