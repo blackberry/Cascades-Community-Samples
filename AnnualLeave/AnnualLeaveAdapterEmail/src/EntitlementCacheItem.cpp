@@ -20,10 +20,55 @@ EntitlementCacheItem::EntitlementCacheItem()
 	: _year(-1)
 	, _current(-1)
 	, _total(-1)
+{}
+
+EntitlementCacheItem::~EntitlementCacheItem() {}
+
+QDataStream &operator<<(QDataStream &out, const EntitlementCacheItem &entitlementCacheItem)
 {
+	int schemaVersion = ENTITLEMENT_CACHE_ITEM_SCHEMA_VERSION_CURRENT;
+
+	out << schemaVersion
+		<< entitlementCacheItem.getYear()
+		<< entitlementCacheItem.getCurrent()
+		<< entitlementCacheItem.getTotal();
+	return out;
 }
 
-EntitlementCacheItem::~EntitlementCacheItem() {
+QDataStream &operator>>(QDataStream &in, EntitlementCacheItem &entitlementCacheItem)
+{
+	int year;
+	int current;
+	int total;
+	int schemaVersion;
+
+	in >> schemaVersion;
+
+	switch (schemaVersion) {
+		case ENTITLEMENT_CACHE_ITEM_SCHEMA_VERSION_CURRENT:
+			in >> year >> current >> total;
+			entitlementCacheItem.setYear(year);
+			entitlementCacheItem.setCurrent(current);
+			entitlementCacheItem.setTotal(total);
+			break;
+//
+// Handle older schema versions just in case application has been updated
+//
+//		case ENTITLEMENT_CACHE_ITEM_SCHEMA_VERSION_CURRENT_x:
+//			in >> year >> current >> total >> xxx;
+//			entitlementCacheItem.setYear(year);
+//			entitlementCacheItem.setCurrent(current);
+//			entitlementCacheItem.setTotal(total);
+//			entitlementCacheItem.setXXX(xxx);
+//			break;
+
+		default:
+			qWarning() << "EEEE EntitlementCacheItem  unrecognised schema version detected" << schemaVersion << endl;
+			break;
+	}
+
+
+	return in;
 }
 
 int EntitlementCacheItem::getCurrent() const {
@@ -48,25 +93,4 @@ int EntitlementCacheItem::getYear() const {
 
 void EntitlementCacheItem::setYear(int year) {
 	_year = year;
-}
-
-QDataStream &operator<<(QDataStream &out, const EntitlementCacheItem &entitlementCacheItem)
-{
-	out << entitlementCacheItem.getYear() << entitlementCacheItem.getCurrent() << entitlementCacheItem.getTotal();
-	return out;
-}
-
-QDataStream &operator>>(QDataStream &in, EntitlementCacheItem &entitlementCacheItem)
-{
-	int year;
-	int current;
-	int total;
-
-	in >> year >> current >> total;
-
-	entitlementCacheItem.setYear(year);
-	entitlementCacheItem.setCurrent(current);
-	entitlementCacheItem.setTotal(total);
-
-	return in;
 }

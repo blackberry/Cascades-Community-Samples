@@ -1,5 +1,5 @@
 1
-47
+49
 720x720/Request.qml
 720x720/Task.qml
 AboutSheet.qml
@@ -34,6 +34,7 @@ images/out.png
 images/out_2.png
 images/previous.png
 images/reset.png
+images/sync.png
 images/unknown.png
 images/updated.png
 images/update_pending.png
@@ -45,5 +46,6 @@ Request.qml
 RequestSheet.qml
 Settings.qml
 Style.qml
+SyncSheet.qml
 Task.qml
 TaskSheet.qml

@@ -205,6 +205,19 @@ int AdapterImpl::outAdapterStatusRequ()
     return _emailAdapter->outAdapterStatusRequ();
 }
 
+int AdapterImpl::outClientSynchronizeRequ(int leave_year)
+{
+    qDebug() << "AAAA AdapterImpl:outClientSynchronizeRequ()" << endl;
+
+    return _emailAdapter->outClientSynchronizeRequ(leave_year);
+}
+
+
+int AdapterImpl::outServerSyncResultResp(int op_id, int op_status) {
+    qDebug() << "AAAA outServerSyncResultResp()" << endl;
+    return _emailAdapter->outServerSyncResultResp(op_id, op_status);
+}
+
 int AdapterImpl::start()
 {
 	qDebug() << "AAAA start()" << endl;

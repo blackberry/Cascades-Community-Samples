@@ -4,42 +4,42 @@
 <context>
     <name>AboutSheet</name>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="62"/>
+        <location filename="../assets/AboutSheet.qml" line="63"/>
         <source>About AnnualLeave</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="145"/>
+        <location filename="../assets/AboutSheet.qml" line="146"/>
         <source>The AnnualLeave application is a customisable annual leave / vacation request application, designed to be adaptable to any back end enterprise system with which it needs to be integrated.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="152"/>
+        <location filename="../assets/AboutSheet.qml" line="153"/>
         <source>Authors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="156"/>
+        <location filename="../assets/AboutSheet.qml" line="157"/>
         <source>Martin Woolley (@mdwrim)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="161"/>
+        <location filename="../assets/AboutSheet.qml" line="162"/>
         <source>John Murray (@jcmrim)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="166"/>
+        <location filename="../assets/AboutSheet.qml" line="167"/>
         <source>Adapter Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="175"/>
+        <location filename="../assets/AboutSheet.qml" line="176"/>
         <source>Adapter Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/AboutSheet.qml" line="184"/>
+        <location filename="../assets/AboutSheet.qml" line="185"/>
         <source>Adapter Description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -47,52 +47,52 @@
 <context>
     <name>HelpSheet</name>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="58"/>
+        <location filename="../assets/HelpSheet.qml" line="59"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="130"/>
+        <location filename="../assets/HelpSheet.qml" line="131"/>
         <source>Introduction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="139"/>
+        <location filename="../assets/HelpSheet.qml" line="140"/>
         <source>The AnnualLeave application allows employees of a company to request time off from work. Requests are expected to be processed by a backend system with which this application has been integrated. For further information on how to approach integration, discuss with BlackBerry.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="145"/>
+        <location filename="../assets/HelpSheet.qml" line="146"/>
         <source>There are three tabs available from the main screen:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="151"/>
+        <location filename="../assets/HelpSheet.qml" line="152"/>
         <source>1. Requests</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="159"/>
+        <location filename="../assets/HelpSheet.qml" line="160"/>
         <source>This tab lists requests for time off that you have previously submitted, together with their current status.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="165"/>
+        <location filename="../assets/HelpSheet.qml" line="166"/>
         <source>2. New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="173"/>
+        <location filename="../assets/HelpSheet.qml" line="174"/>
         <source>From the New tab, you can formulate and submit a request for time off work. You need to indicate a start date and an end date and whether or not half days are involved (and if so, how). Select Submit and the request will find its way to the appropriate manager for approval.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="179"/>
+        <location filename="../assets/HelpSheet.qml" line="180"/>
         <source>3. Inbox</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/HelpSheet.qml" line="187"/>
+        <location filename="../assets/HelpSheet.qml" line="188"/>
         <source>If you&apos;re a manager, you will occassionally receive &apos;Approval Tasks&apos; in your Inbox. These are requests for time off work from employees you are responsioble for. To deal with an Approval Task, simply open it, select Approved or Rejected and submit your decision. Your decision will be communicated back to the employee who made the request.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -100,22 +100,22 @@
 <context>
     <name>IconsSheet</name>
     <message>
-        <location filename="../assets/IconsSheet.qml" line="58"/>
+        <location filename="../assets/IconsSheet.qml" line="59"/>
         <source>Icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/IconsSheet.qml" line="88"/>
+        <location filename="../assets/IconsSheet.qml" line="89"/>
         <source>Holiday Booking Requests</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/IconsSheet.qml" line="120"/>
+        <location filename="../assets/IconsSheet.qml" line="121"/>
         <source>Cancellations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/IconsSheet.qml" line="152"/>
+        <location filename="../assets/IconsSheet.qml" line="153"/>
         <source>Updates</source>
         <translation type="unfinished"></translation>
     </message>
@@ -123,7 +123,7 @@
 <context>
     <name>RequestSheet</name>
     <message>
-        <location filename="../assets/RequestSheet.qml" line="92"/>
+        <location filename="../assets/RequestSheet.qml" line="93"/>
         <source>Vacation Request</source>
         <translation type="unfinished"></translation>
     </message>
@@ -137,9 +137,27 @@
     </message>
 </context>
 <context>
+    <name>SyncSheet</name>
+    <message>
+        <location filename="../assets/SyncSheet.qml" line="63"/>
+        <source>Sync</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SyncSheet.qml" line="105"/>
+        <source>Select the year to request synchronization for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../assets/SyncSheet.qml" line="115"/>
+        <source>then touch the Sync button</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>TaskSheet</name>
     <message>
-        <location filename="../assets/TaskSheet.qml" line="81"/>
+        <location filename="../assets/TaskSheet.qml" line="82"/>
         <source>Approval Task</source>
         <translation type="unfinished"></translation>
     </message>

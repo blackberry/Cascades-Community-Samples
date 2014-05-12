@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2014 BlackBerry Limited.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +30,6 @@ Sheet {
                     }
                     Container {
                         verticalAlignment: VerticalAlignment.Fill
-                        //                        background: Color.Green
                         layoutProperties: StackLayoutProperties {
                             spaceQuota: 20
                         }
@@ -69,13 +68,18 @@ Sheet {
                             horizontalAlignment: HorizontalAlignment.Fill
                             text: "Save"
                             onClicked: {
-                                app.setting1value = tfSetting1_value.text
-                                app.setting2value = tfSetting2_value.text
-                                app.setting3value = tfSetting3_value.text
-                                app.setting4value = tfSetting4_value.text
-                                app.setting5value = tfSetting5_value.text
-                                app.requestAdapterStatus();
-                                close();
+                                if (tf3_validator.state == ValidationState.Valid && tf4_validator.state == ValidationState.Valid && tf5_validator.state == ValidationState.Valid) {
+                                    app.setting1value = dd_email_accounts.selectedValue
+                                    app.setting3value = tfSetting3_value.text
+                                    app.setting4value = tfSetting4_value.text
+                                    app.setting5value = tfSetting5_value.text
+                                    app.requestAdapterStatus();
+                                    lbl_warning.text = ""
+                                    close();
+                                } else {
+                                    lbl_warning.text = "Some of the values supplied are not valid!"
+                                    lbl_warning.visible = true
+                                }
                             }
                             rightPadding: 10
                             topPadding: 15
@@ -94,14 +98,14 @@ Sheet {
             Style {
                 id: style
             }
-            
+
             ScrollView {
 
                 Container {
 
                     Label {
                         id: lbl_warning
-                        horizontalAlignment: HorizontalAlignment.Center                        
+                        horizontalAlignment: HorizontalAlignment.Center
                         visible: ! app.adapter_configured
                         text: "Adapter is not properly configured!"
                         textStyle.fontWeight: style.settings_label_style
@@ -110,43 +114,16 @@ Sheet {
                         }
                     }
 
-                    Label {
-                        id: lblSetting1_name
-                        horizontalAlignment: HorizontalAlignment.Center                        
-                        textStyle.fontWeight: style.settings_label_style
-                        text: app.setting1name
-                        visible: (app.setting1name != "")
-                    }
-                    TextField {
-                        id: tfSetting1_value
-                        text: app.setting1value
-                        visible: (app.setting1name != "")
-                        input.flags: TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff | TextInputFlag.AutoPeriodOff | TextInputFlag.PredictionOff | TextInputFlag.SpellCheckOff
-                        textStyle {
-                            textAlign: TextAlign.Center
-                        }
+                    DropDown {
+                        id: dd_email_accounts
+                        objectName: "dd_email_accounts"
+                        title: "Email Account"
                     }
 
-                    Label {
-                        id: lblSetting2_name
-                        horizontalAlignment: HorizontalAlignment.Center                        
-                        textStyle.fontWeight: style.settings_label_style
-                        text: app.setting2name
-                        visible: (app.setting2name != "")
-                    }
-                    TextField {
-                        id: tfSetting2_value
-                        text: app.setting2value
-                        visible: (app.setting2name != "")
-                        input.flags: TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff | TextInputFlag.AutoPeriodOff | TextInputFlag.PredictionOff | TextInputFlag.SpellCheckOff
-                        textStyle {
-                            textAlign: TextAlign.Center
-                        }
-                    }
-
+                    // Approver Name
                     Label {
                         id: lblSetting3_name
-                        horizontalAlignment: HorizontalAlignment.Center                        
+                        horizontalAlignment: HorizontalAlignment.Center
                         textStyle.fontWeight: style.settings_label_style
                         text: app.setting3name
                         visible: (app.setting3name != "")
@@ -159,11 +136,25 @@ Sheet {
                         textStyle {
                             textAlign: TextAlign.Center
                         }
+                        validator: Validator {
+                            id: tf3_validator
+                            mode: ValidationMode.Immediate
+                            errorMessage: "Approver name must be supplied"
+                            onValidate: {
+                                if (tfSetting3_value.text.length > 0) {
+                                    tf3_validator.state = ValidationState.Valid
+                                } else {
+                                    tf3_validator.state = ValidationState.Invalid
+                                }
+                            }
+                        }
+
                     }
 
+                    // Approver email address
                     Label {
                         id: lblSetting4_name
-                        horizontalAlignment: HorizontalAlignment.Center                        
+                        horizontalAlignment: HorizontalAlignment.Center
                         textStyle.fontWeight: style.settings_label_style
                         text: app.setting4name
                         visible: (app.setting4name != "")
@@ -176,11 +167,25 @@ Sheet {
                         textStyle {
                             textAlign: TextAlign.Center
                         }
+                        inputMode: TextFieldInputMode.EmailAddress
+                        validator: Validator {
+                            id: tf4_validator
+                            mode: ValidationMode.Immediate
+                            errorMessage: "Invalid email address"
+                            onValidate: {
+                                if (app.isValidEmailAddress(tfSetting4_value.text)) {
+                                    tf4_validator.state = ValidationState.Valid
+                                } else {
+                                    tf4_validator.state = ValidationState.Invalid
+                                }
+                            }
+                        }
                     }
 
+                    // User ID
                     Label {
                         id: lblSetting5_name
-                        horizontalAlignment: HorizontalAlignment.Center                        
+                        horizontalAlignment: HorizontalAlignment.Center
                         textStyle.fontWeight: style.settings_label_style
                         text: app.setting5name
                         visible: (app.setting5name != "")
@@ -192,6 +197,18 @@ Sheet {
                         input.flags: TextInputFlag.AutoCapitalizationOff | TextInputFlag.AutoCorrectionOff | TextInputFlag.AutoPeriodOff | TextInputFlag.PredictionOff | TextInputFlag.SpellCheckOff
                         textStyle {
                             textAlign: TextAlign.Center
+                        }
+                        validator: Validator {
+                            id: tf5_validator
+                            mode: ValidationMode.Immediate
+                            errorMessage: "User ID must be supplied"
+                            onValidate: {
+                                if (tfSetting5_value.text.length > 0) {
+                                    tf5_validator.state = ValidationState.Valid
+                                } else {
+                                    tf5_validator.state = ValidationState.Invalid
+                                }
+                            }
                         }
                     }
                 }

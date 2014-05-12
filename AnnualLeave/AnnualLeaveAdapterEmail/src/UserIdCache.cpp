@@ -64,7 +64,9 @@ QByteArray UserIdCache::marshall()
     QByteArray serialisedData;
     QDataStream stream(&serialisedData, QIODevice::WriteOnly);
     UserIdList::iterator curr;
+	int schemaVersion = USERID_CACHE_SCHEMA_VERSION_CURRENT;
 
+	stream << schemaVersion;
 	stream << _userIdList->size();
 
 	for (curr = _userIdList->begin(); curr != _userIdList->end(); curr++) {
@@ -80,7 +82,9 @@ void UserIdCache::unmarshall(QByteArray serialisedData)
     QDataStream stream(&serialisedData, QIODevice::ReadOnly);
     int size;
     UserIdCacheItem item;
+	int schemaVersion;
 
+	stream >> schemaVersion;
 	stream >> size;
 
 	clear();

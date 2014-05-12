@@ -81,6 +81,10 @@ public:
 //	virtual int outApprovalTaskOutcomeResp(...) = 0;  // Not yet implemented
 
     virtual int outAdapterStatusRequ() = 0;
+
+    virtual int outClientSynchronizeRequ(int leave_year) = 0;
+
+    virtual int outServerSyncResultResp(int op_id, int op_status) = 0;
 /*
  * NOTE
  *

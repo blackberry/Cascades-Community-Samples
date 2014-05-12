@@ -26,7 +26,10 @@ UserIdCacheItem::~UserIdCacheItem() {}
 
 QDataStream &operator<<(QDataStream &out, const UserIdCacheItem &userIdCacheItem)
 {
-	out << userIdCacheItem.getUserId()
+	int schemaVersion = USERID_CACHE_ITEM_SCHEMA_VERSION_CURRENT;
+
+	out << schemaVersion
+		<< userIdCacheItem.getUserId()
 		<< userIdCacheItem.getEmailAddress()
 		<< userIdCacheItem.getTaskId();
 
@@ -38,12 +41,32 @@ QDataStream &operator>>(QDataStream &in, UserIdCacheItem &userIdCacheItem)
 	QString userId;
 	QString emailAddress;
 	int taskId;
+	int schemaVersion;
 
-	in >> userId >> emailAddress >> taskId;
+	in >> schemaVersion;
 
-	userIdCacheItem.setUserId(userId);
-	userIdCacheItem.setEmailAddress(emailAddress);
-	userIdCacheItem.setTaskId(taskId);
+	switch (schemaVersion) {
+		case USERID_CACHE_ITEM_SCHEMA_VERSION_CURRENT:
+			in >> userId >> emailAddress >> taskId;
+			userIdCacheItem.setUserId(userId);
+			userIdCacheItem.setEmailAddress(emailAddress);
+			userIdCacheItem.setTaskId(taskId);
+			break;
+//
+// Handle older schema versions just in case application has been updated
+//
+//		case USERID_CACHE_ITEM_SCHEMA_VERSION_X:
+//			in >> userId >> emailAddress >> taskId >> xxx;
+//			userIdCacheItem.setUserId(userId);
+//			userIdCacheItem.setEmailAddress(emailAddress);
+//			userIdCacheItem.setTaskId(taskId);
+//			userIdCacheItem.setXXX(xxx);
+//			break;
+
+		default:
+			qWarning() << "EEEE UserIdCacheItem  unrecognised schema version detected" << schemaVersion << endl;
+			break;
+	}
 
 	return in;
 }

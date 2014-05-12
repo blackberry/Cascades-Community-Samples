@@ -55,6 +55,7 @@ bt_le_callbacks_t leCallbacks = { btLeAdvertisementCb, NULL, NULL };
 ApplicationUI::ApplicationUI()
     : QObject()
 	, _model(new GroupDataModel(this))
+    , _state(STATE_STOPPED)
 {
 	appInstance = this;
 
@@ -135,11 +136,17 @@ void ApplicationUI::deinitBluetooth()
 
 void ApplicationUI::onStartListening()
 {
+    qDebug() << "GGGG onStartListening";
+    _state = STATE_STARTED;
+    emit stateChanged();
 	initBluetooth();
 }
 
 void ApplicationUI::onStopListening()
 {
+    qDebug() << "GGGG onStopListening";
+    _state = STATE_STOPPED;
+    emit stateChanged();
 	deinitBluetooth();
 }
 
@@ -250,3 +257,6 @@ bb::cascades::DataModel* ApplicationUI::model() const
     return _model;
 }
 
+int ApplicationUI::state() {
+    return _state;
+}

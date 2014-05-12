@@ -1,4 +1,8 @@
 1
-2
+6
+AboutSheet.qml
+CustomButton.qml
+images/about.png
+images/icon.png
 Logger.qml
 main.qml

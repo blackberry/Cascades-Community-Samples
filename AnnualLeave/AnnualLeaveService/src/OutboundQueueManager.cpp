@@ -99,6 +99,8 @@ int OutboundQueueManager::processQueue()
 		OpApprovalTaskOutcomeRequ *approvalTaskOutcomeRequ;
         OpAdapterDetailsResp *adapterDetailsResp;
         OpAdapterStatusRequ *adapterStatusRequ;
+        OpClientSynchronizeRequ *clientSynchronizeRequ;
+        OpServerSyncResultResp *serverSyncResultResp;
 
 		switch ((*curr)->opType()) {
 			case OP_TYPE_SUBMIT_BOOKING_REQUEST:
@@ -113,7 +115,18 @@ int OutboundQueueManager::processQueue()
 				removeRequest(bookingRequ->opId());
 				break;
 
-			case OP_TYPE_HALF_DAYS_USED_RESPONSE:
+            case OP_TYPE_CLIENT_SYNCHRONIZE_REQUEST:
+                clientSynchronizeRequ = dynamic_cast<OpClientSynchronizeRequ *>(*curr);
+
+                qDebug() << "SSSS OUT processQueue() - processing request type OP_TYPE_CLIENT_SYNCHRONIZE_REQUEST" << endl;
+
+                if (doOutClientSynchronizeRequ(clientSynchronizeRequ) != ADAPTER_IMPL_ACCEPTED) {
+                    qDebug() << "SSSS OUT processQueue() - OP_TYPE_CLIENT_SYNCHRONIZE_REQUEST request not accepted by adapter" << endl;
+                }
+                removeRequest(clientSynchronizeRequ->opId());
+                break;
+
+            case OP_TYPE_HALF_DAYS_USED_RESPONSE:
 				halfDayResp = dynamic_cast<OpHalfDaysUsedResp *>(*curr);
 
 				qDebug() << "SSSS OUT processQueue() - processing request type OP_TYPE_HALF_DAYS_USED_RESPONSE" << endl;
@@ -201,6 +214,12 @@ int OutboundQueueManager::processQueue()
                 doOutAdapterStatusRequ(adapterStatusRequ);
                 removeRequest(adapterStatusRequ->opId());
                 break;
+            case OP_TYPE_SERVER_SYNC_RESULT_RESPONSE:
+                serverSyncResultResp = dynamic_cast<OpServerSyncResultResp *>(*curr);
+                qDebug() << "SSSS OUT processQueue() - processing request type OP_TYPE_SERVER_SYNC_RESULT_RESPONSE" << endl;
+                doOutServerSyncResultResp(serverSyncResultResp);
+                removeRequest(serverSyncResultResp->opId());
+                break;
 
 			default:
 				qWarning() << "SSSS OUT processQueue() - unimplemented operation  type" << (*curr)->opType() << endl;
@@ -237,6 +256,13 @@ int OutboundQueueManager::doOutApprovalOutcomeResp(OpApprovalOutcomeResp *respon
 	qDebug() << "SSSS OUT doOutApprovalOutcomeResp()" << endl;
 
 	return _iAdapter->outApprovalOutcomeResp(response->localRequestId(), response->opStatus());
+}
+
+int OutboundQueueManager::doOutServerSyncResultResp(OpServerSyncResultResp *response)
+{
+    qDebug() << "SSSS OUT doOutServerSyncResultResp()" << endl;
+
+    return _iAdapter->outServerSyncResultResp(response->opId(), response->opStatus());
 }
 
 int OutboundQueueManager::doOutCancelBookingRequ(OpCancelBookingRequ *request)
@@ -308,6 +334,12 @@ int OutboundQueueManager::doOutAdapterStatusRequ(OpAdapterStatusRequ *request)
 {
     qDebug() << "SSSS OUT doOutAdapterStatusRequ()" << endl;
     return _iAdapter->outAdapterStatusRequ();
+}
+
+int OutboundQueueManager::doOutClientSynchronizeRequ(OpClientSynchronizeRequ *request)
+{
+    qDebug() << "SSSS OUT doOutClientSynchronizeRequ()" << endl;
+    return _iAdapter->outClientSynchronizeRequ(request->leaveYear());
 }
 
 void OutboundQueueManager::removeRequest(int opId)

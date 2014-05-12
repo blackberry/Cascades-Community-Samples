@@ -40,7 +40,10 @@
 #include "OpAdapterDetailsResp.hpp"
 #include "OpAdapterStatusRequ.hpp"
 #include "OpAdapterStatusResp.hpp"
-
+#include "OpClientSynchronizeRequ.hpp"
+#include "OpClientSynchronizeResp.hpp"
+#include "OpServerSyncResultRequ.hpp"
+#include "OpServerSyncResultResp.hpp"
 
 #include <bb/system/InvokeManager>
 #include <bb/platform/Notification>
@@ -84,6 +87,12 @@ public:
     void adapter_status_Requ(OpAdapterStatusRequ request);
     void adapter_status_Resp(OpAdapterStatusResp response);
 
+    void client_synchronize_Requ(OpClientSynchronizeRequ request);
+    void client_synchronize_Resp(OpClientSynchronizeResp response);
+
+    void server_sync_result_Requ(OpServerSyncResultRequ request);
+    void server_sync_result_Resp(OpServerSyncResultResp response);
+
 	void deleteInboundOp(int id);
 	void deleteOutboundOp(int id);
 	void deleteOutboundOp(int local_request_id, int op_type);
@@ -97,28 +106,30 @@ public:
 	void setGuiConnected(bool guiConnected);
 	bool isGuiAppProcessRunning() const;
 	void setGuiAppProcessRunning(bool guiAppProcessRunning);
+    const QString& getSocketServerPath() const;
 
-	signals:
-//		void blahChanged();
+signals:
+//	void blahChanged();
 
-	private slots:
-//		void onBlahChanged(const QString &blah);
+private slots:
+//	void onBlahChanged(const QString &blah);
 
-	private:
-		Operations(QObject *parent = NULL);
-		void notifyGuiInboundOperation();
-        void notifyTask();
-		bool isAlGuiRunning();
+private:
+    Operations(QObject *parent = NULL);
+    void notifyGuiInboundOperation();
+    void notifyTask();
+    bool isAlGuiRunning();
 
-		static Operations* _instance;
+    static Operations* _instance;
 
-	    OpsSqlDataSource* _sql;
+    OpsSqlDataSource* _sql;
 
-	    bb::platform::Notification *_notify;
-	    bb::system::InvokeManager *_invokeManager;
+    bb::platform::Notification *_notify;
+    bb::system::InvokeManager *_invokeManager;
 
-	    bool _guiConnected;
-	    bool _guiAppProcessRunning;
+    bool _guiConnected;
+    bool _guiAppProcessRunning;
+    QString _socketServerPath;
 };
 
 #endif /* OPERATIONS_HPP_ */
