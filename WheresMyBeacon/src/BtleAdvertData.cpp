@@ -106,7 +106,7 @@ QString BtleAdvertData::beaconUuidAsString()
 	QByteArray estimote = QByteArray::fromHex("b9407f30f5f8466eaff925556b57fe6d");
 
 	if (_beaconUuid == estimote) {
-		return "Estimote Beacon";
+		return "Default Estimote UUID";
 	}
 
 	for (int i = 0; i < _beaconUuid.length(); i++) {
