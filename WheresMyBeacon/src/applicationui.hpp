@@ -47,7 +47,9 @@ class ApplicationUI : public QObject
     Q_OBJECT
 
     Q_PROPERTY(bb::cascades::DataModel* model READ model CONSTANT)
+    Q_PROPERTY(bb::cascades::DataModel* config_model READ configModel CONSTANT)
     Q_PROPERTY(int state READ state NOTIFY stateChanged);
+    Q_PROPERTY(int scan_state READ scanState NOTIFY scanStateChanged);
 
 public:
     ApplicationUI();
@@ -56,11 +58,26 @@ public:
     void emitMessageForUi(const QVariant &text);
 	void parseBeaconData(const char *data, int len, int8_t rssi, const char *bdaddr);
 	QString btEventName(int event);
+    Q_INVOKABLE void save(QString mac, QString name, QVariant type);
+    Q_INVOKABLE void updateBeaconAttributes(QString uuid, int major, int minor, int power, int interval, int pin);
+    Q_INVOKABLE QString getBeaconType(QString mac);
+    Q_INVOKABLE QString getBeaconName(QString mac);
+    Q_INVOKABLE QString getBeaconUuid();
+    Q_INVOKABLE int getBeaconMajor();
+    Q_INVOKABLE int getBeaconMinor();
+    Q_INVOKABLE int getBeaconPower();
+    Q_INVOKABLE int getBeaconInterval();
+    Q_INVOKABLE int getBeaconPin();
+    Q_INVOKABLE void startScanning();
+    Q_INVOKABLE void readBeaconCharacteristics(QString mac);
+    Q_INVOKABLE bool isBeaconCharacteristicsAvailable();
+    void emitOpenConfig(QString mac);
 
 private slots:
     void onSystemLanguageChanged();
     void initBluetooth();
     void deinitBluetooth();
+    void prepForAdvertisements();
 
 public slots:
     void onStartListening();
@@ -69,22 +86,32 @@ public slots:
 signals:
     void message(const QVariant &text);
     void stateChanged();
+    void scanStateChanged();
+    void openConfig(QVariant mac);
 
 private:
     bb::cascades::DataModel* model() const;
+    bb::cascades::DataModel* configModel() const;
 
     QTranslator* _pTranslator;
     bb::cascades::LocaleHandler* _pLocaleHandler;
     QmlDocument *_qml;
-    AbstractPane *_root;
     QObject *_mainPage;
     GroupDataModel *_model;
+    GroupDataModel *_config_model;
 
     static const int STATE_STOPPED = 1;
     static const int STATE_STARTED = 2;
     int _state;
+    int _scan_state;
+    const QString _orgName;
+    const QString _appName;
+    bool _bt_initialised;
+    bt_remote_device_t *_selected_device;
 
     int state();
+    int scanState();
+    void updateSensorTag(QString mac, QString uuid, int major, int minor, int power, int interval);
 
 };
 

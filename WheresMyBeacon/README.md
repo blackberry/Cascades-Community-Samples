@@ -18,6 +18,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 * **V1.0.0** - Initial release
 * **V1.0.1** - Added an "About" page and improved layout of iBeacon(TM) information in ListView.
+* **V2.0.0** - Added ability to associate a friendly name with a beacon to aid identification. Added beacon configuration screen to allow SensorTag beacon attributes to be modified. 
 
 **Known Issues**
 
