@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../assets/AboutSheet.qml" line="84"/>
-        <source>V1.0.1</source>
+        <source>V2.0.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -35,15 +35,39 @@
     </message>
 </context>
 <context>
+    <name>BeaconConfiguration</name>
+    <message>
+        <location filename="../assets/BeaconConfiguration.qml" line="77"/>
+        <source>Beacon Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BeaconIdentity</name>
+    <message>
+        <location filename="../assets/BeaconIdentity.qml" line="70"/>
+        <source>Beacon Identity</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BeaconList</name>
+    <message>
+        <location filename="../assets/BeaconList.qml" line="84"/>
+        <source>Configurable Beacons</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="65"/>
+        <location filename="../assets/main.qml" line="86"/>
         <source>
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="76"/>
+        <location filename="../assets/main.qml" line="97"/>
         <source>Where&apos;s My Beacon</source>
         <translation type="unfinished"></translation>
     </message>

@@ -17,69 +17,91 @@
 import bb.cascades 1.2
 
 Page {
-
+    
     property int state_stopped: 1
     property int state_started: 2
-
+    
     attachedObjects: [
         AboutSheet {
             id: aboutInfo
+        },
+        BeaconList {
+            id: beaconList
+            
+            onStartScanning: {
+                app.startScanning();
+            }
+            
         }
     ]
-
+    
     Menu.definition: MenuDefinition {
         actions: [
             ActionItem {
                 title: "About"
                 imageSource: "images/about.png"
-
+                
                 onTriggered: {
                     aboutInfo.open();
+                }
+            },
+            ActionItem {
+                title: "Configure"
+                imageSource: "images/settings.png"
+                
+                onTriggered: {
+                    beaconList.open();
                 }
             }
         ]
     }
-
+    
     Container {
         // ======== Identity ===============
-
+        
         id: mainPage
         objectName: "mainPage"
-
+        
+        function onOpenConfig(mac) {
+            console.log("QQQQ onOpenConfig:"+mac);
+            beaconList.openConfig(mac);
+        }
+        
         // ======== Properties =============
-
+        
         // ======== SIGNAL()s ==============
-
+        
         signal startListening()
         signal stopListening()
-
+        
         // ======== SLOT()s ================
-
+        
         function onMessage(text) {
             logMessage(text);
         }
-
+        
         // ======== Local functions ========
-
+        
         function logMessage(message) {
             log.text += (qsTr("\n") + message );
         }
-
+        
         layout: StackLayout {
         }
-
+        
         topPadding: 10
         leftPadding: 30
         rightPadding: 30
-
+        
         Label {
             text: qsTr("Where's My Beacon")
             textStyle {
                 base: SystemDefaults.TextStyles.BigText
                 fontWeight: FontWeight.Bold
             }
+            horizontalAlignment: HorizontalAlignment.Center
         }
-
+        
         Container {
             layout: StackLayout {
                 orientation: LayoutOrientation.LeftToRight
@@ -109,19 +131,19 @@ Page {
                 }
             }
         }
-
+        
         Container {
             topPadding: 20
             leftPadding: 20
             rightPadding: 20
             bottomPadding: 20
-
+            
             ListView {
                 id: beacon_list
                 objectName: "beacon_list"
-
+                
                 dataModel: app.model
-
+                
                 listItemComponents: [
                     ListItemComponent {
                         type: "listItem"
@@ -130,8 +152,17 @@ Page {
                             highlightAppearance: HighlightAppearance.Frame
                             Container {
                                 Label {
+                                    text: "NAME: " + app.getBeaconName(ListItemData.MAC);
+                                    textStyle.fontWeight: FontWeight.Bold
+                                    visible: (app.getBeaconName(ListItemData.MAC)!= "" ? true : false)
+                                }
+                                Label {
                                     text: "MAC: " + ListItemData.MAC
                                     textStyle.fontWeight: FontWeight.Bold
+                                }
+                                Label {
+                                    text: "Type: " + app.getBeaconType(ListItemData.MAC);
+                                    visible: (app.getBeaconType(ListItemData.MAC)!= "" ? true : false)
                                 }
                                 Label {
                                     text: " UUID: " + ListItemData.UUID
@@ -143,13 +174,28 @@ Page {
                                     text: " Calibrated Power: " + ListItemData.RSSI + " Path Loss: " + ListItemData.LOSS
                                 }
                                 Divider {
-                                    
+                                
+                                }
+                                onTouch: {
+                                    if (event.isUp()) {
+                                        ctx_beacon_identity.mac = ListItemData.MAC
+                                        ctx_beacon_identity.setBeaconType(app.getBeaconType(ListItemData.MAC));
+                                        ctx_beacon_identity.name = app.getBeaconName(ListItemData.MAC);;
+                                        ctx_beacon_identity.open();
+                                    }
                                 }
                             }
+
+                            attachedObjects: [
+                                BeaconIdentity {
+                                    id: ctx_beacon_identity
+                                }
+                            ]
+
                         }
                     }
                 ]
-
+                
                 function itemType(data, indexPath) {
                     if (indexPath.length == 1) {
                         return "header";
