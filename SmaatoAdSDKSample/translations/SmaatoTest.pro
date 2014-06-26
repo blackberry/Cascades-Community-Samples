@@ -1,0 +1,1 @@
+include (../SmaatoTest.pro)
