@@ -79,7 +79,16 @@ bool _beacon_attributes_available;
 bool _connect_to_write;
 
 static void btEvent(const int event, const char *btAddr, const char *eventData);
+
+/*
+ * Don't use deprecated API if we're building for >= 10.3.0
+ */
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+static void btLeAdvertisementCbExt(const char *bdaddr, int8_t rssi, bt_le_advert_packet_event_t eventType, const char *data, int len, void *userData);
+#else
 static void btLeAdvertisementCb(const char *bdaddr, int8_t rssi, const char *data, int len, void *userData);
+#endif
+
 static bool readBeaconAttributes(int service_instance);
 static bool writeBeaconAttributes(int service_instance);
 static bool establishHandles(int service_instance);
@@ -552,6 +561,20 @@ bool establishHandles(int service_instance)
     return true;
 }
 
+/*
+ * Don't use deprecated API if we're building for >= 10.3.0
+ */
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+static void btLeAdvertisementCbExt(const char *bdaddr, int8_t rssi, bt_le_advert_packet_event_t eventType, const char *data, int len, void *userData)
+{
+    Q_UNUSED(eventType)
+    Q_UNUSED(userData)
+
+    if (appInstance) {
+        appInstance->parseBeaconData(data, len, rssi, bdaddr);
+    }
+}
+#else
 static void btLeAdvertisementCb(const char *bdaddr, int8_t rssi, const char *data, int len, void *userData)
 {
     Q_UNUSED(userData)
@@ -560,6 +583,7 @@ static void btLeAdvertisementCb(const char *bdaddr, int8_t rssi, const char *dat
         appInstance->parseBeaconData(data, len, rssi, bdaddr);
     }
 }
+#endif
 
 static void btEvent(const int event, const char *btAddr, const char *eventData)
 {
@@ -582,7 +606,14 @@ static void btEvent(const int event, const char *btAddr, const char *eventData)
     }
 }
 
+/*
+ * Don't use deprecated API if we're building for >= 10.3.0
+ */
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+bt_le_callbacks_t leCallbacks = { NULL, NULL, NULL, btLeAdvertisementCbExt };
+#else
 bt_le_callbacks_t leCallbacks = { btLeAdvertisementCb, NULL, NULL };
+#endif
 
 ApplicationUI::ApplicationUI()
 	: QObject()

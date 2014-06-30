@@ -28,6 +28,7 @@
 #include <btapi/btle.h>
 #include <errno.h>
 #include <bb/cascades/GroupDataModel>
+#include <bbndk.h>
 
 using namespace bb::cascades;
 
