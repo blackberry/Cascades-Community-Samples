@@ -82,15 +82,33 @@ Page {
                 logMessage("Headless Service Not Running")
             }
         }
+        //	void altBeaconEnteredRange(const QVariant &timeStamp, const QVariant &macAddress, const QVariant &companyCode,
+        // const QVariant &beaconId, const QVariant &reserved, const QVariant &rssi, const QVariant &loss);
 
-        function onBeaconEnteredRange(timeStamp, macAddress, uuid, major, minor, rssi, loss) {
-            logMessage("Entered: UUID: " + uuid + " Major: " + major + " Minor: " + minor + " Loss: " +loss);
+        function onIBeaconEnteredRange(timeStamp, macAddress, uuid, major, minor, rssi, loss) {
+            logMessage("iBeacon entered:\n UUID: " + uuid + "\n Major: " + major + " Minor: " + minor + " Loss: " + loss);
         }
 
-        function onBeaconExitedRange(timeStamp, macAddress, uuid, major, minor, rssi, loss) {
-            logMessage("Exited: UUID: " + uuid + " Major: " + major + " Minor: " + minor + " Loss: " +loss);
+        function onIBeaconExitedRange(timeStamp, macAddress, uuid, major, minor, rssi, loss) {
+            logMessage("iBeacon exited:\n UUID: " + uuid + "\n Major: " + major + " Minor: " + minor + " Loss: " + loss);
         }
 
+        function onAltBeaconEnteredRange(timeStamp, macAddress, companyCode, companyName, beaconId, reserved, rssi, loss) {
+            if (companyName != "") {
+                logMessage("AltBeacon entered:\n ID: " + beaconId + "\n Company Name: " + companyName + " Reserved: " + reserved + " Loss: " + loss);
+            } else {
+                logMessage("AltBeacon entered:\n ID: " + beaconId + "\n Company Code: " + companyCode + " Reserved: " + reserved + " Loss: " + loss);
+            }
+        }
+        
+        function onAltBeaconExitedRange(timeStamp, macAddress, companyCode, companyName, beaconId, reserved, rssi, loss) {
+            if (companyName != "") {
+                logMessage("AltBeacon exited:\n ID: " + beaconId + "\n Company Name: " + companyName + " Reserved: " + reserved + " Loss: " + loss);
+            } else {
+                logMessage("AltBeacon exited:\n ID: " + beaconId + "\n Company Code: " + companyCode + " Reserved: " + reserved + " Loss: " + loss);
+            }
+        }
+        
         // ======== Local functions ========
 
         function logMessage(message) {

@@ -16,6 +16,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 **Release History**
 
 * **V1.0.0** - Initial release
+* **V1.1.0** - Support for AltBeacon format
 
 **Known Issues**
 

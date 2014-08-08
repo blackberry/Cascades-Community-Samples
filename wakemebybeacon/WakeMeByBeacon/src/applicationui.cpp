@@ -56,11 +56,17 @@ ApplicationUI::ApplicationUI()
     QObject::connect(     this, SIGNAL(startedStateChanged(QVariant)),
                      _mainPage, SLOT(onStartedStateChanged(QVariant)));
 
-    QObject::connect(     this, SIGNAL(beaconEnteredRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)),
-                     _mainPage, SLOT(onBeaconEnteredRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)));
+    QObject::connect(     this, SIGNAL(iBeaconEnteredRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)),
+                     _mainPage, SLOT(onIBeaconEnteredRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)));
 
-    QObject::connect(     this, SIGNAL(beaconExitedRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)),
-                     _mainPage, SLOT(onBeaconExitedRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)));
+    QObject::connect(     this, SIGNAL(iBeaconExitedRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)),
+                     _mainPage, SLOT(onIBeaconExitedRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)));
+
+    QObject::connect(     this, SIGNAL(altBeaconEnteredRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)),
+                     _mainPage, SLOT(onAltBeaconEnteredRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)));
+
+    QObject::connect(     this, SIGNAL(altBeaconExitedRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)),
+                     _mainPage, SLOT(onAltBeaconExitedRange(QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant, QVariant)));
 
     // ============== Hook up signals from QML
 
@@ -127,39 +133,86 @@ void ApplicationUI::handleBeaconEvent(const QVariantMap &payload)
 {
     QString type = payload["TYPE"].toString();
 
-    qDebug() << "XXXX Handling BEacon Event: " << type << endl;
+    qDebug() << "XXXX Handling Beacon Event: " << type << endl;
 
     bool beaconEnterEvent = (type.compare("BEACON-ENTER-RANGE") == 0);
     bool beaconExitEvent = (type.compare("BEACON-EXIT-RANGE") == 0);
 
     if ( beaconEnterEvent || beaconExitEvent) {
 
+        // Common Beacon attributes
+        QString beaconClass = qvariant_cast<QString>(payload["CLASS"]);
         QDateTime timeStamp = qvariant_cast<QDateTime>(payload["TIME"]);
         QString macAddress = qvariant_cast<QString>(payload["MAC"]);
-        QString uuid = qvariant_cast<QString>(payload["UUID"]);
-        int major = qvariant_cast<int>(payload["MAJOR"]);
-        int minor = qvariant_cast<int>(payload["MINOR"]);
         int rssi = qvariant_cast<int>(payload["RSSI"]);
         int loss = qvariant_cast<int>(payload["LOSS"]);
+
+        bool isIBeacon = (beaconClass.compare("IBEACON") == 0);
+        bool isAltBeacon = (beaconClass.compare("ALTBEACON") == 0);
+
+        // iBeacon specific attributes
+        QString uuid = "";
+        int major = 0;
+        int minor = 0;
+
+        // AltBeacon specific attributes
+        QString beaconId = "";
+        QString companyName = "";
+        int companyCode = 0;
+        int reserved = 0;
 
         qDebug() << "XXXX TimeStamp: " << timeStamp << endl;
         qDebug() << "XXXX Event: " << type << endl;
         qDebug() << "XXXX macAddress: " << macAddress << endl;
-        qDebug() << "XXXX uuid: " << uuid << endl;
-        qDebug() << "XXXX major: " << major << endl;
-        qDebug() << "XXXX minor: " << minor << endl;
-        qDebug() << "XXXX rssi: " << rssi << endl;
-        qDebug() << "XXXX loss: " << loss << endl;
-        qDebug() << "XXXX major: " << major << endl;
 
-        if (beaconEnterEvent && monitoringUuid(uuid, major, minor)) {
-            qDebug() << "XXXX Emiting beaconEnteredRange signal" << endl;
-        	emit beaconEnteredRange(timeStamp, macAddress, uuid, major, minor, rssi, loss);
+        if (isIBeacon) {
+
+            uuid = qvariant_cast<QString>(payload["UUID"]);
+            major = qvariant_cast<int>(payload["MAJOR"]);
+            minor = qvariant_cast<int>(payload["MINOR"]);
+
+            qDebug() << "XXXX uuid: " << uuid << endl;
+            qDebug() << "XXXX major: " << major << endl;
+            qDebug() << "XXXX minor: " << minor << endl;
+
+        } else if(isAltBeacon) {
+
+            companyCode = qvariant_cast<int>(payload["COMPANY"]);
+            companyName = qvariant_cast<QString>(payload["COMPANYNAME"]);
+            beaconId = qvariant_cast<QString>(payload["ID"]);
+            reserved = qvariant_cast<int>(payload["RESV"]);
+
+            qDebug() << "XXXX companyCode: " << companyCode << endl;
+            qDebug() << "XXXX companyName: " << companyName << endl;
+            qDebug() << "XXXX beaconId: " << beaconId << endl;
+            qDebug() << "XXXX reserved: " << reserved << endl;
+
+        } else {
+            qDebug() << "XXXX Unrecognised Beacon Specification" << endl;
         }
 
-        if (beaconExitEvent && monitoringUuid(uuid, major, minor)) {
-            qDebug() << "XXXX Emiting beaconExitedRange signal" << endl;
-        	emit beaconExitedRange(timeStamp, macAddress, uuid, major, minor, rssi, loss);
+        qDebug() << "XXXX rssi: " << rssi << endl;
+        qDebug() << "XXXX loss: " << loss << endl;
+
+        if (beaconEnterEvent) {
+            if (isIBeacon && monitoringUuid(uuid, major, minor)) {
+                qDebug() << "XXXX - iBeacon - Emiting beaconEnteredRange signal" << endl;
+                emit iBeaconEnteredRange(timeStamp, macAddress, uuid, major, minor, rssi, loss);
+            }
+            if (isAltBeacon && monitoringAltBeacon(companyCode, beaconId, reserved)) {
+                qDebug() << "XXXX - AltBeacon - Emiting beaconEnteredRange signal" << endl;
+                emit altBeaconEnteredRange(timeStamp, macAddress, companyCode, companyName, beaconId, reserved, rssi, loss);
+            }
+        }
+        if (beaconExitEvent) {
+            if (isIBeacon && monitoringUuid(uuid, major, minor)) {
+                qDebug() << "XXXX - iBeacon - Emiting beaconExitedRange signal" << endl;
+                emit iBeaconExitedRange(timeStamp, macAddress, uuid, major, minor, rssi, loss);
+            }
+            if (isAltBeacon && monitoringAltBeacon(companyCode, beaconId, reserved)) {
+                qDebug() << "XXXX - AltBeacon - Emiting beaconExitedRange signal" << endl;
+                emit altBeaconExitedRange(timeStamp, macAddress, companyCode, companyName, beaconId, reserved, rssi, loss);
+            }
         }
     }
 }
@@ -172,6 +225,16 @@ bool ApplicationUI::monitoringUuid(const QString & uuid, int major, int minor)
 
 	return true;
 }
+
+bool ApplicationUI::monitoringAltBeacon(int companyCode, const QString & beaconId, int reserved)
+{
+    Q_UNUSED(companyCode);
+    Q_UNUSED(beaconId);
+    Q_UNUSED(reserved);
+
+    return true;
+}
+
 void ApplicationUI::onSystemLanguageChanged()
 {
     QCoreApplication::instance()->removeTranslator(_translator);

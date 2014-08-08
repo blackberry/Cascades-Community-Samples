@@ -57,10 +57,14 @@ signals:
     void message(const QVariant &text);
     void scanStateChanged(const QVariant &state);
     void startedStateChanged(const QVariant &state);
-	void beaconEnteredRange(const QVariant &timeStamp, const QVariant &macAddress, const QVariant &uuid,
+	void iBeaconEnteredRange(const QVariant &timeStamp, const QVariant &macAddress, const QVariant &uuid,
 			const QVariant &major, const QVariant &minor, const QVariant &rssi, const QVariant &loss);
-	void beaconExitedRange(const QVariant &timeStamp, const QVariant &macAddress, const QVariant &uuid,
+	void iBeaconExitedRange(const QVariant &timeStamp, const QVariant &macAddress, const QVariant &uuid,
 			const QVariant &major, const QVariant &minor, const QVariant &rssi, const QVariant &loss);
+	void altBeaconEnteredRange(const QVariant &timeStamp, const QVariant &macAddress, const QVariant &companyCode, const QVariant &companyName,
+	        const QVariant &beaconId, const QVariant &reserved, const QVariant &rssi, const QVariant &loss);
+    void altBeaconExitedRange(const QVariant &timeStamp, const QVariant &macAddress, const QVariant &companyCode, const QVariant &companyName,
+            const QVariant &beaconId, const QVariant &reserved, const QVariant &rssi, const QVariant &loss);
 
 private slots:
     void onSystemLanguageChanged();
@@ -88,6 +92,7 @@ private:
     void triggerRetryConnection();
     void handleBeaconEvent(const QVariantMap &payload);
     bool monitoringUuid(const QString & uuid, int major, int minor);
+    bool monitoringAltBeacon(int companyCode, const QString & beaconId, int reserved);
 
     QTranslator *_translator;
     bb::cascades::LocaleHandler *_localeHandler;

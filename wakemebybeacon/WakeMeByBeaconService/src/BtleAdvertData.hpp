@@ -31,20 +31,37 @@ public:
 
 	bool parse(const QByteArray &advertData);
 	bool hasBeaconData();
+    bool hasIBeaconData();
+    bool hasAltBeaconData();
 	QByteArray & beaconUuid();
+    QByteArray & beaconId();
 	QString beaconUuidAsString();
+    QString beaconIdAsString();
 	int beaconMajor();
 	int beaconMinor();
 	int calibratedStrength();
 	void clear();
+	int companyCode();
+	int altBeaconReserved();
+    QString companyCodeAsString();
 
 private:
+	/**
+	 * iBeacon attributes
+	 */
 	QByteArray _advertData;
 	QByteArray _beaconUuid;
 	uint16_t _beaconMajor;
 	uint16_t _beaconMinor;
 	int8_t _calibratedStrength;
-	bool _hasBeaconData;
+	bool _hasIBeaconData;
+    /**
+     * AltBeacon attributes
+     */
+    bool _hasAltBeaconData;
+    uint16_t _beaconMfgCompanyCode;
+    QByteArray _beaconId;
+    uint8_t _beaconReserved;
 };
 
 #endif /* BTLEADVERTDATA_HPP_ */
