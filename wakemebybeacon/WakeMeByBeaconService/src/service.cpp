@@ -210,21 +210,39 @@ void Service::parseBeaconData(const char *data, int len, int8_t rssi, const char
     if (advertData.parse(QByteArray(data, len))) {
         qDebug() << "SSSS advert data parsed OK" << endl;
         if (advertData.hasBeaconData()) {
-            qDebug() << "SSSS beacon data present in advert data" << endl;
-            qDebug() << "SSSS beacon UUID    " << advertData.beaconUuid().toHex() << endl;
-            qDebug() << "SSSS beacon Major   " << advertData.beaconMajor() << endl;
-            qDebug() << "SSSS beacon Minor   " << advertData.beaconMinor() << endl;
-            qDebug() << "SSSS beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
-            qDebug() << "SSSS beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
-
             QVariantMap entry;
+
             entry["MAC"] = QString(bdaddr);
-            entry["UUID"] = advertData.beaconUuidAsString();
-            entry["MAJOR"] = advertData.beaconMajor();
-            entry["MINOR"] = advertData.beaconMinor();
+            entry["TIME"] = QDateTime::currentDateTime();
+
+            if (advertData.hasIBeaconData()) {
+                qDebug() << "BBBB iBeacon data present in advert data" << endl;
+                qDebug() << "BBBB beacon UUID    " << advertData.beaconUuid().toHex() << endl;
+                qDebug() << "BBBB beacon Major   " << advertData.beaconMajor() << endl;
+                qDebug() << "BBBB beacon Minor   " << advertData.beaconMinor() << endl;
+                qDebug() << "BBBB beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
+                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
+
+                entry["CLASS"] = "IBEACON";
+                entry["UUID"] = advertData.beaconUuidAsString();
+                entry["MAJOR"] = advertData.beaconMajor();
+                entry["MINOR"] = advertData.beaconMinor();
+
+            } else if(advertData.hasAltBeaconData()) {
+                qDebug() << "BBBB Alt Beacon data present in advert data" << endl;
+                qDebug() << "BBBB beacon Id    " << advertData.beaconId().toHex() << endl;
+                qDebug() << "BBBB beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
+                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
+
+                entry["CLASS"] = "ALTBEACON";
+                entry["COMPANY"] = advertData.companyCode();
+                entry["COMPANYNAME"] = advertData.companyCodeAsString();
+                entry["ID"] = advertData.beaconIdAsString();
+                entry["RESV"] = advertData.altBeaconReserved();
+            }
+
             entry["RSSI"] = advertData.calibratedStrength();
             entry["LOSS"] = advertData.calibratedStrength() - rssi;
-            entry["TIME"] = QDateTime::currentDateTime();
 
             qDebug() << "SSSS entry[\"MAC\"]" << entry["MAC"] << endl;
 
@@ -437,7 +455,12 @@ const QString Service::constructJsonPayload(QVariantMap parameters)
 void Service::beaconEnteredRange(const QVariantMap &entry)
 {
     QVariantMap beacon(entry);
+    QString beaconClass = qvariant_cast<QString>(beacon["CLASS"]);
+
     beacon["TYPE"] = "BEACON-ENTER-RANGE";
+
+    bool isIBeacon = (beaconClass.compare("IBEACON") == 0);
+    bool isAltBeacon = (beaconClass.compare("ALTBEACON") == 0);
 
     if (_guiConnected) {
         qDebug() << "SSSS Beacon Entered range message sent to GUI over socket" << endl;
@@ -446,10 +469,26 @@ void Service::beaconEnteredRange(const QVariantMap &entry)
         qDebug() << "SSSS Beacon Entered range message sent to GUI via notification" << endl;
 
         _notification->setTitle("WakeMeByBeacon Service");
-        _notification->setBody(QString("Entered range of Beacon\nUUID: %1\nMajor: %2\nMinor: %3")
-                .arg(qvariant_cast<QString>(beacon["UUID"]))
-                .arg(qvariant_cast<int>(beacon["MAJOR"]))
-                .arg(qvariant_cast<int>(beacon["MINOR"])));
+
+        if (isIBeacon) {
+            _notification->setBody(QString("Entered range of iBeacon\nUUID: %1\nMajor: %2\nMinor: %3")
+                    .arg(qvariant_cast<QString>(beacon["UUID"]))
+                    .arg(qvariant_cast<int>(beacon["MAJOR"]))
+                    .arg(qvariant_cast<int>(beacon["MINOR"])));
+
+        } else if (isAltBeacon) {
+            if (qvariant_cast<QString>(beacon["COMPANYNAME"]).compare("") == 0) {
+            _notification->setBody(QString("Entered range of AltBeacon\nID: %1\nCompany Code: %2\nReserved: %3")
+                    .arg(qvariant_cast<QString>(beacon["ID"]))
+                    .arg(qvariant_cast<int>(beacon["COMPANY"]))
+                    .arg(qvariant_cast<int>(beacon["RESV"])));
+            } else {
+                _notification->setBody(QString("Entered range of AltBeacon\nID: %1\nCompany Name: %2\nReserved: %3")
+                        .arg(qvariant_cast<QString>(beacon["ID"]))
+                        .arg(qvariant_cast<int>(beacon["COMPANYNAME"]))
+                        .arg(qvariant_cast<int>(beacon["RESV"])));
+            }
+        }
 
         InvokeRequest request;
         request.setTarget(WAKEME_INVOKE_GUI);
@@ -463,7 +502,12 @@ void Service::beaconEnteredRange(const QVariantMap &entry)
 void Service::beaconExitedRange(const QVariantMap &entry)
 {
     QVariantMap beacon(entry);
+    QString beaconClass = qvariant_cast<QString>(beacon["CLASS"]);
+
     beacon["TYPE"] = "BEACON-EXIT-RANGE";
+
+    bool isIBeacon = (beaconClass.compare("IBEACON") == 0);
+    bool isAltBeacon = (beaconClass.compare("ALTBEACON") == 0);
 
     if (_guiConnected) {
         qDebug() << "SSSS Beacon Exited range message sent to GUI over socket" << endl;
@@ -471,11 +515,25 @@ void Service::beaconExitedRange(const QVariantMap &entry)
     } else {
         qDebug() << "SSSS Beacon Exited range message sent to GUI via notification" << endl;
 
-        _notification->setTitle("WakeMeByBeacon Service");
-        _notification->setBody(QString("Exited range of Beacon\nUUID: %1\nMajor: %2\nMinor: %3")
-                .arg(qvariant_cast<QString>(beacon["UUID"]))
-                .arg(qvariant_cast<int>(beacon["MAJOR"]))
-                .arg(qvariant_cast<int>(beacon["MINOR"])));
+        if (isIBeacon) {
+            _notification->setBody(QString("Exited range of iBeacon\nUUID: %1\nMajor: %2\nMinor: %3")
+                    .arg(qvariant_cast<QString>(beacon["UUID"]))
+                    .arg(qvariant_cast<int>(beacon["MAJOR"]))
+                    .arg(qvariant_cast<int>(beacon["MINOR"])));
+
+        } else if (isAltBeacon) {
+            if (qvariant_cast<QString>(beacon["COMPANYNAME"]).compare("") == 0) {
+            _notification->setBody(QString("Exited range of AltBeacon\nID: %1\nCompany Code: %2\nReserved: %3")
+                    .arg(qvariant_cast<QString>(beacon["ID"]))
+                    .arg(qvariant_cast<int>(beacon["COMPANY"]))
+                    .arg(qvariant_cast<int>(beacon["RESV"])));
+            } else {
+                _notification->setBody(QString("Exited range of AltBeacon\nID: %1\nCompany Name: %2\nReserved: %3")
+                        .arg(qvariant_cast<QString>(beacon["ID"]))
+                        .arg(qvariant_cast<int>(beacon["COMPANYNAME"]))
+                        .arg(qvariant_cast<int>(beacon["RESV"])));
+            }
+        }
 
         InvokeRequest request;
         request.setTarget(WAKEME_INVOKE_GUI);
