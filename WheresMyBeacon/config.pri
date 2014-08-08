@@ -36,7 +36,15 @@ simulator {
 
 config_pri_assets {
     OTHER_FILES += \
+        $$quote($$BASEDIR/assets/AboutSheet.qml) \
+        $$quote($$BASEDIR/assets/BeaconConfiguration.qml) \
+        $$quote($$BASEDIR/assets/BeaconIdentity.qml) \
+        $$quote($$BASEDIR/assets/BeaconList.qml) \
+        $$quote($$BASEDIR/assets/CustomButton.qml) \
         $$quote($$BASEDIR/assets/Logger.qml) \
+        $$quote($$BASEDIR/assets/images/about.png) \
+        $$quote($$BASEDIR/assets/images/icon.png) \
+        $$quote($$BASEDIR/assets/images/settings.png) \
         $$quote($$BASEDIR/assets/main.qml)
 }
 
@@ -51,6 +59,8 @@ config_pri_source_group1 {
         $$quote($$BASEDIR/src/applicationui.hpp)
 }
 
+INCLUDEPATH += $$quote($$BASEDIR/src)
+
 CONFIG += precompile_header
 
 PRECOMPILED_HEADER = $$quote($$BASEDIR/precompiled.h)
@@ -64,7 +74,10 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/*.cxx) \
         $$quote($$BASEDIR/../assets/*.qml) \
         $$quote($$BASEDIR/../assets/*.js) \
-        $$quote($$BASEDIR/../assets/*.qs)
+        $$quote($$BASEDIR/../assets/*.qs) \
+        $$quote($$BASEDIR/../assets/images/*.qml) \
+        $$quote($$BASEDIR/../assets/images/*.js) \
+        $$quote($$BASEDIR/../assets/images/*.qs)
 
     HEADERS += \
         $$quote($$BASEDIR/../src/*.h) \

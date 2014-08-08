@@ -166,12 +166,38 @@ Page {
                                 }
                                 Label {
                                     text: " UUID: " + ListItemData.UUID
+                                    visible: (ListItemData.TYPE == "IBEACON")
+                                }
+                                Label {
+                                    text: " Specification: iBeacon"
+                                    visible: (ListItemData.TYPE == "IBEACON")
+                                }
+                                Label {
+                                    text: " Specification: AltBeacon"
+                                    visible: (ListItemData.TYPE == "ALTBEACON")
                                 }
                                 Label {
                                     text: " Major: " + ListItemData.MAJOR + " Minor: " + ListItemData.MINOR
+                                    visible: (ListItemData.TYPE == "IBEACON")
+                                }
+                                Label {
+                                    text: " Company Id: " + ListItemData.COMPANY + " (decimal)"
+                                    visible: (ListItemData.TYPE == "ALTBEACON" && ListItemData.COMPANYNAME == "")
+                                }
+                                Label {
+                                    text: " Company Name: " + ListItemData.COMPANYNAME
+                                    visible: (ListItemData.TYPE == "ALTBEACON" && ListItemData.COMPANYNAME != "")
+                                }
+                                Label {
+                                    text: " ID: " + ListItemData.ID
+                                    visible: (ListItemData.TYPE == "ALTBEACON")
                                 }
                                 Label {
                                     text: " Calibrated Power: " + ListItemData.RSSI + " Path Loss: " + ListItemData.LOSS
+                                }
+                                Label {
+                                    text: " Reserved: " + ListItemData.RESV
+                                    visible: (ListItemData.TYPE == "ALTBEACON")
                                 }
                                 Divider {
                                 

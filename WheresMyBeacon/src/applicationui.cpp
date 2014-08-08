@@ -918,18 +918,34 @@ void ApplicationUI::parseBeaconData(const char *data, int len, int8_t rssi, cons
     if (advertData.parse(QByteArray(data, len))) {
         qDebug() << "BBBB advert data parsed OK" << endl;
         if (advertData.hasBeaconData()) {
-            qDebug() << "BBBB beacon data present in advert data" << endl;
-            qDebug() << "BBBB beacon UUID    " << advertData.beaconUuid().toHex() << endl;
-            qDebug() << "BBBB beacon Major   " << advertData.beaconMajor() << endl;
-            qDebug() << "BBBB beacon Minor   " << advertData.beaconMinor() << endl;
-            qDebug() << "BBBB beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
-            qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
-
             QVariantMap entry;
+
+            if (advertData.hasIBeaconData()) {
+                qDebug() << "BBBB iBeacon data present in advert data" << endl;
+                qDebug() << "BBBB beacon UUID    " << advertData.beaconUuid().toHex() << endl;
+                qDebug() << "BBBB beacon Major   " << advertData.beaconMajor() << endl;
+                qDebug() << "BBBB beacon Minor   " << advertData.beaconMinor() << endl;
+                qDebug() << "BBBB beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
+                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
+
+                entry["TYPE"] = "IBEACON";
+                entry["UUID"] = advertData.beaconUuidAsString();
+                entry["MAJOR"] = advertData.beaconMajor();
+                entry["MINOR"] = advertData.beaconMinor();
+
+            } else if(advertData.hasAltBeaconData()) {
+                qDebug() << "BBBB Alt Beacon data present in advert data" << endl;
+                qDebug() << "BBBB beacon Id    " << advertData.beaconId().toHex() << endl;
+                qDebug() << "BBBB beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
+                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
+
+                entry["TYPE"] = "ALTBEACON";
+                entry["COMPANY"] = advertData.companyCode();
+                entry["COMPANYNAME"] = advertData.companyCodeAsString();
+                entry["ID"] = advertData.beaconIdAsString();
+                entry["RESV"] = advertData.altBeaconReserved();
+            }
             entry["MAC"] = QString(bdaddr);
-            entry["UUID"] = advertData.beaconUuidAsString();
-            entry["MAJOR"] = advertData.beaconMajor();
-            entry["MINOR"] = advertData.beaconMinor();
             entry["RSSI"] = advertData.calibratedStrength();
             entry["LOSS"] = advertData.calibratedStrength() - rssi;
 

@@ -20,6 +20,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 * **V1.0.1** - Added an "About" page and improved layout of iBeacon(TM) information in ListView.
 * **V2.0.0** - Added ability to associate a friendly name with a beacon to aid identification. Added beacon configuration screen to allow SensorTag beacon attributes to be modified. 
 * **V2.0.1** - Minor change to deal with warnings about an API deprecated in 10.3.0 when building against the 10.3.0 SDK and above. No functional changes, hence no replacement pre-built signed BAR file.
+* **V2.1.0** - Added ability to detect the Open AltBeacon format of Beacon advertisement
 
 **Known Issues**
 
