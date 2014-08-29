@@ -49,6 +49,8 @@ public:
 	virtual ~BluetoothHandler();
 	void receiveCscNotifications();
 	void stopCscNotifications();
+    void discover();
+
 
 private:
 	LocalDeviceInfo *_localDeviceInfo;

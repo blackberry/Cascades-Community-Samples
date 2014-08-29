@@ -18,6 +18,7 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 * **V1.0.0** - Initial release
 * **V1.0.1** - Modified messageUpdated to log Attachment.data() message payload to allow for calls made when a message is updated due to a further concatenated message segment arriving.
+* **V1.0.2** - Implemented workaround to API defect that can cause sent messages to not be visible in the hub.
 
 **Dependencies**
 

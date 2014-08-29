@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+    <id>com.ctetreault.filtermamalite</id>
+    <versionNumber>2.0.1</versionNumber>
+    <buildId>2</buildId>
+    <author>ShakeDatApps</author>
+    <authorId>gYAAgAOjD8tqw8-sHCvtkZyw3II</authorId>
+    <configuration name="Device-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7-g/Boilerplate_Cascades" entry="true" type="Qnx/Elf">Boilerplate_Cascades</asset>
+    </configuration>
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7/Boilerplate_Cascades.so" entry="true" type="Qnx/Elf">Boilerplate_Cascades.so</asset>
+    </configuration>
+    <configuration name="Device-Profile">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm-p/o.le-v7-g/Boilerplate_Cascades" entry="true" type="Qnx/Elf">Boilerplate_Cascades</asset>
+    </configuration>
+    <configuration name="Simulator-Debug">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="x86/o-g/Boilerplate_Cascades" entry="true" type="Qnx/Elf">Boilerplate_Cascades</asset>
+    </configuration>
+    
+    <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
+    <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
+   
+    <initialWindow>
+        <aspectRatio>portrait</aspectRatio>
+        <autoOrients>false</autoOrients>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+    </initialWindow>
+    
+    <!--  The icon for the application, which should be 114x114. -->
+    <icon>
+        <image></image>
+        <image>icon.png</image>
+    </icon>
+
+	<cascadesTheme>dark</cascadesTheme>
+ <category>core.media</category>
+ <name>Filtermama Lite</name>
+ <splashScreens>
+    <image>splash-720x720.png</image>
+    <image>splash-720x1280.png</image>
+    <image>splash-768x1280.png</image>
+ </splashScreens>
+ 
+ <description>Hiya!</description>
+
+
+    <asset path="assets">assets</asset>
+    
+    <!-- Locale support -->
+    <asset path="translations" dest="qm">
+        <include name="*.qm"/>
+    </asset>
+    <asset path="assets/images/icon.png">icon.png</asset>
+    <asset path="assets/images/splash-720x720.png">splash-720x720.png</asset>
+    <asset path="assets/images/splash-720x1280.png">splash-720x1280.png</asset>
+    <asset path="assets/images/splash-768x1280.png">splash-768x1280.png</asset>
+    
+    <!-- Request permission to execute native code.  Required for native applications. -->
+    <permission system="true">run_native</permission>
+    <permission>bbm_connect</permission>
+    <permission>use_camera</permission>
+    <permission>access_shared</permission>
+    <permission>access_internet</permission>
+    <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+
+</qnx>

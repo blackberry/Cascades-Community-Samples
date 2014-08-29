@@ -35,6 +35,7 @@ private:
 	static QString KEY_DEVICE_ADDR;
 	static QString KEY_MIN_RSSI_NEAR;
     static QString KEY_MIN_RSSI_MEDIUM;
+    static QString KEY_RSSI_FLUCTUATION_SENSITIVITY;
 
 public:
 	static DataContainer* getInstance();
@@ -61,6 +62,7 @@ public:
 	int _proximity_indicator;
 	int _min_rssi_near;
 	int _min_rssi_medium;
+	int _rssi_fluctuation_sensitivity;
 
 	bool isDeviceConnected();
 	void setDeviceConnected(bool state);
@@ -103,6 +105,9 @@ public:
 
     void setMinRssiMedium(int rssi_threshold);
     int getMinRssiMedium();
+
+    void setRssiFluctuationSensitivity(int sensitivity);
+    int getRssiFluctuationSensitivity();
 
 	QString intToHex(int decimal);
 

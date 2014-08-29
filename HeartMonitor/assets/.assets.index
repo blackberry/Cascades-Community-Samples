@@ -1,5 +1,5 @@
 1
-28
+29
 common/DeviceItem.qml
 common/SessionItem.qml
 cover.qml
@@ -21,6 +21,7 @@ images/dgh.PNG
 images/history.png
 images/monitor.png
 images/scan.png
+images/Thumbs.db
 images/white_item_bg.png
 LedDigit.qml
 main.qml

@@ -42,6 +42,7 @@ public:
 	Q_INVOKABLE	int getMinHr();
 	Q_INVOKABLE	int getMaxHr();
 	Q_INVOKABLE	int getAvgHr();
+    Q_INVOKABLE void scanForDevices();
 	bb::cascades::Application* _app;
 
 private:
@@ -51,6 +52,9 @@ private:
 	QFuture<void> *_future;
 	QFutureWatcher<void> *_watcher;
 	QMutex _mutex;
+    void showTab(int tab_index);
+    void startActivityIndicator();
+    void stopActivityIndicator();
 
 public slots:
 	void logHeartRate(const QVariant &message);

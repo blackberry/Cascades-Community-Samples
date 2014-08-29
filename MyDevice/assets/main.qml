@@ -20,7 +20,7 @@ TabbedPane {
     id: main_pane
     objectName: "main"
     showTabsOnActionBar: true
-
+    
     function simStateName(state) {
         switch (state) {
             case 0:
@@ -141,42 +141,6 @@ TabbedPane {
         }
     }
 
-    function networkType(network_intf_name) {
-        if (network_intf_name.indexOf("lo") == 0) {
-            return "Loopback";
-        }
-        if (network_intf_name.indexOf("en") == 0) {
-            return "Ethernet";
-        }
-        if (network_intf_name.indexOf("cellular") == 0) {
-            return "Cellular";
-        }
-        if (network_intf_name.indexOf("rndis") == 0) {
-            return "USB logical";
-        }
-        if (network_intf_name.indexOf("ecm") == 0) {
-            return "USB (MAC)";
-        }
-        if (network_intf_name.indexOf("ncm") == 0) {
-            return "USB";
-        }
-        if (network_intf_name.indexOf("tiw") == 0) {
-            return "Wi-Fi";
-        }
-        if (network_intf_name.indexOf("bcm") == 0) {
-            return "Wi-Fi";
-        }
-        if (network_intf_name.indexOf("qca") == 0) {
-            return "Wi-Fi";
-        }
-        if (network_intf_name.indexOf("vpn") == 0) {
-            return "VPN";
-        }
-        if (network_intf_name.indexOf("bptp") == 0) {
-            return "P2P Logical";
-        }
-        return "Unrecognised";
-    }
 
     Tab {
         id: device_tab
@@ -1180,19 +1144,22 @@ TabbedPane {
                                 objectName: "networkInterfaces"
                                 title: "Network Interfaces"
                                 enabled: true
-
+                                
                                 onSelectedIndexChanged: {
                                     console.log("SelectedIndex was changed to " + selectedOption.text);
+                                    console.log("QQQQ i/f type="+app.selected_if_type);
                                     app.selectNetworkInterfaceByName(selectedOption.text);
-                                    val_net_type = networkType(selectedOption.text);
-                                    val_hw_address.text = app.getNetworkInterfaceHwAddress();
-                                    val_net_addresses.text = app.getNetworkAddresses();
-                                    val_is_up.text = app.isUp();
-                                    val_is_running = app.isRunning();
-                                    val_can_broadcast = app.canBroadcast();
-                                    val_is_loopback = app.isLoopback();
-                                    val_is_point_to_point = app.isPointToPoint();
-                                    val_can_multicast = app.canMulticast();
+                                    val_net_type = app.selected_if_type
+                                    val_hw_address.text = app.selected_link_addr
+                                    val_net_addresses.text = app.selected_ip_addresses
+                                    val_ip_status.text = app.selected_ip_status
+                                    val_is_up.text = app.selected_if_is_up
+                                    val_is_running.text = app.selected_if_is_running
+                                    val_can_broadcast.text = app.selected_if_can_broadcast
+                                    val_is_loopback.text = app.selected_if_is_loopback
+                                    val_is_point_to_point.text = app.selected_if_is_p2p
+                                    val_can_multicast = app.selected_if_can_multicast
+                                    val_is_up.text = app.selected_if_is_up
                                 }
 
                             }
@@ -1214,7 +1181,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_net_type
-                                text: networkType(networkInterfaces.selectedOption.text)
+                                text: app.selected_if_type
                                 multiline: true
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
@@ -1238,7 +1205,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_hw_address
-                                text: app.getNetworkInterfaceHwAddress()
+                                text: app.selected_link_addr
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
                                 layoutProperties: StackLayoutProperties {
@@ -1262,7 +1229,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_net_addresses
-                                text: app.getNetworkAddresses()
+                                text: app.selected_ip_addresses
                                 multiline: true
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
@@ -1275,6 +1242,30 @@ TabbedPane {
                             layout: StackLayout {
                                 orientation: LayoutOrientation.LeftToRight
                             }
+                            Label {
+                                id: lbl_ip_status
+                                text: qsTr("IP Status")
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 45
+                                }
+                            }
+                            Label {
+                                id: val_ip_status
+                                text: app.selected_ip_status
+                                verticalAlignment: VerticalAlignment.Center
+                                horizontalAlignment: HorizontalAlignment.Center
+                                layoutProperties: StackLayoutProperties {
+                                    spaceQuota: 55
+                                }
+                            }
+                        }
+                        Container {
+                            layout: StackLayout {
+                                orientation: LayoutOrientation.LeftToRight
+                            }
+                            background: Color.Gray
                             Label {
                                 id: lbl_is_up
                                 text: qsTr("Is up?")
@@ -1286,7 +1277,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_is_up
-                                text: app.isUp()
+                                text: app.selected_if_is_up
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
                                 layoutProperties: StackLayoutProperties {
@@ -1298,7 +1289,6 @@ TabbedPane {
                             layout: StackLayout {
                                 orientation: LayoutOrientation.LeftToRight
                             }
-                            background: Color.Gray
                             Label {
                                 id: lbl_is_running
                                 text: qsTr("Is running?")
@@ -1310,7 +1300,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_is_running
-                                text: app.isRunning()
+                                text: app.selected_if_is_running
                                 multiline: true
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
@@ -1323,6 +1313,7 @@ TabbedPane {
                             layout: StackLayout {
                                 orientation: LayoutOrientation.LeftToRight
                             }
+                            background: Color.Gray
                             Label {
                                 id: lbl_can_broadcast
                                 text: qsTr("Can broadcast?")
@@ -1334,7 +1325,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_can_broadcast
-                                text: app.canBroadcast()
+                                text: app.selected_if_can_broadcast
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
                                 layoutProperties: StackLayoutProperties {
@@ -1346,7 +1337,6 @@ TabbedPane {
                             layout: StackLayout {
                                 orientation: LayoutOrientation.LeftToRight
                             }
-                            background: Color.Gray
                             Label {
                                 id: lbl_is_loopback
                                 text: qsTr("Is loopback?")
@@ -1358,7 +1348,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_is_loopback
-                                text: app.isLoopback()
+                                text: app.selected_if_is_loopback
                                 multiline: true
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
@@ -1371,6 +1361,7 @@ TabbedPane {
                             layout: StackLayout {
                                 orientation: LayoutOrientation.LeftToRight
                             }
+                            background: Color.Gray
                             Label {
                                 id: lbl_is_point_to_point
                                 text: qsTr("Point to point?")
@@ -1382,7 +1373,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_is_point_to_point
-                                text: app.isPointToPoint()
+                                text: app.selected_if_is_p2p
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
                                 layoutProperties: StackLayoutProperties {
@@ -1394,7 +1385,6 @@ TabbedPane {
                             layout: StackLayout {
                                 orientation: LayoutOrientation.LeftToRight
                             }
-                            background: Color.Gray
                             Label {
                                 id: lbl_can_multicast
                                 text: qsTr("Can multicast?")
@@ -1406,7 +1396,7 @@ TabbedPane {
                             }
                             Label {
                                 id: val_can_multicast
-                                text: app.canMulticast()
+                                text: app.selected_if_can_multicast
                                 multiline: true
                                 verticalAlignment: VerticalAlignment.Center
                                 horizontalAlignment: HorizontalAlignment.Center
@@ -1584,7 +1574,7 @@ TabbedPane {
                     }
                     Label {
                         id: lblHeading_version
-                        text: qsTr("V1.0.1")
+                        text: qsTr("V1.1.0")
                         horizontalAlignment: HorizontalAlignment.Center
                     }
                     Label {

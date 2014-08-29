@@ -49,6 +49,7 @@ public:
 	virtual ~BluetoothHandler();
 	void receiveHrNotifications();
 	void stopHrNotifications();
+    void discover();
 
 private:
 	LocalDeviceInfo *_localDeviceInfo;

@@ -19,6 +19,7 @@
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
 #include <bb/cascades/LocaleHandler>
+#include <QDir>
 
 using namespace bb::cascades;
 
@@ -39,6 +40,8 @@ ApplicationUI::ApplicationUI(bb::cascades::Application *app) :
     // Create scene document from main.qml asset, the parent is set
     // to ensure the document gets destroyed properly at shut down.
     QmlDocument *qml = QmlDocument::create("asset:///main.qml").parent(this);
+    QString m_homeDir = QDir::homePath() + "/../app/native";
+    QmlDocument::defaultDeclarativeEngine()->rootContext()->setContextProperty("homeDir",m_homeDir);
 
     // Create root object for the UI
     AbstractPane *root = qml->createRootObject<AbstractPane>();

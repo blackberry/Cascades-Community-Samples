@@ -73,6 +73,8 @@ HeartMonitor::HeartMonitor(bb::cascades::Application *app)
 
 	if (hrdc->getCurrentDeviceAddr() != NULL) {
 		monitorHeartRate(hrdc->getCurrentDeviceAddr(),hrdc->getCurrentDeviceName());
+	} else {
+	    scanForDevices();
 	}
 	HrDatabase* db = HrDatabase::getInstance();
 	db->initDatabase();
@@ -140,4 +142,24 @@ void HeartMonitor::saveSession(QString session_name) {
 	if (!db_ok) {
 		qDebug() << "XXXX ERROR:database saveSession operation failed";
 	}
+}
+
+void HeartMonitor::showTab(int tab_index)
+{
+    QMetaObject::invokeMethod(_root, "onShowTab", Q_ARG(QVariant, tab_index));
+}
+
+void HeartMonitor::startActivityIndicator() {
+    QMetaObject::invokeMethod(_root, "startActivityIndicator");
+}
+
+void HeartMonitor::stopActivityIndicator() {
+    QMetaObject::invokeMethod(_root, "stopActivityIndicator");
+}
+
+void HeartMonitor::scanForDevices() {
+    showTab(1);
+    startActivityIndicator();
+    _handler->discover();
+    stopActivityIndicator();
 }

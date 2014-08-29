@@ -27,7 +27,7 @@ Sheet {
             verticalAlignment: VerticalAlignment.Fill
             Label {
                 id: lblHeading_about
-                text: qsTr("About MmsSample")
+                text: qsTr("About MmsSample V1.0.1")
                 textStyle {
                     base: SystemDefaults.TextStyles.TitleText
                     color: Color.Gray

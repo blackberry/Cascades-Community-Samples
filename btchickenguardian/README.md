@@ -17,6 +17,8 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 **Release History**
 
 * **V1.0.0** - Initial release
+* **V1.1.0** - Added control over RSSI fluctuation sensitivity
+* **V1.1.1** - Minor bug fix release (misnamed image file)
 
 **Known Issues**
 

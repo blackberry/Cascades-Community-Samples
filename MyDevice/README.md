@@ -18,6 +18,7 @@ The sample code for this application is Open Source under the [Apache 2.0 Licens
 
 * **V1.0.0** - Initial release
 * **V1.0.1** - Made pages scrollable
+* **V1.1.0** - Network information is enriched by blending from both the QNetworkInterface and BlackBerry netstatus APIs
 
 **Dependencies**
 

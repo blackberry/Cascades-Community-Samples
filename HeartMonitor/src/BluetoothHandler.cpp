@@ -326,6 +326,8 @@ BluetoothHandler::BluetoothHandler(QObject *obj)
 	, _deviceListing(new DeviceListing(this))
 	, _remoteDeviceInfo(new RemoteDeviceInfo(this))
 {
+
+    qDebug() << "XXXX constructing BluetoothHandler";
 	_scanner = this;
 
 	if (Utilities::getOSVersion().startsWith("10.0")) {
@@ -437,4 +439,8 @@ void BluetoothHandler::stopHrNotifications() {
 		qDebug() << "YYYY disconnected from HR service OK";
 	}
 
+}
+
+void BluetoothHandler::discover() {
+    _deviceListing->discover();
 }

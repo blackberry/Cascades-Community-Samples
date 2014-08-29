@@ -268,6 +268,9 @@ void ApplicationUI::sendMessage(const QString & text,const QString & text2, cons
 // Send it using the SMS MMS account
 	qDebug() << "XXXX sendMessage: sending via account id " << _sms_account_id << " : " << message.recipientAt(0).address();
 	MessageKey msg_id = _message_service->send(_sms_account_id, message);
+	// the next line finalizes the conversation (meaning that the participant list can no longer be changed). This is generally not required but is included here to workaround a known issue in some
+	// BlackBerry 10 versions which results in the sent message not being visible in the Hub.
+    _message_service -> setStatus(_sms_account_id,conversation_id, ConversationStatus::Finalized);
 	log(QString("Sent: message ID:").append(QString::number(msg_id)));
 
 
