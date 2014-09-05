@@ -1,4 +1,4 @@
-                                Apache License
+                                 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -180,7 +180,7 @@
       To apply the Apache License to your work, attach the following
       boilerplate notice, with the fields enclosed by brackets "[]"
       replaced with your own identifying information. (Don't include
-      the brackets!) The text should be enclosed in the appropriate
+      the brackets!)  The text should be enclosed in the appropriate
       comment syntax for the file format. We also recommend that a
       file or class name and description of purpose be included on the
       same "printed page" as the copyright notice for easier
@@ -199,6 +199,17 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+-------------------------------------------------------
+
+This software contains icons adapted from Myers Design Limited
+http://myersdesign.com/resources/
+
+Licensed under the Creative Commons Attribution 3.0 Unported
+http://creativecommons.org/licenses/by/3.0/
 
 -------------------------------------------------------
-Copyright 2014 BlackBerry
+
+Some images in this sample include BlackBerry trademarks excluded from this LICENSE
+For use of BlackBerry trademarks, please see: 
+http://us.blackberry.com/legal/trademarks.html
