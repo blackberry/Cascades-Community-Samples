@@ -392,18 +392,27 @@ void NfcListener::onRegisterAid()
     qDebug() << "XXXX NfcListener::onRegisterAid: " << endl;
 
     bool isRegistered = false;
-    uint8_t aidAsIntArray[_aid.length()];
     int rc = 0;
+    QByteArray aidBytes;
+            if (_aid != "*") // wildcard?
+            {
+                // sanity check on AID: it must have even length
+                if (_aid.size() % 2 != 0) {
+                    qDebug() << "XXXX NfcListener::onRegisterAid: nfc_hce_register_aid() : Rejected AID with odd length" << endl;
+                    return;
+                }
+                aidBytes = QByteArray::fromHex(_aid.toAscii());  // convert the hexstring to bytes
+            }
 
-    Utilities::hexToIntArray(_aid, aidAsIntArray);
+    const uint8_t* aidPtr = reinterpret_cast<const uint8_t*>(aidBytes.constData());
 
-    if (_featureSet == 2) {
+       if (_featureSet == 2) {
 
-        rc = nfc_hce_is_aid_registered(aidAsIntArray, _aid.length(), &isRegistered);
+        rc = nfc_hce_is_aid_registered(aidPtr, aidBytes.size(), &isRegistered);
 
         if ((rc != NFC_RESULT_SUCCESS) || !isRegistered) {
 
-            rc = nfc_hce_register_aid(aidAsIntArray, _aid.length(), APP_CATEGORY_OTHER, HCE_INVOKE_AID_SELECTED);
+            rc = nfc_hce_register_aid(aidPtr, aidBytes.size(), APP_CATEGORY_OTHER, HCE_INVOKE_AID_SELECTED);
 
             if (rc == NFC_RESULT_SUCCESS) {
 
@@ -446,20 +455,28 @@ void NfcListener::onUnregisterAid()
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
     qDebug() << "XXXX NfcListener::onUnregisterAid: " << endl;
 
-    uint8_t aidAsIntArray[_aid.length()];
+
     bool isRegistered = false;
     int rc = 0;
-
-    Utilities::hexToIntArray(_aid, aidAsIntArray);
-
+    QByteArray aidBytes;
+            if (_aid != "*") // wildcard?
+            {
+                // sanity check on AID: it must have even length
+                if (_aid.size() % 2 != 0) {
+                    qDebug() << "XXXX NfcListener::onRegisterAid: nfc_hce_register_aid() : Rejected AID with odd length" << endl;
+                    return;
+                }
+                aidBytes = QByteArray::fromHex(_aid.toAscii());  // convert the hexstring to bytes
+            }
+    const uint8_t* aidPtr = reinterpret_cast<const uint8_t*>(aidBytes.constData());
     if (_featureSet == 2) {
 
-        rc = nfc_hce_is_aid_registered(aidAsIntArray, _aid.length(), &isRegistered);
+        rc = nfc_hce_is_aid_registered(aidPtr, aidBytes.size(), &isRegistered);
         if ((rc == NFC_RESULT_SUCCESS) && isRegistered) {
 
             qDebug() << "XXXX NfcListener::onUnregisterAid: nfc_hce_is_aid_registered() : REGISTERED" << endl;
 
-            rc = nfc_hce_unregister_aid(aidAsIntArray, _aid.length());
+            rc = nfc_hce_unregister_aid(aidPtr, aidBytes.size());
 
             if (rc == NFC_RESULT_SUCCESS) {
 
