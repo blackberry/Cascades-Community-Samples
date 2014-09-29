@@ -17,6 +17,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 * **V1.0.0** - Initial release
 * **V1.0.1** - Correct the AID registration code for 10.3
+* **V1.0.2** - Fix logic around button enabling/disabling woth HCE in 10.3
 
 **Known Issues**
 

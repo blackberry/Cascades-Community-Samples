@@ -146,7 +146,7 @@ Page {
             Button {
                 id: registerAidButton
                 text: "HCE Register AID"
-                enabled: mainPage.nfcSupported && mainPage.hceSupported && !mainPage.aidRegistered
+                enabled: mainPage.nfcSupported && mainPage.hceSupported && !mainPage.aidRegistered && !mainPage.emulationStarted
                 visible: mainPage.featureSetSupported
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -177,7 +177,7 @@ Page {
             Button {
                 id: startEmulationButton
                 text: "Start HCE"
-                enabled: mainPage.nfcSupported && !mainPage.emulationStarted && (mainPage.aidRegistered || !mainPage.hceSupported)
+                enabled: mainPage.nfcSupported && !mainPage.emulationStarted && (!mainPage.aidRegistered || !mainPage.hceSupported)
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
                     spaceQuota: 50
@@ -189,7 +189,7 @@ Page {
             Button {
                 id: stopEmulationButton
                 text: "Stop HCE"
-                enabled: mainPage.nfcSupported && mainPage.emulationStarted  && (mainPage.aidRegistered || !mainPage.hceSupported)
+                enabled: mainPage.nfcSupported && mainPage.emulationStarted  && (!mainPage.aidRegistered || !mainPage.hceSupported)
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
                     spaceQuota: 50

@@ -108,6 +108,13 @@ void NfcListener::initialise()
 	    _initialised = true;
 	}
 
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+    if (isAidRegistered()) {
+        emit aidRegistered(_aid);
+        emit message("AID: " + _aid + " was already registered");
+    }
+#endif
+
 	qDebug() << "XXXX NfcListener::initialise() ends..." << endl;
 }
 
@@ -373,7 +380,7 @@ void NfcListener::onStartEmulating()
         emit message("Emulating applet");
         emit emulationStarted();
     } else {
-        emit message(QString("Error starting emulation %1").arg(rc));
+        emit message(QString("Error starting emulation: rc=%1, %2").arg(rc).arg(strerror(errno)));
     }
 }
 
@@ -394,19 +401,20 @@ void NfcListener::onRegisterAid()
     bool isRegistered = false;
     int rc = 0;
     QByteArray aidBytes;
-            if (_aid != "*") // wildcard?
-            {
-                // sanity check on AID: it must have even length
-                if (_aid.size() % 2 != 0) {
-                    qDebug() << "XXXX NfcListener::onRegisterAid: nfc_hce_register_aid() : Rejected AID with odd length" << endl;
-                    return;
-                }
-                aidBytes = QByteArray::fromHex(_aid.toAscii());  // convert the hexstring to bytes
-            }
+
+    if (_aid != "*") // wildcard?
+    {
+        // sanity check on AID: it must have even length
+        if (_aid.size() % 2 != 0) {
+            qDebug() << "XXXX NfcListener::onRegisterAid: Rejected AID with odd length" << endl;
+            return;
+        }
+        aidBytes = QByteArray::fromHex(_aid.toAscii());  // convert the hexstring to bytes
+    }
 
     const uint8_t* aidPtr = reinterpret_cast<const uint8_t*>(aidBytes.constData());
 
-       if (_featureSet == 2) {
+    if (_featureSet == 2) {
 
         rc = nfc_hce_is_aid_registered(aidPtr, aidBytes.size(), &isRegistered);
 
@@ -459,15 +467,15 @@ void NfcListener::onUnregisterAid()
     bool isRegistered = false;
     int rc = 0;
     QByteArray aidBytes;
-            if (_aid != "*") // wildcard?
-            {
-                // sanity check on AID: it must have even length
-                if (_aid.size() % 2 != 0) {
-                    qDebug() << "XXXX NfcListener::onRegisterAid: nfc_hce_register_aid() : Rejected AID with odd length" << endl;
-                    return;
-                }
-                aidBytes = QByteArray::fromHex(_aid.toAscii());  // convert the hexstring to bytes
-            }
+    if (_aid != "*") // wildcard?
+    {
+        // sanity check on AID: it must have even length
+        if (_aid.size() % 2 != 0) {
+            qDebug() << "XXXX NfcListener::onRegisterAid: Rejected AID with odd length" << endl;
+            return;
+        }
+        aidBytes = QByteArray::fromHex(_aid.toAscii());  // convert the hexstring to bytes
+    }
     const uint8_t* aidPtr = reinterpret_cast<const uint8_t*>(aidBytes.constData());
     if (_featureSet == 2) {
 
@@ -512,6 +520,44 @@ void NfcListener::onUnregisterAid()
     return;
 }
 
+bool NfcListener::isAidRegistered()
+{
+    bool isRegistered = false;
+
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+    qDebug() << "XXXX NfcListener::isAidRegistered: " << endl;
+
+    int rc = 0;
+    QByteArray aidBytes;
+
+    if (_aid != "*") // wildcard?
+    {
+        // sanity check on AID: it must have even length
+        if (_aid.size() % 2 != 0) {
+            qDebug() << "XXXX NfcListener::isAidRegistered: Rejected AID with odd length" << endl;
+            return isRegistered;
+        }
+        aidBytes = QByteArray::fromHex(_aid.toAscii());  // convert the hexstring to bytes
+    }
+
+    const uint8_t* aidPtr = reinterpret_cast<const uint8_t*>(aidBytes.constData());
+
+    if (_featureSet == 2) {
+        rc = nfc_hce_is_aid_registered(aidPtr, aidBytes.size(), &isRegistered);
+        if ((rc == NFC_RESULT_SUCCESS) && isRegistered) {
+            qDebug() << "XXXX NfcListener::isAidRegistered: nfc_hce_is_aid_registered() : REGISTERED" << endl;
+            isRegistered = true;
+        } else {
+            qDebug() << "XXXX NfcListener::isAidRegistered: AID wasn't registered:" << strerror(errno)  << endl;
+        }
+    } else {
+        qDebug() << "XXXX NfcListener::isAidRegistered: Feature set doesn't support HCE AID registration"<< endl;
+    }
+#endif
+
+    return isRegistered;
+}
+
 bool NfcListener::initialised()
 {
     return !_initialised;
@@ -524,8 +570,6 @@ void NfcListener::onInvoked(const bb::system::InvokeRequest &request)
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
     if (request.action().compare(HCE_INVOKE_AID_SELECTED) == 0) {
         qDebug() << "XXXX AID has been selected" << endl;
-        onStartEmulating();
-
     } else {
         qWarning() << "XXXX received invocation request we don't handle:" << request.action() << endl;
     }
