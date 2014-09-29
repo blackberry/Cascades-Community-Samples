@@ -89,6 +89,8 @@ private:
     void terminate();
     void event(bps_event_t *event);
     void processIso144434CommandEvent(nfc_target_t *target);
+    bool isAidRegistered();
+
     QString _aid;
     bb::system::InvokeManager *_invokeManager;
     int _featureSet;
