@@ -27,9 +27,6 @@
 #include <bb/cascades/LocaleHandler>
 #include <QSettings>
 
-#define AID_SETTING_KEY "AID"
-#define AID_DEFAULT_VALUE "F00012345210"
-
 using namespace bb::cascades;
 
 namespace bb

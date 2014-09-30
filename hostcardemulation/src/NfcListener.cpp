@@ -110,8 +110,8 @@ void NfcListener::initialise()
 
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
     if (isAidRegistered()) {
+        emit message("AID: " + _aid + " is currently registered");
         emit aidRegistered(_aid);
-        emit message("AID: " + _aid + " was already registered");
     }
 #endif
 
@@ -167,6 +167,8 @@ void NfcListener::processIso144434CommandEvent(nfc_target_t *target)
 {
     unsigned char COMMAND_HELLO_POS[]               = { 0xa0, 0x37, 0x00, 0x00, 0x01, 0x99, 0x00 };
     unsigned char RESPONSE_HELLO_POS[]              = { 'H', 'e', 'l', 'l', 'o', ',', ' ', 'P', 'o', 'S', '!', 0x90, 0x00 };
+
+    unsigned char SELECT_F00012345210[]             = { 0x00, 0xa4, 0x04, 0x00, 0x06, 0xF0, 0x00, 0x12, 0x34, 0x52, 0x10, 0x00};
 
     unsigned char SELECT_ISD[]                      = { 0x00, 0xa4, 0x04, 0x00, 0x00 };
     unsigned char SELECT_FILE_MASTER_FILE[]         = { 0x00, 0xa4, 0x00, 0x00, 0x00 };
@@ -331,6 +333,7 @@ void NfcListener::processIso144434CommandEvent(nfc_target_t *target)
     }
 
     if      (COMPARE(cmd, COMMAND_HELLO_POS))              RESPOND(cmd, cLen, true,  RESPONSE_HELLO_POS);
+    else if (COMPARE(cmd, SELECT_F00012345210))            RESPOND(cmd, cLen, true,  RESPONSE_OK);
     else if (COMPARE(cmd, SELECT_ISD)) {                   RESPOND(cmd, cLen, true,  RESPONSE_67_00); _gotGpo = false;}
     else if (COMPARE(cmd, SELECT_FILE_MASTER_FILE))        RESPOND(cmd, cLen, true,  RESPONSE_OK);
     else if (COMPARE(cmd, SELECT_FILE_MASTER_FILE_BY_ID))  RESPOND(cmd, cLen, true,  RESPONSE_69_85);
@@ -565,13 +568,21 @@ bool NfcListener::initialised()
 
 void NfcListener::onInvoked(const bb::system::InvokeRequest &request)
 {
-    qDebug() << "XXXX Received invoke=" << request.action() << endl;;
+    qDebug() << "XXXX Received invoke action=" << request.action() << endl;
+    qDebug() << "XXXX Received invoke target=" << request.target() << endl;
+    qDebug() << "XXXX Received invoke mine-type=" << request.mimeType() << endl;
 
 #if BBNDK_VERSION_AT_LEAST(10,3,0)
-    if (request.action().compare(HCE_INVOKE_AID_SELECTED) == 0) {
-        qDebug() << "XXXX AID has been selected" << endl;
+
+    bool launchedByHce = (request.action().compare("bb.action.NOTIFY", Qt::CaseInsensitive) == 0) &&
+                         (request.target().compare(HCE_INVOKE_AID_SELECTED, Qt::CaseInsensitive) == 0) &&
+                         (request.mimeType().compare("application/vnd.bb.nfc_hce", Qt::CaseInsensitive) == 0);
+
+    if (launchedByHce) {
+        qDebug() << "XXXX AID has been selected and launched by HCE" << endl;
+        emit message("AID has been selected by reader and app launched by HCE");
     } else {
-        qWarning() << "XXXX received invocation request we don't handle:" << request.action() << endl;
+        qWarning() << "XXXX received invocation request we don't handle:" << endl;
     }
 #else
     qWarning() << "XXXX received invocation request we don't handle:" << request.action() << endl;
