@@ -51,6 +51,10 @@
         } \
     } while(0)
 
+
+#define AID_SETTING_KEY "AID"
+#define AID_DEFAULT_VALUE "F00012345210"
+
 class NfcListener
     : public QObject
     , public bb::AbstractBpsEventHandler
