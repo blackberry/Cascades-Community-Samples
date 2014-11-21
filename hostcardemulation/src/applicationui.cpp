@@ -77,6 +77,15 @@ ApplicationUI::ApplicationUI()
                             _mainPage, SLOT(onAidUnregistered(QVariant)))) {
         qWarning() << "XXXX ApplicationUI::ApplicationUI() - connect failed - onAidUnregistered" << strerror(errno) << endl;
     }
+    if(!QObject::connect(_nfcListener, SIGNAL(ppseRegistered(QVariant)),
+                            _mainPage, SLOT(onPPSERegistered(QVariant)))) {
+        qWarning() << "XXXX ApplicationUI::ApplicationUI() - connect failed - onPPSERegistered" << strerror(errno) << endl;
+    }
+
+    if(!QObject::connect(_nfcListener, SIGNAL(ppseUnregistered(QVariant)),
+                            _mainPage, SLOT(onPPSEUnregistered(QVariant)))) {
+        qWarning() << "XXXX ApplicationUI::ApplicationUI() - connect failed - onPPSEUnregistered" << strerror(errno) << endl;
+    }
 
     // ============== Hook up buttons
 
@@ -100,18 +109,56 @@ ApplicationUI::ApplicationUI()
         qWarning() << "XXXX ApplicationUI::ApplicationUI() - connect failed - onUnregisterAid" << strerror(errno) << endl;
     }
 
+    if(!QObject::connect(   _mainPage, SIGNAL(registerPPSE()),
+                         _nfcListener, SLOT(onRegisterPPSE()))) {
+        qWarning() << "XXXX ApplicationUI::ApplicationUI() - connect failed - onRegisterPPSE" << strerror(errno) << endl;
+    }
+
+    if(!QObject::connect(   _mainPage, SIGNAL(unregisterPPSE()),
+                         _nfcListener, SLOT(onUnregisterPPSE()))) {
+        qWarning() << "XXXX ApplicationUI::ApplicationUI() - connect failed - onUnregisterPPSE" << strerror(errno) << endl;
+    }
     Application::instance()->setScene(_root);
 
-    if (getAid().isNull() || getAid().isEmpty()) {
-        saveAid(AID_DEFAULT_VALUE);
+    QString savedAid = getAid();
+    if (!(savedAid.isNull() || savedAid.isEmpty())) {
+        _nfcListener->setAid(getAid());
     }
-    _nfcListener->setAid(getAid());
+    else{
+        _nfcListener->setAid(AID_DEFAULT_VALUE);
+    }
+
+    QString savedPPSE = getPPSE();
+    if (!(savedPPSE.isNull() || savedPPSE.isEmpty())) {
+        _nfcListener->setPPSE(getPPSE());
+    }
+    else{
+        _nfcListener->setPPSE(PPSE_DEFAULT_VALUE);
+    }
     _nfcListener->startListening();
 }
 
 ApplicationUI::~ApplicationUI()
 {
+    qDebug() << "XXXX HCE: ApplicationUI::~ApplicationUI Entered" << endl;
+#if BBNDK_VERSION_AT_LEAST(10,3,0)
+    if ( !_nfcListener->isAidRegistered() ) {
+        qDebug() << "XXXX HCE: ApplicationUI::~ApplicationUI App closing with no AID registered" << endl;
+        saveAid("");
+    }
+    else {
+        qDebug() << "XXXX HCE: ApplicationUI::~ApplicationUI App closing with AID registered" << endl;
+    }
+    if ( !_nfcListener->isPPSERegistered() ) {
+        qDebug() << "XXXX HCE: ApplicationUI::~ApplicationUI App closing with no PPSE registered" << endl;
+        savePPSE("");
+    }
+    else {
+        qDebug() << "XXXX HCE: ApplicationUI::~ApplicationUI App closing with PPSE registered" << endl;
+    }
+#endif
     _nfcListener->stopListening();
+    qDebug() << "XXXX HCE: ApplicationUI::~ApplicationUI Completed" << endl;
 }
 
 void ApplicationUI::onSystemLanguageChanged()
@@ -126,7 +173,7 @@ void ApplicationUI::onSystemLanguageChanged()
 
 void ApplicationUI::saveAid(QString aid)
 {
-    qDebug() << "XXXX save: aid=" << aid << endl;
+    qDebug() << "XXXX HCE: ApplicationUI::saveAid(): aid=" << aid << endl;
 
     QSettings qSettings(_orgName, _appName);
     qSettings.setValue(AID_SETTING_KEY, QVariant(aid.trimmed()));
@@ -137,7 +184,28 @@ QString ApplicationUI::getAid()
 {
     QSettings qSettings(_orgName, _appName);
     if (qSettings.value(AID_SETTING_KEY).isNull()) {
+        qDebug() << "XXXX HCE: ApplicationUI::getAid() aid=None" << endl;
         return QString("");
     }
+    qDebug() << "XXXX HCE: ApplicationUI::getAid() aid=" << qSettings.value(AID_SETTING_KEY).toString() << endl;
     return qSettings.value(AID_SETTING_KEY).toString();
+}
+void ApplicationUI::savePPSE(QString aid)
+{
+    qDebug() << "XXXX HCE: ApplicationUI::savePPSE() ppse=" << aid << endl;
+
+    QSettings qSettings(_orgName, _appName);
+    qSettings.setValue(PPSE_SETTING_KEY, QVariant(aid.trimmed()));
+    qSettings.sync();
+}
+
+QString ApplicationUI::getPPSE()
+{
+    QSettings qSettings(_orgName, _appName);
+    if (qSettings.value(PPSE_SETTING_KEY).isNull()) {
+        qDebug() << "XXXX HCE: ApplicationUI::getPPSE()  ppse=None" << endl;
+        return QString("");
+    }
+    qDebug() << "XXXX HCE: ApplicationUI::getPPSE() ppse=" << qSettings.value(PPSE_SETTING_KEY).toString() << endl;
+    return qSettings.value(PPSE_SETTING_KEY).toString();
 }

@@ -47,12 +47,14 @@ config_pri_assets {
 
 config_pri_source_group1 {
     SOURCES += \
+        $$quote($$BASEDIR/src/BerTLV.cpp) \
         $$quote($$BASEDIR/src/NfcListener.cpp) \
         $$quote($$BASEDIR/src/Utilities.cpp) \
         $$quote($$BASEDIR/src/applicationui.cpp) \
         $$quote($$BASEDIR/src/main.cpp)
 
     HEADERS += \
+        $$quote($$BASEDIR/src/BerTLV.h) \
         $$quote($$BASEDIR/src/NfcListener.hpp) \
         $$quote($$BASEDIR/src/Utilities.hpp) \
         $$quote($$BASEDIR/src/applicationui.hpp)

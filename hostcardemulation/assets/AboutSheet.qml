@@ -135,7 +135,7 @@ Sheet {
                     Label {
                         id: taBody_about1
                         horizontalAlignment: HorizontalAlignment.Center
-                        text: qsTr("The hostcardemulation application demonstrates how to use the new Host Card Emulation APIs in 10.3 to launch an application when an NFC POS reader selects teh emulated AID.")
+                        text: qsTr("The hostcardemulation application demonstrates how to use the new Host Card Emulation APIs in 10.3 to launch an application when an NFC POS reader selects the emulated AID.")
                         multiline: true
                     }
 
@@ -166,7 +166,7 @@ Sheet {
                 handler: InvokeHandler {
                     id: shareHandler
                     onInvoking: {
-                        shareMe.data = "Check out the BlackBerry 10 'WheresMyBeacon' " + "application written by @jcmrim and @mdwrim " + "here http://bit.ly/SJBBKl";
+                        shareMe.data = "Check out the BlackBerry 10 'hostcardemulation' " + "application written by @jcmrim " + "here http://bit.ly/SJBBKl";
                         shareHandler.confirm();
                     }
                 }
