@@ -19,6 +19,7 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 * **V1.0.1** - Correct the AID registration code for 10.3
 * **V1.0.2** - Fix logic around button enabling/disabling with HCE in 10.3
 * **V1.0.3** - Fix logic on invocation via HCE in 10.3
+* **V1.1.0** - Add support for Vivopay 4500 PoS Terminal
 
 **Known Issues**
 
@@ -32,10 +33,6 @@ the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 Simply Import the project into a workspace in your NDK. 
 
-**But I don't want to build it myself!**
-
-If you don't want to build this sample application yourself we've included a pre-built and signed BAR file. You can find it in the folder "**installable-bar-files**".
- 
 **To contribute code to this repository you must be [signed up as an 
 official contributor](http://blackberry.github.com/howToContribute.html).**
 

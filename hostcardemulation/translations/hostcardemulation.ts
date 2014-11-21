@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="../assets/AboutSheet.qml" line="138"/>
-        <source>The hostcardemulation application demonstrates how to use the new Host Card Emulation APIs in 10.3 to launch an application when an NFC POS reader selects teh emulated AID.</source>
+        <source>The hostcardemulation application demonstrates how to use the new Host Card Emulation APIs in 10.3 to launch an application when an NFC POS reader selects the emulated AID.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -32,13 +32,13 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="123"/>
+        <location filename="../assets/main.qml" line="139"/>
         <source>
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="134"/>
+        <location filename="../assets/main.qml" line="150"/>
         <source>Host Card Emulation</source>
         <translation type="unfinished"></translation>
     </message>

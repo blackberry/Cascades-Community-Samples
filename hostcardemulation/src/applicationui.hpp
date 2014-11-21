@@ -74,6 +74,8 @@ private:
 
     void saveAid(QString aid);
     QString getAid();
+    void savePPSE(QString aid);
+    QString getPPSE();
 };
 
 #endif /* ApplicationUI_HPP_ */

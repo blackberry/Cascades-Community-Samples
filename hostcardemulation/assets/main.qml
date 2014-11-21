@@ -47,6 +47,7 @@ Page {
 
         property bool emulationStarted: false
         property bool aidRegistered: false
+        property bool ppseRegistered: false
         property bool hceSupported: false
         property bool nfcSupported: false
         property bool featureSetSupported: false
@@ -57,6 +58,8 @@ Page {
         signal stopEmulating()
         signal registerAid()
         signal unregisterAid()
+        signal registerPPSE()
+        signal unregisterPPSE()
 
         // ======== SLOT()s ================
 
@@ -66,30 +69,42 @@ Page {
 
         function onEmulationStopped() {
             mainPage.emulationStarted = false;
-            console.debug("XXXX In onEmulationStopped()");
+            console.debug("XXXX HCE: In onEmulationStopped()");
             logMessage("HCE Stopped");
         }
 
         function onEmulationStarted() {
-            console.debug("XXXX In onEmulationStarted()");
+            console.debug("XXXX HCE: In onEmulationStarted()");
             mainPage.emulationStarted = true;
             logMessage("HCE Started");
         }
         
         function onAidRegistered(aid) {
-            console.debug("XXXX In onAidRegistered()");
+            console.debug("XXXX HCE: In onAidRegistered()");
             mainPage.aidRegistered = true;
             logMessage("HCE AID Registered: " + aid);
         }
         
         function onAidUnregistered(aid) {
-            console.debug("XXXX In onAidUnregistered()");
+            console.debug("XXXX HCE: In onAidUnregistered()");
             mainPage.aidRegistered = false;
             logMessage("HCE AID Unregistered: " + aid);
         }
         
+        function onPPSERegistered(aid) {
+            console.debug("XXXX HCE: In onPPSERegistered()");
+            mainPage.ppseRegistered = true;
+            logMessage("HCE PPSE AID Registered: " + aid);
+        }
+        
+        function onPPSEUnregistered(aid) {
+            console.debug("XXXX HCE: In onPPSEUnregistered()");
+            mainPage.ppseRegistered = false;
+            logMessage("HCE PPSE AID Unregistered: " + aid);
+        }
+
         function onFeatureSetSupported(featureSet) {
-            console.debug("XXXX In onFeatureSetSupported() - " + featureSet);
+            console.debug("XXXX HCE: In onFeatureSetSupported() - " + featureSet);
             
             if (featureSet >= 0) {
                 logMessage("Device supports feature set " + featureSet);
@@ -114,6 +129,7 @@ Page {
                 mainPage.featureSetSupported = false;
                 mainPage.nfcSupported = true;
                 mainPage.hceSupported = false;
+                logMessage("Unknown NFC / HCE AID registration supported");
             }
         }
         
@@ -175,9 +191,41 @@ Page {
                 orientation: LayoutOrientation.LeftToRight
             }
             Button {
+                id: registerPPSEButton
+                text: "HCE Register PPSE"
+                enabled: mainPage.nfcSupported && mainPage.hceSupported && !mainPage.ppseRegistered && !mainPage.emulationStarted
+                visible: mainPage.featureSetSupported
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 50
+                }
+                onClicked: {
+                    mainPage.registerPPSE();
+                }
+            }
+            Button {
+                id: unregisterPPSEButton
+                text: "HCE Unregister PPSE"
+                enabled: mainPage.nfcSupported && mainPage.hceSupported && mainPage.ppseRegistered && !mainPage.emulationStarted
+                visible: mainPage.featureSetSupported
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 50
+                }
+                onClicked: {
+                    mainPage.unregisterPPSE();
+                }
+            }
+        }
+
+        Container {
+            layout: StackLayout {
+                orientation: LayoutOrientation.LeftToRight
+            }
+            Button {
                 id: startEmulationButton
                 text: "Start HCE"
-                enabled: mainPage.nfcSupported && !mainPage.emulationStarted && (!mainPage.aidRegistered || !mainPage.hceSupported)
+                enabled: mainPage.nfcSupported && !mainPage.emulationStarted && (!(mainPage.ppseRegistered || mainPage.aidRegistered) || !mainPage.hceSupported)
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
                     spaceQuota: 50
@@ -189,7 +237,7 @@ Page {
             Button {
                 id: stopEmulationButton
                 text: "Stop HCE"
-                enabled: mainPage.nfcSupported && mainPage.emulationStarted  && (!mainPage.aidRegistered || !mainPage.hceSupported)
+                enabled: mainPage.nfcSupported && mainPage.emulationStarted  && (!(mainPage.ppseRegistered || mainPage.aidRegistered) || !mainPage.hceSupported)
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
                     spaceQuota: 50
