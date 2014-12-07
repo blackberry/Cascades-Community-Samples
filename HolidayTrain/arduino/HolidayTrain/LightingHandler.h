@@ -18,6 +18,34 @@
 
 #include <stdint.h>
 
+class LightingState {
+public:
+  LightingState();
+  
+  void setPin(uint8_t pin);
+  void setMode(uint8_t mode);
+  void setValue(uint8_t value);
+  void check(uint64_t now);
+  void setMonitor();
+private:
+
+  void sparkleNextState();
+  
+  uint8_t mPin;
+  uint8_t mValue;
+  uint8_t mMode;
+  
+  uint8_t mSparkleState;
+  uint32_t mSparkleStartTime;
+  uint32_t mSparkleEndTime;
+  uint8_t mSparkleStartValue;
+  uint8_t mSparkleTargetValue;
+  
+  int64_t mRampLastTime;
+  
+  uint8_t mMonitor;
+};
+
 class LightingHandler {
 public:
   LightingHandler(uint8_t * lightPins);
@@ -29,11 +57,7 @@ public:
   void check(uint64_t now);
 
 private:
-  uint8_t lightPins[4];
-  uint8_t lightValues[4];
-  uint8_t lightModes[4];
-  
-  float params[4][2];
+  LightingState lights[4];
 };
 
 
