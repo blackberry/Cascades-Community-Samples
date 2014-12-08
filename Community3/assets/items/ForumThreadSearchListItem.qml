@@ -23,7 +23,6 @@ import com.msohm.BoardProperties 1.0
 //CustomListItem for displaying Search Result Threads.
 
 CustomListItem {
-    preferredHeight: 265 
     dividerVisible: true
     highlightAppearance: HighlightAppearance.Frame
     Container {
