@@ -99,17 +99,17 @@ Page {
             ]
             
             function itemType(data, indexPath) {
-                if (indexPath == 0)
+                if (threadProvider.hasSolution && indexPath == 0)
+                {
+                    return "solved";
+                }
+                else if (indexPath == 0)
                 {
                     return "first";
                 }
                 else if (threadProvider.isSolution(data.id[".data"]))
                 {
                     return "solution";
-                }
-                else if (threadProvider.hasSolution && indexPath == 0)
-                {
-                    return "solved";
                 }
                 else 
                 {

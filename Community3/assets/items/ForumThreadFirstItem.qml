@@ -22,8 +22,6 @@ import com.msohm.URLProvider 1.0
 
 CustomListItem {
     id: forumThreadItem
-    preferredHeight: 5000 //Set to a large number which should accomodate most posts.  It's shrunk after the post content size is calculated.
-    preferredWidth: 5000 //Large number so wide posts fit in the WebView.
     dividerVisible: true
     highlightAppearance: HighlightAppearance.Frame
     Container {
@@ -91,7 +89,7 @@ CustomListItem {
             WebView {
                 id: bodyWebView
                 //This allows for horizontal scrolling with the content zoomed to the desired level.
-                html: "<html><head><script language=\"javascript\" type=\"text/javascript\"> function getHeight() { var theHeight = document.getElementById(\"heightProvider\").offsetHeight; return theHeight;} </script></head><body><div id=\"heightProvider\">" + ListItemData.body[".data"] + "</div></body></html>"
+                html: "<html><body>" + ListItemData.body[".data"] + "</body></html>"
                 settings.zoomToFitEnabled: false
                 settings.background: Color.Transparent
                 settings.viewport: { "initial-scale" : 1.0, "width" : "device-width"}
@@ -107,19 +105,6 @@ CustomListItem {
                     }
                 }
                 
-                //Get the height of the forum content after it's loaded.
-                onLoadingChanged: {
-                    if (loadRequest.status == WebLoadStatus.Succeeded) {
-                        bodyWebView.evaluateJavaScript("getHeight();", JavaScriptWorld.Normal);
-                    }
-                }
-                
-                //Reset the CustomListItem's height based on the post content.
-                //Take ScrollView scale into consideration so we don't have extra white space.
-                //ScrollView will zoom out for wide content.
-                onJavaScriptResult: {
-                    forumThreadItem.preferredHeight = 380 + (result * bodyWebView.settings.devicePixelRatio);
-                }
                 settings.webInspectorEnabled: false
 
             }

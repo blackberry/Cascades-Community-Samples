@@ -22,7 +22,6 @@ import bb.cascades 1.2
 //CustomListItem for displaying Threads.
 
 CustomListItem {
-    preferredHeight: 265 
     dividerVisible: true
     highlightAppearance: HighlightAppearance.Frame
     Container {
