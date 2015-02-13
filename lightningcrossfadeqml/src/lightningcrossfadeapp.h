@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2012, 2013, 2014, 2015 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,20 +21,19 @@
 /**
  * LightningCrossfade Description:
  *
- * This is basic Core-controls application for Cascades.
+ * This is a basic Cascades app that demonstrates how to:
+ * - Add an image to the UI
+ * - Use a layout for several UI elements
+ * - Add and respond to a slider
+ * - Do all above with QML
  *
- * Feature summary
- * - Adding an image to the UI
- * - layout of several UI elements
- * - Adding and reading a slider
- * - Doing all above with QML
  */
 class LightningCrossfadeApp: public QObject
 {
     Q_OBJECT
 
 public:
-    // This is our constructor that sets up the recipe.
+    // This is the constructor that sets up the app
     LightningCrossfadeApp();
 
 };
