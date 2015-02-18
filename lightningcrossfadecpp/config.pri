@@ -36,13 +36,9 @@ simulator {
 
 config_pri_assets {
     OTHER_FILES += \
-        $$quote($$BASEDIR/assets/10ppd/images/day.jpg) \
         $$quote($$BASEDIR/assets/10ppd/images/moon.png) \
-        $$quote($$BASEDIR/assets/10ppd/images/night.jpg) \
         $$quote($$BASEDIR/assets/10ppd/images/sun.png) \
-        $$quote($$BASEDIR/assets/12ppd/images/day.jpg) \
         $$quote($$BASEDIR/assets/12ppd/images/moon.png) \
-        $$quote($$BASEDIR/assets/12ppd/images/night.jpg) \
         $$quote($$BASEDIR/assets/12ppd/images/sun.png) \
         $$quote($$BASEDIR/assets/mindw76h128du/images/day.jpg) \
         $$quote($$BASEDIR/assets/mindw76h128du/images/night.jpg) \

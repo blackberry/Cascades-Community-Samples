@@ -36,6 +36,8 @@ LightningCrossfadeApp::LightningCrossfadeApp()
     // Get the UIConfig object to use resolution independent sizes
     UIConfig *ui = contentContainer->ui();
     contentContainer->setTopPadding(ui->du(2.0));
+    contentContainer->setLeftPadding(ui->du(2.0));
+    contentContainer->setRightPadding(ui->du(2.0));
 
     contentContainer->setLayout(StackLayout::create());
     contentContainer->setBackground(Color::fromARGB(0xfff8f8f8));

@@ -19,9 +19,11 @@ Page {
     // and stack the images and the slider in this container
     Container {
         id: containerID
-        background: Color.create("#f8f8f8")
         topPadding: ui.du(2.0)
-        
+        leftPadding: ui.du(2.0)
+        rightPadding: ui.du(2.0)
+        background: Color.create("#f8f8f8")
+
         layout: StackLayout {
         }
 
