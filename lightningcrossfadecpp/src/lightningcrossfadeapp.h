@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2012, 2013, 2014, 2015 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 
 #ifndef LIGHTNINGCROSSFADEAPP_H
 #define LIGHTNINGCROSSFADEAPP_H
@@ -31,13 +32,12 @@ namespace bb
 /**
  * LightningCrossfade Description:
  *
- * This is basic Core-controls application for Cascades.
+ * This is a basic Cascades app that demonstrates how to:
+ * - Add an image to the UI
+ * - Use a layout for several UI elements
+ * - Add and respond to a slider
+ * - Do all above with C++
  *
- * Feature summary
- * - Adding an image to the UI
- * - layout of several UI elements
- * - Adding and reading a Slider
- * - Doing all above with C++ code
  */
 class LightningCrossfadeApp: public QObject
 {
@@ -49,7 +49,7 @@ public:
 private:
     /**
      * This function creates a container with several images center aligned and
-     * on top of each other.This will be the first Control in the Content Container.
+     * on top of each other. This will be the first Control in the Content Container.
      *
      * @return The Container containing the images.
      */

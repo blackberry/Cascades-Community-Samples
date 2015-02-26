@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2012, 2013, 2014, 2015 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include "lightningcrossfadeapp.h"
 
 #include <bb/cascades/Color>
@@ -22,69 +23,74 @@
 #include <bb/cascades/Slider>
 #include <bb/cascades/StackLayout>
 #include <bb/cascades/StackLayoutProperties>
+#include <bb/cascades/UIConfig>
 
 using namespace bb::cascades;
 
 LightningCrossfadeApp::LightningCrossfadeApp()
 {
-    // The UI is set up using a couple of different Containers set to handle
-    // layouts of their children in different ways (stack and dock layouts).
-    // First off we have the main content Container, where all other components will be added.
+
+    // Create the main UI in a container with a StackLayout
     Container *contentContainer = new Container();
+
+    // Get the UIConfig object to use resolution independent sizes
+    UIConfig *ui = contentContainer->ui();
+    contentContainer->setTopPadding(ui->du(2.0));
+    contentContainer->setLeftPadding(ui->du(2.0));
+    contentContainer->setRightPadding(ui->du(2.0));
+
     contentContainer->setLayout(StackLayout::create());
-    contentContainer->setTopPadding(20.0f);
     contentContainer->setBackground(Color::fromARGB(0xfff8f8f8));
 
-    // Inside the content Container we have two component Containers, the first one contain images.
+    // Inside the main UI container, create two containers
+    // The first container contain the images
     Container *imageContainer = setUpImageContainer();
     imageContainer->setHorizontalAlignment(HorizontalAlignment::Center);
 
-    // Then set up the Slider Container and align it to the center of the content Container as well.
+    // The second container contains the slider, which is
+    // aligned to the center of the main UI container
     Container *sliderContainer = setUpSliderContainer(imageContainer);
     sliderContainer->setHorizontalAlignment(HorizontalAlignment::Center);
 
-    // Add the two containers to the content container.
+    // Add the two containers to the main UI container
     contentContainer->add(imageContainer);
     contentContainer->add(sliderContainer);
 
-    // We create a page with the control as content.
+    // Create a page with the main UI as the content
     Page *page = new Page();
     page->setContent(contentContainer);
 
-    // Create the application scene and we are done.
+    // Create the application scene
     Application::instance()->setScene(page);
 }
 
 Container *LightningCrossfadeApp::setUpImageContainer()
 {
-    // In this function a Container containing two images are set up.
-    // A dock layout is used to align the images.
+    // Create a container that contains two images and
+    // uses a dock layout to align the images
     Container* nightAndDayContainer = new Container();
     nightAndDayContainer->setLayout(new DockLayout());
 
-    // The first image is the night image, taken at the same
-    // position as the day one, but further from the viewer.
+    // Add the night image
     ImageView* night = ImageView::create("asset:///images/night.jpg");
 
-    // Center it using alignment.
+    // Center the night image using alignment
     night->setHorizontalAlignment(HorizontalAlignment::Center);
     night->setVerticalAlignment(VerticalAlignment::Center);
 
-    // Now, we will overlay the day image on top of the night image.
-    // Since the day image is on top of the night one, we can show the
-    // night image with changing the opacity value of this image.
+    // Add the day image on top of the night image and
+    // hide the day image by changing its opacity value to 0
     ImageView* day = ImageView::create("asset:///images/day.jpg").opacity(0);
 
-    // Center it using alignment.
+    // Center the day image using alignment
     day->setHorizontalAlignment(HorizontalAlignment::Center);
     day->setVerticalAlignment(VerticalAlignment::Center);
 
-    // The day image is attached to the slider later. We need to be able to 
-    // find the object at a later point in time so an object name is assigned.
+    // Assign an object name to the day image so that it can
+    // be found and attached to the slider later
     day->setObjectName("dayImage");
 
-    // Now add all the images to the Container and the alignment will be
-    // automatically done by the layout system.
+    // Add all the images to the Container
     nightAndDayContainer->add(night);
     nightAndDayContainer->add(day);
 
@@ -93,37 +99,59 @@ Container *LightningCrossfadeApp::setUpImageContainer()
 
 Container *LightningCrossfadeApp::setUpSliderContainer(Container *imageContainer)
 {
-    // Create the Slider Container with the controls set to sort themselves from
-    // left to right rather then top to bottom (which is the default for a StackLayout).
-    Container* sliderContainer = Container::create().left(20.0f).right(20.0f).top(25.0f).bottom(
-            25.0f);
+    // Create a container for the slider and sort the controls
+    // in this container from left to right
+    Container* sliderContainer = new Container();
+
+    // Get the UIConfig object to use resolution independent sizes
+    UIConfig *sliderui = sliderContainer->ui();
+
+    sliderContainer->setLeftPadding(sliderui->du(1.0));
+    sliderContainer->setRightPadding(sliderui->du(1.0));
+    sliderContainer->setTopPadding(sliderui->du(4.0));
+    sliderContainer->setBottomPadding(sliderui->du(2.0));
+
     sliderContainer->setLayout(StackLayout::create().orientation(LayoutOrientation::LeftToRight));
 
-    // This is the Slider you see at the bottom of the page when it get's a onImmediateValueChanged
-    // event it changes the image with id night's opacity to that value, margins for space.
-    Slider* opacitySlider = Slider::create().leftMargin(20.0f).rightMargin(20.0f);
+    // Create the slider that you see at the bottom of the screen
+    // When it gets an onImmediateValueChanged() signal,
+    // it opacity of the night image to make it disappear
+    Slider* opacitySlider = Slider::create().leftMargin(sliderui->du(1.0)).rightMargin(sliderui->du(1.0));
 
-    // Center the slider in the stack layout. We have given a positive space quota which
-    // makes the slider opacity value less than the moon and sun icon images when
-    // laying out on screens of different widths.
+    // Center the slider in the stack layout
+    // and give it a positive space quota, which
+    // makes the slider opacity value less than
+    // the moon and sun icon images when they
+    // are displayed on screens with different widths
     opacitySlider->setLayoutProperties(StackLayoutProperties::create().spaceQuota(1.0f));
     opacitySlider->setHorizontalAlignment(HorizontalAlignment::Fill);
 
-    // A moon and sun icon image is used to illustrate that time of day, both
-    // aligned to the center in a vertical direction to line up with the slider.
+    // Add a moon and a sun image on either side of slider
     ImageView* moon = ImageView::create("asset:///images/moon.png");
     moon->setVerticalAlignment(VerticalAlignment::Center);
     ImageView* sun = ImageView::create("asset:///images/sun.png");
     sun->setVerticalAlignment(VerticalAlignment::Center);
 
-    // The day image will be attached to a slider so we need to get the corresponding
-    // object from the image Container.
+    // Attach the day image to the slider using the
+    // object ID from the image Container
     ImageView *dayImage = imageContainer->findChild<ImageView*>("dayImage");
 
-    // Connect the Slider value directly to the opacity property of the day image view.
-    connect(opacitySlider, SIGNAL(immediateValueChanged(float)), dayImage, SLOT(setOpacity(float)));
+    // Connect the slider value directly to the
+    // opacity property of the day image
 
-    // Add the components to the slider container (remember that they will be stacked from left to right).
+    // Make sure to test the result  to detect any errors
+    bool result;
+    Q_UNUSED(result);
+
+    result=connect(opacitySlider,
+            SIGNAL(immediateValueChanged(float)),
+            dayImage,
+            SLOT(setOpacity(float)));
+
+    Q_ASSERT(result);
+
+    // Add the components to the slider container
+    // (Remember that they will be stacked from left to right)
     sliderContainer->add(moon);
     sliderContainer->add(opacitySlider);
     sliderContainer->add(sun);

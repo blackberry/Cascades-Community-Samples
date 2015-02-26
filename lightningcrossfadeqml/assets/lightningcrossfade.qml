@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2012, 2013, 2014, 2015 BlackBerry Limited.
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,67 +12,72 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import bb.cascades 1.0
+import bb.cascades 1.4
 
 Page {
-    // The content (images, slider ...) is stacked in this Container.
+    // Set the background color of this container to off-white
+    // and stack the images and the slider in this container
     Container {
-        // Set the background color to off-white.
+        id: containerID
+        topPadding: ui.du(2.0)
+        leftPadding: ui.du(2.0)
+        rightPadding: ui.du(2.0)
         background: Color.create("#f8f8f8")
-        topPadding: 20
-        
+
         layout: StackLayout {
         }
 
-        // The two images are put on top of each other in this container.
+        // Put the two images on top of each other 
+        // in the images container
         Container {
             horizontalAlignment: HorizontalAlignment.Center
             
             layout: DockLayout {
             }
 
-            // This is the main night image. The night image is at the same position as the
-            // day image, but further back from the viewer.
+            // Add the night image at the same position  
+            // as the day image and behind it
             ImageView {
                 id: night
                 imageSource: "asset:///images/night.jpg"
                 horizontalAlignment: HorizontalAlignment.Center
             }
 
-            // Since this day image is on top of the night one, we can hide the
-            // night image with changing the opacity value of this image.
+            // Add the day image in front of the night image and
+            // hide the day image by setting its opacity value to 0
             ImageView {
                 id: day
                 opacity: 0
                 imageSource: "asset:///images/day.jpg"
                 horizontalAlignment: HorizontalAlignment.Center
             }
-        }
+        } // End of the images container
 
-        // This is the slider you see at the bottom of the page
-        // when it gets a onImmediateValueChanged event it changes the
-        // image with id night's opacity to that value.
-        // Two small images are put on each side of the slider.
+        // Add a container for the slider at the bottom of the page
+        // When the slider gets an onImmediateValueChanged() signal,
+        // change the opacity of the image so that it disaappears
+
         Container {
-            leftPadding: 20
-            rightPadding: 20
-            topPadding: 25
-            bottomPadding: 25
+            leftPadding: ui.du(1.0)
+            rightPadding: ui.du(1.0)
+            topPadding: ui.du(4.0)
+            bottomPadding: ui.du(2.0)
             layout: StackLayout {
                 orientation: LayoutOrientation.LeftToRight
             }
 
-            // The minimum position of the slider means night-time so an image of a
-            // moon is added to illustrate this.
+            // The minimum position of the slider means 
+            // nighttime, so add an image of a moon at this
+            // side of the slider
             ImageView {
                 imageSource: "asset:///images/moon.png"
                 verticalAlignment: VerticalAlignment.Center
             }
 
-            // The slider component
+            // Add the slider component
             Slider {
-                leftMargin: 20
-                rightMargin: 20
+                leftMargin: ui.du(1.0)
+                rightMargin: ui.du(1.0)
                 horizontalAlignment: HorizontalAlignment.Fill
                 
                 layoutProperties: StackLayoutProperties {
@@ -80,13 +85,15 @@ Page {
                 }
                 
                 onImmediateValueChanged: {
-                    // This is where the day-night opacity value is done.
+                    // Change the opacity of the day image to 
+                    // make it appear
                     day.opacity = immediateValue;
                 }
             }
 
-            // At the maximum position of the slider means day-time so an image of a
-            // sun is added to illustrate this.
+            // The maximum position of the slider means 
+            // daytime, so add an image of a sun at this 
+            // side of the slider
             ImageView {
                 imageSource: "asset:///images/sun.png"
                 verticalAlignment: VerticalAlignment.Center
@@ -94,4 +101,4 @@ Page {
             } // Sun icon Image
         } // Slider Container
     } // Content Container
-}// Page
+} // Page

@@ -1,4 +1,4 @@
-/* Copyright (c) 2012 Research In Motion Limited.
+/* Copyright (c) 2012, 2013, 2014, 2015 BlackBerry Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@ using ::bb::cascades::Application;
 
 Q_DECL_EXPORT int main(int argc, char **argv)
 {
-    // Instantiate the main application constructor.
+    // Instantiate the main application constructor
     Application app(argc, argv);
 
-    // Create our application.
+    // Create the application
     LightningCrossfadeApp mainApp;
 
-    // We complete the transaction started in the main application constructor and start the
-    // client event loop here. When loop is exited the Application deletes the scene which
-    // deletes all its children (per QT rules for children).
+    // Complete the transaction started in the main app
+    // constructor and start the client event loop here
+    // When the loop is exited the application deletes the
+    // scene, which deletes all of its children
     return Application::exec();
 }
 
