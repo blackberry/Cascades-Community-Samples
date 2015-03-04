@@ -410,6 +410,10 @@ int BestCam::startPhotoVf()
                         // to make sure to decrement using _deregister_ when we are finished with resources. when the count of
                         // registrations reaches 0, the OS will allow the camera to be powered off (or after a couple of seconds of grace).
                         err = camera_register_resource(mHandle);
+
+                        // since aspect ratio is only updated on a display size change, and we may be changing viewfinder
+                        // resolutions in a photo<->video switch, we need to kick the code to adjust the size onscreen
+                        constrainViewfinderAspectRatio();
                     }
                 }
             }
@@ -469,6 +473,10 @@ int BestCam::startVideoVf()
             camera_get_videovf_property(mHandle,
                                         CAMERA_IMGPROP_WIDTH, &mVfWidth,
                                         CAMERA_IMGPROP_HEIGHT, &mVfHeight);
+
+            // since aspect ratio is only updated on a display size change, and we may be changing viewfinder
+            // resolutions in a photo<->video switch, we need to kick the code to adjust the size onscreen
+            constrainViewfinderAspectRatio();
         }
     }
 

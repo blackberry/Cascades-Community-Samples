@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+
+   Copyright (c) 2013 BlackBerry Limited.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+-->
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+
+	<!-- BlackBerry 10 application descriptor file. Specifies parameters for
+		identifying, installing, and launching native applications on BlackBerry
+		10. -->
+
+	<!-- A universally unique application identifier. Must be unique across
+		all BlackBerry 10 applications. Using a reverse DNS-style name as the id
+		is recommended. (Eg. com.example.ExampleApplication.) Required. -->
+	<id>com.example.AnnualLeave</id>
+
+	<!-- The name that is displayed in the BlackBerry 10 application installer.
+		May have multiple values for each language. See samples or xsd schema file.
+		Optional. -->
+	<name>
+    Annual Leave
+    <text xml:lang="en-US">Vacation Request</text>
+    <text xml:lang="en-GB">Annual Leave</text>
+    <text xml:lang="en-CA">Vacation Request</text>
+ </name>
+
+	<!-- A string value of the format <0-999>.<0-999>.<0-999> that represents
+		application version which can be used to check for application upgrade. Values
+		can also be 1-part or 2-part. It is not necessary to have a 3-part value.
+		An updated version of application must have a versionNumber value higher
+		than the previous version. Required. -->
+	<versionNumber>0.0.3</versionNumber>
+ <packageLocale>en-US,en-GB,en-CA</packageLocale>
+
+	<!-- Fourth digit segment of the package version. First three segments are
+		taken from the <versionNumber> element. Must be an integer from 0 to 2^16-1 -->
+	<buildId>4</buildId>
+
+	<!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents
+		the version of the application, as it should be shown to users. Optional. -->
+	<!-- <versionLabel></versionLabel> -->
+
+	<!-- Description, displayed in the BlackBerry 10 application installer.
+		May have multiple values for each language. See samples or xsd schema file.
+		Optional. -->
+	<description>
+    The Annual Leave reference application
+    <text xml:lang="en-US">The Vacation Request reference application</text>
+    <text xml:lang="en-GB">The Annual Leave reference application</text>
+    <text xml:lang="en-CA">The Vacation Request reference application</text>
+ </description>
+
+	<!-- Copyright information. Optional. -->
+	<!-- <copyright></copyright> -->
+
+	<!-- Name of author which is used for signing. Must match the developer
+		name of your development certificate. -->
+	<author>Example Inc.</author>
+	<configuration name="Device-Debug">
+		<platformArchitecture>armle-v7</platformArchitecture>
+		<entryPointType>Qnx/Elf</entryPointType>
+
+		<asset entryPointId="AnnualLeave" 
+		    path="arm/o.le-v7-g/AnnualLeave"
+			entry="true" type="Qnx/Elf">AnnualLeave</asset>
+
+		<asset entryPointId="AnnualLeaveService"
+			path="../AnnualLeaveService/arm/AnnualLeaveService"
+			type="Qnx/Elf">AnnualLeaveService</asset>
+
+		<asset entryPointId="AnnualLeaveCommon"
+			path="../AnnualLeaveCommon/arm/so.le-v7-g/libAnnualLeaveCommon.so"
+			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
+
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/arm/so.le-v7-g/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
+
+		<asset entryPointId="AnnualLeaveAdapter"
+			path="../AnnualLeaveAdapterEmail/arm/so.le-v7-g/libAnnualLeaveAdapter.so"
+			type="Qnx/Elf">lib/libAnnualLeaveAdapter.so.1</asset>
+
+	</configuration>
+
+	<configuration name="Device-Release">
+		<platformArchitecture>armle-v7</platformArchitecture>
+		<entryPointType>Qnx/Cascades</entryPointType>
+
+		<asset entryPointId="AnnualLeave" path="arm/o.le-v7/AnnualLeave.so"
+			entry="true" type="Qnx/Cascades">AnnualLeave.so</asset>
+
+		<asset entryPointId="AnnualLeaveService"
+			path="../AnnualLeaveService/arm/AnnualLeaveService"
+			type="Qnx/Elf">AnnualLeaveService</asset>
+
+		<asset entryPointId="AnnualLeaveCommon"
+			path="../AnnualLeaveCommon/arm/so.le-v7/libAnnualLeaveCommon.so"
+			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
+
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/arm/so.le-v7/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
+
+		<asset entryPointId="AnnualLeaveAdapter"
+			path="../AnnualLeaveAdapterEmail/arm/so.le-v7/libAnnualLeaveAdapter.so"
+			type="Qnx/Elf">lib/libAnnualLeaveAdapter.so.1</asset>
+
+	</configuration>
+
+	<configuration name="Device-Profile">
+		<platformArchitecture>armle-v7</platformArchitecture>
+		<entryPointType>Qnx/Elf</entryPointType>
+
+		<asset entryPointId="AnnualLeave" path="arm-p/o.le-v7-g/AnnualLeave"
+			entry="true" type="Qnx/Elf">AnnualLeave</asset>
+
+		<asset entryPointId="AnnualLeaveService"
+			path="../AnnualLeaveService/arm-p/AnnualLeaveService"
+			type="Qnx/Elf">AnnualLeaveService</asset>
+
+		<asset entryPointId="AnnualLeaveCommon"
+			path="../AnnualLeaveCommon/arm-p/so.le-v7-g/libAnnualLeaveCommon.so"
+			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
+
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/arm-p/so.le-v7-g/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
+
+		<asset entryPointId="AnnualLeaveAdapter"
+			path="../AnnualLeaveAdapterEmail/arm-p/so.le-v7-g/libAnnualLeaveAdapter.so"
+			type="Qnx/Elf">lib/libAnnualLeaveAdapter.so.1</asset>
+	</configuration>
+
+	<configuration name="Simulator-Debug">
+		<platformArchitecture>x86</platformArchitecture>
+		<entryPointType>Qnx/Elf</entryPointType>
+
+		<asset entryPointId="AnnualLeave" path="x86/o-g/AnnualLeave"
+			entry="true" type="Qnx/Elf">AnnualLeave</asset>
+		<asset entryPointId="AnnualLeaveService"
+			path="../AnnualLeaveService/x86/AnnualLeaveService"
+			type="Qnx/Elf">AnnualLeaveService</asset>
+		<asset entryPointId="AnnualLeaveCommon"
+			path="../AnnualLeaveCommon/x86/so-g/libAnnualLeaveCommon.so"
+			type="Qnx/Elf">lib/libAnnualLeaveCommon.so.1</asset>
+		<asset entryPointId="AnnualLeaveModel"
+			path="../AnnualLeaveModel/x86/so-g/libAnnualLeaveModel.so"
+			type="Qnx/Elf">lib/libAnnualLeaveModel.so.1</asset>
+		<asset entryPointId="AnnualLeaveAdapter"
+			path="../AnnualLeaveAdapterEmail/x86/so-g/libAnnualLeaveAdapter.so"
+			type="Qnx/Elf">lib/libAnnualLeaveAdapter.so.1</asset>
+	</configuration>
+
+	<entryPoint id="AnnualLeave">
+		<name>AnnualLeave</name>
+	</entryPoint>
+
+	<entryPoint id="AnnualLeaveService">
+		<name>AnnualLeave Service</name>
+		<entryPointType>Qnx/Elf</entryPointType>
+	</entryPoint>
+
+	<entryPoint id="AnnualLeaveCommon">
+		<name>AnnualLeave Common</name>
+		<entryPointType>Qnx/Elf</entryPointType>
+	</entryPoint>
+
+	<entryPoint id="AnnualLeaveModel">
+		<name>AnnualLeave Model</name>
+		<entryPointType>Qnx/Elf</entryPointType>
+	</entryPoint>
+
+	<entryPoint id="AnnualLeaveAdapter">
+		<name>AnnualLeave Adapter</name>
+		<entryPointType>Qnx/Elf</entryPointType>
+	</entryPoint>
+
+<!--
+	<invoke-target id="com.example.AnnualLeaveService">
+		<invoke-target-type>application.headless</invoke-target-type>
+		<invoke-target-name>AnnualLeave Service</invoke-target-name>
+		<entry-point-id>AnnualLeaveService</entry-point-id>
+		<filter>
+			<action>bb.action.system.STARTED</action>
+			<mime-type>application/vnd.blackberry.system.event.STARTED</mime-type>
+			<property var="uris" value="data://local" />
+		</filter>
+		<filter>
+			<action>com.example.AnnualLeaveService.NOTIFY</action>
+			<mime-type>*</mime-type>
+			<property var="uris" value="headless:" />
+		</filter>
+	</invoke-target>
+
+	<invoke-target id="com.example.AnnualLeave">
+		<invoke-target-type>application</invoke-target-type>
+		<invoke-target-name>AnnualLeave GUI</invoke-target-name>
+		<icon>
+			<image>icon.png</image>
+		</icon>
+		<filter>
+			<action>com.example.annual_leave.INBOUND_QUEUE_DATA</action>
+			<mime-type>*</mime-type>
+			<property var="uris" value="headless:" />		
+		</filter>
+		<entry-point-id>AnnualLeave</entry-point-id>
+	</invoke-target>
+
+-->
+
+
+	<invoke-target id="com.example.AnnualLeaveService">
+		<invoke-target-type>application.headless</invoke-target-type>
+		<invoke-target-name>AnnualLeave Service</invoke-target-name>
+		<entry-point-id>AnnualLeaveService</entry-point-id>
+		<filter>
+			<action>bb.action.system.STARTED</action>
+			<mime-type>application/vnd.blackberry.system.event.STARTED</mime-type>
+			<property var="uris" value="data://local" />
+		</filter>
+		<filter>
+			<action>com.example.AnnualLeaveService.NOTIFY</action>
+			<mime-type>*</mime-type>
+			<property var="uris" value="headless:" />
+		</filter>
+	</invoke-target>
+
+	<invoke-target id="com.example.AnnualLeave">
+		<invoke-target-type>application</invoke-target-type>
+		<invoke-target-name>AnnualLeave GUI</invoke-target-name>
+		<icon>
+			<image>icon.png</image>
+		</icon>
+		<filter>
+			<action>com.example.annual_leave.INBOUND_QUEUE_DATA</action>
+			<mime-type>application/vnd.blackberry.system.event.STARTED</mime-type>
+			<property var="uris" value="data://local" />
+		</filter>
+		<entry-point-id>AnnualLeave</entry-point-id>
+	</invoke-target>
+
+	<!-- Unique author ID assigned by signing authority. Required if using debug
+		tokens. -->
+	<!-- <authorId>ABC1234YjsnUk235h</authorId> -->
+
+	<initialWindow>
+		<autoOrients>true</autoOrients>
+		<systemChrome>none</systemChrome>
+	</initialWindow>
+
+	<!-- The icon for the application, which should be 114x114. -->
+	<icon>
+		<image>icon.png</image>
+  <image>
+     <text xml:lang="en-CA">icon.png</text>
+  </image>
+  <image>
+     <text xml:lang="en-GB">icon.png</text>
+  </image>
+  <image>
+     <text xml:lang="en-US">icon.png</text>
+  </image>
+	</icon>
+
+	<asset path="icon.png">icon.png</asset>
+	<asset path="assets">assets</asset>
+
+	<!-- Locale support -->
+	<asset path="translations" dest="qm">
+		<include name="*.qm" />
+	</asset>
+
+	<!-- Request permission to run a backend headless process and post notification. -->
+	<permission system="true">_sys_run_headless</permission>
+	<permission system="true">_sys_headless_nostop</permission>
+	<permission>post_notification</permission>
+ <permission>access_pimdomain_calendars</permission>
+ <permission>access_pimdomain_messages</permission>
+	<env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib" />
+
+    <env var="CASCADES_THEME" value="dark"/>
+   <!--
+    <env var="DL_DEBUG" value="all"/>
+    <env var="CONSOLE_MODE" value="file"/>
+    -->
+    
+</qnx>

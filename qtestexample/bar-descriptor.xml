@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+
+<!-- BlackBerry Tablet OS application descriptor file.
+
+    Specifies parameters for identifying, installing, and launching native applications on BlackBerry Tablet OS.
+
+-->
+
+    <!-- A universally unique application identifier. Must be unique across all BlackBerry Tablet OS applications.
+         Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
+    <id>com.example.bb10samples.xml.qtestexample</id>
+
+    <!-- The name that is displayed in the BlackBerry Tablet OS application installer.
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+    <name>qtestexample</name>
+
+    <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
+         Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
+         An updated version of application must have a versionNumber value higher than the previous version. Required. -->
+    <versionNumber>1.0.0</versionNumber>
+
+    <!-- Fourth digit segment of the package version. First three segments are taken from the
+         <versionNumber> element.  Must be an integer from 0 to 2^16-1 -->
+    <buildId>1</buildId>
+
+    <!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
+    <!-- <versionLabel></versionLabel> -->
+
+    <!-- Description, displayed in the BlackBerry Tablet OS application installer.
+         May have multiple values for each language. See samples or xsd schema file. Optional. -->
+    <description>The qtestexample application</description>
+
+    <!-- Copyright information. Optional. -->
+    <!-- <copyright></copyright> -->
+
+    <!--  Name of author which is used for signing. Must match the developer name of your development certificate. -->
+    <author>Example Inc.</author>
+
+    <!--  Unique author ID assigned by signing authority. Required if using debug tokens. -->
+    <!-- <authorId>ABC1234YjsnUk235h</authorId> -->
+
+    <initialWindow>
+        <aspectRatio>portrait</aspectRatio>
+        <autoOrients>false</autoOrients>
+        <systemChrome>none</systemChrome>
+    </initialWindow>
+
+    <!--  The category where the application appears. Either core.games or core.media. -->
+    <category>core.games</category>
+    <configuration name="Device-Profile">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm-p/o.le-v7-g/qtestexample" entry="true" type="Qnx/Elf">qtestexample</asset>
+    </configuration>
+    <configuration name="Device-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7-g/qtestexample" entry="true" type="Qnx/Elf">qtestexample</asset>
+       <entryPointType>Qnx/Elf</entryPointType>
+    </configuration>
+    <configuration name="Device-Release">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="arm/o.le-v7/libqtestexample.so.1.0.0" entry="true" type="Qnx/Elf">qtestexample.so</asset>
+       <entryPointType>Qnx/Cascades</entryPointType>
+    </configuration>
+    <configuration name="Simulator-Debug">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="x86/o-g/qtestexample" entry="true" type="Qnx/Elf">qtestexample</asset>
+    </configuration>
+    <!--  The icon for the application, which should be 86x86. -->
+    <icon>
+        <image>icon.png</image>
+    </icon>
+
+    <asset path="icon.png">icon.png</asset>
+    <asset path="assets">assets</asset>
+    <!--  The splash screen that will appear when your application is launching. Should be 1024x600. -->
+    <!-- <splashscreen></splashscreen> -->
+
+    <!-- Request permission to execute native code.  Required for native applications. -->
+    <permission system="true">run_native</permission>
+    <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+
+    <!--  The permissions requested by your application. -->
+    <!--  <permission>access_shared</permission> -->
+    <!--  <permission>record_audio</permission> -->
+    <!--  <permission>read_geolocation</permission> -->
+    <!--  <permission>use_camera</permission> -->
+    <!--  <permission>access_internet</permission> -->
+    <!--  <permission>play_audio</permission> -->
+    <!--  <permission>post_notification</permission> -->
+    <!--  <permission>set_audio_volume</permission> -->
+    <!--  <permission>read_device_identifying_information</permission> -->
+
+</qnx>

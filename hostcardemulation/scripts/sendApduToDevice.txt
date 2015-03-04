@@ -1,0 +1,8 @@
+establish_context
+enable_trace
+enable_timer
+card_connect
+#send_apdu -APDU A0370000019900
+send_apdu -APDU 00A4040006F0001234521000
+card_disconnect
+release_context

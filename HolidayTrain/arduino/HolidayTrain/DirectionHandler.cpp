@@ -56,7 +56,7 @@ void DirectionHandler::check(uint64_t now) {
 
 void DirectionHandler::checkSensors(uint64_t now) {
   for (uint8_t i=0; i<2; ++i) {
-    if (now-sensorDebounce[i] > 100) {
+    if (now-sensorDebounce[i] > 300) {
       uint8_t pressed = !digitalRead(sensorPins[i]);
       if (pressed) {
         uint64_t lastDebounce = sensorDebounce[i];

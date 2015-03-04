@@ -123,7 +123,7 @@ void BluetoothManager::processLightingCommand() {
 
   switch(buffer[1]) {
   case 'v':
-    if (value<0 || value > 127) {
+    if (value<0 || value > 240) {
       Serial.println("ERR - invalid value");
       return;
     }
