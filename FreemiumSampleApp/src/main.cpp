@@ -16,7 +16,6 @@
 #include <bb/cascades/Application>
 #include <bb/cascades/QmlDocument>
 #include <bb/cascades/AbstractPane>
-#include <bb/cascades/advertisement/Banner>
 #include <bb/platform/PaymentManager>
 #include <bb/platform/PaymentConnectionMode>
 
@@ -33,9 +32,6 @@ Q_DECL_EXPORT int main(int argc, char **argv)
 {
     // this is where the server is started etc
     Application app(argc, argv);
-
-    // Register our advertising and payment classes so they can be accessed from QML
-    qmlRegisterType<bb::cascades::advertisement::Banner>("bb.cascades.advertisement", 1, 0, "Banner");
 
     // localization support
     QTranslator translator;
