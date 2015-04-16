@@ -15,7 +15,6 @@
  */
  
  import bb.cascades 1.0
- import bb.cascades.advertisement 1.0
 
 Page {
     //create aliases to expose item id to the main.qml file
@@ -131,22 +130,6 @@ Page {
                         horizontalAlignment: HorizontalAlignment.Center
                         minHeight: 110.0
                         topPadding: 20.0
-                        Banner {
-						  //  replace zoneId with your own from your Ad Services account
-                            zoneId: 117145
-                            refreshRate: 60
-                            preferredWidth: 320
-                            preferredHeight: 50
-                            transitionsEnabled: true
-                          //  placeHolderURL: "asset:///placeholder_728x90.png"
-                            backgroundColor: Color.White
-                            borderColor: Color.White
-                            borderWidth: 2
-                            horizontalAlignment: HorizontalAlignment.Center
-                            scaleX: 2.0
-                            scaleY: 2.0
-                            
-                        }
                     }
         Container {
             background: Color.create("#DEB887")

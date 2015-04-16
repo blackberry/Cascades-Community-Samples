@@ -32,7 +32,7 @@ Page {
             }
             Container {
                 layout: StackLayout {
-                    layoutDirection: LayoutDirection.LeftToRight
+                    orientation: LayoutOrientation.LeftToRight
                 }
                 Label {
                     id: win
@@ -61,10 +61,10 @@ Page {
         }
         //winner label container
         Container {
-            layoutProperties: StackLayoutProperties {
+            layoutProperties: StackLayoutProperties {}
                 horizontalAlignment: HorizontalAlignment.Center
                 verticalAlignment: VerticalAlignment.Center
-            }
+ 
            
             topMargin: 50.0
             preferredHeight: 150.0
@@ -77,13 +77,13 @@ Page {
         //image container
         Container {
                         layout: StackLayout {
-                            layoutDirection: LayoutDirection.LeftToRight
+                            orientation: OrientationDirection.LeftToRight
                         }
                         preferredWidth: 720.0
-                        layoutProperties: StackLayoutProperties {
+                        layoutProperties: StackLayoutProperties {}
                             horizontalAlignment: HorizontalAlignment.Center
-                verticalAlignment: VerticalAlignment.Top
-            }
+                            verticalAlignment: VerticalAlignment.Top
+                         
                         preferredHeight: 400.0
                         ImageView {
                             id: player
@@ -166,7 +166,7 @@ Page {
 
             
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+                orientation: OrientationDirection.LeftToRight
             }
 
 
