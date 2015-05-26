@@ -29,12 +29,6 @@ Page {
             verticalAlignment: VerticalAlignment.Fill
             imageSource: "asset:///images/backgroundLandscape.png"
         }
-        FreemiumBanner {
-            scaleX: 2.0
-            scaleY: 2.0
-            hideAd: removeAdsPurchased
-            horizontalAlignment: HorizontalAlignment.Center
-        }
         ImageView {
             horizontalAlignment: HorizontalAlignment.Center
             verticalAlignment: VerticalAlignment.Center

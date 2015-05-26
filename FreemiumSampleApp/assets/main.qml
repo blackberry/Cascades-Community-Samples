@@ -20,7 +20,6 @@ NavigationPane {
     id: navigationPane
 
     // The below 3 bool properties represent the purchase state of the goods
-    property bool removeAdsPurchased: false
     property bool tbeamPurchased: false
     property bool freakinLaserBeamPurchased: false
 
@@ -61,14 +60,6 @@ NavigationPane {
                 horizontalAlignment: HorizontalAlignment.Fill
                 verticalAlignment: VerticalAlignment.Fill
                 imageSource: "asset:///images/backgroundLandscape.png"
-            }
-            // See @FreemiumBanner.qml. This control disappears if the user purchases
-            // a specific digital good.
-            FreemiumBanner {
-                scaleX: main.scale
-                scaleY: main.scale
-                hideAd: removeAdsPurchased
-                horizontalAlignment: HorizontalAlignment.Center
             }
 
             /**
