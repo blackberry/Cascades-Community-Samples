@@ -1,5 +1,5 @@
-import bb.cascades 1.3
-import bb.system 1.2
+import bb.cascades 1.0
+import bb.system 1.0
 import bb.cascades.pickers 1.0
 
 Page {

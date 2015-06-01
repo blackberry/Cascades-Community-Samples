@@ -1,4 +1,4 @@
-import bb.cascades 1.3
+import bb.cascades 1.0
 import bb.data 1.0
 import custom 1.0 // This gives you access to the SQL functionalities
 
@@ -110,7 +110,7 @@ NavigationPane {
             ActionItem {
                 title: qsTr("Add Client") + Retranslate.onLocaleOrLanguageChanged
                 imageSource: "asset:///IMG/ic_add_friend.png"
-                ActionBar.placement: ActionBarPlacement.Signature
+                ActionBar.placement: ActionBarPlacement.OnBar
 
                 onTriggered: {
                     navigationPane1.push(addPage.createObject());
