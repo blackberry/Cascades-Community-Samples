@@ -36,6 +36,7 @@ In the interest of simpicity and to aleviate clutter on the UI many of the param
 ### Release History
 
 * **Version 1.0.0** - Initial version
+* **Version 1.1.0** - Added functionality to demonstrate Key Derivation from a shared secret using SHA1-KDF2
 
 ### Known Issues
 

@@ -69,6 +69,13 @@ ApplicationUI::ApplicationUI()
     QObject::connect(  _mainPage, SIGNAL(doRsa()),
                             this, SLOT(onDoRsa()));
 
+    QObject::connect(  _mainPage, SIGNAL(initKdf()),
+                            this, SLOT(onInitKdf()));
+    QObject::connect(  _mainPage, SIGNAL(endKdf()),
+                            this, SLOT(onEndKdf()));
+    QObject::connect(  _mainPage, SIGNAL(doKdf()),
+                            this, SLOT(onDoKdf()));
+
     Application::instance()->setScene(_root);
 }
 
@@ -147,7 +154,7 @@ void ApplicationUI::onInitHash() {
 }
 
 void ApplicationUI::onEndHash() {
-    emit message("onEndSecurity");
+    emit message("onEndHash");
     hu_GlobalCtxDestroy(&_sbCtx);
 
     _sbCtx = NULL;
@@ -170,9 +177,6 @@ void ApplicationUI::onMakeHash(int hashType) {
                                                          0x79, 0x4F, 0x13, 0x3B, 0x60, 0x96, 0xF7, 0x44,
                                                          0x0B, 0x62, 0x39, 0xFB, 0xCA, 0x4A, 0xA3, 0xB6
                                                         };
-
-    emit message("onMakeHash - input data:" + input_data + " (" + QString::number(input_data.length()) + ")");
-
     /* Initialize variables */
 
     int rc = SB_SUCCESS; /* Return Code */
@@ -181,6 +185,8 @@ void ApplicationUI::onMakeHash(int hashType) {
     unsigned char* hash_input = reinterpret_cast<unsigned char*>(input_bytes.data());
 
     if (doHmac) {
+
+        emit message("onMakeHash - input data:" + input_data + " (" + QString::number(input_data.length()) + ")");
 
         QString digest;
         for (int i = 0; i < SB_HMAC_SHA256_256_TAG_LEN; ++i) {
@@ -211,6 +217,8 @@ void ApplicationUI::onMakeHash(int hashType) {
 
     } else if (doSha1) {
 
+        emit message("onMakeHash - input data:" + input_data + " (" + QString::number(input_data.length()) + ")");
+
         rc = hu_SHA1Begin((size_t) SB_SHA1_DIGEST_LEN, NULL, &_sha1Context, _sbCtx);
         _CHECKRC( rc, "onMakeHash hu_SHA1Begin()" );
 
@@ -233,6 +241,8 @@ void ApplicationUI::onMakeHash(int hashType) {
             "onMakeHash hu_SHA1End()" );
 
     } else if (doSha256) {
+
+        emit message("onMakeHash - input data:" + input_data + " (" + QString::number(input_data.length()) + ")");
 
         rc = hu_SHA256Begin((size_t) SB_SHA256_DIGEST_LEN, NULL, &_sha256Context, _sbCtx);
         _CHECKRC( rc, "onMakeHash hu_SHA256Begin()" );
@@ -423,6 +433,62 @@ void ApplicationUI::onDoRsa() {
 
     qDebug() << (char *)plaintext << endl;
     emit message(QString("onDoRsa plaintext: %1").arg((char *)plaintext));
+}
+
+void ApplicationUI::onInitKdf() {
+
+    emit message("onInitKdf - Derive a key using SHA1+KDF2");
+
+    int rc = SB_SUCCESS; /* Return Code */
+
+    /* Create SB Contexts */
+
+    rc = hu_GlobalCtxCreateDefault(&_sbCtx);
+    _CHECKRC( rc, "onInitKdf hu_GlobalCtxCreateDefault()" );
+
+    rc = hu_RegisterSbg56(_sbCtx);
+    _CHECKRC( rc, "onInitKdf hu_RegisterSbg56()" );
+
+    rc = hu_InitSbg56(_sbCtx);
+    if (rc != SB_FAIL_LIBRARY_ALREADY_INIT) {
+        _CHECKRC( rc, "onInitKdf hu_InitSbg56()" );
+    }
+}
+
+void ApplicationUI::onEndKdf() {
+    emit message("onEndKdf");
+    hu_GlobalCtxDestroy(&_sbCtx);
+
+    _sbCtx = NULL;
+}
+
+void ApplicationUI::onDoKdf() {
+
+    unsigned char sha1Kdf2SharedSecret[] = {'T', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ',
+                                            's', 'h', 'a', 'r', 'e', 'd', ' ', 's', 'e', 'c', 'r', 'e', 't', ' ',
+                                            'p', 'a', 's', 's', 'p', 'h', 'r', 'a', 's', 'e', '!', '\0'};
+
+    size_t sha1Kdf2SharedSecretLen = sizeof(sha1Kdf2SharedSecret)-1;
+    unsigned char sha1Kdf2GeneratedKey[2048/8];
+
+    emit message(QString("onDoKdf - doSha1Kdf2 shared secret: %1").arg(reinterpret_cast<const char*>(sha1Kdf2SharedSecret)));
+
+    QString generatedKeyHex;
+
+    int rc = hu_KDFDerive(
+            HU_KDF_IEEE_KDF2_SHA1,
+            sha1Kdf2SharedSecretLen, sha1Kdf2SharedSecret,
+            0, NULL,
+            sizeof(sha1Kdf2GeneratedKey), sha1Kdf2GeneratedKey, _sbCtx);
+    _CHECKRCEXT( rc,
+        {
+            for (size_t i = 0; i < sizeof(sha1Kdf2GeneratedKey); ++i) {
+                generatedKeyHex.append(QString("%1").arg(QString::number(((uint8_t *)sha1Kdf2GeneratedKey)[i], 16), 2, QChar('0')));
+            }
+            qDebug() << generatedKeyHex << endl;
+            emit message("Generated SHA1+KDF2 Key: " + generatedKeyHex);
+        },
+        "onMakeHash onDoKdf()" );
 }
 
 void ApplicationUI::onSystemLanguageChanged()
