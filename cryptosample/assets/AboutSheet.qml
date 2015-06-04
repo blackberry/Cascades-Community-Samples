@@ -77,7 +77,7 @@ Sheet {
             verticalAlignment: VerticalAlignment.Fill
             Label {
                 id: lblHeading_version
-                text: qsTr("V1.0.0")
+                text: qsTr("V1.1.0")
                 verticalAlignment: VerticalAlignment.Center
                 horizontalAlignment: HorizontalAlignment.Center
             }

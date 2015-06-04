@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../assets/AboutSheet.qml" line="80"/>
-        <source>V1.0.0</source>
+        <source>V1.1.0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -32,13 +32,13 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="76"/>
+        <location filename="../assets/main.qml" line="81"/>
         <source>
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="87"/>
+        <location filename="../assets/main.qml" line="92"/>
         <source>Simple Crypto Stuff</source>
         <translation type="unfinished"></translation>
     </message>

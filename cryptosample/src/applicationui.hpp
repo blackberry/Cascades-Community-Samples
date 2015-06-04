@@ -45,6 +45,7 @@
 #include <tpsigndef.h>
 #include <tpkpukie.h>
 #include <tpp8d.h>
+#include <hukdf.h>
 
 #include <smartcard/sc_data_types.h>
 
@@ -117,6 +118,10 @@ public slots:
     void onInitRsa();
     void onEndRsa();
     void onDoRsa();
+
+    void onInitKdf();
+    void onEndKdf();
+    void onDoKdf();
 
 signals:
     void message(const QVariant &text);

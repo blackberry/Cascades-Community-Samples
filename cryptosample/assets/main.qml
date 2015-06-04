@@ -48,6 +48,7 @@ Page {
         property bool doingRandom: false
         property bool doingHash: false
         property bool doingRsa: false
+        property bool doingKdf: false
         property int hashType: 0
         
         // ======== SIGNAL()s ==============
@@ -64,6 +65,10 @@ Page {
         signal endRsa()
         signal doRsa()
         
+        signal initKdf()
+        signal endKdf()
+        signal doKdf()
+
         // ======== SLOT()s ================
 
         function onMessage(text) {
@@ -99,7 +104,7 @@ Page {
             }
             Button {
                 id: initRandomNumber
-                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
                 text: "Init Random"
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -143,7 +148,7 @@ Page {
             }
             Button {
                 id: initSecurity
-                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
                 text: "Init Hash"
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -222,6 +227,18 @@ Page {
                     }
                 }
             }
+            RadioGroup {
+                Option {
+                    id: optSHA1KDF2
+                    text: "KDF2"
+                    selected: (mainPage.hashType == 3)
+                }
+                onSelectedOptionChanged: {
+                    if (optSHA1KDF2.selected == true) {
+                        mainPage.hashType = 3;
+                    }
+                }
+            }
         }
         
         Container {
@@ -230,7 +247,7 @@ Page {
             }
             Button {
                 id: initRsa
-                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
                 text: "Init RSA"
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -264,6 +281,50 @@ Page {
                 onClicked: {
                     enabled: mainPage.doingRsa = false;
                     mainPage.endRsa();
+                }
+            }
+        }
+
+        Container {
+            layout: StackLayout {
+                orientation: LayoutOrientation.LeftToRight
+            }
+            Button {
+                id: initKdf
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
+                text: "Init KDF"
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 33
+                }
+                onClicked: {
+                    enabled: mainPage.doingKdf = true;
+                    mainPage.initKdf();
+                }
+            }
+            Button {
+                id: makeKdf
+                enabled: mainPage.doingKdf
+                text: "Gen Key"
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 33
+                }
+                onClicked: {
+                    mainPage.doKdf();
+                }
+            }
+            Button {
+                id: endKdf
+                enabled: mainPage.doingKdf
+                text: "End Kdf"
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 33
+                }
+                onClicked: {
+                    enabled: mainPage.doingKdf = false;
+                    mainPage.endKdf();
                 }
             }
         }
