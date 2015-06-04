@@ -9,7 +9,8 @@ This is the purpose of this application which will specifically take a look at:
 3. Using RSA
 	1. Creating an **RSA** public/private key pair
 	2. Creating a self-signed certficate using this pair of keys showing how to select **SHA256** as the hash for the **RSA** certificate signing rather than the default **MD5**.
-	3. Encrypting plaintext and decrypting the resulting ciphertext using this pair of keys
+	3. Encrypting plaintext and decrypting the resulting ciphertext using this pair of keys.
+4. Demonstrate Key Derivation from a shared secret using SHA1-KDF2
 
 It doesn't discuss **AES** or other general considerations about the Cryptography Libraries since these are discussed in an [earlier GitHub sample application](https://github.com/blackberry/Cascades-Community-Samples/tree/master/AESCryptoDemo).
 
