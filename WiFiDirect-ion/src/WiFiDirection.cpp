@@ -21,6 +21,8 @@ WiFiDirection::WiFiDirection()
 , mDataModel(new bb::cascades::GroupDataModel(QStringList() << "Name" << "HardwareAddress", this))
 , mIPAddress("127.0.0.1")
 , mSessionName("")
+, mWDClient(NULL)
+, mWDServer(NULL)
 {
 
 	//Connect all the signals to slots that we'll be using.
