@@ -135,7 +135,7 @@ Sheet {
                     Label {
                         id: taBody_about1
                         horizontalAlignment: HorizontalAlignment.Center
-                        text: qsTr("The WheresMyBeacon application demonstrates how to use iBeacon technology from a BlackBerry 10 application")
+                        text: qsTr("The WheresMyBeacon application demonstrates how to use Beacon technology from a BlackBerry 10 application")
                         multiline: true
                     }
 

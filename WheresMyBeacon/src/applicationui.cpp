@@ -926,28 +926,76 @@ void ApplicationUI::parseBeaconData(const char *data, int len, int8_t rssi, cons
                 qDebug() << "BBBB beacon Major   " << advertData.beaconMajor() << endl;
                 qDebug() << "BBBB beacon Minor   " << advertData.beaconMinor() << endl;
                 qDebug() << "BBBB beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
-                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
+                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dB" << endl;
 
                 entry["TYPE"] = "IBEACON";
                 entry["UUID"] = advertData.beaconUuidAsString();
                 entry["MAJOR"] = advertData.beaconMajor();
                 entry["MINOR"] = advertData.beaconMinor();
+                entry["RSSI"] = advertData.calibratedStrength();
+                entry["LOSS"] = advertData.calibratedStrength() - rssi;
+
 
             } else if(advertData.hasAltBeaconData()) {
                 qDebug() << "BBBB Alt Beacon data present in advert data" << endl;
                 qDebug() << "BBBB beacon Id    " << advertData.beaconId().toHex() << endl;
                 qDebug() << "BBBB beacon Strength" << advertData.calibratedStrength() << "dBm" << endl;
-                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dBm" << endl;
+                qDebug() << "BBBB beacon path loss" << advertData.calibratedStrength() - rssi << "dB" << endl;
 
                 entry["TYPE"] = "ALTBEACON";
                 entry["COMPANY"] = advertData.companyCode();
                 entry["COMPANYNAME"] = advertData.companyCodeAsString();
                 entry["ID"] = advertData.beaconIdAsString();
                 entry["RESV"] = advertData.altBeaconReserved();
+                entry["RSSI"] = advertData.calibratedStrength();
+                entry["LOSS"] = advertData.calibratedStrength() - rssi;
+
+            } else if(advertData.hasEddystoneBeaconData()) {
+                qDebug() << "BBBB Eddystone Beacon data present in advert data" << endl;
+                entry["TYPE"] = "EDDYSTONE";
+
+                if (advertData.hasEddystoneBeaconUIDdata()) {
+                    qDebug() << "BBBB EDDYSTONE-UID   " << endl;
+                    qDebug() << "BBBB Namespace       " << advertData.edNamespace().toHex() << endl;
+                    qDebug() << "BBBB Instance Id     " << advertData.edInstanceId().toHex() << endl;
+                    qDebug() << "BBBB beacon Strength " << advertData.edTxPower() << "dBm" << endl;
+                    qDebug() << "BBBB beacon path loss" << advertData.edTxPower() - rssi << "dB" << endl;
+
+                    entry["EDTYPE"] = "UID";
+                    entry["NAMESPACE"] = advertData.edNamespaceAsString();
+                    entry["INSTANCEID"] = advertData.edInstanceIdAsString();
+                    entry["RSSI"] = advertData.edTxPower();
+                    entry["LOSS"] = advertData.edTxPower() - rssi;
+
+                } else if (advertData.hasEddystoneBeaconURLdata()) {
+                    qDebug() << "BBBB EDDYSTONE-URL   " << endl;
+                    qDebug() << "BBBB Url             " << advertData.edUrlAsString() << endl;
+                    qDebug() << "BBBB beacon Strength " << advertData.edTxPower() << "dBm" << endl;
+                    qDebug() << "BBBB beacon path loss" << advertData.edTxPower() - rssi << "dB" << endl;
+
+                    entry["EDTYPE"] = "URL";
+                    entry["URL"] = advertData.edUrlAsString();
+                    entry["RSSI"] = advertData.edTxPower();
+                    entry["LOSS"] = advertData.edTxPower() - rssi;
+
+                } else if (advertData.hasEddystoneBeaconTLMdata()) {
+                    qDebug() << "BBBB EDDYSTONE-TLM   " << endl;
+                    qDebug() << "BBBB Type            " << advertData.edTlmVersion() << endl;
+                    qDebug() << "BBBB Battery Voltage " << advertData.edTlmBatteryVoltageAsFloat() << endl;
+                    qDebug() << "BBBB Beacon Temp     " << advertData.edTlmBeaconTempAsFloat() << endl;
+                    qDebug() << "BBBB PDU Count       " << advertData.edTlmPduCount() << endl;
+                    qDebug() << "BBBB Time Since Boot " << advertData.edTlmTimeSinceReboot() << endl;
+
+                    entry["EDTYPE"] = "TLM";
+                    entry["VERSION"] = advertData.edTlmVersion();
+                    entry["VOLTAGE"] = advertData.edTlmBatteryVoltageAsFloat();
+                    entry["TEMP"] = advertData.edTlmBeaconTempAsFloat();
+                    entry["PDUCOUNT"] = advertData.edTlmPduCount();
+                    entry["TIMESINCEREBOOT"] = advertData.edTlmTimeSinceReboot();
+                }
             }
+
             entry["MAC"] = QString(bdaddr);
-            entry["RSSI"] = advertData.calibratedStrength();
-            entry["LOSS"] = advertData.calibratedStrength() - rssi;
 
             qDebug() << "BBBB entry[\"MAC\"]" << entry["MAC"] << endl;
 

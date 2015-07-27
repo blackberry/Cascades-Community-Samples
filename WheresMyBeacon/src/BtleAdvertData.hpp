@@ -33,6 +33,10 @@ public:
 	bool hasBeaconData();
     bool hasIBeaconData();
     bool hasAltBeaconData();
+    bool hasEddystoneBeaconData();
+    bool hasEddystoneBeaconUIDdata();
+    bool hasEddystoneBeaconURLdata();
+    bool hasEddystoneBeaconTLMdata();
 	QByteArray & beaconUuid();
     QByteArray & beaconId();
 	QString beaconUuidAsString();
@@ -44,6 +48,20 @@ public:
 	int companyCode();
 	int altBeaconReserved();
     QString companyCodeAsString();
+
+    int edTxPower();
+    QByteArray & edNamespace();
+    QString edNamespaceAsString();
+    QByteArray & edInstanceId();
+    QString edInstanceIdAsString();
+    QString edUrlAsString();
+    int edTlmVersion();
+    int edTlmBatteryVoltage();
+    float edTlmBatteryVoltageAsFloat();
+    int edTlmBeaconTemp();
+    float edTlmBeaconTempAsFloat();
+    int edTlmPduCount();
+    int edTlmTimeSinceReboot();
 
 private:
 	/**
@@ -62,6 +80,31 @@ private:
     uint16_t _beaconMfgCompanyCode;
     QByteArray _beaconId;
     uint8_t _beaconReserved;
+    /**
+     * Eddystone common attributes
+     */
+    int8_t _edTxPower;
+    /**
+     * Eddystone UID attributes
+     */
+    bool _hasEddystoneBeaconUIDdata;
+    QByteArray _edNamespace;
+    QByteArray _edInstanceId;
+    /**
+     * Eddystone URL attributes
+     */
+    bool _hasEddystoneBeaconURLdata;
+    uint8_t _edUrlScheme;
+    QByteArray _edUrlBody;
+    /**
+     * Eddystone TLM attributes
+     */
+    bool _hasEddystoneBeaconTLMdata;
+    uint8_t _edTlmVersion;
+    uint16_t _edTlmBatteryVoltage;
+    int16_t _edTlmBeaconTemp;
+    uint32_t _edTlmPduCount;
+    uint32_t _edTlmTimeSinceReboot;
 };
 
 #endif /* BTLEADVERTDATA_HPP_ */
