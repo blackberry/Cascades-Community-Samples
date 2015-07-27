@@ -24,12 +24,15 @@ Sheet {
 
 	function setBeaconType(btype) {
 	    beacon_type = btype;
-	    var index=2;
+	    var index=3;
 	    if (btype == "Estimote") {
 	        index = 0;
 	    } else {
             if (btype == "SensorTag") {
                 index = 1;
+            }
+            if (btype == "Eddystone") {
+                index = 2;
             }
 	    }
 	    dd_beacon_type.setSelectedIndex(index);
@@ -126,6 +129,10 @@ Sheet {
                 Option {
                     text: "SensorTag"
                     value: "SensorTag"
+                }
+                Option {
+                    text: "Eddystone"
+                    value: "Eddystone"
                 }
                 Option {
                     text: "Other"

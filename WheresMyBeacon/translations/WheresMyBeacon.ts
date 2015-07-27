@@ -15,7 +15,7 @@
     </message>
     <message>
         <location filename="../assets/AboutSheet.qml" line="138"/>
-        <source>The WheresMyBeacon application demonstrates how to use iBeacon technology from a BlackBerry 10 application</source>
+        <source>The WheresMyBeacon application demonstrates how to use Beacon technology from a BlackBerry 10 application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -45,7 +45,7 @@
 <context>
     <name>BeaconIdentity</name>
     <message>
-        <location filename="../assets/BeaconIdentity.qml" line="70"/>
+        <location filename="../assets/BeaconIdentity.qml" line="73"/>
         <source>Beacon Identity</source>
         <translation type="unfinished"></translation>
     </message>

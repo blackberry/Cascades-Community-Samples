@@ -193,7 +193,40 @@ Page {
                                     visible: (ListItemData.TYPE == "ALTBEACON")
                                 }
                                 Label {
+                                    text: " Eddystone Telemetry Frame"
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "TLM")
+                                }
+                                Label {
+                                    text: " Eddystone URL Frame"
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "URL")
+                                }
+                                Label {
+                                    text: " Eddystone UID Frame"
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "UID")
+                                }
+                                Label {
+                                    text: " Namespace: " + ListItemData.NAMESPACE
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "UID")
+                                }
+                                Label {
+                                    text: " Instance Id: " + ListItemData.INSTANCEID
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "UID")
+                                }
+                                Label {
+                                    text: " Url: " + ListItemData.URL
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "URL")
+                                }
+                                Label {
+                                    text: " Battery Voltage: " + Math.floor(ListItemData.VOLTAGE*100)/100 + " V"
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "TLM")
+                                }
+                                Label {
+                                    text: " Beacon Temperature: " + ListItemData.TEMP
+                                    visible: (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE == "TLM")
+                                }
+                                Label {
                                     text: " Calibrated Power: " + ListItemData.RSSI + " Path Loss: " + ListItemData.LOSS
+                                    visible: (ListItemData.TYPE != "EDDYSTONE" || (ListItemData.TYPE == "EDDYSTONE" && ListItemData.EDTYPE != "TLM"))
                                 }
                                 Label {
                                     text: " Reserved: " + ListItemData.RESV
