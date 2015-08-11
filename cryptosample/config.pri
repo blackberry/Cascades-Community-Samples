@@ -66,7 +66,10 @@ lupdate_inclusion {
         $$quote($$BASEDIR/../src/*.cxx) \
         $$quote($$BASEDIR/../assets/*.qml) \
         $$quote($$BASEDIR/../assets/*.js) \
-        $$quote($$BASEDIR/../assets/*.qs)
+        $$quote($$BASEDIR/../assets/*.qs) \
+        $$quote($$BASEDIR/../assets/data/*.qml) \
+        $$quote($$BASEDIR/../assets/data/*.js) \
+        $$quote($$BASEDIR/../assets/data/*.qs)
 
     HEADERS += \
         $$quote($$BASEDIR/../src/*.h) \

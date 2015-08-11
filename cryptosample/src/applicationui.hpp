@@ -46,6 +46,7 @@
 #include <tpkpukie.h>
 #include <tpp8d.h>
 #include <hukdf.h>
+#include <huarc4.h>
 
 #include <smartcard/sc_data_types.h>
 
@@ -123,6 +124,10 @@ public slots:
     void onEndKdf();
     void onDoKdf();
 
+    void onInitStream();
+    void onEndStream();
+    void onDoStream();
+
 signals:
     void message(const QVariant &text);
 
@@ -144,6 +149,10 @@ private:
     KeySlot _keySlot;
     size_t _keyBitLength;
     size_t _keyPubExp;
+
+    sb_Params _arc4Params;
+    sb_Key _arc4Key;
+    sb_Context _arc4Context;
 };
 
 #endif /* ApplicationUI_HPP_ */
