@@ -26,6 +26,9 @@ ApplicationUI::ApplicationUI()
     , _expireTimer(new QTimer(this))
     , _keyBitLength(2048)
     , _keyPubExp(3)
+    , _arc4Params(NULL)
+    , _arc4Key(NULL)
+    , _arc4Context(NULL)
 {
     _translator = new QTranslator(this);
     _localeHandler = new LocaleHandler(this);
@@ -75,6 +78,13 @@ ApplicationUI::ApplicationUI()
                             this, SLOT(onEndKdf()));
     QObject::connect(  _mainPage, SIGNAL(doKdf()),
                             this, SLOT(onDoKdf()));
+
+    QObject::connect(  _mainPage, SIGNAL(initStream()),
+                            this, SLOT(onInitStream()));
+    QObject::connect(  _mainPage, SIGNAL(endStream()),
+                            this, SLOT(onEndStream()));
+    QObject::connect(  _mainPage, SIGNAL(doStream()),
+                            this, SLOT(onDoStream()));
 
     Application::instance()->setScene(_root);
 }
@@ -489,6 +499,140 @@ void ApplicationUI::onDoKdf() {
             emit message("Generated SHA1+KDF2 Key: " + generatedKeyHex);
         },
         "onMakeHash onDoKdf()" );
+}
+
+void ApplicationUI::onInitStream() {
+    emit message("onInitStream()");
+
+    int rc = hu_GlobalCtxCreateDefault(&_sbCtx);
+    _CHECKRC( rc, "onInitStream hu_GlobalCtxCreateDefault()" );
+
+    rc = hu_RegisterSbg56(_sbCtx);
+    _CHECKRC( rc, "onInitStream hu_RegisterSbg56()" );
+
+    rc = hu_RegisterSystemSeed(_sbCtx);
+    _CHECKRC( rc, "onInitStream hu_RegisterSystemSeed()" );
+
+    rc = hu_InitSbg56(_sbCtx);
+    if (rc != SB_FAIL_LIBRARY_ALREADY_INIT) {
+        _CHECKRC( rc, "onInitStream hu_InitSbg56()" );
+    }
+
+    uchar mySeed[4];
+    size_t seedLen = 4;
+
+    rc = hu_SeedGet(&seedLen, mySeed, _sbCtx);
+    _CHECKRC( rc, "onInitStream hu_SeedGet()" );
+
+    rc = hu_RngCreate(seedLen, mySeed, NULL, NULL, NULL, &_rngCtx, _sbCtx);
+    _CHECKRC( rc, "onInitStream hu_RngCreate()" );
+
+    rc = hu_ARC4ParamsCreate(_rngCtx, NULL, &_arc4Params, _sbCtx);
+    _CHECKRC( rc, "onInitStream hu_ARC4ParamsCreate()" );
+
+    const unsigned char keyValue[] = { 'T', 'h', 'i', 's', ' ', 'i', 's', ' ', 'a', ' ', 'k', 'e', 'y', ' ',
+            'v', 'a', 'l', 'u', 'e', ' ', 't', 'h', 'a', 't',
+            'w', 'i', 'l', 'l', ' ', 'b', 'e', ' ', 'u', 's', 'e', 'd', ' ',
+            'f', 'o', 'r', ' ', 'a', 'r', 'c', '4', '!' };
+
+    rc = hu_ARC4KeySet(_arc4Params, sizeof(keyValue), keyValue, &_arc4Key, _sbCtx);
+    _CHECKRC( rc, "onInitStream hu_ARC4KeySet()" );
+
+    // Could also generate a random key rather than specify one
+    //rc = hu_ARC4KeyGen(sb_Params arc4Params, size_t keyLen, sb_Key *arc4Key, sb_GlobalCtx sbCtx)
+}
+
+void ApplicationUI::onDoStream() {
+    emit message("onDoStream");
+
+    QDir dir;
+    QFile plaintextFile("app/native/assets/data/sample_clear_text");
+    QFile ciphetextFile("shared/misc/sample_cipher_text");
+
+    int rc = hu_ARC4Begin(_arc4Params, _arc4Key, &_arc4Context, _sbCtx);
+    _CHECKRC( rc, "onDoStream() hu_ARC4Begin()" );
+
+    // Read plain text file and stream cipher it to a ciphertext file
+
+    if (plaintextFile.open(QIODevice::ReadOnly)) {
+        if (ciphetextFile.open(QIODevice::WriteOnly)) {
+            QDataStream plainTextStream ( &plaintextFile );
+            QDataStream cipherTextStream ( &ciphetextFile );
+            char buffer[20];
+            unsigned char ciphertext[20];
+            int len;
+            do {
+                len = plainTextStream.readRawData(buffer, sizeof(ciphertext));
+
+                rc = hu_ARC4Encrypt(_arc4Context, len, (unsigned char *)buffer, (unsigned char *)ciphertext, _sbCtx);
+                _CHECKRC( rc, "onDoStream hu_ARC4Encrypt()" );
+
+                cipherTextStream.writeRawData((const char *)ciphertext, len);
+
+            } while (len > 0);
+        } else {
+            qDebug() << "Error opening cipher text file" << endl;
+        }
+        ciphetextFile.close();
+    } else {
+        qDebug() << "Error opening plain text file" << endl;
+    }
+    plaintextFile.close();
+
+    rc = hu_ARC4End(&_arc4Context, _sbCtx);
+    _CHECKRC( rc, "onDoStream() hu_ARC4End()" );
+
+    // Read cipher text file and stream decrypt it and display on log
+
+    rc = hu_ARC4Begin(_arc4Params, _arc4Key, &_arc4Context, _sbCtx);
+    _CHECKRC( rc, "onDoStream() hu_ARC4Begin()" );
+
+    if (ciphetextFile.open(QIODevice::ReadOnly)) {
+        QDataStream dataStream ( &ciphetextFile );
+        char buffer[20];
+        char plaintext[20];
+        int len;
+        do {
+            len = dataStream.readRawData(buffer, sizeof(buffer));
+
+            rc = hu_ARC4Decrypt(_arc4Context, len, (const unsigned char *)buffer, (unsigned char *)plaintext, _sbCtx);
+            _CHECKRC( rc, "onDoStream hu_ARC4Decrypt()" );
+
+            qDebug() << QByteArray(plaintext, len) << endl;
+
+        } while (len > 0);
+    } else {
+        qDebug() << "Error opening cipher text file" << endl;
+    }
+
+    ciphetextFile.close();
+
+    rc = hu_ARC4End(&_arc4Context, _sbCtx);
+    _CHECKRC( rc, "onDoStream() hu_ARC4End()" );
+}
+
+void ApplicationUI::onEndStream() {
+    emit message("onEndStream");
+
+    int rc = hu_ARC4KeyDestroy(_arc4Params, &_arc4Key, _sbCtx);
+    _CHECKRC( rc, "onEndStream() hu_ARC4KeyDestroy()" );
+
+    _arc4Key = NULL;
+
+    rc = hu_RSAParamsDestroy( &_arc4Params, _sbCtx );
+    _CHECKRC( rc, "onEndStream() hu_RSAParamsDestroy()" );
+
+    _arc4Params = NULL;
+
+    rc = hu_RngDestroy(&_rngCtx, _sbCtx);
+    _CHECKRC( rc, "onEndStream() hu_RngDestroy()" );
+
+    _rngCtx = NULL;
+
+    rc = hu_GlobalCtxDestroy(&_sbCtx);
+    _CHECKRC( rc, "onEndStream() hu_GlobalCtxDestroy()" );
+
+    _sbCtx = NULL;
 }
 
 void ApplicationUI::onSystemLanguageChanged()

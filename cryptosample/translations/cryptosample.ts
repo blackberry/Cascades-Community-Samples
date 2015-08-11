@@ -32,13 +32,13 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../assets/main.qml" line="81"/>
+        <location filename="../assets/main.qml" line="86"/>
         <source>
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../assets/main.qml" line="92"/>
+        <location filename="../assets/main.qml" line="97"/>
         <source>Simple Crypto Stuff</source>
         <translation type="unfinished"></translation>
     </message>

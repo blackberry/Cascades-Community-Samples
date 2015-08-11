@@ -49,6 +49,7 @@ Page {
         property bool doingHash: false
         property bool doingRsa: false
         property bool doingKdf: false
+        property bool doingStream: false
         property int hashType: 0
         
         // ======== SIGNAL()s ==============
@@ -68,6 +69,10 @@ Page {
         signal initKdf()
         signal endKdf()
         signal doKdf()
+
+        signal initStream()
+        signal endStream()
+        signal doStream()
 
         // ======== SLOT()s ================
 
@@ -104,7 +109,7 @@ Page {
             }
             Button {
                 id: initRandomNumber
-                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf && !mainPage.doingStream
                 text: "Init Random"
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -148,7 +153,7 @@ Page {
             }
             Button {
                 id: initSecurity
-                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf && !mainPage.doingStream
                 text: "Init Hash"
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -247,7 +252,7 @@ Page {
             }
             Button {
                 id: initRsa
-                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf && !mainPage.doingStream
                 text: "Init RSA"
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -291,7 +296,7 @@ Page {
             }
             Button {
                 id: initKdf
-                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf && !mainPage.doingStream
                 text: "Init KDF"
                 horizontalAlignment: HorizontalAlignment.Center
                 layoutProperties: StackLayoutProperties {
@@ -325,6 +330,50 @@ Page {
                 onClicked: {
                     enabled: mainPage.doingKdf = false;
                     mainPage.endKdf();
+                }
+            }
+        }
+
+        Container {
+            layout: StackLayout {
+                orientation: LayoutOrientation.LeftToRight
+            }
+            Button {
+                id: initStream
+                enabled: !mainPage.doingRandom && !mainPage.doingHash && !mainPage.doingRsa && !mainPage.doingKdf && !mainPage.doingStream
+                text: "Init Stream"
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 33
+                }
+                onClicked: {
+                    enabled: mainPage.doingStream = true;
+                    mainPage.initStream();
+                }
+            }
+            Button {
+                id: doStream
+                enabled: mainPage.doingStream
+                text: "Do Stream"
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 33
+                }
+                onClicked: {
+                    mainPage.doStream();
+                }
+            }
+            Button {
+                id: endStream
+                enabled: mainPage.doingStream
+                text: "End Stream"
+                horizontalAlignment: HorizontalAlignment.Center
+                layoutProperties: StackLayoutProperties {
+                    spaceQuota: 33
+                }
+                onClicked: {
+                    enabled: mainPage.doingStream = false;
+                    mainPage.endStream();
                 }
             }
         }
