@@ -17,6 +17,9 @@
 #ifndef ROLLBACK_HPP_
 #define ROLLBACK_HPP_
 
+#define ROLLBACK_SCHEMA_VERSION_1 1
+#define ROLLBACK_SCHEMA_VERSION_CURRENT ROLLBACK_SCHEMA_VERSION_1
+
 #include <RollBackItem.hpp>
 #include <Settings.hpp>
 #include <common.hpp>

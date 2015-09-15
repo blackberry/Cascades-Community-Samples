@@ -1,0 +1,29 @@
+
+# hardening flags common to many other gcc users
+
+hardening:!contains(TEMPLATE, subdirs):!isEmpty(QMAKE_OBJCOPY):CONFIG(release, debug|release) {
+	HARDENING_CFLAGS ?= 
+	HARDENING_LFLAGS ?= 
+	HARDENING_DELFLAGS =
+
+	!contains(HARDENING, no_stack_protector):CONFIG(release, debug|release) {
+		HARDENING_DELFLAGS += -fstack-protector-all
+		HARDENING_CFLAGS *= -fstack-protector-strong -Wc,--param,ssp-buffer-size=4
+	}
+	!contains(HARDENING, no_fortify):CONFIG(release, debug|release) {
+		DEFINES *= _FORTIFY_SOURCE=2
+	}
+	!contains(HARDENING, no_format) {
+		HARDENING_CFLAGS *= -Wformat -Wformat-security -Werror=format-security
+	}
+	contains(HARDENING, paranoid):CONFIG(release, debug|release) {
+		HARDENING_CFLAGS *= -ftrapv -fstack-protector-all
+	}
+	
+	QMAKE_CFLAGS -= $${HARDENING_DELFLAGS}
+	QMAKE_CXXFLAGS -= $${HARDENING_DELFLAGS}
+	
+	QMAKE_CFLAGS *= $${HARDENING_CFLAGS}
+	QMAKE_CXXFLAGS *= $${HARDENING_CFLAGS}
+	QMAKE_LFLAGS *= $${HARDENING_LFLAGS}
+}

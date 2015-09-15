@@ -1,0 +1,12 @@
+1
+10
+AboutSheet.qml
+BeaconConfiguration.qml
+BeaconIdentity.qml
+BeaconList.qml
+CustomButton.qml
+images/about.png
+images/icon.png
+images/settings.png
+Logger.qml
+main.qml

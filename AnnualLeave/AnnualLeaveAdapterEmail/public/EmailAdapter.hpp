@@ -179,6 +179,10 @@ public:
 
 	int outAdapterStatusRequ();
 
+	int outClientSynchronizeRequ(int leave_year);
+
+	int outServerSyncResultResp(int op_id, int op_status);
+
 signals:
 	void inSubmitBookingResp(int localId, int status);
 	void inApprovalOutcomeRequ(int localId, int status, const QString &note, int originating_op_id, int half_days);
@@ -197,6 +201,8 @@ signals:
     void inApprovalTaskOutcomeResp(int taskId, int opStatus);
 	void inAdapterDetailsRequ();
     void inAdapterStatusResp(int opStatus);
+    void inClientSynchronizeResp(int opStatus);
+    void inServerSyncResultRequ(QByteArray serialized_data);
 	void pauseDataFromApi();
 	void resumeDataFromApi();
 

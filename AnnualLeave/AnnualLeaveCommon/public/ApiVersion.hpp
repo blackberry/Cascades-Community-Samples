@@ -34,9 +34,14 @@
  *		#endif
  *
  * Level 1 => introduced in Beta 2
+ * Level 2 => introduced in Beta 3
  *
  * NOTE * NOTE * NOTE * NOTE * NOTE * NOTE * NOTE * NOTE * NOTE *NOTE * NOTE
  */
-#define ANNUAL_LEAVE_API_LEVEL 1
+
+#define ANNUAL_LEAVE_API_LEVEL_BETA_2 1
+#define ANNUAL_LEAVE_API_LEVEL_BETA_3 2
+
+#define ANNUAL_LEAVE_API_LEVEL ANNUAL_LEAVE_API_LEVEL_BETA_3
 
 #endif /* APIVERSION_HPP_ */

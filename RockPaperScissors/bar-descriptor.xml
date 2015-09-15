@@ -58,7 +58,6 @@
    
     <initialWindow>
         <systemChrome>none</systemChrome>
-        <transparent>false</transparent>
     </initialWindow>
     
     <!--  The category where the application appears. Either core.games or core.media. -->
@@ -87,18 +86,17 @@
     
     <!--  The icon for the application, which should be 86x86. -->
 
-    <asset path="icon.png">icon.png</asset>
+
     <asset path="assets">assets</asset>
     
     <!-- Locale support -->
     <asset path="translations" dest="qm">
         <include name="*.qm"/>
     </asset>
-    <asset path="assets/images/RPSicon.png">RPSicon.png</asset>
+
     
     <!-- Request permission to execute native code.  Required for native applications. -->
     <permission system="true">run_native</permission>
-    <permission>read_geolocation</permission>
     <permission>read_device_identifying_information</permission>
     <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
 

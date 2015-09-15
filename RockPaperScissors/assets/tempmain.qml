@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-import bb.cascades 1.0
+import bb.cascades 1.4
 
 Page {
     content: Container {
@@ -132,7 +132,7 @@ Page {
         }
         Container {
             layout: StackLayout {
-                layoutDirection: LayoutDirection.LeftToRight
+                orientation: LayoutOrientation.LeftToRight
             }
             Label {
                 text: "Record: "

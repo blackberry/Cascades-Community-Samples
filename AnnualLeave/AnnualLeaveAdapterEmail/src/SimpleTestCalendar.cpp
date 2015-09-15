@@ -72,13 +72,13 @@ bool SimpleTestCalendar::dateRangeIsValid(qint64 fromDate, qint64 toDate)
     return true;
 }
 
-int SimpleTestCalendar::calculateHalfDays(qint64 fromDate, qint64 toDate, bool firstDayHalf, bool lastDayHalf)
+int SimpleTestCalendar::calculateHalfDays(qint64 fromDateS, qint64 toDateS, bool firstDayHalf, bool lastDayHalf)
 {
     QDateTime fDateTime;
     QDateTime tDateTime;
 
-    fDateTime.setMSecsSinceEpoch(fromDate);
-    tDateTime.setMSecsSinceEpoch(toDate);
+    fDateTime.setMSecsSinceEpoch(fromDateS * 1000);
+    tDateTime.setMSecsSinceEpoch(toDateS * 1000);
 
     QDate fDate = fDateTime.date();
     QDate tDate = tDateTime.date();

@@ -10,7 +10,7 @@
     </message>
     <message>
         <location filename="../assets/AboutSheet.qml" line="40"/>
-        <source>V1.0.0</source>
+        <source>V1.0.2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

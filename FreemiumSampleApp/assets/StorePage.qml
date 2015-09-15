@@ -62,15 +62,6 @@ Page {
             imageSource: "asset:///images/backgroundLandscape.png"
         }
 
-        // An in-app advertisement Banner capable of being deleted.
-        // See @FreemiumBanner.qml for more details
-        FreemiumBanner {
-            scaleX: 2.0
-            scaleY: 2.0
-            // removeAdsPurchased is the bool defined in main.qml
-            hideAd: navigationPane.removeAdsPurchased
-            horizontalAlignment: HorizontalAlignment.Center
-        }
         Container {
             verticalAlignment: VerticalAlignment.Center
             horizontalAlignment: HorizontalAlignment.Center
@@ -82,8 +73,7 @@ Page {
                 /**
                  * The following 4 DigitalGood items represent the items available for purchase
                  * within the game. The user starts out with the UFO but needs to purchase the 
-                 * remaining items which either augment the UFO or remove advertisements from the 
-                 * game. 
+                 * remaining items can augment the UFO. 
                  * 
                  * See @DigitalGood.qml for more info
                  */
@@ -110,14 +100,6 @@ Page {
                     name: "Freakin Laser"
                     // freakinLaserBeamPurchased is the bool defined in main.qml
                     onOwnedChanged: navigationPane.freakinLaserBeamPurchased = owned
-                }
-                DigitalGood {
-                    id: noAds
-                    imageSource: "asset:///images/noAds.png"
-                    sku: "4"
-                    name: "Remove Ads"
-                    // removeAdsPurchased is the bool defined in main.qml
-                    onOwnedChanged: navigationPane.removeAdsPurchased = owned
                 }
             }
         }

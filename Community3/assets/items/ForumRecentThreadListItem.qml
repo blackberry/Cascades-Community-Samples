@@ -23,7 +23,6 @@ import com.msohm.BoardProperties 1.0
 //CustomListItem for displaying Threads.
 
 CustomListItem {
-    preferredHeight: 310 
     dividerVisible: true
     highlightAppearance: HighlightAppearance.Frame
     Container {

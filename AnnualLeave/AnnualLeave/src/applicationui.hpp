@@ -17,17 +17,18 @@
 #ifndef ApplicationUI_HPP_
 #define ApplicationUI_HPP_
 
-#define HEADLESS_SOCKET_SERVER_RETRY_INTERVAL_MS (2*1000)
-#define HEADLESS_SOCKET_SERVER_MAX_RETRY_INTERVAL_MS (30*1000)
-
 #include <QObject>
 #include <QList>
 #include <QMap>
-#include "UserSqlDataSource.hpp"
 #include "Entitlement.hpp"
-#include "Operations.hpp"
 #include <bb/cascades/ListView>
 #include <bb/system/InvokeManager>
+#include <bb/system/SystemUiResult>
+#include <IModel.hpp>
+#include <ModelImpl.hpp>
+#include <bb/pim/account/Account>
+#include <bb/pim/account/AccountService>
+#include <bb/pim/account/Provider>
 
 namespace bb
 {
@@ -63,10 +64,8 @@ public:
             int current_first_day_half, bool updating_first_day_half, int current_last_day_half, bool last_day_half, int current_day_half,  QVariant day_half, QString note);
     Q_INVOKABLE void submitApprovalDecision(int task_id, int task_type, int local_request_id, int decision, int originating_op_id);
     Q_INVOKABLE void deleteApprovalTask(int task_id);
-    Q_INVOKABLE void setSimulation(bool state);
     Q_INVOKABLE void addCalendarEntry(QDateTime from_date, QDateTime to_date, bool first_day_half, bool last_day_half, int day_half, QString note);
     Q_INVOKABLE void refreshEntitlement(int leave_year);
-    Q_INVOKABLE void setServiceVerbose(bool state);
     Q_INVOKABLE void clearProcessingStatus(int local_request_id, int leave_year);
     Q_INVOKABLE QString toLocalDateFormat(QString date_string);
     Q_INVOKABLE QString statusText(int booking_status, int last_op_status);
@@ -89,18 +88,23 @@ public:
     Q_INVOKABLE void checkAdapterSettings();
     Q_INVOKABLE void requestAdapterStatus();
 
+    Q_INVOKABLE void clientInitiatedSync(int leave_year);
+
     Q_INVOKABLE bool isValidDateRange(QDateTime from_date, QDateTime to_date, QString range_name);
+
+    Q_INVOKABLE void loadTaskData();
+    Q_INVOKABLE void loadRequestData(QString leave_year);
+
+    Q_INVOKABLE bool isValidEmailAddress(QString email_address);
 
     Q_PROPERTY(
             int total_entitlement
             READ totalEntitlement
-            WRITE setTotalEntitlement
             NOTIFY signalTotalEntitlementChanged)
 
     Q_PROPERTY(
             int current_entitlement
             READ currentEntitlement
-            WRITE setCurrentEntitlement
             NOTIFY signalCurrentEntitlementChanged)
 
     Q_PROPERTY(
@@ -244,51 +248,36 @@ private slots:
     void onCancelDialogFinished(bb::system::SystemUiResult::Type type);
     void onDeleteTaskDialogFinished(bb::system::SystemUiResult::Type type);
     void onSettingsChanged();
-    void onIndication();
 
-    void onConnected();
-    void onDisconnected();
-    void onError(QLocalSocket::LocalSocketError socketError);
-    void onStateChanged(QLocalSocket::LocalSocketState socketState);
-	void onReadyRead();
-    void onTimeout();
+    void onZeroDaysWarning();
+    void onUpdateReceived();
+    void onSuggestShowRequestsTab();
+    void onSuggestShowInboxTab();
+    void onSyncComplete();
+    void onOperationNotSupported();
+    void onAdapterNotConfigured();
 
 private:
+
     void processInboundQueue();
     void processBookingApprovalOutcome(OpApprovalOutcomeRequ *approval_outcome);
     void processCancellationApprovalOutcome(OpApprovalOutcomeRequ *approval_outcome);
     void processUpdateApprovalOutcome(OpApprovalOutcomeRequ *approval_outcome);
-
     void showTab(int tab_index);
     void showRequests(int year);
-    QString interpret(QString from_date, QString to_date, bool first_day_half, bool last_day_half, int day_half);
     void requestEntitlementData(int leave_year);
-
-    void connectToHeadless();
-    void disconnectFromHeadless();
-    void sendToHeadless(const QVariant &text);
-    void disconnectSocket();
-    void connectSocket();
-
-    void triggerRetryConnection();
+    void populateEmailSettingControls();
 
     QTranslator* m_pTranslator;
     bb::cascades::LocaleHandler* m_pLocaleHandler;
-    UserSqlDataSource* _sql;
-    Operations* _ops;
     bb::system::InvokeManager *_invokeManager;
+
+    ModelImpl *_modelImpl;
+    IModel *_iModel;
 
     int _local_request_id;
     int _task_id;
     int _current_status;
-    int _total_entitlement;
-    int _current_entitlement;
-
-    QString _adapter_name;
-    QString _adapter_version;
-    QString _adapter_description;
-    bool _adapter_configured;
-    bool _last_adapter_configured_value;
     bool _inbox_is_empty;
 
     QString _setting1_name;
@@ -306,9 +295,8 @@ private:
     QString _setting5_name;
     QString _setting5_value;
 
-    QLocalSocket *_socket;
-    bool _connectedToServer;
-    int _socketRetryInterval;
+    QList<bb::pim::account::Account> _accountList;
+    QMap<QString, QString> *_account_provider_map;
 };
 
 #endif /* ApplicationUI_HPP_ */

@@ -1,0 +1,1 @@
+include (../hostcardemulation.pro)

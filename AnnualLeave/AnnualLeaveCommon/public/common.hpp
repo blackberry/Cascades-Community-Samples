@@ -20,6 +20,7 @@
 #include <ApiVersion.hpp>
 
 static const int OP_STATUS_OK = 0;
+static const int OP_STATUS_NOT_SUPPORTED = 125;
 
 static const int STATUS_BOOKING_PENDING = 0;   // Created by user and submitted locally (into the outbound Ops Queue)
 static const int STATUS_BOOKING_SUBMITTED = 1; // Acknowledgement from enterprise system has been received
@@ -86,6 +87,12 @@ static const int OP_TYPE_ADAPTER_DETAILS_RESPONSE = 244;
 
 static const int OP_TYPE_ADAPTER_STATUS_REQUEST = 12;
 static const int OP_TYPE_ADAPTER_STATUS_RESPONSE = 243;
+
+static const int OP_TYPE_CLIENT_SYNCHRONIZE_REQUEST = 13;
+static const int OP_TYPE_CLIENT_SYNCHRONIZE_RESPONSE = 242;
+
+static const int OP_TYPE_SERVER_SYNC_RESULT_REQUEST = 14;
+static const int OP_TYPE_SERVER_SYNC_RESULT_RESPONSE = 241;
 
 
 // invocation framework targets and actions

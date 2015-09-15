@@ -5,7 +5,7 @@
     <name>AboutSheet</name>
     <message>
         <location filename="../assets/AboutSheet.qml" line="30"/>
-        <source>About MmsSample</source>
+        <source>About MmsSample V1.0.1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
