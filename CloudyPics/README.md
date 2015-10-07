@@ -20,10 +20,10 @@ Future plans include:
 Want it to do something else? Send me a tweet.
 
 CloudyPics has been featured on the BlackBerry Developer Blog several times, where you can see more in-depth documentation on it's features:
-http://devblog.blackberry.com/2013/10/cloudy-pics-part-1-the-introduction/
-http://devblog.blackberry.com/2013/10/cloudy-pics-part-2-managing-the-camera-roll/
-http://devblog.blackberry.com/2013/12/cloudy-pics-part-3-persisting-camera-settings/
-http://devblog.blackberry.com/2014/01/cloudy-pics-part-4-cards-and-enterprise/
+* [CloudyPics Part One: The Introduction](http://devblog.blackberry.com/2013/10/cloudy-pics-part-1-the-introduction/)
+* [CloudyPics Part Two: Managing the Camera Roll](http://devblog.blackberry.com/2013/10/cloudy-pics-part-2-managing-the-camera-roll/)
+* [CloudyPics Part Three: Persisting the Camera Settings](http://devblog.blackberry.com/2013/12/cloudy-pics-part-3-persisting-camera-settings/)
+* [CloudyPics Part One: Cards and Enterprise](http://devblog.blackberry.com/2014/01/cloudy-pics-part-4-cards-and-enterprise/)
 
 Control the Camera Roll
 -----------------------
