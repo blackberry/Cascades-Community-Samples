@@ -1,0 +1,14 @@
+prefix=/Users/mreed/Desktop/ffmpeg-0.11.1/target
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libavdevice
+Description: FFmpeg device handling library
+Version: 54.0.100
+Requires: 
+Requires.private: libavfilter = 2.77.100, libavformat = 54.6.100
+Conflicts:
+Libs: -L${libdir} -lavdevice 
+Libs.private: -lsocket -lm -lbz2 -lz
+Cflags: -I${includedir}
