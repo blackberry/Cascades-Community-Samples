@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Bar Chart</title>
+		<script src="jquery.min.js"></script>
+		<script src="chart.min.js"></script>
+		<style>
+			canvas {
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+			}
+		</style>
+		
+		<script>
+			var chart = null;
+			navigator.cascades.onmessage = function onmessage(message) {
+				//alert("message received correctly from the qml");
+				createChart(message);
+			}
+			
+			function createChart(message) {
+				//alert(message);
+				var m = jQuery.parseJSON(message);
+				//alert(JSON.stringify(m, null, 4));
+				
+				var ctx = document.getElementById("myChart");
+				chart = new Chart(ctx, {
+					type: 'bar',					
+					data: {
+						datasets: m.datasets,
+						labels: m.labels
+					},
+					options: {
+						scales: {
+							yAxes: [{
+								ticks: {
+									beginAtZero: false
+								}
+							}]
+						},
+						animation: {
+							duration: 0
+						},
+						tooltips : {
+							enabled: false
+						}
+					}
+				});
+				navigator.cascades.postMessage("SUCCESS");
+			}
+			
+			function destroy(){
+				if(chart != null)
+					chart.destroy();
+			}
+			
+			function test(){
+				var datasets = [{
+							label: '# of Votes',
+							data: [12, 19, 3, 5, 2, 3],
+							backgroundColor: [
+								'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgba(75, 192, 192, 0.2)',
+								'rgba(153, 102, 255, 0.2)',
+								'rgba(255, 159, 64, 0.2)'
+							],
+							borderColor: [
+								'rgba(255,99,132,1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)',
+								'rgba(255, 159, 64, 1)'
+							],
+							borderWidth: 1
+						},
+						{
+							label: '# of Votes',
+							data: [Math.random()*10-20, 9, 3, 15, 12, 3],
+							backgroundColor: [
+								'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgba(75, 192, 192, 0.2)',
+								'rgba(153, 102, 255, 0.2)',
+								'rgba(255, 159, 64, 0.2)'
+							],
+							borderColor: [
+								'rgba(255,99,132,1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)',
+								'rgba(255, 159, 64, 1)'
+							],
+							borderWidth: 1
+						}];
+				var labels = ['a', 'b', 'c', 'd', 'e', 'f' ];
+				var d = {
+					'datasets': datasets,
+					'labels': labels
+				}
+				createChart(JSON.stringify(d));
+			}
+			
+			function getURLParameter(name) {
+				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+			}
+			
+			function inizialize(){
+				//alert(getURLParameter('debug'));
+				if(getURLParameter('debug') == 'true')
+					document.getElementById('DebugControls').style.display = 'block';
+			};
+		</script>
+	</head>
+
+	<body onload="inizialize();">    
+		<div id="container" style="width: 95%;">
+			<!-- the container of the chart -->
+			<canvas id="myChart"></canvas>
+			<!-- debug controls for testing -->
+			<div id='DebugControls' style='display: none;'>
+				<input type="button" value="Crea" onclick="test();">
+				<input type="button" value="Distruggi" onclick="destroy();">
+			</div>
+		</div>
+	</body>
+</html>

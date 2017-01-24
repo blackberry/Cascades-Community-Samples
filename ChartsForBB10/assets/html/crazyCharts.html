@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Bar Chart</title>
+		<script src="jquery.min.js"></script>
+		<script src="chart.min.js"></script>
+		<style>
+			canvas {
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+			}
+		</style>
+		
+		<script>
+			var chart = null;
+			navigator.cascades.onmessage = function onmessage(message) {
+				//alert("message received correctly from the qml");
+				createChart(message);
+			}
+			
+			function createChart(message) {
+				//alert(message);
+				var m = jQuery.parseJSON(message);
+				//alert(JSON.stringify(m, null, 4));
+				
+				var ctx = document.getElementById("myChart");
+				chart = new Chart(ctx, {
+					type: m.type,		
+					data: {
+						datasets: m.datasets,
+						labels: m.labels
+					},
+					options: m.options
+				});
+				var base64image = chart.toBase64Image();
+				navigator.cascades.postMessage(base64image);
+			}
+			
+			function destroy(){
+				if(chart != null)
+					chart.destroy();
+			}
+			
+			function base64(){
+				if(chart != null){
+					var b = chart.toBase64Image();
+					alert(b);
+					document.getElementById('base').innerHTML = b;
+				}
+			}
+			
+			function test(){
+				var datasets = [{
+						label: "Russia",
+						data: [79.8, 0, 0, 3.8, 2, 14.4],
+						borderColor : "#082568",
+						backgroundColor : "#1240AB",
+						pointBorderColor : "#FFF",
+						pointBackgroundColor : "#082568",
+						pointBorderWidth : 1,
+						fill: false
+					}, {
+						label: "United States",
+						data: [80, 4.43, 12.85, 0, 0, 2.72],
+						borderColor : "#7C0046",
+						backgroundColor : "#CD0074",
+						pointBorderColor : "#FFF",
+						pointBackgroundColor : "#7C0046",
+						pointBorderWidth : 1,
+						fill: false
+					}];
+					
+				var labels = ["White", "Hispanic", "Asian", "Black", 
+				"Tatar", "Ukrainian", "Other"];
+				
+				var options = {
+						title: {
+							display: true,
+							text: 'Religions: Russia VS United States',
+							fontSize: 20
+						},
+						animation: {
+							duration: 0
+						},
+						tooltips : {
+							enabled: false
+						},
+						legend: {
+							display: true,
+							position: 'bottom',
+							labels: {
+								boxWidth: 12
+							}
+						}
+					};
+				var d = {
+					'type': 'bar',
+					'datasets': datasets,
+					'options': options,
+					'labels': labels
+				}
+				createChart(JSON.stringify(d));
+			}
+			
+			function getURLParameter(name) {
+				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+			}
+			
+			function inizialize(){
+				//test();
+				//alert(getURLParameter('debug'));
+				if(getURLParameter('debug') == 'true')
+					document.getElementById('DebugControls').style.display = 'block';
+			};
+		</script>
+	</head>
+
+	<body onload="inizialize();">    
+		<div id="container" style="width: 95%;">
+			<!-- the container of the chart -->
+			<canvas id="myChart"></canvas>
+			<!-- debug controls for testing -->
+			<div id='DebugControls' style='display: none;'>
+				<input type="button" value="Crea" onclick="test();">
+				<input type="button" value="Distruggi" onclick="destroy();">
+				<input type="button" value="base64" onclick="base64();">
+				<p id="base"></p>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Radar Chart</title>
+		<script src="jquery.min.js"></script>
+		<script src="chart.min.js"></script>
+		<style>
+			canvas {
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+			}
+		</style>
+		
+		<script>
+			var chart = null;
+			navigator.cascades.onmessage = function onmessage(message) {
+				//alert("message received correctly from the qml");
+				createChart(message);
+			}
+			
+			function createChart(message) {
+				//alert(message);
+				var m = jQuery.parseJSON(message);
+				//alert(JSON.stringify(m, null, 4));
+				
+				var ctx = document.getElementById("myChart");
+				chart = new Chart(ctx, {
+					type: 'radar',
+					options: {
+						scales: {
+							gridLines: {
+								color: ['black', 'red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet']
+							},
+							ticks: {
+								beginAtZero: true
+							}
+						},
+						animation: {
+							duration: 0
+						},
+						tooltips : {
+							enabled: false
+						}
+					},
+					data: {
+						datasets: m.datasets,
+						labels: m.labels
+					}
+				});
+				navigator.cascades.postMessage("SUCCESS");
+			}
+			
+			function destroy(){
+				if(chart != null)
+					chart.destroy();
+			}
+			
+			function randomScalingFactor() {
+				return Math.round(Math.random() * 100);
+			};
+			function randomColorFactor() {
+				return Math.round(Math.random() * 255);
+			};
+			function randomColor(opacity) {
+				return 'rgba(' + randomColorFactor() + ',' + randomColorFactor() + ',' + randomColorFactor() + ',' + (opacity || '.3') + ')';
+			};
+			
+			function test(){               
+				var datasets = [{
+						data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
+						borderColor : randomColor(0.4),
+						backgroundColor : randomColor(0.5),
+						pointBorderColor : randomColor(0.7),
+						pointBackgroundColor : randomColor(0.5),
+						pointBorderWidth : 1,
+						fill: false
+					}, {
+						data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
+						borderColor : randomColor(0.4),
+						backgroundColor : randomColor(0.5),
+						pointBorderColor : randomColor(0.7),
+						pointBackgroundColor : randomColor(0.5),
+						pointBorderWidth : 1,
+						fill: false
+					}, {
+						data: [randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor(), randomScalingFactor()],
+						borderColor : randomColor(0.4),
+						backgroundColor : randomColor(0.5),
+						pointBorderColor : randomColor(0.7),
+						pointBackgroundColor : randomColor(0.5),
+						pointBorderWidth : 1,
+						fill: false
+					}];
+					
+				var labels = ["January", "February", "March", "April", "May", "June", "July"];
+				var d = {
+					'datasets': datasets,
+					'labels': labels
+				}
+				createChart(JSON.stringify(d));
+			}
+			
+			function getURLParameter(name) {
+				return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+			}
+			
+			function inizialize(){
+				//alert(getURLParameter('debug'));
+				if(getURLParameter('debug') == 'true')
+					document.getElementById('DebugControls').style.display = 'block';
+			};
+		</script>
+	</head>
+
+	<body onload="inizialize();">    
+		<div id="container" style="width: 95%;">
+			<!-- the container of the chart -->
+			<canvas id="myChart"></canvas>
+			<!-- debug controls for testing -->
+			<div id='DebugControls' style='display: none;'>
+				<input type="button" value="Crea" onclick="test();">
+				<input type="button" value="Distruggi" onclick="destroy();">
+			</div>
+		</div>
+	</body>
+</html>
