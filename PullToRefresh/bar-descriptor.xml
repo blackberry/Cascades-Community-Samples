@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<qnx xmlns="http://www.qnx.com/schemas/application/1.0">
+    <id>ca.pulsecode.bbpy.pulltorefresh</id>
+    <name>Pull to Refresh ADN</name>
+    <versionNumber>0.0.1</versionNumber>
+    <buildIdFile>_buildId</buildIdFile>
+    <description>BlackBerry-Py sample to demonstrate pull-to-refresh of an App.net feed.</description>
+    <author>YOUR_COMPANY_NAME</author>
+    <authorId>YOUR_AUTHOR_ID_FROM_DEBUG_TOKEN</authorId>
+    <initialWindow>
+        <autoOrients>true</autoOrients>
+        <systemChrome>none</systemChrome>
+        <transparent>false</transparent>
+    </initialWindow>
+
+    <icon>
+        <image>icon.png</image>
+    </icon>
+    <cascadesTheme>bright</cascadesTheme>
+
+    <configuration name="Device-Release">
+       <entryPointType>Qnx/Cascades</entryPointType>
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="app/native/TartStart.so" entry="true" type="Qnx/Elf">TartStart.so</asset>
+    </configuration>
+    <configuration name="Device-Debug">
+       <platformArchitecture>armle-v7</platformArchitecture>
+       <asset path="app/native/TartStart" entry="true" type="Qnx/Elf">TartStart</asset>
+    </configuration>
+    <configuration name="Simulator-Debug">
+       <platformArchitecture>x86</platformArchitecture>
+       <asset path="app/native/TartStart-x86" entry="true" type="Qnx/Elf">TartStart-x86</asset>
+    </configuration>
+
+    <asset path="icon.png" public="true">icon.png</asset>
+    <!-- Insert splash screens you want to use here. -->
+    <!--
+    <asset path="splash.png" public="true">splash.png</asset>
+    <asset path="splash_landscape.png" public="true">splash_landscape.png</asset>
+    <splashscreen>splash_landscape:splash.png</splashscreen>
+    -->
+
+    <!-- Request permission to execute native code.  Required for native applications. -->
+    <permission system="true">run_native</permission>
+    <permission>access_internet</permission>
+    <!--
+    <permission>read_device_identifying_information</permission>
+    <permission>bbm_connect</permission>
+    <permission>access_shared</permission>
+    <permission>record_audio</permission>
+    <permission>read_geolocation</permission>
+    <permission>use_camera</permission>
+    <permission>play_audio</permission>
+    <permission>set_audio_volume</permission>
+    <permission>access_led_control</permission>
+    <permission>run_when_backgrounded</permission>
+    <permission>post_notification</permission>
+    <permission>access_pimdomain_calendars</permission>
+    <permission>access_pimdomain_contacts</permission>
+    <permission>access_pimdomain_messages</permission>
+    <permission>access_pimdomain_notebooks</permission>
+    -->
+    <env var="LD_LIBRARY_PATH" value="app/native/lib:/usr/lib/qt4/lib"/>
+
+</qnx>
