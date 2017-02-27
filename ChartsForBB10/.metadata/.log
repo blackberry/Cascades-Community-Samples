@@ -1,0 +1,12 @@
+!SESSION 2016-12-06 16:08:55.562 -----------------------------------------------
+eclipse.buildId=trunk
+java.version=1.7.0_51
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=it_IT
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\ja\Documents\Cascades-Community-Samples\ChartsForBB10
+
+!ENTRY com.qnx.tools.ide.bbt.application 1 -1 2016-12-06 16:08:57.245
+!MESSAGE version     1.0.0.v201403261830
+         cdtq        6f512bc1b1a4209861b89eba79c9dccee23218e9
+         ide         6684865af6c51fdccbf00a5cd598a71a59dfc21d
+         max-memory  910M
