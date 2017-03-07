@@ -227,7 +227,7 @@ int BestCam::openCamera(camera_unit_t unit)
             return err;
         }
         // attach status event monitoring thread.
-        // ordinarilly, we would just use a status callback via one of the viewfinder start functions,
+        // Ordinarily, we would just use a status callback via one of the viewfinder start functions,
         // but that would mean we would only be able to monitor status while a viewfinder is running.
         // registering explicitly for a status event this way allows us to monitor for camera powerdown/powerup events
         // as long as we still have the camera device open.

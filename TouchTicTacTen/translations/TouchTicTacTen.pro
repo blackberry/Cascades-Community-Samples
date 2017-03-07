@@ -1,1 +1,0 @@
-include (../TouchTicTacTen.pro)
